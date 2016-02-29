@@ -1,0 +1,8 @@
+#   File of site-specific roles.
+#   Use the common 'common_roles.txt' file for non-site-specific roles.
+
+#site|application|code|descr
+engin-umich|APPT|apptDeptUser|Department
+engin-umich|APPT|apptFacultyAffairs|Faculty Affairs
+engin-umich|APPT|rpmUser|RPM
+engin-umich|APPT|facultyUser|Faculty

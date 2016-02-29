@@ -1,0 +1,49 @@
+{% set optional = '<span class="wf-qa-optional">Optional</span>' if not prmpts.get(prompt,{}).get('required',False) else '' %}
+{% set disabled = '' if not locals().get('disabled', False) else disabled %}
+<div class="form-row clearfix">
+	<label class="col-xs-2 text-right" >{{ prmpts.get(prompt,{}).get('label',promptUX) }}:</label>
+	<div class="col-xs-8 wf-form-right cvRowRepeating_Text cvRowRepeating_Select clearfix"  data-fieldname="{{prompt}}">
+		{% raw optional %}
+	{% if not isinstance(pi.get(prompt,''), list) and len(pi.get(prompt,'')) > 0 %}
+		<!-- Single Value  -->
+		<div class="Repeating_Select">
+			<select class="form-control" name="{{prompt}}">
+				<option value="">Select a Language...</option>
+				{% for item in context.get(prompt,[]) %}
+					{% set seld = 'selected="selected"' if pi.get(prompt,'') == item.get('code','') else '' %}
+					<option value="{{item.get('code','')}}" {{seld}}>{{item.get('descr','')}}</option>
+				{% end %}
+			</select>
+			<div class="cv-repeating-controls pull-right"> </div>
+		</div>
+	{% elif len(pi.get(prompt,[])) > 0 %}
+		<!-- Multiple Values  -->
+		{% for dd in pi.get(prompt,[]) %}
+			{% if len(dd) > 0 %}
+			<div class="Repeating_Select">
+				<select class="form-control" name="{{prompt}}">
+					<option value="">Select a Language...</option>
+					{% for item in context.get(prompt,[]) %}
+						{% set seld = 'selected="selected"' if dd == item.get('code','') else '' %}
+						<option value="{{item.get('code','')}}" {{seld}}>{{item.get('descr','')}}</option>
+					{% end %}
+				</select>
+				<div class="cv-repeating-controls pull-right"> </div>
+			</div>
+			{% end %}
+		{% end %}
+	{% else %}
+		<!-- No Values currently -->
+		<div class="Repeating_Select">
+			<select class="form-control" name="{{prompt}}">
+				<option value="">Select a Language...</option>
+				{% for item in context.get(prompt,[]) %}
+					{% set seld = 'selected="selected"' if pi.get(prompt,'') == item.get('code','') else '' %}
+					<option value="{{item.get('code','')}}" {{seld}}>{{item.get('descr','')}}</option>
+				{% end %}
+			</select>
+			<div class="cv-repeating-controls pull-right"> </div>
+		</div>
+	{% end %}
+	</div>
+</div>

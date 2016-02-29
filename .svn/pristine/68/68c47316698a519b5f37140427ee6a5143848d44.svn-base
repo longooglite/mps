@@ -1,0 +1,344 @@
+# File format is pipe delimited
+#PACKET - code, description
+#GROUP - packet code, group code, group description, sequence
+#ITEM - group code, item code, sequence, is_artifact, artifact_config_dict
+#ITEM - group code, item code, sequence, is_artifact, artifact_config_dict
+
+#done for appointment
+#SOLICITATION PACKET
+PACKET|solicitation_packet|Solicitation Packet
+GROUP|solicitation_packet|SOLCV|Curriculum Vitae|1
+GROUP|solicitation_packet|SOLBIBLIO|Bibliographic Notes|2
+GROUP|solicitation_packet|SOLRECSIGPUBS|Recent Significant Publications|3
+GROUP|solicitation_packet|APPTCRITERIA|Criteria|4
+ITEM|SOLCV|curriculum_vitae|1|f|
+ITEM|SOLBIBLIO|bib_notes|1|f|
+ITEM|SOLRECSIGPUBS|recent_sig_pubs|1|f|
+ITEM|APPTCRITERIA|ummsTrackCriteria|1|t|{}
+
+#OFA same as Advisory
+PACKET|ofa_appt_packet|OFA Packet
+GROUP|ofa_appt_packet|OFAAPPTTRANSMIT|Transmittal Letter|1
+GROUP|ofa_appt_packet|OFAAPPTFORMB|Form B|2
+GROUP|ofa_appt_packet|OFAAPPTCV|Curriculum Vitae|3
+GROUP|ofa_appt_packet|OFAAPPTTALKP|Talking Points|4
+GROUP|ofa_appt_packet|OFAAPPTEDUP|Educator's Portfolio|5
+GROUP|ofa_appt_packet|OFAAPPTTEACHACTIVITY|Teaching Activity Form|6
+GROUP|ofa_appt_packet|OFAAPPTCHKLISTSUMM|Checklist of Summarized Evaluations|7
+GROUP|ofa_appt_packet|OFAAPPTTEACHEVAL|Teaching Evaluations|8
+GROUP|ofa_appt_packet|OFAAPPTRSRCHPORT|Researcher's Portfolio|9
+GROUP|ofa_appt_packet|OFAAPPTEVALEXT|External Evaluation Letters|10
+GROUP|ofa_appt_packet|OFAAPPTEVALINT|Internal Evaluation Letters|11
+GROUP|ofa_appt_packet|OFAAPPTBIBNOTES|Bibliographic Notes|12
+GROUP|ofa_appt_packet|OFAAPPTRECSIGPUBS|Publications|13
+ITEM|OFAAPPTTRANSMIT|transmittal|1|f|
+ITEM|OFAAPPTFORMB|formb|1|f|
+ITEM|OFAAPPTCV|curriculum_vitae|1|f|
+ITEM|OFAAPPTTALKP|talking_pts|1|f|
+ITEM|OFAAPPTEDUP|edu_portfolio|1|f|
+ITEM|OFAAPPTTEACHACTIVITY|teaching_activity_form|1|f|
+ITEM|OFAAPPTCHKLISTSUMM|cl_summarized_evals|1|f|
+ITEM|OFAAPPTTEACHEVAL|teaching_eval|1|f|
+ITEM|OFAAPPTRSRCHPORT|rsrch_portfolio|1|f|
+ITEM|OFAAPPTEVALEXT|evalLettersExt|1|t|{"task_code":"acad_eval","evaluator_types":["AL_EXTERNAL","NAL_EXTERNAL"]}
+ITEM|OFAAPPTEVALINT|evalLettersInt|1|t|{"task_code":"acad_eval","evaluator_types":["AL_INTERNAL","NAL_INTERNAL"]}
+ITEM|OFAAPPTBIBNOTES|bib_notes|1|f|
+ITEM|OFAAPPTRECSIGPUBS|recent_sig_pubs|1|f|
+
+
+#Assistant Dean
+
+PACKET|assist_dean_appt_packet|Assistant Dean Packet
+GROUP|assist_dean_appt_packet|ADEANAPPTTRANSMIT|Transmittal Letter|1
+GROUP|assist_dean_appt_packet|ADEANAPPTCV|Curriculum Vitae|2
+GROUP|assist_dean_appt_packet|ADEANAPPTEVAL|Evaluation Letters|3
+GROUP|assist_dean_appt_packet|ADEANAPPTMEMORANDUM|Memorandum of Understanding|4
+GROUP|assist_dean_appt_packet|ADEANAPPTMEMORANDUMSECINT|Memorandum of Understanding|4
+GROUP|assist_dean_appt_packet|ADEANAPPTRS2|Bridging Support Form (RS-2)|5
+GROUP|assist_dean_appt_packet|ADEANAPPTTEACHACTIVITY|Teaching Activity Form|6
+ITEM|ADEANAPPTTRANSMIT|transmittal|1|f|
+ITEM|ADEANAPPTCV|curriculum_vitae|1|f|
+ITEM|ADEANAPPTEVAL|evalLettersExt|1|t|{"task_code":"acad_eval","evaluator_types":["AL_EXTERNAL","NAL_EXTERNAL"]}
+ITEM|ADEANAPPTEVAL|evalLettersInt|1|t|{"task_code":"acad_eval","evaluator_types":["AL_INTERNAL","NAL_INTERNAL"]}
+ITEM|ADEANAPPTMEMORANDUM|mou|1|f|
+ITEM|ADEANAPPTMEMORANDUMSECINT|sec_int_mou|1|f|
+ITEM|ADEANAPPTRS2|rs2|1|f|
+ITEM|ADEANAPPTTEACHACTIVITY|teaching_activity_form|1|f|
+
+#Assistant Dean track change
+PACKET|tc1_assist_dean_appt_packet|Assistant Dean Packet
+GROUP|tc1_assist_dean_appt_packet|TC1ADEANAPPTTRANSMIT|Transmittal Letter|1
+GROUP|tc1_assist_dean_appt_packet|TC1ADEANAPPTCV|Curriculum Vitae|2
+GROUP|tc1_assist_dean_appt_packet|TC1ADEANAPPTEDUP|Educator's Portfolio|3
+GROUP|tc1_assist_dean_appt_packet|TC1ADEANAPPTCHKLISTSUMM|Checklist of Summarized Evaluations|4
+GROUP|tc1_assist_dean_appt_packet|TC1ADEANAPPTTEACHEVAL|Teaching Evaluations|5
+ITEM|TC1ADEANAPPTTRANSMIT|transmittal|1|f|
+ITEM|TC1ADEANAPPTCV|curriculum_vitae|1|f|
+ITEM|TC1ADEANAPPTEDUP|edu_portfolio|1|f|
+ITEM|TC1ADEANAPPTCHKLISTSUMM|cl_summarized_evals|1|f|
+ITEM|TC1ADEANAPPTTEACHEVAL|teaching_eval|1|f|
+
+
+#Advisory same as OFA
+
+PACKET|adv_appt_packet|Advisory Packet
+GROUP|adv_appt_packet|ADVAPPTTRANSMIT|Transmittal Letter|1
+GROUP|adv_appt_packet|ADVAPPTFORMB|Form B|2
+GROUP|adv_appt_packet|ADVAPPTCV|Curriculum Vitae|3
+GROUP|adv_appt_packet|ADVAPPTTALKP|Talking Points|4
+GROUP|adv_appt_packet|ADVAPPTEDUP|Educator's Portfolio|5
+GROUP|adv_appt_packet|ADVAPPTTEACHACTIVITY|Teaching Activity Form|6
+GROUP|adv_appt_packet|ADVAPPTCHKLISTSUMM|Checklist of Summarized Evaluations|7
+GROUP|adv_appt_packet|ADVAPPTTEACHEVAL|Teaching Evaluations|8
+GROUP|adv_appt_packet|ADVAPPTRSRCHPORT|Researcher's Portfolio|9
+GROUP|adv_appt_packet|ADVAPPTEVALEXT|External Evaluation Letters|10
+GROUP|adv_appt_packet|ADVAPPTEVALINT|Internal Evaluation Letters|11
+GROUP|adv_appt_packet|ADVAPPTBIBNOTES|Bibliographic Notes|12
+GROUP|adv_appt_packet|ADVAPPTRECSIGPUBS|Publications|13
+ITEM|ADVAPPTTRANSMIT|transmittal|1|f|
+ITEM|ADVAPPTFORMB|formb|1|f|
+ITEM|ADVAPPTCV|curriculum_vitae|1|f|
+ITEM|ADVAPPTTALKP|talking_pts|1|f|
+ITEM|ADVAPPTEDUP|edu_portfolio|1|f|
+ITEM|ADVAPPTTEACHACTIVITY|teaching_activity_form|1|f|
+ITEM|ADVAPPTCHKLISTSUMM|cl_summarized_evals|1|f|
+ITEM|ADVAPPTTEACHEVAL|teaching_eval|1|f|
+ITEM|ADVAPPTRSRCHPORT|rsrch_portfolio|1|f|
+ITEM|ADVAPPTEVALEXT|evalLettersExt|1|t|{"task_code":"acad_eval","evaluator_types":["AL_EXTERNAL","NAL_EXTERNAL"]}
+ITEM|ADVAPPTEVALEXT|evalLettersInt|1|t|{"task_code":"acad_eval","evaluator_types":["AL_INTERNAL","NAL_INTERNAL"]}
+ITEM|ADVAPPTBIBNOTES|bib_notes|1|f|
+ITEM|ADVAPPTRECSIGPUBS|recent_sig_pubs|1|f|
+
+
+#Executive Committee
+PACKET|exec_com_appt_packet|Vice President For Research Packet
+GROUP|exec_com_appt_packet|EXECAPPTADVMEETINGMINS|Advisory Committee Summary|1
+GROUP|exec_com_appt_packet|EXECAPPTTRANSMIT|Transmittal Letter|2
+GROUP|exec_com_appt_packet|EXECAPPTFORMB|Form B|3
+GROUP|exec_com_appt_packet|EXECAPPTCV|Curriculum Vitae|4
+GROUP|exec_com_appt_packet|EXECAPPTTALKP|Talking Points|5
+GROUP|exec_com_appt_packet|EXECAPPTEDUP|Educator's Portfolio|6
+GROUP|exec_com_appt_packet|EXECAPPTTEACHACTIVITY|Teaching Activity Form|7
+GROUP|exec_com_appt_packet|EXECAPPTCHKLISTSUMM|Checklist of Summarized Evaluations|8
+GROUP|exec_com_appt_packet|EXECAPPTTEACHEVAL|Teaching Evaluations|9
+GROUP|exec_com_appt_packet|EXECAPPTRSRCHPORT|Researcher's Portfolio|10
+GROUP|exec_com_appt_packet|EXECAPPTEVALEXT|External Evaluation Letters|11
+GROUP|exec_com_appt_packet|EXECAPPTEVALINT|Internal Evaluation Letters|12
+GROUP|exec_com_appt_packet|EXECAPPTBIBNOTES|Bibliographic Notes|13
+GROUP|exec_com_appt_packet|EXECAPPTRECSIGPUBS|Publications|14
+GROUP|exec_com_appt_packet|EXECAPPTRETIREMENTMEM|Retirement Memoir|15
+ITEM|EXECAPPTADVMEETINGMINS|adv_meeting_minutes|1|f|
+ITEM|EXECAPPTTRANSMIT|transmittal|1|f|
+ITEM|EXECAPPTFORMB|formb|1|f|
+ITEM|EXECAPPTCV|curriculum_vitae|1|f|
+ITEM|EXECAPPTTALKP|talking_pts|1|f|
+ITEM|EXECAPPTEDUP|edu_portfolio|1|f|
+ITEM|EXECAPPTTEACHACTIVITY|teaching_activity_form|1|f|
+ITEM|EXECAPPTCHKLISTSUMM|cl_summarized_evals|1|f|
+ITEM|EXECAPPTTEACHEVAL|teaching_eval|1|f|
+ITEM|EXECAPPTRSRCHPORT|rsrch_portfolio|1|f|
+ITEM|EXECAPPTEVALEXT|evalLettersExt|1|t|{"task_code":"acad_eval","evaluator_types":["AL_EXTERNAL","NAL_EXTERNAL"]}
+ITEM|EXECAPPTEVALINT|evalLettersInt|1|t|{"task_code":"acad_eval","evaluator_types":["AL_INTERNAL","NAL_INTERNAL"]}
+ITEM|EXECAPPTBIBNOTES|bib_notes|1|f|
+ITEM|EXECAPPTRECSIGPUBS|recent_sig_pubs|1|f|
+ITEM|EXECAPPTRETIREMENTMEM|retirement_memoir|1|f|
+
+#Executive Committee track change
+
+#Provost/President Appointment
+PACKET|tc1_exec_com_appt_packet|Executive Committee Packet
+GROUP|tc1_exec_com_appt_packet|TC1EXECDEANCOVER|Dean's Cover Letter|1
+GROUP|tc1_exec_com_appt_packet|TC1EXECAPPTTRANSMIT|Transmittal Letter|2
+GROUP|tc1_exec_com_appt_packet|TC1EXECCV|Curriculum Vitae|3
+GROUP|tc1_exec_com_appt_packet|TC1EXECAPPTEDUP|Educator's Portfolio|4
+GROUP|tc1_exec_com_appt_packet|TC1EXECAPPTCHKLISTSUMM|Checklist of Summarized Evaluations|5
+GROUP|tc1_exec_com_appt_packet|TC1EXECAPPTTEACHEVAL|Teaching Evaluations|6
+ITEM|TC1EXECDEANCOVER|dean_cover|1|f|
+ITEM|TC1EXECAPPTTRANSMIT|transmittal|1|f|
+ITEM|TC1EXECCV|curriculum_vitae|1|f|
+ITEM|TC1EXECAPPTEDUP|edu_portfolio|1|f|
+ITEM|TC1EXECAPPTCHKLISTSUMM|cl_summarized_evals|1|f|
+ITEM|TC1EXECAPPTTEACHEVAL|teaching_eval|1|f|
+
+
+#Provost/President Appointment
+PACKET|prov_pres_appt_packet|Provost Packet
+GROUP|prov_pres_appt_packet|PROVAPPTDEANCOVER|Dean's Endorsement Letter|1
+GROUP|prov_pres_appt_packet|PROVAPPTCV|Curriculum Vitae|2
+GROUP|prov_pres_appt_packet|PROVAPPTDOCTEACHING|Documentation of Teaching|3
+GROUP|prov_pres_appt_packet|PROVAPPTDOCRESEARCH|Documentation of Research|4
+GROUP|prov_pres_appt_packet|PROVAPPTEVALEXT|External Evaluation Letters|5
+GROUP|prov_pres_appt_packet|PROVAPPTEVALINT|Internal Evaluation Letters|6
+GROUP|prov_pres_appt_packet|PROVAPPTEXTEVALLIST|External Reviewer's List|7
+GROUP|prov_pres_appt_packet|PROVAPPTSAMPLSOLICIT|Sample Solicitation Letter|8
+GROUP|prov_pres_appt_packet|PROVAPPTSIGNEDOFFERLETTER|Signed Offer Letter|9
+GROUP|prov_pres_appt_packet|PROVAPPTRS2|Bridging Support Form (RS-2)|10
+GROUP|prov_pres_appt_packet|PROVAPPTAAR|AAR|11
+ITEM|PROVAPPTDEANCOVER|dean_cover|1|f|
+ITEM|PROVAPPTCV|curriculum_vitae|1|f|
+ITEM|PROVAPPTDOCTEACHING|edu_portfolio|1|f|
+ITEM|PROVAPPTDOCTEACHING|cl_summarized_evals|2|f|
+ITEM|PROVAPPTDOCTEACHING|teaching_eval|3|f|
+ITEM|PROVAPPTDOCRESEARCH|rsrch_portfolio|1|f|
+ITEM|PROVAPPTDOCRESEARCH|talking_pts|2|f|
+ITEM|PROVAPPTDOCRESEARCH|bib_notes|3|f|
+ITEM|PROVAPPTEVALEXT|evalLettersExt|1|t|{"includeBio":True,"task_code":"acad_eval","evaluator_types":["AL_EXTERNAL","NAL_EXTERNAL"]}
+ITEM|PROVAPPTEVALINT|evalLettersInt|1|t|{"includeBio":True,"task_code":"acad_eval","evaluator_types":["AL_INTERNAL","NAL_INTERNAL"]}
+ITEM|PROVAPPTEXTEVALLIST|umms_ext_rev_list|1|t|{"task_code":"acad_eval","evaluator_types":["AL_EXTERNAL","NAL_EXTERNAL"]}
+ITEM|PROVAPPTSAMPLSOLICIT|sample_solicit_letter|1|t|{"task_code":"acad_eval","email_template":"ummsacadSolicit.html","site":"umms"}
+ITEM|PROVAPPTSIGNEDOFFERLETTER|signed_offer|1|f|
+ITEM|PROVAPPTRS2|rs2|1|f|
+ITEM|PROVAPPTAAR|aar|1|f|
+
+#Provost Track Change
+
+PACKET|tc1_prov_pres_appt_packet|Provost Packet
+GROUP|tc1_prov_pres_appt_packet|TC1PROVAPPTDEANCOVER|Dean's Endorsement Letter|1
+GROUP|tc1_prov_pres_appt_packet|TC1PROVAPPT509|5.09 Waiver|2
+GROUP|tc1_prov_pres_appt_packet|TC1PROVAPPTDEPTTRANSMITTAL|Transmittal|3
+GROUP|tc1_prov_pres_appt_packet|TC1PROVAPPTCV|Curriculum Vitae|4
+GROUP|tc1_prov_pres_appt_packet|TC1PROVAPPTODOCTEACHING|Documentation of Teaching|5
+
+ITEM|TC1PROVAPPTDEANCOVER|tc_dean_cover|1|f|
+ITEM|TC1PROVAPPT509|fiveohninewaiver|1|f|
+ITEM|TC1PROVAPPTDEPTTRANSMITTAL|transmittal|1|f|
+ITEM|TC1PROVAPPTCV|curriculum_vitae|1|f|
+ITEM|TC1PROVAPPTODOCTEACHING|edu_portfolio|1|f|
+ITEM|TC1PROVAPPTODOCTEACHING|cl_summarized_evals|2|f|
+ITEM|TC1PROVAPPTODOCTEACHING|teaching_eval|3|f|
+
+
+#track change 2 packet OFA
+
+PACKET|tc2_ofa_packet|OFA Packet
+GROUP|tc2_ofa_packet|TC2OFADEPTTRANSMITTAL|Transmittal|1
+GROUP|tc2_ofa_packet|TC2OFACV|Curriculum Vitae|2
+
+ITEM|TC2OFADEPTTRANSMITTAL|transmittal|1|f|
+ITEM|TC2OFACV|curriculum_vitae|1|f|
+
+
+#track change 2 packet Assistant Dean
+
+PACKET|tc2_adean_packet|Assistant Dean Packet
+GROUP|tc2_adean_packet|TC2ADEANDEPTTRANSMITTAL|Transmittal|1
+GROUP|tc2_adean_packet|TC2ADEANCV|Curriculum Vitae|2
+
+ITEM|TC2ADEANDEPTTRANSMITTAL|transmittal|1|f|
+ITEM|TC2ADEANCV|curriculum_vitae|1|f|
+
+
+#Provost/President Promotion
+PACKET|prov_promo_packet|Provost Packet
+GROUP|prov_promo_packet|PROMOREC|Promotion Recommendation|1
+GROUP|prov_promo_packet|PROVPROMODEANCOVER|Dean's Cover Letter|2
+GROUP|prov_promo_packet|PROVPROMODEPTCHAIR|Department Chair Letter|3
+GROUP|prov_promo_packet|PROVPROMOCV|Curriculum Vitae|4
+GROUP|prov_promo_packet|PROVPROMODOCTEACHING|Documentation of Teaching|5
+GROUP|prov_promo_packet|PROVPROMODOCRESEARCH|Documentation of Research|6
+GROUP|prov_promo_packet|PROVPROMOSAMPLSOLICIT|Sample Solicitation Letter|7
+GROUP|prov_promo_packet|PROVPROMOEXTEVALLIST|External Reviewer's List|8
+GROUP|prov_promo_packet|PROVPROMOEVALEXT|External Evaluation Letters|9
+GROUP|prov_promo_packet|PROVPROMOEVALINT|Internal Evaluation Letters|10
+GROUP|prov_promo_packet|PROVPROMORS2|Bridging Support Form (RS-2)|11
+ITEM|PROMOREC|promorec|1|f|
+ITEM|PROVPROMODEANCOVER|dean_cover|1|f|
+ITEM|PROVPROMODEPTCHAIR|transmittal|1|f|
+ITEM|PROVPROMOCV|curriculum_vitae|1|f|
+ITEM|PROVPROMODOCTEACHING|edu_portfolio|1|f|
+ITEM|PROVPROMODOCTEACHING|cl_summarized_evals|2|f|
+ITEM|PROVPROMODOCTEACHING|teaching_eval|3|f|
+ITEM|PROVPROMODOCRESEARCH|rsrch_portfolio|1|f|
+ITEM|PROVPROMODOCRESEARCH|talking_pts|2|f|
+ITEM|PROVPROMODOCRESEARCH|bib_notes|3|f|
+ITEM|PROVPROMOSAMPLSOLICIT|sample_solicit_letter|1|t|{"task_code":"acad_eval","email_template":"ummsacadSolicit.html","site":"umms"}
+ITEM|PROVPROMOEXTEVALLIST|umms_ext_rev_list|1|t|{"task_code":"acad_eval","evaluator_types":["AL_EXTERNAL","NAL_EXTERNAL"]}
+ITEM|PROVPROMOEVALEXT|evalLettersExt|1|t|{"includeBio":True,"task_code":"acad_eval","evaluator_types":["AL_EXTERNAL","NAL_EXTERNAL"]}
+ITEM|PROVPROMOEVALINT|evalLettersInt|1|t|{"includeBio":True,"task_code":"acad_eval","evaluator_types":["AL_INTERNAL","NAL_INTERNAL"]}
+ITEM|PROVPROMORS2|rs2|1|f|
+
+
+#VP of Research - Appointment
+PACKET|vp_research_appt_packet|Vice President For Research Packet
+GROUP|vp_research_appt_packet|VPAPPTDEANCOVER|Dean's Cover Letter|1
+GROUP|vp_research_appt_packet|VPAPPTCV|Curriculum Vitae|2
+GROUP|vp_research_appt_packet|VPAPPTEVALLETTERSEXT|External Evaluation Letters|3
+GROUP|vp_research_appt_packet|VPAPPTEVALLETTERSINT|Internal Evaluation Letters|4
+GROUP|vp_research_appt_packet|VPAPPTEXTREVIERS|External Reviewers List|5
+GROUP|vp_research_appt_packet|VPAPPTDOCRESEARCH|Documentation of Research|6
+GROUP|vp_research_appt_packet|VPAPPTSIGNEDOFFERLETTER|Signed Offer Letter|7
+GROUP|vp_research_appt_packet|VPAPPTRS2|Bridging Support Form (RS-2)|8
+GROUP|vp_research_appt_packet|VPAPPTAAR|AAR|9
+ITEM|VPAPPTDEANCOVER|dean_cover|1|f|
+ITEM|VPAPPTCV|curriculum_vitae|1|f|
+ITEM|VPAPPTEVALLETTERSEXT|evalLettersExt|1|t|{"task_code":"acad_eval","evaluator_types":["AL_EXTERNAL","NAL_EXTERNAL"]}
+ITEM|VPAPPTEVALLETTERSINT|evalLettersInt|1|t|{"task_code":"acad_eval","evaluator_types":["AL_INTERNAL","NAL_INTERNAL"]}
+ITEM|VPAPPTEXTREVIERS|umms_ext_rev_list|1|t|{"task_code":"acad_eval","evaluator_types":["AL_EXTERNAL","NAL_EXTERNAL"]}
+ITEM|VPAPPTDOCRESEARCH|rsrch_portfolio|1|f|
+ITEM|VPAPPTDOCRESEARCH|talking_pts|2|f|
+ITEM|VPAPPTDOCRESEARCH|bib_notes|3|f|
+ITEM|VPAPPTSIGNEDOFFERLETTER|signed_offer|1|f|
+ITEM|VPAPPTRS2|rs2|1|f|
+ITEM|VPAPPTAAR|aar|1|f|
+
+#VP of Research - Promotion
+PACKET|vp_research_promo_packet|Vice President For Research Packet
+GROUP|vp_research_promo_packet|VPPROMORS1|Cover Page / Signature Form (RS-1 Form) |1
+GROUP|vp_research_promo_packet|VPPROMORS2|Bridging Support Form (RS-2)|2
+GROUP|vp_research_promo_packet|VPPROMOCV|Curriculum Vitae|3
+GROUP|vp_research_promo_packet|VPPROMOSAMPLSOLICIT|Sample Solicitation Letter|4
+GROUP|vp_research_promo_packet|VPPROMOEXTEVALLIST|External Reviewer's List|5
+GROUP|vp_research_promo_packet|VPPROMOEVALEXT|External Evaluation Letters|6
+GROUP|vp_research_promo_packet|VPPROMOEVALINT|Internal Evaluation Letters|7
+GROUP|vp_research_promo_packet|VPPROMODEANCOVER|Dean's Cover Letter|8
+GROUP|vp_research_promo_packet|VPPROMODEPTCHAIR|Department Chair Letter|9
+GROUP|vp_research_promo_packet|VPPROMODOCRESEARCH|Documentation of Research|10
+ITEM|VPPROMORS1|rs1|1|f|
+ITEM|VPPROMORS2|rs2|1|f|
+ITEM|VPPROMOCV|curriculum_vitae|1|f|
+ITEM|VPPROMOSAMPLSOLICIT|sample_solicit_letter|1|t|{"task_code":"acad_eval","email_template":"ummsacadSolicit.html","site":"umms"}
+ITEM|VPPROMOEXTEVALLIST|umms_ext_rev_list|1|t|{"task_code":"acad_eval","evaluator_types":["AL_EXTERNAL","NAL_EXTERNAL"]}
+ITEM|VPPROMOEVALEXT|evalLettersExt|1|t|{"includeBio":True,"task_code":"acad_eval","evaluator_types":["AL_EXTERNAL","NAL_EXTERNAL"]}
+ITEM|VPPROMOEVALINT|evalLettersInt|1|t|{"includeBio":True,"task_code":"acad_eval","evaluator_types":["AL_INTERNAL","NAL_INTERNAL"]}
+ITEM|PROVPROMODEANCOVER|dean_cover|1|f|
+ITEM|VPPROMODEANCOVER|dean_cover|1|f|
+ITEM|VPPROMODEPTCHAIR|transmittal|1|f|
+ITEM|VPPROMODOCRESEARCH|rsrch_portfolio|1|f|
+ITEM|VPPROMODOCRESEARCH|talking_pts|2|f|
+ITEM|VPPROMODOCRESEARCH|bib_notes|3|f|
+
+
+#EVPMA
+PACKET|evpma_appt_packet|EVPMA Packet
+GROUP|evpma_appt_packet|EVPMAAPPTAUTHFORM|EVPMA Authorization Form|1
+GROUP|evpma_appt_packet|EVPMAAPPTDEANCOVER|Dean's Cover Letter|2
+GROUP|evpma_appt_packet|EVPMAAPPTFORMB|Form B|3
+GROUP|evpma_appt_packet|EVPMAAPPTCV|Curriculum Vitae|4
+ITEM|EVPMAAPPTAUTHFORM|evpma_auth|1|f|
+ITEM|EVPMAAPPTDEANCOVER|dean_cover|1|f|
+ITEM|EVPMAAPPTFORMB|formb|1|f|
+ITEM|EVPMAAPPTCV|curriculum_vitae|1|f|
+
+#Credentialing Application
+PACKET|credentialing_app_packet|Credentialing Application
+GROUP|credentialing_app_packet|CREDAPPGaps|Gaps|1
+GROUP|credentialing_app_packet|CREDAPPApplication|Credentialing Application|2
+ITEM|CREDAPPGaps|uberGaps|1|t|{"task_code":"cred_attestation", "template":"uberGapsTemplate.html", "header":"Gaps", "site":"umms"}
+ITEM|CREDAPPApplication|ummscredentialingApp|1|t|{"template":"ummsCredentialingApp.html", "header":"Credentialing Application","site":"umms","header_image":"cred_default_head.png"}
+
+PACKET|service_and_rank|Service and Rank Form
+GROUP|service_and_rank|SRForm|Service and Rank|1
+ITEM|SRForm|view_serv_rank|1|t|{"task_code":"view_serv_rank"}
+
+PACKET|provider_enroll_info|Provider Enrollment Information Form
+GROUP|provider_enroll_info|PEIForm|Provider Enrollment Information|1
+ITEM|PEIForm|view_provider_enrollment_info|1|t|{"task_code":"provider_enroll_info"}
+
+PACKET|umms_edu_eval_packet|Medical Education Certification Form
+GROUP|umms_edu_eval_packet|MEDEDUCERT|Medical Education Certification|1
+ITEM|MEDEDUCERT|med_edu_certification|1|t|{"task_code":"med_edu_certification","template":"umms_cred_edu_cert.html"}
+
+PACKET|postgrad_packet|Post Graduate Training Certification Form
+GROUP|postgrad_packet|POSTGRADCERT|Post Graduate Training Certification Form|1
+ITEM|POSTGRADCERT|post_grad_certification|1|t|{"task_code":"post_grad_certification","template":"umms_post_grad_cert.html"}
+

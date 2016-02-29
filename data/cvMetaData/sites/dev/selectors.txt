@@ -1,0 +1,6 @@
+#group	code	descr	style	seq
+AUTHORS	unknown	Not Specified		1
+AUTHORS	author	Author	bold:true	2
+AUTHORS	currgrad	Current Graduate Student	underline:true	3
+AUTHORS	formergrad	Former Graduate Student	double-underline:true	4
+AUTHORS	undergrad	Undergraduate Student	underline:true,postpend:*	5

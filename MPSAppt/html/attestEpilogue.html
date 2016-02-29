@@ -1,0 +1,20 @@
+	{% set disabled = '' %}
+	{% if context.get('disabled', True) %}
+		{% set disabled = 'disabled="disabled"' %}
+	{% end %}
+
+	{% if context.get('prompts',{}).get('attest',{}).get('enabled',False) %}
+	<div class="form-row attest_line" style="display:inline-block;">
+		<label><input type="checkbox" name="attest" id="attest" value="True" {{ 'checked="checked"' if context.get('attest',{}).get('attest', 'False') == 'True' else '' }} {% raw disabled %}/> <span class="wf-form-right" style="position:relative; top:-1px;">{{context.get('submitText','')}}</span></label>
+	</div>
+	{% end %}
+
+
+	<div class="wf-details-form-btn-bar col-xs-12  wf-template-toggled">
+		<button type="submit" class="wf-widget-form-btn btn btn-primary" data-wf-url="{{ context.get('button_url','') }}" {% raw disabled %}>{{ context.get('button_text','') }}</button>
+		{% include 'formChunk_cancelLink.html' %}
+        {% if context.get('print_enabled',True) %}
+            <a class="wf-print-item btn btn-primary wf-irregular-trigger" target="_blank" href="{{ context.get('print_url','') }}"><span class="glyphicon glyphicon-print"></span>Print...</a>
+        {% end %}
+	</div>
+</form>

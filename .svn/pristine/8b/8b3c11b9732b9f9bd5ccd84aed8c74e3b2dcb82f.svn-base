@@ -1,0 +1,24 @@
+<div>
+    {% set rowCounter = 0 %}
+    {% for currsubcategory in currcategory.get('subcategories',[]) %}
+        {% if currcategory.get('isThreeLevelDisplay',False) %}
+            {% if subgroupdescr <> currsubcategory.get('sub_descr','') or currsubcategory.get('sub_descr','') == '' %}
+                {% set subgroupdescr = currsubcategory.get('sub_descr','') %}
+            {% else %}
+                {% set subgroupdescr = '' %}
+            {% end %}
+        {% end %}
+        {% set categorydescr = currcategory.get('descr','') %}
+        {% set rowCounter = rowCounter + 1 %}
+        {% if rowCounter > 1 %}
+            {% set categorydescr = '' %}
+        {% end %}
+        {% set subcategorydescr = currsubcategory.get('descr','') %}
+
+        {% if currcategory.get('category_code','') == 'Patents' %}
+	        {% include printCustomPatentTabledOutput.html %}
+        {% else %}
+    	    {% include printTabledOutput.html %}
+        {% end %}
+    {% end %}
+</div>

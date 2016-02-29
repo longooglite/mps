@@ -1,0 +1,5 @@
+Chair
+Co-Chair
+Member
+Advisor
+Other

@@ -1,0 +1,11 @@
+	{% set disabled = '' %}
+	{% if context.get('disabled', True) %}
+		{% set disabled = 'disabled="disabled"' %}
+	{% end %}
+
+	{% if context.get('prompts',{}).get('attest',{}).get('enabled',False) %}
+	<div class="form-row attest_line" style="display:inline-block;">
+		<label><input type="checkbox" name="attest" id="attest" value="True" {{ 'checked="checked"' if context.get('attest',{}).get('attest', 'False') == 'True' else '' }} {% raw disabled %}/> <span class="wf-form-right" style="position:relative; top:-1px;">{{context.get('submitText','')}}</span></label>
+	</div>
+	{% end %}
+</body>

@@ -1,0 +1,41 @@
+#sitecode|code|value
+|cvnamecode|DemoFormalName
+|cvallowproxyrequests|yes
+|cvallowproxyassignments|yes
+|dbhost|localhost
+|dbport|5432
+|dbusername|mps
+|dbpassword|mps
+|skin|default|
+|timezone|US/Eastern
+|sessionidletimeoutmilliseconds|600000
+|yformat|%Y
+|ymformat|%m/%Y
+|ymdformat|%m/%d/%Y
+|ymdhformat|%m/%d/%Y %H
+|ymdhmformat|%m/%d/%Y %H:%M
+|ymdhmsformat|%m/%d/%Y %H:%M:%S
+|pubmeddb|pubmed
+|pubmeduidretmax|20000
+|pubmedpubretmax|25
+|pubmedimportbooks|yes
+|pubmedmappingfile|/data/cvMetaData/pubmedmapping.txt
+|printedcvtemplate|printMain.html
+
+dev|auth|MPS
+dev|authpassreqd|no
+dev|dbname|mpsdev
+dev|ldapurl|ldaps://ldap.umich.edu:636/
+dev|ldappattern|uid=%s,ou=People,dc=umich,dc=edu
+dev|skin|atram
+dev|sessionidletimeoutmilliseconds|60000000
+
+cmich|auth|LDAP
+cmich|authpassreqd|yes
+cmich|dbname|cmich
+cmich|skin|cmich
+cmich|ldapurl|ldaps://centraldc01.central.cmich.local:636/
+cmich|ldappattern|cn=%s,cn=users,dc=central,dc=cmich,dc=local
+cmich|ldapsearchusername|mpldap
+cmich|ldapsearchpassword|4/&AB7CzA/T4
+cmich|ldapsearchattrlist|displayName

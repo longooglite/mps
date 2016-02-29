@@ -1,0 +1,15 @@
+{
+	"environment": "staging",
+	"listenport": 9201,
+	"dbhost": "localhost",
+	"dbport": 5432,
+	"dbname": "mpsauth2",
+	"dbusername": "mps",
+	"dbpassword": "mps",
+	"loggingconfig": "config/staging/MPSAuthSvc/alt2_logging.conf",
+	"wkhtmltopdfbinpath": "/usr/local/bin/wkhtmltopdf",
+    "pdftkbinpath":"/usr/bin/pdftk",
+	"skinfolderpath": "/usr/local/mps2",
+	"email": "off",
+	"emailto": ["greg.poth@mountainpasssolutions.com"]
+}

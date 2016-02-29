@@ -1,0 +1,8 @@
+# Site-specific overrides and settings only.
+#sitecode|code|value
+accept-umich|skin|default
+accept-umich|auth|MPS
+accept-umich|authpassreqd|yes
+accept-umich|dbname|accept-umich
+accept-umich|sessionidletimeoutmilliseconds|3600000
+accept-umich|facultyaffairsemail|greg.poth@mountainpasssolutions.com

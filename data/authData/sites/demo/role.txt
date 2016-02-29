@@ -1,0 +1,9 @@
+#   File of site-specific roles.
+#   Use the common 'common_roles.txt' file for non-site-specific roles.
+
+#site|application|code|descr
+demo|APPT|apptDeptUser|Department
+demo|APPT|apptFacultyAffairs|Faculty Affairs
+demo|APPT|apptAssitantDean|Assistant Dean
+demo|APPT|apptMedicalStaffServices|Medical Staff Services
+demo|APPT|apptProviderEnrollment|Provider Enrollment

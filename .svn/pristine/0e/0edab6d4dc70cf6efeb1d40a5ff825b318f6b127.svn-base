@@ -1,0 +1,5 @@
+	<div class="wf-details-form-btn-bar col-xs-12 ">
+		<button type="submit" class="wf-widget-form-btn btn btn-primary">Send</button>
+		{% include 'formChunk_cancelLink.html' %}
+	</div>
+</form>

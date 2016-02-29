@@ -1,0 +1,39 @@
+/* Login Page */
+body, html{position:relative; height:100%; width:100%; padding:0; margin:0;}
+#errormessage.show{display:block;}
+#logginform{
+    position: relative;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    width: 360px;
+    z-index:2;
+}
+.login-forgot-password{font-size:.9em;padding-top:5px;text-align:right;}
+#logginform input, #logginform select, #logginform button{
+    margin-top:20px;
+    font-size:1.4em;
+    line-height:2em;
+    text-align:center;
+    width:100%;
+    padding:0;
+    height: 43px;
+}
+#logginform select option{
+    font-size:1em;
+    line-height:1.4em;
+    text-align:center;
+    width:100%;
+    padding:0;
+    height:1.6em;
+}
+#logginform .btn-login{
+    border-color: #ffd34b; border-width:4px; background-color:transparent !important;
+    text-transform: uppercase; font-weight:bold;
+    padding:6px 0 6px 0;
+}
+#logginform .mps-login-cobrand{
+    color:#fff; font-size:1.4em; line-height:1.6em; color:#e7e7e7 !important; text-align:center; padding:0 50px 0 50px;
+}
+#logginform #loginbutton{ height:58px; }
+#logginform select, #logginform select option{ padding-left:10px; }

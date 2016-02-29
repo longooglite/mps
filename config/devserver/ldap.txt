@@ -1,0 +1,84 @@
+Google: openldap centos 6.6
+
+http://www.thegeekstuff.com/2015/01/openldap-linux/
+$ yum install -y openldap openldap-clients openldap-servers
+config file edits
+import basic structure
+
+http://dopensource.com/openldapforlinuxauth/
+pretty much the same instructions as above
+
+http://joshua14.homelinux.org/blog/?p=1853
+pretty much the same instructions as above
+additional info on adding users
+
+http://blog.kymera-it.com/2014/12/quick-openldap-setup-on-centos-66.html
+terse version
+
+http://www.openldap.org
+QuickStart Guide
+Administrator's Guide
+
+===============================================
+
+$ sudo yum install openldap openldap-clients openldap-servers
+
+Generate a root password:
+$ slappasswd
+New password: !Mps2013!
+Re-enter new password: !Mps2013!
+{SSHA}gsTufLXQCq9GLjGFCqtHlzifAcinR+sB
+$ 
+
+Edit /etc/openldap/slapd.d/cn=config/olcDatabase={2}bdb.ldif and change root DN as Password:
+$ sudo nano /etc/openldap/slapd.d/cn=config/olcDatabase={2}bdb.ldif
+olcSuffix: dc=mntnpass,dc=com
+olcRootDN: cn=mpsadmin,dc=mntnpass,dc=com
+olcRootPW: {SSHA}gsTufLXQCq9GLjGFCqtHlzifAcinR+sB
+
+Edit /etc/openldap/slapd.d/cn=config/olcDatabase{1}.monitor.ldif to fix the DN:
+$ sudo nano /etc/openldap/slapd.d/cn=config/olcDatabase={1}monitor.ldif
+olcAccess: {0}to *  by dn.base="gidNumber=0+uidNumber=0,cn=peercred,cn=externa
+ l,cn=auth" read  by dn.base="cn=mpsadmin,dc=mntnpass,dc=com" read  by * none
+
+Verify the configuration files (the warnings are OK)
+$ sudo slaptest -u
+55783e2e ldif_read_file: checksum error on "/etc/openldap/slapd.d/cn=config/olcDatabase={1}monitor.ldif"
+55783e2e ldif_read_file: checksum error on "/etc/openldap/slapd.d/cn=config/olcDatabase={2}bdb.ldif"
+config file testing succeeded
+$ 
+
+Start the LDAP server
+$ sudo service slapd start
+$ sudo chkconfig slapd on
+
+Verify LDAP searching
+$ ldapsearch -x -W -D "cn=mpsadmin,dc=mntnpass,dc=com" -b "dc=mntnpass,dc=com"
+or
+$ ldapsearch -x -b "dc=mntnpass,dc=com"
+# extended LDIF
+#
+# LDAPv3
+# base <dc=mntnpass,dc=com> with scope subtree
+# filter: (objectclass=*)
+# requesting: ALL
+#
+
+# search result
+search: 2
+result: 32 No such object
+
+# numResponses: 1
+$ 
+
+Load organizational structure:
+$ ldapadd -x -D "cn=mpsadmin,dc=mntnpass,dc=com" -W -f /home/mpsadmin/ldap/orgconfig.ldif
+
+Load people:
+$ ldapadd -x -c -D "cn=mpsadmin,dc=mntnpass,dc=com" -W -f /home/mpsadmin/ldap/personconfig.ldif
+
+Preference changes:
+ldapurl: ldap://ldap.mntnpass.com:389/
+ldappattern: uid=%s,ou=users,dc=mntnpass,dc=com
+ldapsearchusername: mpssearch
+ldapsearchpassword: search

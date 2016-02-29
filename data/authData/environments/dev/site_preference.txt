@@ -1,0 +1,54 @@
+# This file contains GLOBAL site preferences only.
+# All site-specific overrides are defined in site-specific files.
+#
+#sitecode|code|value
+|skin|default
+|timezone|US/Eastern
+|sessionidletimeoutmilliseconds|600000
+
+|auth|LDAP
+|authpassreqd|no
+|ldapurl|ldap://ldap.mntnpass.com:389/
+|ldappattern|uid=%s,ou=users,dc=mntnpass,dc=com
+|ldapsearchusername|mpssearch
+|ldapsearchpassword|search
+
+|dbhost|localhost
+|dbport|5432
+|dbusername|mps
+|dbpassword|mps
+# Site-specific files should also specify:
+# dbname
+
+|yformat|%Y
+|ymformat|%m/%Y
+|ymdformat|%m/%d/%Y
+|ymdhformat|%m/%d/%Y %I %p
+|ymdhmformat|%m/%d/%Y %I:%M %p
+|ymdhmsformat|%m/%d/%Y %I:%M:%S %p
+
+|cvnamecode|DemoFormalName
+|cvallowproxyrequests|yes
+|cvallowproxyassignments|yes
+|pubmeddb|pubmed
+|pubmeduidretmax|20000
+|pubmedpubretmax|25
+|pubmedimportbooks|yes
+|pubmedmappingfile|/data/cvMetaData/pubmedmapping.txt
+|printedcvtemplate|printMain.html
+
+|apptcandidaterole|apptCandidate
+|apptmaxaddresslines|5
+|apptmaxaddresssuffixlines|3
+|apptmaxchairs|2
+|apptmaxchairtitles|5
+|apptcandidateguidreqd|false
+
+|pcncreationmethod|auto
+|reporting|true
+
+|ofatext|OFA
+|departmentText|Department
+|solicitationduedays|7
+|facultyaffairsemail|eric.paul@mountainpasssolutions.com
+|reportpurgedays|90

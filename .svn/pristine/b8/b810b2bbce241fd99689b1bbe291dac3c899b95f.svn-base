@@ -1,0 +1,51 @@
+[Category]
+<h4>Bibliography / Publications - Peer Reviewed</h4>
+<p>This page reflects your peer-reviewed publications as pre-populated from Pub Med. The first time you log in and view this page, it will be empty. To import your publications please use the PubMed option within the Manage External Data menu.<p>
+<p>The content of this page can be sorted by clicking on any column title.</p>
+<hr>
+<p>To <strong>add</strong> an additional entry, click the “+ Add …” button in the upper right portion of the page.</p>
+<p>To <strong>edit</strong> an existing entry, click the blue text in the row you would like to edit.</p>
+<p>To <strong>delete</strong> an entry, click the X at the end of the row you would like to delete. Then confirm the deletion.</p>
+<p>To <strong>print</strong> this section of the CV, click the “Print this section” button in the upper right portion of the page or select “Print Section” from the Print menu found in the menu bar.</p>
+
+[PeerReviewedTitle]
+<p>Please enter article title.</p>
+<hr>
+<p>This item is required</p>
+
+[PeerReviewedPMID]
+<p>Please enter article PubMed ID.</p>
+
+[PeerReviewedAuthors]
+<p>Please enter article authors.</p>
+<hr>
+<p>This item is required</p>
+
+[PeerReviewedJournalTitle]
+<p>Please enter journal title.</p>
+<hr>
+<p>This item is required</p>
+
+[PeerReviewedJournalISO]
+<p>Please enter journal ISO abbreviation.</p>
+
+[PeerReviewedJournalVolume]
+<p>Please enter journal volume number.</p>
+
+[PeerReviewedJournalIssue]
+<p>Please enter the issue for your article.</p>
+
+[PeerReviewedPages]
+<p>Please enter the page(s) for your article.</p>
+
+[PeerReviewedPublishedDate]
+<p>Please enter article publish date.</p>
+<hr>
+<p>This item is required</p>
+
+[PeerReviewedCitationCount]
+<p>Please enter the citation count.</p>
+
+[PeerReviewedPublicationStatus]
+<p>Please select In Print or Submitted for publication.</p>
+<p>Once the article is published please change the status to in print.</p>

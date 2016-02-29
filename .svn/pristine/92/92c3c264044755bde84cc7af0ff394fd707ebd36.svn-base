@@ -1,0 +1,3 @@
+#code	descr	display_text	cols_offset	cols_label	repeating	repeating_table	required	wrap	filler	children
+
+PromoReferenceList	Promotion Reference List - Main Group	List of References Question Form	0	12	False	False	False	True	False	PromoReferenceList_Q1

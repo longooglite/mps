@@ -1,0 +1,153 @@
+http://www.codepool.biz/tech-frontier/mac/how-to-configure-and-install-nginx-on-mac-os-x.html
+http://nginx.org/en/docs/configure.html
+
+Visit http://www.pcre.org and download the latest version (8.35)
+Move downloaded pcre zip folder to ~/MPS/ngnix/pcre-8.35.tar.bz2
+Unzip with: tar xvzf pcre-8.35.tar.bz2
+
+Download ngnix-1.6.1.tar.gz to ~/MPS/ngnix/
+$ tar xvzf nginx-1.6.1.tar.gz
+$ cd nginx-1.6.1
+$ sudo ./configure --with-pcre=/Users/gpoth/MPS/nginx/pcre-8.35 --with-cc-opt="-Wno-deprecated-declarations"
+
+Configuration summary
+  + using PCRE library: /Users/gpoth/MPS/nginx/pcre-8.35
+  + OpenSSL library is not used
+  + md5: using system crypto library
+  + sha1: using system crypto library
+  + using system zlib library
+
+  nginx path prefix: "/usr/local/nginx"
+  nginx binary file: "/usr/local/nginx/sbin/nginx"
+  nginx configuration prefix: "/usr/local/nginx/conf"
+  nginx configuration file: "/usr/local/nginx/conf/nginx.conf"
+  nginx pid file: "/usr/local/nginx/logs/nginx.pid"
+  nginx error log file: "/usr/local/nginx/logs/error.log"
+  nginx http access log file: "/usr/local/nginx/logs/access.log"
+  nginx http client request body temporary files: "client_body_temp"
+  nginx http proxy temporary files: "proxy_temp"
+  nginx http fastcgi temporary files: "fastcgi_temp"
+  nginx http uwsgi temporary files: "uwsgi_temp"
+  nginx http scgi temporary files: "scgi_temp"
+
+PothMBP:nginx-1.6.1 gpoth$ 
+
+$ sudo make install
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+01/14/2016, local machine
+Upgraded to nginx 1.8.0 (same version as Online Tech servers), and pcre-8.38
+
+Downloaded 'nginx-1.8.0.tar.gz' from http://nginx.org/en/download.html
+Downloaded 'pcre-8.38.tar.bz2' from http://www.pcre.org
+
+Move downloaded pcre zip folder to ~/MPS/ngnix/pcre-8.38.tar.bz2
+Unzip with: tar xvzf pcre-8.38.tar.bz2
+
+Move ngnix-1.8.0.tar.gz to ~/MPS/ngnix/
+$ tar xvzf nginx-1.8.0.tar.gz
+$ cd nginx-1.8.0
+$ sudo ./configure --with-pcre=/Users/gpoth/MPS/nginx/pcre-8.38 --with-cc-opt="-Wno-deprecated-declarations"
+
+Configuration summary
+  + using PCRE library: /Users/gpoth/MPS/nginx/pcre-8.38
+  + OpenSSL library is not used
+  + md5: using system crypto library
+  + sha1: using system crypto library
+  + using system zlib library
+
+  nginx path prefix: "/usr/local/nginx"
+  nginx binary file: "/usr/local/nginx/sbin/nginx"
+  nginx configuration prefix: "/usr/local/nginx/conf"
+  nginx configuration file: "/usr/local/nginx/conf/nginx.conf"
+  nginx pid file: "/usr/local/nginx/logs/nginx.pid"
+  nginx error log file: "/usr/local/nginx/logs/error.log"
+  nginx http access log file: "/usr/local/nginx/logs/access.log"
+  nginx http client request body temporary files: "client_body_temp"
+  nginx http proxy temporary files: "proxy_temp"
+  nginx http fastcgi temporary files: "fastcgi_temp"
+  nginx http uwsgi temporary files: "uwsgi_temp"
+  nginx http scgi temporary files: "scgi_temp"
+
+MPSPoth:nginx-1.8.0 gpoth$ 
+$ sudo make install
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+01/14/2016, staging server
+Add Shibboleth support in nginx
+
+Mac OSX
+-------
+$ cd ~/MPS/nginx
+$ git clone https://github.com/nginx-shib/nginx-http-shibboleth.git
+$ cd nginx-1.8.0
+$ sudo ./configure --with-pcre=/Users/gpoth/MPS/nginx/pcre-8.38 --with-cc-opt="-Wno-deprecated-declarations" --add-module=/Users/gpoth/MPS/nginx/nginx-http-shibboleth
+$ sudo make install
+
+
+Staging Server
+--------------
+$ cd ~/
+$ mkdir nginx
+$ cd nginx
+$ wget http://nginx.org/download/nginx-1.8.0.tar.gz
+$ tar xvzf nginx-1.8.0.tar.gz
+$ sudo yum install git
+$ git clone https://github.com/nginx-shib/nginx-http-shibboleth.git
+$ wget https://sourceforge.net/projects/pcre/files/pcre/8.38/pcre-8.38.tar.gz
+$ tar xvzf pcre-8.38.tar.gz
+$ sudo yum install pcre-devel
+$ sudo yum install gcc-c++
+$ sudo yum install openssl-devel.x86_64
+$ cd nginx-1.8.0
+$ ./configure --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/var/run/nginx.pid --lock-path=/var/run/nginx.lock --http-client-body-temp-path=/var/cache/nginx/client_temp --http-proxy-temp-path=/var/cache/nginx/proxy_temp --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp --http-scgi-temp-path=/var/cache/nginx/scgi_temp --user=nginx --group=nginx --with-http_ssl_module --with-http_realip_module --with-http_addition_module --with-http_sub_module --with-http_dav_module --with-http_flv_module --with-http_mp4_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_random_index_module --with-http_secure_link_module --with-http_stub_status_module --with-http_auth_request_module --with-mail --with-mail_ssl_module --with-file-aio --with-ipv6 --with-http_spdy_module --with-cc-opt='-O2 -g -pipe -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic' --add-module=/home/mpsadmin/nginx/nginx-http-shibboleth --with-pcre=/home/mpsadmin/nginx/pcre-8.38
+$ sudo make install
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+01/25/2016, staging server
+Add 'More Headers' support in nginx
+
+Mac OSX
+-------
+# download latest (v0.29) from: https://github.com/openresty/headers-more-nginx-module/tags
+# move into ~/MPS/nginx and untar
+# resulting folder is: headers-more-nginx-module-0.29
+$ cd ~/MPS/nginx
+$ cd nginx-1.8.0
+$ sudo ./configure --with-pcre=/Users/gpoth/MPS/nginx/pcre-8.38 --with-cc-opt="-Wno-deprecated-declarations" --add-module=/Users/gpoth/MPS/nginx/nginx-http-shibboleth --add-module=/Users/gpoth/MPS/nginx/headers-more-nginx-module-0.29
+$ sudo make install
+
+
+Staging Server
+--------------
+$ cd ~/nginx
+$ wget https://github.com/openresty/headers-more-nginx-module/archive/v0.29.tar.gz
+$ tar -xvf v0.29.tar.gz
+$ cd nginx-1.8.0
+$ ./configure --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/var/run/nginx.pid --lock-path=/var/run/nginx.lock --http-client-body-temp-path=/var/cache/nginx/client_temp --http-proxy-temp-path=/var/cache/nginx/proxy_temp --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp --http-scgi-temp-path=/var/cache/nginx/scgi_temp --user=nginx --group=nginx --with-http_ssl_module --with-http_realip_module --with-http_addition_module --with-http_sub_module --with-http_dav_module --with-http_flv_module --with-http_mp4_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_random_index_module --with-http_secure_link_module --with-http_stub_status_module --with-http_auth_request_module --with-mail --with-mail_ssl_module --with-file-aio --with-ipv6 --with-http_spdy_module --with-cc-opt='-O2 -g -pipe -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic' --add-module=/home/mpsadmin/nginx/nginx-http-shibboleth --add-module=/home/mpsadmin/nginx/headers-more-nginx-module-0.29 --with-pcre=/home/mpsadmin/nginx/pcre-8.38
+$ sudo make install
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+02/02/2016, staging server
+Stop yum from automagically updating nginx since we are now building it ourselves
+
+$ sudo nano /etc/yum.repos.d/nginx.repo
+Change the enabled flag from 1 to 0
+The resulting file looks like this:
+
+[nginx]
+name=nginx repo
+baseurl=http://nginx.org/packages/centos/$releasever/$basearch/
+gpgcheck=0
+enabled=0
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+02/10/2016, prod1 server
+Applied these changes, prod1 now running the custom-built version of nginx
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

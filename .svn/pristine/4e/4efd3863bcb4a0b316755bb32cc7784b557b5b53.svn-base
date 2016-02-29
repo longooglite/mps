@@ -1,0 +1,34 @@
+Dev Database and URL Restructuring 07/09/2015
+
+The mpsdev database has been split into 2 databases: 'dev' and 'umms'.
+This allows us to separate the dev 'sandbox' from the U-M Medical School workflow,
+which is important because the Med School will eventually become a real customer.
+It also allows us to bring up new sites more efficiently.
+
+Below are step-by-step instructions to allowed continued development on your local machines.
+
+1) Edit /etc/hosts, making sure it contains these lines to access both the dev and umms databases:
+
+127.0.0.1	mps-car.com
+127.0.0.1	dev.mps-car.com
+127.0.0.1	umms.mps-car.com
+
+2) Reboot.
+
+3) svn up
+
+4) Rebuild your auth database. Your existing procedures for this still work. On Mac,
+simply execute the $CAR_HOME/misc/authdb.sh script. This procedure adds both a 'dev'
+site and a 'umms' site to to the auth database. The name of the database is still 'mpsauth'.
+
+5) Build your dev database, which is now called 'dev'.
+Execute the misc/devdb.sh script, or adapt as necessary for non-Mac environments.
+
+6) Build your umms database, which isnamed 'umms'.
+Execute the misc/ummsdb.sh script, or adapt as necessary for non-Mac environments.
+
+7) Access the dev sandbox with the usual URL:
+http://dev.mps-car.com:8000
+
+8) Access the umms workflow with the new URL:
+http://umms.mps-car.com:8000

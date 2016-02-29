@@ -1,0 +1,29 @@
+# [Copyright]
+# SmartPath v1.0
+# Copyright 2014-2015 Mountain Pass Solutions, Inc.
+# This unpublished material is proprietary to Mountain Pass Solutions, Inc.
+# [End Copyright]
+
+promo_bot_record_date = {
+	"code": "promo_bot_record_date",
+	"comment":"",
+	"descr": '''Record Date Submitted''',
+	"header": '''Record Date Submitted''',
+	"componentType": "Task",
+	"affordanceType":"Item",
+	"optional": False,
+	"enabled": True,
+	"accessPermissions": ["dept_task","ofa_task"],
+	"viewPermissions": ["dept_task","ofa_task"],
+	"blockers": [],
+	"containers": [],
+	"statusMsg": "",
+	"successMsg":"Record Date Submitted Complete",
+	"className": "Placeholder",
+	"config": {
+		"activityLog": {
+			"enabled": True,
+			"activityLogText": "Record Date Submitted",
+		},
+	},
+}

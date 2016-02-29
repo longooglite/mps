@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>{{context.get('windowTitle', '')}}</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+</head>
+
+{% set mode = context.get('mode', '') %}
+{% set isAdd = (mode != 'edit') %}
+{% set evaluator = context.get('evaluator', {}) %}
+{% set evaluatorId = evaluator.get('id', 0) %}
+
+{% set isMsg = True if len(context.get('errormessage','')) > 0 else False %}
+<body class="{{ 'cv-show-global-message' if isMsg else '' }} cv-proxy-page mps-admin-page">
+	<div class="container-fluid mps-body">
+		{% include pageHeader.html %}
+		<div class="body-content cv-body cv-body-no-menu">
+			<div class="page-header clearfix">
+				<div class="page-header-controls">
+					<button class="cvHelpButton btn btn-sm btn-default">
+						<span class="glyphicon glyphicon-question-sign"></span>Help...
+					</button>
+					<button class="btn btn-sm btn-primary saveEvaluatorBtn">
+						<span class="glyphicon glyphicon-floppy-disk"></span> <span>Save Changes...</span>
+					</button>
+				</div>
+				<h1>
+					Manage Internal Reviewers<br/>
+					<small>
+						<a href="/{{context.get('appUriPrefix','')}}/internalEvals" class="cv-head-bread">All Internal Reviewers</a><span class="cv-head-bread-sep">/</span>
+						<span class="cv-head-bread-leaf">{{ 'New Internal Reviewer' if isAdd else evaluator.get('descr','') }}</span>
+					</small>
+				</h1>
+			</div>
+
+			<form id="evaluatordetailform" class="form-horizontal">
+				{% include ajax-hidden-fields.html %}
+				<input type="hidden" name="mode" value="{{mode}}" />
+				{% if not isAdd %}
+					<input type="hidden" name="evaluatorId" value="{{evaluatorId}}" />
+				{% end %}
+
+				<div class="row">
+					<div class="col-md-8 cv-user-form">
+						<h3 class="section-header">
+							<span class="glyphicon glyphicon-edit"></span>
+							Internal Reviewer Settings:
+						</h3>
+
+						<div class="cv-callout cv-callout-info cv-callout-bordered clearfix mps-skin-border">
+							<h4>Internal Reviewer:</h4><br/>
+							<div class="clearfix form-row">
+								<label for="first_name" class="col-xs-2 control-label">* First Name:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="first_name" name="first_name" value="{{evaluator.get('first_name', '')}}" placeholder="First Name">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="last_name" class="col-xs-2 control-label">* Last Name:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="last_name" name="last_name" value="{{evaluator.get('last_name', '')}}" placeholder="Last Name">
+								</div>
+							</div>
+
+                            <div class="clearfix form-row">
+								<label for="email_address" class="col-xs-2 control-label">* Email Address:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="email_address" name="email_address" value="{{evaluator.get('email_address', '')}}"  placeholder="Email Address">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="active" class="col-xs-2 control-label">Active:</label>
+								<div class="col-xs-8">
+									{% set checked = '' %}
+									{% if evaluator.get('active',False) %}
+										{% set checked = 'checked' %}
+									{% end %}
+									<input type="checkbox" id="active" name="active" value="true" {{checked}}>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+<script type="text/javascript" src="/{{skin}}/js/wf.core.js"></script>
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	$('.saveEvaluatorBtn').on('click', function(event){
+		var $body = $('.cv-user-form');
+		var $form = $('#evaluatordetailform')
+		cvApp.ubiquitousPageRequest({
+			url: '/{{context.get('appUriPrefix','')}}/internalEvals/save',
+			data: JSON.stringify($form.serializeObject()),
+			success: function(data, textStatus, xhr){
+				wfApp._WF_commonErrorHandler($form, data, textStatus, xhr);
+			}
+		});
+	});
+
+	/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

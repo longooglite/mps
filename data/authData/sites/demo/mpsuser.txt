@@ -1,0 +1,26 @@
+#site|community|username|password|first name|last name|email|auth_override|active
+demo|default|mpsadmin|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|MPS|Administrator|greg.poth@mountainpasssolutions.com|MPS|true
+demo|default|mpsguru|f6b264a6fccbf2fc706f27aa39e192a284ef31fa57f05a9a7a8c03fc60ee6d58|MPS|Administrator|greg.poth@mountainpasssolutions.com|MPS|true
+demo|default|chris|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Chris|King|chris.king@mountainpasssolutions.com|MPS|true
+demo|default|eric|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Eric|Paul|eric.paul@mountainpasssolutions.com|MPS|true
+demo|default|greg|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Greg|Poth|greg.poth@mountainpasssolutions.com|MPS|true
+demo|default|josh|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Joshua|King|josh.king@mountainpasssolutions.com|MPS|true
+demo|default|buffy|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Buffy|Davis|buffy@mps-car.com|MPS|true
+demo|default|rider|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Chris|Rider|crider@scorchmark.com|MPS|true
+demo|default|dave|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|David|Morin|dave@morin.com|MPS|true
+demo|default|kchung|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Kevin|Chung|kchung@mps.edu|MPS|true
+demo|default|mgyetko|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Margaret|Gyetko|mgyetko@mps.edu|MPS|true
+demo|default|dkomorow|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Debra|Komorowski|dkomorow@mps.edu|MPS|true
+demo|default|kleahy|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Kim|Leahy|kleahy@mps.edu|MPS|true
+demo|default|darshe|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Darshe|Bloze|darshe@bloze.edu|MPS|true
+demo|default|maria|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Maria|Davis|maria@maria.edu|MPS|true
+demo|default|dean|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Dean|Martin|dean@mps.edu|MPS|true
+demo|default|renee|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Renee|Spaulding|reneespaulding@mps.edu|MPS|true
+demo|default|ellen|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Ellen|Kayfes|ellenkayfes@mps.edu|MPS|true
+
+demo|default|hilrk|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Ryan|Hill|hilrk@mps.edu|MPS|true
+demo|default|sulaz|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Angela|Sullivan|sulaz@mps.edu|MPS|true
+demo|default|robmk|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Marie|Robinson|robmk@mps.edu|MPS|true
+demo|default|ddd|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Maria|Davis|md@mps.edu|MPS|true
+
+# passwords for all users (except mpsguru) are 'nocv4u'

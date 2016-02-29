@@ -1,0 +1,175 @@
+<div class="evaluatoremail" style="font-size: 10pt; line-height: 14px; max-width: 650px; padding-top: 20px;">
+	{% set evaluator = context.get('evaluator',{}) %}
+	{% set evaluatorFullName = evaluator.get('full_name','') %}
+	{% set evaluatorDegree = evaluator.get('degree','') %}
+	{% set evaluatorInstitution = evaluator.get('institution','') %}
+	{% set evaluatorIsExternal = evaluator.get('evaluator_type_is_external',True) %}
+	{% set evaluatorIsInternal = not evaluatorIsExternal %}
+	{% set evaluatorIsArmsLength = evaluator.get('evaluator_type_is_arms_length',True) %}
+	{% set department = context.get('department',{}) %}
+	{% set departmentChairs = department.get('department_chair',[]) %}
+
+	{% set headerImageURL = department.get('header_image_url','') %}
+	{% if headerImageURL %}
+	<div>
+		<img style="height: 40px" src="{{headerImageURL}}"/>
+	</div>
+	{% end %}
+
+	<div style="padding: 10px 0 0 78px; font-style: italic; font-weight: bold; font-size: 8pt;">
+		{% for addressLine in context.get('department',{}).get('full_address_lines',[]) %}
+			{{ addressLine }}<br/>
+		{% end %}
+	</div>
+
+	<div style="padding: 20px 0 0 10px; clear: both;">
+		<div class="toaddress">
+			<p>
+				{{evaluatorFullName}}, {{evaluatorDegree}}<br/>
+				{% for titleLine in evaluator.get('titles',[]) %}
+					{{titleLine}}<br/>
+				{% end %}
+				{{evaluatorInstitution}}<br/>
+			</p>
+		</div>
+
+		{% set evaluatorSalutation = evaluator.get('salutation','') %}
+		{% set evaluatorLastName = evaluator.get('last_name','') %}
+		<div class="letterbody">
+			<p>{{evaluatorSalutation}} {{evaluatorLastName}},</p>
+			{% set person = context.get('person',{}) %}
+			{% set personLastName = person.get('last_name','') %}
+			{% set personFullName = person.get('full_name','') %}
+			{% set personDrSoAndSo = 'Dr. ' + personLastName %}
+			{% set personDrSoAndSoPossessive = 'Dr. ' + person.get('last_name_possessive','') %}
+			{% set title = context.get('title',{}) %}
+			{% set track = context.get('track',{}) %}
+			{% set department = context.get('department',{}) %}
+			{% set isClinicalInstructor = 'CLINICAL_INSTRUCTOR' in title.get('tags','').upper() %}
+			{% set isResearchInvestigator = 'RESEARCH_INVESTIGATOR' in title.get('tags','').upper() %}
+			{% set isResearch = 'RESEARCH' in track.get('tags','').upper() %}
+			{% set isClinical = 'CLINICAL' in track.get('tags','').upper() %}
+			{% set isInstructional = 'INSTRUCTIONAL' in track.get('tags','').upper() %}
+			{% set isLecturer = 'LECTURER' in track.get('tags','').upper() %}
+			{% set isFacTrack = isResearch or isClinical or isInstructional %}
+			{% set isEntryLevel = isLecturer or isClinicalInstructor or isResearchInvestigator %}
+			<p>
+				Dr. {{personFullName}} is being considered for promotion to {{title.get('descr','')}}
+				{% if isFacTrack %}({{track.get('descr','')}} Track){% end %} in the Department of {{department.get('full_descr','')}}
+				at the University of Michigan Medical School.
+			</p>
+			{% if isClinical %}
+				<p>The University of Michigan has a Clinical Track distinct from the Instructional (Tenure) Track, that is used for clinicians whose main activities are in patient care and teaching with participation in scholarship and administration.</p>
+			{% end %}
+
+			<div>
+				<p style="margin-bottom: 0; padding-bottom: 0;">We would appreciate your appraisal of {{personDrSoAndSo}}:</p>
+				<ul style="margin-top: 0;">
+					<li style="line-height: 14px;">How do you know {{personDrSoAndSo}} (in what capacity and for how long?)</li>
+					{% if (isInstructional or isResearch) and (not isEntryLevel) %}
+						<li style="line-height: 14px;">Has {{personDrSoAndSoPossessive}} scholarship impacted their field or resulted in seminal advance?</li>
+					{% end %}
+					{% if (isFacTrack) and (not isEntryLevel) %}
+						<li style="line-height: 14px;">How would you describe {{personDrSoAndSoPossessive}} scholarly and professional niche and how would you rank {{personDrSoAndSo}} in terms of peers?</li>
+					{% end %}
+					{% if (isClinical) and (not isEntryLevel) %}
+						<li style="line-height: 14px;">What is your assessment of {{personDrSoAndSoPossessive}} involvement in regional and/or national peer organizational service - and how would you characterize these activities on committees, as reviewer, editor, etc.?</li>
+						<li style="line-height: 14px;">How would you assess {{personDrSoAndSoPossessive}} skills and contributions as a clinician and an educator?</li>
+					{% end %}
+					{% if (isFacTrack) and (not isEntryLevel) %}
+						<li style="line-height: 14px;">We would appreciate your comments on interdisciplinary achievements, unusual commitment to diversity, and national/international volunteerism.</li>
+					{% end %}
+					{% if (isClinical) and (not isEntryLevel) %}
+						{% if evaluatorIsExternal %}
+							<li style="line-height: 14px;">Does your institution have a rank equivalent to the rank in which {{personDrSoAndSo}} is being promoted?  If so, would {{personDrSoAndSo}} be likely to achieve the equivalent rank at your institution?</li>
+						{% end %}
+						{% if evaluatorIsInternal %}
+							<li style="line-height: 14px;">Do you believe this individual would be likely to achieve equivalent rank at this time at other institutions similar to the University of Michigan that have a similar clinical or clinician-educator track?</li>
+						{% end %}
+					{% end %}
+					{% if (isInstructional or isResearch) and (not isEntryLevel) %}
+						{% if evaluatorIsExternal %}
+							<li style="line-height: 14px;">Would this individual be likely to achieve equivalent rank at your institution at this time?</li>
+						{% end %}
+						{% if evaluatorIsInternal %}
+							<li style="line-height: 14px;">Do you believe this individual would be likely to achieve equivalent rank at other institutions similar to the University of Michigan at this time? </li>
+						{% end %}
+					{% end %}
+					{% if (isLecturer or isClinical) and (isEntryLevel) %}
+						<li style="line-height: 14px;">How would you assess {{personDrSoAndSoPossessive}} skills and contributions as a clinician and an educator?</li>
+						<li style="line-height: 14px;">How would you assess {{personDrSoAndSoPossessive}} scholarly activities and potential for a successful academic career?</li>
+					{% end %}
+					{% if (isResearch) and (isEntryLevel) %}
+						<li style="line-height: 14px;">How would you assess {{personDrSoAndSoPossessive}} scholarly activities and potential for a successful academic career?</li>
+					{% end %}
+					{% if isEntryLevel %}
+						<li style="line-height: 14px;">Is this individual someone you would wish to have as a colleague in your department?</li>
+					{% end %}
+					<li style="line-height: 14px;">Any additional comments you would like to make would be welcome as well.</li>
+				</ul>
+			</div>
+
+			<div>
+				<p style="margin-bottom: 0; padding-bottom: 0;">To help you in this assessment, please click the Candidate Packet link below for access to the following items:</p>
+				<ul style="margin-top: 0;">
+					<li style="line-height: 14px;">Our Medical School's specific criteria for appointment to the {{title.get('descr','')}} rank.</li>
+					{% if isFacTrack %}
+						<li style="line-height: 14px;">Selected papers selected by {{personDrSoAndSo}}. </li>
+						<li style="line-height: 14px;">Highlights by the author on those selected papers (bibliographic notes) if applicable.</li>
+					{% end %}
+					<li style="line-height: 14px;">The curriculum vitae of {{personDrSoAndSo}}.</li>
+				</ul>
+			</div>
+
+			<p>
+				We request that you return your review to us by <span class="wf-dyna-date">{{evaluator.get('emailed_due_date','')}}</span>.
+				To facilitate the process, you may return your assessment by uploading your letter in PDF format (on
+				your institution's letterhead and with signature) by clicking on the Upload Letter link below, or by mailing your
+				letter to my attention at the address on the letterhead above. If it is not
+				possible for you to respond in this time frame, please let us know what would work for you, as we greatly value
+				your assessment of {{personDrSoAndSo}}.
+			</p>
+			{% if evaluatorIsArmsLength %}
+				<p>
+					We recognize your many commitments and appreciate your assistance with this review. Unbiased external peer evaluation guarantees the excellence that society relies upon in academic medicine.
+					Please let me know if you are unable to provide this letter so we can contact another colleague to ensure we have the appropriate number of letters for {{personDrSoAndSoPossessive}} promotion. We are required to note in the promotion record if you can not/did not respond.
+				</p>
+			{% end %}
+
+			{% set contactInfo = context.get('contact_info',{}) %}
+			{% set contactName = contactInfo.get('full_name','') %}
+			{% set contactEmail = contactInfo.get('email','') %}
+			<p>
+				If you have any questions or concerns, please contact {{contactName}} at {{contactEmail}}.
+			</p>
+
+			<p><a href="{{context.get('packet_url','')}}" target="_blank">Click Here to download Candidate Packet</a></p>
+			<p><a href="{{context.get('upload_url','')}}" target="_blank">Click Here to Upload Letter</a></p>
+			<p>Thank you for your time and effort.</p>
+			<p>Sincerely,</p>
+
+			<div class="letterbody">
+				{% for chairDict in departmentChairs %}
+					{% set sigImageURL = chairDict.get('chair_signature_url','') %}
+					{% if sigImageURL %}
+						<div>
+							<img style="height: 40px" src="{{sigImageURL}}"/>
+						</div>
+					{% end %}
+					<p>
+						{{chairDict.get('chair_with_degree','')}}<br/>
+						{% for chairTitle in chairDict.get('chair_titles_list',[]) %}
+							{{chairTitle}}<br/>
+						{% end %}
+					</p>
+				{% end %}
+			</div>
+
+			<div>
+				<p style='font-size:smaller;font-style:italic'>
+					Questions sometimes arise about the confidentiality of review letters, and we do want to advise you that your letter will be reviewed by senior faculty at the University of Michigan. As a public institution, legal considerations limit our ability to assure confidentiality, but it is our practice not to release review letters unless required to do so by law. The candidate has signed a document authorizing the University of Michigan to inquire about their qualifications for appointment and releasing from liability any person responding to such an inquiry. A copy of the release is on file at the University of Michigan and will be provided to you if requested.
+				</p>
+			</div>
+		</div>
+	</div>
+</div>

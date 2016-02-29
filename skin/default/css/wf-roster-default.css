@@ -1,0 +1,85 @@
+/*
+*   Roster specific CSS
+*/
+
+.wf-roster-indent{}
+.wf-roster-row-indent{display:none;}
+
+/*
+* Sub-rows for Roster with fixed height renderings...
+*/
+.wf-rosterGrid{padding-top:10px !important; position:relative;}
+.wf-rosterGrid .wf-data-table tbody tr.wf-seq-subrow td{padding-top:0 !important; margin-top:-3px;}
+.wf-rosterGrid .wf-data-table tbody tr.wf-seq-subrow td{border-top-width:0 !important;}
+
+.wf-rosterGrid td .wf_roster_noSubs,
+.wf-rosterGrid td .wf_roster_fixedSubRowField,
+.wf-rosterGrid td .wf_roster_fixedSubRowField_borderless{
+    padding:4px 8px 6px 8px;
+}
+.wf-rosterGrid td .wf_roster_fixedSubRowField,
+.wf-rosterGrid td .wf_roster_fixedSubRowField_borderless{
+    /* height:3.3em; BUGBUG: Because of the way we nest Divs, we must lock all heights... */
+    overflow-y: hidden;
+    margin-bottom: 0px;
+    border-bottom:solid 0px #ddd;
+}
+.wf-rosterGrid td .wf_roster_fixedSubRowField_borderless{
+    border-bottom:solid 0px #ddd !important;
+}
+.wf-rosterGrid td .evenly{
+    background-color:#f5f5f5 !important;
+    border-top:solid 1px #ddd !important;
+}
+.wf-rosterGrid td .subRow{
+    background-color: #f5f5f5;
+    border-top:solid 0px #ddd !important;
+}
+.wf-rosterGrid tr td:first-child .subRow{
+    padding-left:25px;
+}
+
+.wf-rosterGrid td .wf_roster_nowrap{white-space:nowrap;}
+
+.wf-rosterGrid .wf-data-table tbody tr td{
+    padding:0px !important;
+    margin:0px !important;
+}
+
+/*
+*   Pseudo-Reporting #s Table (summary above Rsoter)
+*/
+#wf-rooster-grid_info{clear:left !important; padding-top:0px !important;}
+#wf-pseudo-reporting #wf-rooster-grid_info{float:none;}
+#wf-pseudo-reporting{margin:0 0 15px 0; display:block;}
+#wf-roster-stats{border-color:#ccc !important; clear:left !important;}
+#wf-pseudo-reporting{ clear:none !important; display:inline-block; float:left; padding-top:9px; margin-left:10%;}
+#wf-stats-tr{white-space:nowrap; text-align:center;}
+#wf-roster-stat-toggler{}
+#wf-roster-stats th{vertical-align:bottom; font-weight:normal;}
+#wf-roster-stats th, #wf-roster-stats td{ padding:2px 6px !important; text-align:right;}
+#wf-roster-stats tbody td{border:solid 0px #ccc;}
+#wf-roster-stats tbody .wf-dnh{border-width:0px !important;}
+#wf-roster-stats .wf-fcc{width:10px; font-weight:bold;}
+.wf-stats-open .wf-hm{border:solid 0px #ccc;}
+
+/*
+*  Fixed Header Inputs & Selects
+*/
+
+/* CSS over-writes for Multiple Select Widget */
+.ms-parent{min-width:100px !important;}
+.ms-parent .ms-drop{width:auto !important; z-index:1 !important;}
+.ms-parent .ms-drop ul{width:auto !important; padding-right:25px !important;}
+.ms-parent .ms-drop ul li label{display: block; white-space:nowrap !important;}
+.ms-parent .ms-drop ul li label input{margin-top:0 !important;}
+.ms-parent .ms-search input{font-weight:normal !important;}
+.wf-data-table thead tr th .wf-hf-input{width:100%; border-radius:4px; border:solid 1px #aaa; padding:2px;}
+.wf-data-table thead tr th{padding-left:3px;}
+.wf-data-table thead tr th .cancel_search{float:right; position:relative; right:4px; top:4px; color:#ccc; font-size:18px;}
+.wf-rosterGrid .wf-data-table tbody tr td{padding:3px 5px !important;}
+.ms-drop .multiple{margin-left:10px !important;}
+
+/* ALT UX Roster Version requires this */
+.fixedHeader-floating {z-index:2 !important;}
+.fixedHeader-floating thead th .wf-hf-wrap{display:none !important;}

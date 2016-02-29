@@ -1,0 +1,34 @@
+[Category]
+<h4>Editorial Positions - Study Sections</h4>
+<p>This page displays information and dates about your service on study sections.<p>
+<p>The content of this page can be sorted by clicking on any column title.</p>
+<hr>
+<p>To <strong>add</strong> an additional entry, click the “+ Add …” button in the upper right portion of the page.</p>
+<p>To <strong>edit</strong> an existing entry, click the blue text in the row you would like to edit.</p>
+<p>To <strong>delete</strong> an entry, click the X at the end of the row you would like to delete. Then confirm the deletion.</p>
+<p>To <strong>print</strong> this section of the CV, click the “Print this section” button in the upper right portion of the page or select “Print Section” from the Print menu found in the menu bar.</p>
+
+
+[StudySectionsRegion]
+<p>Please select a Region for this study section.</p>
+<hr>
+<p>This item is required</p>
+
+[StudySectionsDescription]
+<p>Please enter a description for this study section.</p>
+<hr>
+<p>This item is required</p>
+
+[StudySectionsAdHoc]
+<p>Please check this box if your participation was Ad Hoc.</p>
+
+[StudySectionsStart]
+<p>Please enter the date when you started working with this study section.</p>
+<hr>
+<p>This item is required</p>
+<p>Hover over the field to see supported date formats</p>
+
+[StudySectionsEnd]
+<p>Please enter the date when you completed working with this study section.</p>
+<hr>
+<p>Hover over the field to see supported date formats</p>

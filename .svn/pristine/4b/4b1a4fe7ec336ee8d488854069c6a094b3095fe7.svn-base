@@ -1,0 +1,49 @@
+
+#wf-workflow-status{
+    border-bottom:solid 1px #ccc;
+    background-color:#f9f9f9;
+    padding:10px 10px 0 10px;
+    border-radius:0px;
+    margin-top:-11px;
+    margin-left:0px;
+}
+.wf-workflow-status-open{height:70px;}
+.wf-workflow-status-closed{height:45px;}
+.wf-workflow-status-closed .wf-status-global-links{display:none;}
+
+#wf-workflow-status h3{margin-top:0; margin-bottom:0px;}
+#wf-workflow-status h4{margin-top:0; margin-bottom:0px; float:right; color:#666;}
+#wf-workflow-status h4 a.toggler{ margin-left:5px; font-weight:normal;}
+#wf-workflow-status h4 a.toggler .glyphicon{color:#ccc !important; font-size:.8em; padding:2px; border:solid 1px #f5f5f5; border-radius:3px;}
+#wf-workflow-status h4 a.toggler:hover .glyphicon{color:#999 !important; border:solid 1px #ccc; border-radius:3px;}
+#wf-workflow-status .sub-status{margin-right:15px;}
+.wf-status-global-links{margin-top:7px; text-align:left; clear:both;}
+.wf-status-global-links a{margin-right: 15px;}
+.wf-status-global-links a .glyphicon{color:#aaa; margin-right:4px;}
+.wf-status-global-links .wf-status-start-date{float:right; margin:-5px 30px 0 0; position:relative;}
+.wf-status-global-links .wf-status-start-date .wf-start-date-link{margin-right:0px;}
+.wf-start-date-form{}
+.wf-start-date-form #start_date{}
+.wf-start-date-form{width:250px;}
+.wf-start-date-form .mps-date-picker-wrapper{position:relative; top:-5px; left:-10px;}
+.wf-start-date-form .wf-start-date-save, .wf-start-date-form .wf-start-date-save .glyphicon{color:#226baa;}
+.wf-start-date-form .wf-start-enter-controls{float:right;}
+.wf-start-date-form .wf-start-date-submit,
+.wf-start-date-form .wf-start-date-link{position:relative; color:#428bca;}
+.wf-status-global-links .wf-start-date .wf-start-date-form .wf-start-date-link{margin-top:0;}
+.wf-status-start-date .wf-startdate-warn{color:red; font-weight:bold;}
+
+/* Newer MPS Redux-effected WF App UX classes */
+.mps-header-msg{
+    position:absolute; top:0; left:0; width:100%; padding:40px; background-color:#ffd34b;
+    text-align:center; font-size:1.6em; z-index:3;
+}
+.mps-header-text{display:block;}
+.mps-header-btn{
+    margin-top:20px; line-height:1.6em; padding-left:30px; padding-right:30px; background-color:#ffd34b;
+    border-radius:6px; border: solid 1px #666;
+}
+
+/* One-off PCN Create Min-Width */
+.create_position_ux{ min-width:740px; }
+#created_position_ux{ min-width:690px; }

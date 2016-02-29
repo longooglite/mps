@@ -1,0 +1,11 @@
+# File format is pipe delimited
+# deptcode - unique identifier for department - required
+# chair_with_degree - name with degree(s) of department chair as it will appear on emails - required
+# chair_titles - pipe delimited listing of titles for department chair - required
+# chair_signature - name of image to be displayed on email correspondance
+# seq - 0 by default. If more than one chair, the order that chairs will appear on email correspondence - required
+
+#deptcode|chair_with_degree|chair_titles|chair_signature|seq
+230001|"Albert J. Jones, Ph.D., M.D., FRCA"|"Elmer J. Fudd Professor and Chair"||0
+230002|"Robert J. Jones, Ph.D., M.D., FRCA"|"Elmer J. Fudd Professor and Chair"||0
+230003|"Samuel J. Jones, Ph.D., M.D., FRCA"|"Elmer J. Fudd Professor and Chair"||0

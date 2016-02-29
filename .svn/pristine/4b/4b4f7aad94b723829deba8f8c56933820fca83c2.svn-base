@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>SmartPath&trade;</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+	<link rel="stylesheet" type="text/css" href="/{{context.get('skin', 'default')}}/css/wf-main.css"/>
+</head>
+{% set evaluateeFullName = context.get('evaluatee',{}).get('full_name', 'candidate') %}
+<body class="wf-eval-upload clearfix">
+<style>
+.cvApplications,
+.mpsheader-top-right{
+	display:none !important;
+}
+
+.wf-visitor-content{padding:10px 20px;}
+.wf-eval-upload	.page-header{height:55px;}
+.wf-eval-upload	.page-header h1{display:inline-block; float:left; margin-right:20px;}
+</style>
+	<div class="container-fluid mps-body clearfix">
+		{% include pageHeader.html %}
+		<div class="page-header clearfix">
+			<h1>Upload Academic Evaluation</h1>
+		</div>
+		<small class="wf-candidate-info clearfix">
+			Proposed {{context.get('appointment_type', '[Appointment]')}}:<br/>
+			<p class="first">{{ evaluateeFullName }}</p>
+			<p>{{context.get('title_descr','[Appointment Title]')}}</p>
+			<p>{{context.get('department_full_descr','[Department]')}}</p>
+		</small>
+
+		<!-- Initial Upload Form View -->
+		<div class="wf-visitor-content clearfix" id="wf-upload-form">
+			<p>{{ context.get('salutation') }} {{ context.get('last_name','') }},</p>
+			<p class="zheavy">Thank you for your willingness to provide an evaluation.</p>
+			<p><a href="{{context.get('packet_url','#')}}" target="_blank">Click here to open the solicitation packet for {{ evaluateeFullName }}</a>.
+			<p>Please ensure that your evaluation letter:
+				<ul>
+				<li>Is on your institution's letterhead</li>
+				<li>Includes your signature</li>
+				<li>Is a PDF file</li>
+				</ul>
+			</p>
+			<p>When your evaluation is complete, use the Browse button to select the PDF on your computer to upload:</p>
+			<form action="{{context.get('upload_url','')}}" method="POST" enctype="multipart/form-data" target="wf_upload_target">
+				<input type="hidden" value="{{context.get('site','')}}" name="site">
+				<input type="hidden" value="{{context.get('appCode','')}}" name="appCode">
+				<input type="hidden" value="{{context.get('_xsrf','')}}" name="_xsrf">
+
+				<div class="form-row wf-upload-inputs" style="display: block;">
+					<div class="input-group col-xs-5 pull-right wf-upload-buttons starthidden">
+						<input type="submit" name="importFilepath" value="Uploading..." disabled="disabled" class="btn btn-default starthidden">
+						<a href="#" class="wf-upload-cancel ">Cancel</a>
+					</div>
+					<div class="input-group col-xs-7">
+						<span class="input-group-btn">
+							<span class="btn btn-primary btn-file">
+							Browse...
+							<input type="file" name="file_data" id="file_data">
+							</span>
+						</span>
+						<input type="text" data-for="up" readonly="" class="form-control cv-import-label">
+					</div>
+				</div>
+
+			</form>
+		</div>
+
+
+		<!-- POST Error View -->
+		<div class="wf-visitor-content clearfix starthidden" id="wf-error-form">
+			<div id="wf-upload-error-text" class="mt15 mb15"></div>
+			We're sorry, but something has gone wrong.  Please refresh this page and try again.  If that does not resolve the issue, please contact us at [help/support email or phone #?].
+		</div>
+
+
+
+		<!-- Thank You Page View -->
+		<div class="wf-visitor-content clearfix starthidden" id="wf-thankyou-form">
+			<p class="alert alert-success">Thank you very much, your evaluation for {{ evaluateeFullName }} - <span id="wf-upload-filename"></span> - was successfully uploaded.</p>
+
+			<p>
+				<a href="#" onclick="window.close();">Click here to close this window.</a>
+			</p>
+		</div>
+	</div>
+<div id="wf-modal-backdrop" class="modal-backdrop fade in starthidden"></div>
+<iframe id="wf_upload_target" name="wf_upload_target" method="post" src="/atram/images/icon_header.png" style="width:0px;height:0px;border:solid 0px blue;"></iframe>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+<script type="text/javascript" src="/{{skin}}/js/wf.page.visitorUpload.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+$(function() {
+	$('.wf-candidate-info').outerHeight($('#wf-upload-form').outerHeight());
+	// $('body').css('background-color', '#fff !important');
+});
+/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

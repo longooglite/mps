@@ -1,0 +1,41 @@
+<div id="dynamicContent">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">{{context.get('modalTitle','Delete Site Preference')}}</h4>
+			</div>
+			<div class="modal-body">
+				<div class="col-xs-offset-1 col-xs-11">
+					<span id="modalmessage" class="adminerrormessage"></span>
+				</div>
+				<form id="prefdetailform" class="form-horizontal" role="form">
+					{% include ajax-hidden-fields.html %}
+					<input type="hidden" name="mode" value="{{context.get('mode','')}}" />
+					<input type="hidden" name="id" value="{{context.get('prefDict',{}).get('id','0')}}" />
+
+					<div class="form-group">
+						<label for="inputprefix" class="col-xs-2 control-label">Prefix</label>
+						<div class="col-xs-6">
+							<input type="text" class="form-control" id="inputprefix" name="site_code" value="{{context.get('prefDict',{}).get('site_code','')}}" disabled>
+						</div>
+						<div class="clear"></div>
+						<label for="inputcode" class="col-xs-2 control-label">Code</label>
+						<div class="col-xs-6">
+							<input type="text" class="form-control" id="inputcode" name="code" value="{{context.get('prefDict',{}).get('code','')}}" disabled>
+						</div>
+						<div class="clear"></div>
+						<label for="inputvalue" class="col-xs-2 control-label">Value</label>
+						<div class="col-xs-6">
+							<input type="text" class="form-control" id="inputvalue" name="value" value="{{context.get('prefDict',{}).get('value','')}}" disabled>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</form>
+				<div class="modal-footer mpscentertext">
+					<button class="btn btn-default" id="deletePrefBtn">Delete</button>
+					<button class="btn-link" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

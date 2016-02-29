@@ -1,0 +1,321 @@
+{% import MPSAppt.services.uberService as uberSvc %}
+{% set uberContainer = context.get('uberContainer',{}) %}
+{% set code = uberContainer.get('code', '') %}
+{% set showCodes = uberContainer.get('show_codes', '') %}
+{% set hideCodes = uberContainer.get('hide_codes', '') %}
+
+{% set displayText = uberContainer.get('display_text','') %}
+{% set colsOffset = uberContainer.get('cols_offset',0) %}
+{% set colsLabel = uberContainer.get('cols_label',2) %}
+{% set colsPrompt = uberContainer.get('cols_prompt',8) %}
+
+{% set offsetClass = "col-xs-offset-" + str(colsOffset) if colsOffset else '' %}
+{% set labelClass = "col-xs-" + str(colsLabel) if colsLabel else '' %}
+{% set promptClass = "col-xs-" + str(colsPrompt) if colsPrompt else '' %}
+{% set twoColumnOffsetClass = "col-xs-offset-" + str(colsLabel + colsOffset) if colsLabel + colsOffset else '' %}
+
+{% set containerType = uberContainer.get('type','') %}
+{% set isRepeating = uberContainer.get('repeating', False) %}
+{% set isTable = uberContainer.get('repeating_table', False) %}
+{% set parent = uberContainer.get('parent','') %}
+{% set isHiddenObject = uberContainer.get('is_hidden', False) %}
+{% set starthidden = 'starthidden' if isHiddenObject else '' %}
+{% set wrapperClasses = 'cv-panel-body quest_wrap' if uberContainer.get('wrap', False) else '' %}
+
+{% if containerType == 'group' %}
+	{% if not uberContainer.get('no_display', False) %}
+		{% if isTable %}
+			<div class="{{wrapperClasses}} uberForm_{{code}} {{starthidden}}">
+				<div>
+					<h4 class="Repeating-Form-Title {{offsetClass}} {{labelClass}}" style="margin-top:20px; padding-top:20px; border-top:solid 1px #ccc;">{% raw displayText %}</h4>
+					<div class="{{offsetClass}} {{labelClass}}">
+						<table class="Repeating-Form-Table table table-condensed" width="100%" data-form="{{uberContainer.get('managesGroupCode','')}}" data-table="{{uberContainer.get('code','')}}">
+							<thead>
+							<tr>
+								<th class="ignore-me">&nbsp;</th>
+								{% for element in uberContainer.get('elements','') %}
+									<th data-code="{{element.get('code','')}}">{{element.get('header_text', '')}}</th>
+								{% end %}
+							</tr>
+							</thead>
+							<tbody>
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		{% elif isRepeating %}
+			{% set responseCount = uberContainer.get('response_count', 0) %}
+			<div class="Repeating-Form-Wrapper {{'Tabled-Form-Wrapper' if len(uberContainer.get('managedByCode','')) > 0 else ''}} {{wrapperClasses}} uberForm_{{code}} {{starthidden}}" data-form="{{uberContainer.get('code','')}}" data-table="{{uberContainer.get('managedByCode','')}}">
+				{% for idx in range(0,responseCount) %}
+					<div class="Repeating-Form {{offsetClass}} {{labelClass}}" data-prefix="{% raw displayText %}" data-separator="_" data-summary-row="someRowID" data-flrr-groupactionsdenied="unset">
+						<h4 class="Repeating-Form-Title">{% raw displayText %} #<span class="Repeating-Form-Number">{{idx+1}}</span></h4>
+
+						{% for element in uberContainer.get('elements','') %}
+							{% set context['idx'] = idx %}
+							{% set context['uberContainer'] = element %}
+							{% module Template("uberContainer.html", context=context, skin=context['skin']) %}
+						{% end %}
+					</div>
+				{% end %}
+			</div>
+		{% else %}
+			{% set isFiller = uberContainer.get('filler','') %}
+			{% if isFiller %}
+				<div class="form-row {{offsetClass}}">
+				    {% raw displayText %}
+				</div>
+			{% else %}
+				<div class="uberForm_{{code}} {{wrapperClasses}} {{starthidden}}">
+					{% if displayText %}
+						<div class="form-row {{offsetClass}} {{labelClass}} clearfix">{% raw displayText %}</div>
+					{% end %}
+
+					{% for element in uberContainer.get('elements','') %}
+						{% set context['idx'] = 0 %}
+						{% set context['uberContainer'] = element %}
+						{% module Template("uberContainer.html", context=context, skin=context['skin']) %}
+					{% end %}
+				</div>
+			{% end %}
+		{% end %}
+	{% end %}
+{% end %}
+
+{% if containerType == 'question' %}
+	{% set idx = context.get('idx', 0) %}
+
+	{% set uberResponse = {} %}
+	{% set responseList = uberContainer.get('responseList',[]) %}
+	{% if idx <= (len(responseList) - 1) %}
+		{% set uberResponse = responseList[idx] %}
+	{% end %}
+
+	{% set response = uberResponse.get('response','') %}
+	{% set optional = '<span class="wf-qa-optional">Optional</span>' if not uberContainer.get('required', False) else '' %}
+	{% set disabled = '' %}
+	{% if context.get('disabled', True) %}
+		{% set disabled = 'disabled="disabled"' %}
+	{% end %}
+
+	{% set fieldIdentifier = code %}
+	{% if isRepeating %}
+		{% set fieldIdentifier = "%s_%i" % (code, idx+1) %}
+		{% set starthidden = '' %}
+		{% if (type(isHiddenObject) == type([])) and (idx <= (len(isHiddenObject) - 1))  %}
+			{% set starthidden = 'starthidden' if isHiddenObject[idx] else '' %}
+		{% end %}
+	{% end %}
+
+	{% set dataType = uberContainer.get('data_type','').upper() %}
+	{% if dataType == uberSvc.kQuestionTypeText %}
+		<div class="form-row {{wrapperClasses}} clearfix uberForm_{{code}} {{starthidden}}">
+			<label class="{{offsetClass}} {{labelClass}} text-right" for="{{fieldIdentifier}}">{{displayText}}</label>
+			<div class="{{promptClass}} wf-form-right clearfix">
+				{% raw optional %}
+				<input class="UberText form-control" type="text" id="{{fieldIdentifier}}" name="{{fieldIdentifier}}" value="{{response}}" data-code="{{code}}" data-show-codes="{{showCodes}}" data-hide-codes="{{hideCodes}}" {% raw disabled %} />
+			</div>
+		</div>
+
+	{% elif dataType == uberSvc.kQuestionTypeTextArea %}
+		<div class="form-row {{wrapperClasses}} clearfix uberForm_{{code}} {{starthidden}}">
+			<label class="{{offsetClass}} {{labelClass}} text-right" for="{{fieldIdentifier}}">{{displayText}}</label>
+			<div class="{{promptClass}} wf-form-right clearfix">
+				{% raw optional %}
+				<textarea class="UberText form-control" id="{{fieldIdentifier}}" name="{{fieldIdentifier}}" rows="{{uberContainer.get('data_type_attributes','3')}}" data-show-codes="{{showCodes}}" data-hide-codes="{{hideCodes}}" data-code="{{code}}" {% raw disabled %}>{{response}}</textarea>
+			</div>
+		</div>
+
+	{% elif dataType == uberSvc.kQuestionTypeRepeatingText %}
+		<div class="form-row {{wrapperClasses}} clearfix uberForm_{{code}} {{starthidden}}">
+			<label class="{{offsetClass}} {{labelClass}} text-right" for="{{fieldIdentifier}}">{{displayText}}</label>
+            <div class="{{promptClass}} wf-form-right cvRowRepeating_Text clearfix" data-fieldname="{{fieldIdentifier}}">
+				{% raw optional %}
+				{% if response %}
+					{% for each in response %}
+						<div class="Repeating_Text clearfix">
+							<input class="UberText form-control" type="text" id="{{fieldIdentifier}}" name="{{fieldIdentifier}}" value="{{each}}" data-show-codes="{{showCodes}}" data-hide-codes="{{hideCodes}}" data-code="{{code}}" {% raw disabled %}>
+		                    <div class="cv-repeating-controls pull-right"> </div>
+						</div>
+					{% end %}
+				{% else %}
+					<div class="Repeating_Text clearfix">
+						<input class="UberText form-control" type="text" id="{{fieldIdentifier}}" name="{{fieldIdentifier}}" value="" data-show-codes="{{showCodes}}" data-hide-codes="{{hideCodes}}" data-code="{{code}}" {% raw disabled %}>
+	                    <div class="cv-repeating-controls pull-right"> </div>
+					</div>
+				{% end %}
+            </div>
+		</div>
+
+	{% elif dataType == uberSvc.kQuestionTypeRadio %}
+		{% set isStack = uberContainer.get('isStack',False) %}
+		{% set isReverse = uberContainer.get('isReverse',False) %}
+		{% if isStack %}
+			<div class="form-row {{wrapperClasses}} clearfix uberForm_{{code}} {{starthidden}}">
+				<label class="{{offsetClass}} {{labelClass}} text-right">{{displayText}}</label>
+				{% set selectedOptionCode = response %}
+				<div class="{{promptClass}} wf-form-right clearfix">
+					{% raw optional %}
+					{% if uberContainer.get('options', []) %}
+						{% set option = uberContainer.get('options', [])[0] %}
+						{% set optionCode = option.get('code','') %}
+						{% set checked = 'checked' if optionCode == selectedOptionCode else '' %}
+						{% set showCodes = option.get('show_codes', '') %}
+						{% set hideCodes = option.get('hide_codes', '') %}
+						{% set forMeId = fieldIdentifier + "_" + optionCode  %}
+						<label for="{{forMeId}}"><input type="radio" class="UberRadio" name="{{fieldIdentifier}}" value="{{optionCode}}" id="{{forMeId}}" {{checked}} data-show-codes="{{showCodes}}" data-hide-codes="{{hideCodes}}" data-code="{{code}}" >{{ option.get('display_text','') }}</label>
+					{% end %}
+				</div>
+				{% for option in uberContainer.get('options', [])[1:] %}
+					<div class="{{twoColumnOffsetClass}} {{promptClass}} wf-form-right clearfix">
+						{% if uberContainer.get('options', []) %}
+							{% set optionCode = option.get('code','') %}
+							{% set checked = 'checked' if optionCode == selectedOptionCode else '' %}
+							{% set showCodes = option.get('show_codes', '') %}
+							{% set hideCodes = option.get('hide_codes', '') %}
+							{% set forMeId = fieldIdentifier + "_" + optionCode  %}
+							<label for="{{forMeId}}"><input type="radio" class="UberRadio" name="{{fieldIdentifier}}" value="{{optionCode}}" id="{{forMeId}}" {{checked}} data-show-codes="{{showCodes}}" data-hide-codes="{{hideCodes}}" data-code="{{code}}" >{{ option.get('display_text','') }}</label>
+						{% end %}
+					</div>
+				{% end %}
+			</div>
+        {% elif isReverse %}
+			<div class="form-row {{wrapperClasses}} clearfix uberForm_{{code}} {{starthidden}}">
+				{% set selectedOptionCode = response %}
+				<div class="{{promptClass}} wf-form-right text-right clearfix">
+					{% raw optional %}
+					{% for option in uberContainer.get('options', []) %}
+						{% set optionCode = option.get('code','') %}
+						{% set checked = 'checked' if optionCode == selectedOptionCode else '' %}
+						{% set showCodes = option.get('show_codes', '') %}
+						{% set hideCodes = option.get('hide_codes', '') %}
+						<label><input type="radio" class="UberRadio" name="{{fieldIdentifier}}" value="{{optionCode}}" {{checked}} data-show-codes="{{showCodes}}" data-hide-codes="{{hideCodes}}" data-code="{{code}}" >{{ option.get('display_text','') }}</label>
+					{% end %}
+				</div>
+                <label class="{{offsetClass}} {{labelClass}} text-left" for="{{fieldIdentifier}}">{{displayText}}</label>
+			</div>
+		{% else %}
+			<div class="form-row {{wrapperClasses}} clearfix uberForm_{{code}} {{starthidden}}">
+				<label class="{{offsetClass}} {{labelClass}} text-right" for="{{fieldIdentifier}}">{{displayText}}</label>
+				{% set selectedOptionCode = response %}
+				<div class="{{promptClass}} wf-form-right clearfix">
+					{% raw optional %}
+					{% for option in uberContainer.get('options', []) %}
+						{% set optionCode = option.get('code','') %}
+						{% set checked = 'checked' if optionCode == selectedOptionCode else '' %}
+						{% set showCodes = option.get('show_codes', '') %}
+						{% set hideCodes = option.get('hide_codes', '') %}
+						<label><input type="radio" class="UberRadio" name="{{fieldIdentifier}}" value="{{optionCode}}" {{checked}} data-show-codes="{{showCodes}}" data-hide-codes="{{hideCodes}}" data-code="{{code}}" >{{ option.get('display_text','') }}</label>
+					{% end %}
+				</div>
+			</div>
+		{% end %}
+
+	{% elif dataType == uberSvc.kQuestionTypeCheckbox %}
+		{% set checked = 'checked' if response.upper() == 'TRUE' else '' %}
+		{% set isReverse = uberContainer.get('isReverse',False) %}
+		{% set isHideWhenChecked = uberContainer.get('isHideWhenChecked',False) %}
+		{% set cbClassName = 'UberCheckboxHideWhenChecked' if isHideWhenChecked else 'UberCheckbox' %}
+		{% if isReverse %}
+			<div class="form-row {{wrapperClasses}} clearfix uberForm_{{code}} {{starthidden}} wf-uber-chkbox">
+				<div class="{{offsetClass}} {{labelClass}} clearfix wf-uber-left" align="right">
+					<input type="checkbox" class="{{cbClassName}}" id="{{fieldIdentifier}}" name="{{fieldIdentifier}}" value="true" {{checked}} {% raw disabled %} data-show-codes="{{showCodes}}" data-hide-codes="{{hideCodes}}" data-code="{{code}}" />
+				</div>
+				<div class="{{promptClass}} wf-form-right clearfix">
+					<label class="text-left heavy" for="{{fieldIdentifier}}">{{displayText}}</label>
+					{% raw optional %}
+				</div>
+			</div>
+		{% else %}
+			<div class="form-row {{wrapperClasses}} clearfix uberForm_{{code}} wf-uber-chkbox">
+				<label class="{{offsetClass}} {{labelClass}} text-right wf-uber-left" for="{{fieldIdentifier}}">{{displayText}}</label>
+				<div class="{{promptClass}} wf-form-right clearfix">
+					{% raw optional %}
+					<input class="{{cbClassName}}" type="checkbox" id="{{fieldIdentifier}}" name="{{fieldIdentifier}}" value="true" {{checked}} {% raw disabled %} data-show-codes="{{showCodes}}" data-hide-codes="{{hideCodes}}" data-code="{{code}}" />
+				</div>
+			</div>
+		{% end %}
+
+	{% elif dataType == uberSvc.kQuestionTypeDropdown %}
+		{% set selectDisabled = '' if optional else 'disabled' %}
+		<div class="form-row {{wrapperClasses}} clearfix uberForm_{{code}} {{starthidden}}">
+			<label class="{{offsetClass}} {{labelClass}} text-right" for="{{fieldIdentifier}}">{{displayText}}</label>
+			{% set selectedOptionCode = response %}
+			<div class="{{promptClass}} wf-form-right clearfix">
+				{% raw optional %}
+				<select class="UberDropdown form-control" id="{{fieldIdentifier}}" name="{{fieldIdentifier}}" data-code="{{code}}" >
+					<option value="" {{selectDisabled}} selected>Select</option>
+					{% for option in uberContainer.get('options', []) %}
+						{% set optionCode = option.get('code','') %}
+						{% set selected = 'selected' if optionCode == selectedOptionCode else '' %}
+						{% set showCodes = option.get('show_codes', '') %}
+						{% set hideCodes = option.get('hide_codes', '') %}
+                        {% set uberOption = option.get('display_text','') %}
+                        {% set displayCode = '' %}
+                        {% set parts = option.get('code','').split('|')%}
+                        {% if len(parts) == 2 %}
+                            {% set displayCode = parts[1] %}
+                        {% end %}
+                        {% if fieldIdentifier in context.get('displayOptionCodeRight',False)%}
+                            {% set uberOption = '%s (%s)' % (option.get('display_text',''),displayCode) %}
+                        {% end %}
+                        {% if fieldIdentifier in context.get('displayOptionCodeLeft',False)%}
+                            {% set uberOption = '%s - %s' % (displayCode,option.get('display_text','')) %}
+                        {% end %}
+						<option value="{{optionCode}}" {{selected}} data-show-codes="{{showCodes}}" data-hide-codes="{{hideCodes}}">{{ uberOption }}</option>
+					{% end %}
+				</select>
+			</div>
+		</div>
+
+	{% elif dataType == uberSvc.kQuestionTypeMultiDropdown %}
+		{% set selectDisabled = '' if optional else 'disabled' %}
+		<div class="form-row {{wrapperClasses}} clearfix uberForm_{{code}} {{starthidden}}">
+			<label class="{{offsetClass}} {{labelClass}} text-right" for="{{fieldIdentifier}}">{{displayText}}</label>
+			<div class="{{promptClass}} cvRowRepeating_Text cvRowRepeating_Select wf-form-right clearfix">
+				{% raw optional %}
+				{% if response %}
+					{% for each in response %}
+						<div class="Repeating_Select">
+							<select class="UberDropdown form-control" name="{{fieldIdentifier}}" data-code="{{code}}" >
+								<option value="" {{selectDisabled}} selected>Select</option>
+								{% for option in uberContainer.get('options', []) %}
+									{% set optionCode = option.get('code','') %}
+									{% set selected = 'selected' if optionCode == each else '' %}
+									{% set showCodes = option.get('show_codes', '') %}
+									{% set hideCodes = option.get('hide_codes', '') %}
+									<option {{selected}} value="{{optionCode}}" data-show-codes="{{showCodes}}" data-hide-codes="{{hideCodes}}">{{ option.get('display_text','') }}</option>
+								{% end %}
+							</select>
+							<div class="cv-repeating-controls pull-right"> </div>
+						</div>
+					{% end %}
+				{% else %}
+					<div class="Repeating_Select">
+						<select class="UberDropdown form-control" name="{{fieldIdentifier}}" data-code="{{code}}" >
+							<option value="" {{selectDisabled}} selected>Select</option>
+							{% for option in uberContainer.get('options', []) %}
+								{% set optionCode = option.get('code','') %}
+								{% set showCodes = option.get('show_codes', '') %}
+								{% set hideCodes = option.get('hide_codes', '') %}
+								<option value="{{optionCode}}" data-show-codes="{{showCodes}}" data-hide-codes="{{hideCodes}}">{{ option.get('display_text','') }}</option>
+							{% end %}
+						</select>
+						<div class="cv-repeating-controls pull-right"> </div>
+					</div>
+				{% end %}
+			</div>
+		</div>
+
+	{% elif dataType == uberSvc.kQuestionTypeDate %}
+		<div class="form-row {{wrapperClasses}} clearfix uberForm_{{code}} {{starthidden}}">
+			<label class="{{offsetClass}} {{labelClass}} text-right" for="{{fieldIdentifier}}">{{displayText}}</label>
+			<div class="{{promptClass}} wf-form-right clearfix form-group">
+				{% raw optional %}
+				<input class="UberText form-control mps-date-picker" type="text" id="{{fieldIdentifier}}" name="{{fieldIdentifier}}" value="{{response}}"  placeholder="{{ uberContainer.get('date_format','') }}" data-show-codes="{{showCodes}}" data-hide-codes="{{hideCodes}}" data-code="{{code}}" {% raw disabled %} />
+			</div>
+		</div>
+
+	{% end %}
+{% end %}

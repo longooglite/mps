@@ -1,0 +1,54 @@
+[Category]
+<h4>Appointments</h4>
+<p>This page displays your Academic, Administrative, Clinical, Military and Other appointments since your education and training. The number of entries within each region will be displayed in () on the tabs.<p>
+<p>The content of this page can be sorted by clicking on any column title.</p>
+<hr>
+<p>To <strong>add</strong> an additional entry, click the “+ Add …” button in the upper right portion of the page.</p>
+<p>To <strong>edit</strong> an existing entry, click the blue text in the row you would like to edit.</p>
+<p>To <strong>delete</strong> an entry, click the X at the end of the row you would like to delete. Then confirm the deletion.</p>
+<p>To <strong>print</strong> a section of the CV, click the “Print this section” button in the upper right portion of the page or select “Print Section” from the Print menu found in the menu bar.</p>
+
+
+[AppointmentType]
+<p>Please select a type of appointment.</p>
+<hr>
+<p>This item is required</p>
+
+[AppointmentTitle]
+<p>Please enter a title for this appointment.</p>
+<hr>
+<p>This item is required</p>
+
+[AppointmentTenured]
+<p>Check the box if this is an appointment with tenure</p>
+
+[AppointmentDescription]
+<p>Please enter a description for this appointment.</p>
+
+[AppointmentInstitutionName]
+<p>Please enter an institution name where you held the appointment.</p>
+<hr>
+<p>This item is required</p>
+
+[AppointmentInstitutionCity]
+<p>Please enter the city where the institution was located.</p>
+<hr>
+<p>This item is required</p>
+
+[AppointmentInstitutionState]
+<p>Please enter the state where the institution was located.</p>
+
+[AppointmentInstitutionCountry]
+<p>Please enter the country where the institution was located.</p>
+
+[AppointmentStart]
+<p>Please enter the start date for this appointment.</p>
+<hr>
+<p>This item is required</p>
+<p>Hover over the field to see supported date formats</p>
+
+[AppointmentEnd]
+<p>Please enter the end date for this appointment.</p>
+<hr>
+<p>This item is required</p>
+<p>Hover over the field to see supported date formats</p>

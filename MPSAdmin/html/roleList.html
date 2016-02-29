@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>MPS Admin</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+</head>
+
+{% set siteCode = context.get('siteProfileDetail',{}).get('sitePreferences',{}).get('code','') %}
+<body class="mps-admin-page">
+	<div class="container-fluid mps-body">
+		{% include pageHeader.html %}
+
+		<div class="body-content">
+			<div class="col-xs-offset-1 col-xs-11">
+				<span id="adminerrormessage" class="adminerrormessage">{{context.get('errormessage','')}}</span>
+			</div>
+
+			<div class="col-xs-offset-1 dropdown">
+				<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Select Site <span class="caret"></span></button>
+				<ul class="dropdown-menu">
+					{% for siteDict in context.get('siteList',[]) %}
+						<li><a href="/admin/roles/{{siteDict.get('code','')}}">{{siteDict.get('code','')}}</a></li>
+					{% end %}
+				</ul>
+			</div>
+			<div class="clear"></div>
+
+			<div class="col-xs-offset-1 col-xs-5">
+				<br/>
+				<span>Roles for Site:
+					<span class="mpsbold">{{ siteCode }}</span>
+					<span class="mpsitalic">({{context.get('siteProfileDetail',{}).get('sitePreferences',{}).get('descr','')}})</span>
+				</span>
+			</div>
+			<div class="clear"><br/></div>
+
+			<div class="col-xs-offset-1">
+				<table id="roles" class="table table-striped table-bordered mpstable">
+					<thead>
+						<tr>
+							<th>Code</th>
+							<th>Application</th>
+							<th>Description</th>
+							{% if context.get('disabled','disabled') != 'disabled' %}
+								<th>Edit</th>
+								<th>Delete</th>
+							{% end %}
+						</tr>
+					</thead>
+					{% for roleDict in context.get('siteProfileDetail',{}).get('siteRoles',{}) %}
+						{% set appCode = roleDict.get('app_code','') %}
+						{% set roleCode = roleDict.get('code','') %}
+						<tr>
+							<td>
+								<span class="glyphicon glyphicon-chevron-right toggle_control"></span>&nbsp;{{ roleCode }}
+								<span class="toggle_detail hidden">
+									<br/>
+									<table class="table table-striped table-bordered mpstable">
+										<tr>
+											<th>Application</th>
+											<th>Code</th>
+											<th>Description</th>
+										</tr>
+										{% for permDict in roleDict.get('permissionList',[]) %}
+											<tr>
+												<td>{{permDict.get('app_code','')}}</td>
+												<td>{{permDict.get('perm_code','')}}</td>
+												<td>{{permDict.get('perm_descr','')}}</td>
+											</tr>
+										{% end %}
+									</table>
+								</span>
+							</td>
+							<td>{{ appCode }}</td>
+							<td>{{ roleDict.get('descr','') }}</td>
+							{% if context.get('disabled','disabled') != 'disabled' %}
+								<td><a href="/admin/role/edit/{{ siteCode }}/{{ appCode }}/{{ roleCode }}">edit</a></td>
+								<td><a href="/admin/role/delete/{{ siteCode }}/{{ appCode }}/{{ roleCode }}">delete</a></td>
+							{% end %}
+						</tr>
+					{% end %}
+				</table>
+			</div>
+			<div class="clear"></div>
+
+
+			<div class="col-xs-offset-1">
+				<input type="button" id="addRoleBtn" value="Add Role" class="btn btn-primary" {{context.get('disabled','')}}>
+			</div>
+		</div>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+{% include cache-js.html %}
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	var addRoleFn = function() { window.location.href = '/admin/role/add/{{context.get('siteProfileDetail',{}).get('sitePreferences',{}).get('code','')}}'; };
+
+	$(function() {
+		$('#addRoleBtn').on('click', addRoleFn);
+	});
+
+	$('.toggle_control').on('click', function (event) {
+		$target = $(event.delegateTarget);
+		$target.toggleClass('glyphicon-chevron-right glyphicon-chevron-down');
+		$target.nextAll('.toggle_detail').toggleClass('hidden');
+	});
+
+	/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

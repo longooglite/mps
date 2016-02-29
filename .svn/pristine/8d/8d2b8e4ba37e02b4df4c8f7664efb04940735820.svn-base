@@ -1,0 +1,34 @@
+{% set disabled = '' %}
+{% if context.get('disabled', True) %}
+	{% set disabled = 'disabled="disabled"' %}
+{% end %}
+<div class="Repeating-Form-Wrapper">
+{% for offenseAggregate in context.get('offenses',[]) %}
+	{% set offenseNbr = offenseAggregate.get('offense_nbr', 999) %}
+	{% set offensePrefix = 'Disclosed Offense #' %}
+	<div class="Repeating-Form" data-prefix="Disclosed Offense" data-separator="_">
+		<h4 class="Repeating-Form-Title">{{offensePrefix}}<span class="Repeating-Form-Number">{{offenseNbr}}</span></h4>
+		{% set fields = offenseAggregate.get('fields',{}) %}
+		{% for promptDict in context.get('prompts',[]) %}
+			{% if promptDict.get('enabled', False) %}
+				{% set thisCode = promptDict.get('code', '') %}
+				{% set thisLabel = promptDict.get('label', '') %}
+				{% set thisField = fields.get(thisCode, {}) %}
+				{% if thisField %}
+					{% set uxKey = thisField.get('ux_key','') %}
+					{% set thisValue = thisField.get('offense_value','') %}
+					{% set optional = '<span class="wf-qa-optional">Optional</span>' if not promptDict.get('required',False) else '' %}
+					<div class="form-row clearfix">
+						<label class="col-xs-3 text-right" for="{{uxKey}}">{{thisLabel}}:</label>
+						<div class="col-xs-7 wf-form-right clearfix">
+							{% raw optional %}
+							<input class="form-control" type="text" id="{{uxKey}}" name="{{uxKey}}" size="50" value="{{thisValue}}" {% raw disabled %} />
+						</div>
+					</div>
+				{% end %}
+			{% end %}
+		{% end %}
+	</div>
+{% end %}
+</div>
+

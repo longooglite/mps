@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>{{context.get('windowTitle', 'Curriculum Vitae')}}</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+</head>
+{% set isMsg = True if len(context.get('errormessage','')) > 0 else False %}
+<body class="cv {{ 'cv-show-global-message' if isMsg else '' }}">
+	<div class="container-fluid cv-wrap">
+		{% include pageHeader.html %}
+		<div class="cv-body-content">
+			{% include cvMenu.html %}
+			<div class="cv-body">
+
+				{% set cvOwnerName = context.get('cvOwnerName','') %}
+
+					{% if context.get('categoryDict',{}).get('mode_code','') == 'ListSingleEntry' %}
+						{% include listSingleEntry.html %}
+						{% include editModal.html %}
+					{% elif context.get('categoryDict',{}).get('mode_code','') == 'ListSingleList' %}
+						{% include listSingleList.html %}
+						{% include editModal.html %}
+					{% elif context.get('categoryDict',{}).get('mode_code','') == 'ListBySubcategoryGroup' %}
+						{% include listBySubcategoryGroup.html %}
+						{% include editModal.html %}
+					{% end %}
+
+				{% set isCatHelp = True if len(context.get('categoryDict',{}).get('category_help_text','').replace(' ','')) > 0 else False %}
+				<div class="cv-category-help starthidden">
+					<div class="cv-category-help-header clearfix">
+						<a class="cv-close-help pull-right" href="#" title="Close Help..."><span class="glyphicon glyphicon-remove"></span>Close</a>
+						Category Help
+					</div>
+					<div class="cv-category-help-body">
+						{% if isCatHelp %}
+							{% raw context.get('categoryDict',{}).get('category_help_text','') %}
+						{% else %}
+							<em>Coming Soon...</em>
+						{% end %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+{% include cv-js.html %}
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	$(function() {
+		$('body').on('click', '.cvmodaleditdetaillink', function(event, modal){
+			event.preventDefault();
+			
+			var $this = $(this), sURL = ($this.is('[data-cv-url]')) ? $this.data('cvUrl') : $this.closest('[data-cv-url]').data('cvUrl');
+
+			if(!sURL.length){
+				// Uh Oh!
+			}
+
+			// If there is a Tab present & selected, we send that info to server...
+			var sTab = $('.cv-cat-content ul.nav-tabs:first li.active a').data('cvTabTitle') || '';
+
+			var $rowId = event.currentTarget.id;
+			var options = {
+				rowid: $rowId,
+				type: 'POST',
+				url: sURL,
+				response_type: 'form',
+				modal: {
+					modal_element: '#editModal',
+					modal_error: '#modalerrormessage',
+					modal_button: '#modalSaveButton',
+					modal_button_replaces: '#saveRowBtn',
+					modal_callback: function(event){cvApp._ubiquitousModalFormCallback(event)}
+				}
+			};
+			if(sTab.length > 0){options['tabTitle'] = sTab;}
+			cvApp.ubiquitousModalFormLoad(options);
+		});
+
+		//
+		// Row Deletion:
+		//
+		$('body').on('click', '.cv-row-delete', function(e){
+			var $btn = $(e.target),
+				$tr = $btn.closest('tr'),
+				row_id = $tr.data('itemId'),
+				cv_community = $tr.data('cvCommunity'),
+				cv_owner = $tr.data('cvOwner'),
+				origin_path = $tr.data('originPath'),
+				sWarn = '',
+				$tds = $tr.find('td');
+
+			$tds.each(function(i,ob){
+				var sTmp = $(ob).text().trim();
+				if(sTmp.replace(' ' ,'').length > 0){
+					sWarn += ((i != 0) ? ' - ' : '') + sTmp;
+				}
+			});
+
+			var iConfirmed = window.confirm('Are you certain you wish to delete this item?\n\n'+sWarn);
+			if(iConfirmed){
+				cvApp.triggerLoadingStates();
+				cvApp.ubiquitousPageRequest({
+					row_id: row_id,
+					community: cv_community,
+					username: cv_owner,
+					origin_path: origin_path,
+					url: '/cv/delete'
+				});
+			}
+		});
+	});
+
+	/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

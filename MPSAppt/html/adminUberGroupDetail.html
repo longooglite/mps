@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>{{context.get('windowTitle', '')}}</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+	<style>
+		.wf-radio-padding { padding-top: 7px; padding-right: 5px; }
+	</style>
+</head>
+
+{% set mode = context.get('mode', '') %}
+{% set isAdd = (mode != 'edit') %}
+{% set group = context.get('group', {}) %}
+{% set groupId = group.get('id', 0) %}
+
+{% set isMsg = True if len(context.get('errormessage','')) > 0 else False %}
+<body class="{{ 'cv-show-global-message' if isMsg else '' }} cv-proxy-page mps-admin-page">
+	<div class="container-fluid mps-body">
+		{% include pageHeader.html %}
+		<div class="body-content cv-body cv-body-no-menu">
+			<div class="page-header clearfix">
+				<div class="page-header-controls">
+					<button class="cvHelpButton btn btn-sm btn-default">
+						<span class="glyphicon glyphicon-question-sign"></span>Help...
+					</button>
+					<button class="btn btn-sm btn-primary saveGroupBtn">
+						<span class="glyphicon glyphicon-floppy-disk"></span> <span>Save Changes...</span>
+					</button>
+				</div>
+				<h1>
+					Form Groups<br/>
+					<small>
+						<a href="/{{context.get('appUriPrefix','')}}/uber/groups" class="cv-head-bread">All Groups</a><span class="cv-head-bread-sep">/</span>
+						<span class="cv-head-bread-leaf">{% if isAdd %}New Group{% else %}{{ group.get('descr','') }}{% end %}</span>
+					</small>
+				</h1>
+			</div>
+
+			<form id="groupdetailform" class="form-horizontal">
+				{% include ajax-hidden-fields.html %}
+				<input type="hidden" name="mode" value="{{mode}}" />
+				{% if not isAdd %}
+					<input type="hidden" name="groupId" value="{{groupId}}" />
+				{% end %}
+
+				<div class="row">
+					<div class="col-md-6 cv-user-form">
+						<h3 class="section-header">
+							<span class="glyphicon glyphicon-edit"></span>
+							Group Settings:
+						</h3>
+
+						<div class="cv-callout cv-callout-info cv-callout-bordered clearfix mps-skin-border">
+							<h4>Identity:</h4><br/>
+							<div class="clearfix form-row">
+								<label for="code" class="col-xs-3 control-label">* Code:</label>
+								<div class="col-xs-8">
+									{% set originalCode = group.get('code', '') %}
+									<input type="hidden" name="original_code" value="{{originalCode}}" />
+									<input type="text" class="form-control" id="code" name="code" value="{{originalCode}}" placeholder="Unique question/option/group code">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="descr" class="col-xs-3 control-label">* Description:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="descr" name="descr" value="{{group.get('descr', '')}}">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="display_text" class="col-xs-3 control-label">Display Text:</label>
+								<div class="col-xs-8">
+									<textarea class="form-control" id="display_text" name="display_text" rows="3">{{group.get('display_text', '')}}</textarea>
+								</div>
+							</div>
+						</div>
+
+						<div class="cv-callout cv-callout-info cv-callout-bordered clearfix mps-skin-border">
+							<h4>Size and Placement:</h4><br/>
+							<div class="clearfix form-row">
+								<label for="cols_offset" class="col-xs-3 control-label">* Offset Columns:</label>
+								<div class="col-xs-2">
+									<input type="text" class="form-control" id="cols_offset" name="cols_offset" value="{{group.get('cols_offset', '')}}" placeholder="0">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="cols_label" class="col-xs-3 control-label">* Label Columns:</label>
+								<div class="col-xs-2">
+									<input type="text" class="form-control" id="cols_label" name="cols_label" value="{{group.get('cols_label', '')}}" placeholder="12">
+								</div>
+							</div>
+						</div>
+
+						<div class="cv-callout cv-callout-info cv-callout-bordered clearfix mps-skin-border">
+							<h4>Behavior:</h4>
+							<div class="clearfix form-row">
+								<label for="repeating" class="col-xs-3 control-label">* Repeating:</label>
+								<div class="col-xs-8">
+									{% set trueChecked = 'checked' if group.get('repeating', False) else '' %}
+									{% set falseChecked = 'checked' if not group.get('repeating', False) else '' %}
+									<label class="wf-radio-padding"><input type="radio" name="repeating" value="true" {{trueChecked}}> Yes</label>
+									<label class="wf-radio-padding"><input type="radio" name="repeating" value="false" {{falseChecked}}> No</label>
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="repeating_table" class="col-xs-3 control-label">* Repeating Table:</label>
+								<div class="col-xs-8">
+									{% set trueChecked = 'checked' if group.get('repeating_table', False) else '' %}
+									{% set falseChecked = 'checked' if not group.get('repeating_table', False) else '' %}
+									<label class="wf-radio-padding"><input type="radio" name="repeating_table" value="true" {{trueChecked}}> Yes</label>
+									<label class="wf-radio-padding"><input type="radio" name="repeating_table" value="false" {{falseChecked}}> No</label>
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="required" class="col-xs-3 control-label">* Required:</label>
+								<div class="col-xs-8">
+									{% set trueChecked = 'checked' if group.get('required', False) else '' %}
+									{% set falseChecked = 'checked' if not group.get('required', False) else '' %}
+									<label class="wf-radio-padding"><input type="radio" name="required" value="true" {{trueChecked}}> Yes</label>
+									<label class="wf-radio-padding"><input type="radio" name="required" value="false" {{falseChecked}}> No</label>
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="wrap" class="col-xs-3 control-label">* Wrap:</label>
+								<div class="col-xs-8">
+									{% set trueChecked = 'checked' if group.get('wrap', False) else '' %}
+									{% set falseChecked = 'checked' if not group.get('wrap', False) else '' %}
+									<label class="wf-radio-padding"><input type="radio" name="wrap" value="true" {{trueChecked}}> Yes</label>
+									<label class="wf-radio-padding"><input type="radio" name="wrap" value="false" {{falseChecked}}> No</label>
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="filler" class="col-xs-3 control-label">* Filler:</label>
+								<div class="col-xs-8">
+									{% set trueChecked = 'checked' if group.get('filler', False) else '' %}
+									{% set falseChecked = 'checked' if not group.get('filler', False) else '' %}
+									<label class="wf-radio-padding"><input type="radio" name="filler" value="true" {{trueChecked}}> Yes</label>
+									<label class="wf-radio-padding"><input type="radio" name="filler" value="false" {{falseChecked}}> No</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<h3 class="section-header">
+							&nbsp;
+						</h3>
+
+						<div class="cv-callout cv-callout-info cv-callout-bordered clearfix mps-skin-border">
+							<h4>Child Groups and Questions:</h4>
+							{% set maxGroupChildren = context.get('maxGroupChildren', 10) %}
+							{% set childrenBreakout = group.get('childrenBreakout', []) %}
+
+							<div class="col-xs-12">
+								<table class="table table-striped cv-data-table CVtable-bordered table-condensed ui-sortable ui-sortable-form">
+									<thead>
+										<tr>
+											<th class="cvReorderHead">
+												<a href="#" data-toggle="tooltip" data-placement="right"
+												   data-original-title="The identifiers in this list may be moved Up and Down to set the order they will appear."
+													><span class="glyphicon glyphicon-question-sign"></span>
+												</a>
+											</th>
+											<th>Group or Question Code</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% set idx = 0 %}
+										{% for child in childrenBreakout %}
+											{% set idx = idx + 1 %}
+											<tr class="{{ 'item ui-sortable-handle' }}" data-item-id="{{str(idx)}}" >
+												<td class="cvReorderRow">
+													<a href="#" class="cvReorder cvReorderUp"><span class="glyphicon glyphicon-sm glyphicon-chevron-up"></span></a><br/>
+													<a href="#" class="cvDragHandle"><span class="glyphicon glyphicon-align-justify"></span></a><br/>
+													<a href="#" class="cvReorder cvReorderDown"><span class="glyphicon glyphicon-sm glyphicon-chevron-down"></span></a>
+												</td>
+												<td>
+													<div class="form-row">
+														{% set identifier = 'child_' + str(idx) %}
+														<input type="hidden" name="child_sequence" value="{{str(idx)}}" />
+														<input type="text" class="form-control" id="{{identifier}}" name="{{identifier}}" value="{{child}}">
+													</div>
+												</td>
+											</tr>
+										{% end %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+<script type="text/javascript" src="/{{skin}}/js/wf.core.js"></script>
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	$('.saveGroupBtn').on('click', function(event){
+		var $body = $('.cv-user-form');
+		var $form = $('#groupdetailform')
+		cvApp.ubiquitousPageRequest({
+			url: '/{{context.get('appUriPrefix','')}}/uber/groups/save',
+			data: JSON.stringify($form.serializeObject()),
+			success: function(data, textStatus, xhr){
+				wfApp._WF_commonErrorHandler($form, data, textStatus, xhr);
+			}
+		});
+	});
+
+	/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

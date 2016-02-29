@@ -1,0 +1,58 @@
+<center><h3>Position History</h3></center>
+<center><h4 style="margin-bottom:2px;">Department:&nbsp;{{ context.get('dept_descr','') }}</h4></center>
+<center><p1>Positions: {{ str(context.get('numpositions','')) }}</p1></center>
+<center><p1>Actions in Progress: {{ str(context.get('actionsInProgress','')) }}</p1></center>
+<hr>
+
+{% if not context.get('history',[]) %}
+    <h3><center> {{context.get('noDataMessage','0 items meet report criteria')}} </center></h3>
+{% end %}
+{% if context.get('history',[]) %}
+    {% for position in context.get('history',[]) %}
+        <h4 style="margin-bottom:2px;">PCN:&nbsp;{{ position.get('pcn','') }}</h4>
+        <div style="margin-left:10px;">
+        <table width="1100px">
+            <tr>
+                <th width="250px" align="left">Name</th>
+                <th width="150px" align="left">Track</th>
+                <th width="300px" align="left">Title</th>
+                <th width="100px" align="left">Action</th>
+                <th width="150px" align="left">Status</th>
+                <th width="75px" align="left">Start Date</th>
+                <th width="75px" align="left">End Date</th>
+            </tr>
+        {% set isOpenAction = False %}
+        {% for appt in position.get('appointments',[]) %}
+            {% set isOpenAction = True if appt.get('appointment').get('apptstatus_code','') == 'INPROGRESS' else isOpenAction %}
+            <tr>
+                {% set fullname = appt.get('person').get('full_name','') %}
+                <td>
+                    {% if appt.get('appointment').get('person_url','') %}
+                        <a href="{{ appt.get('appointment').get('person_url','') }}" target="_blank">{{ fullname }}</a>
+                    {% else %}
+                        &nbsp;
+                    {% end %}
+                </td>
+                <td>{{ appt.get('track').get('descr','') }}</td>
+                <td>{{ appt.get('title').get('descr','') }}</td>
+                <td>
+                    {%if appt.get('jobAction') %}
+                        {% if appt.get('appointment').get('url','') %}
+                            <a href="{{ appt.get('appointment').get('url','') }}" target="_blank">{{ appt.get('jobAction').get('jobActionType',{}).get('descr','') }}</a>
+                        {% else %}
+                            {{ appt.get('jobAction').get('jobActionType',{}).get('descr','') }}
+                        {% end %}
+                    {%end%}
+                </td>
+                <td>
+                    {{ appt.get('appointment').get('apptstatus_descr','') }}
+                </td>
+                <td>{{ appt.get('appointment').get('start_date','') }}</td>
+                <td>{{ appt.get('appointment').get('end_date','') }}</td>
+            </tr>
+        {% end %}
+        </table>
+        </div>
+    {% end %}
+{% end %}
+

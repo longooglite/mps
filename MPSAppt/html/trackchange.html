@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Appointments</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/wf-main.css"/>
+</head>
+<body class="cv-proxy-page wf-details-page">
+<div class="container-fluid mps-body">
+	{% set context['pageHeaderTitle'] = 'Appointments' %}
+	{% include pageHeader.html %}
+	<div class="body-content cv-body cv-body-no-menu">
+        <div class="page-header clearfix">
+			<h1>
+				{{ context.get('person',{}).get('full_name','') }}<br/>
+				{% set sTitle = context.get('title', {}).get('descr', '') %}
+				{% set sDept = context.get('department', {}).get('full_descr', '') %}
+                <small>
+                {% if sTitle != '' or sDept != '' %}
+                    {% if sTitle != '' %}<span>{{sTitle}}</span><br/>{% end %}
+                    {% if sDept != '' %}<span>{{sDept}}</span>{% end %}
+                {% else %}
+                    <span>(No Current Primary Appointment)</span>
+                {% end %}
+                </small>
+			</h1>
+		</div>
+
+		<form id="mainform" class="form-horizontal wf-person-page" onsubmit="return false;">
+			<input type=hidden name="pcn" id="pcn_id" value="{{context.get('positionid','')}}">
+			<input type=hidden name="person" id="person_id" value="{{context.get('person',{}).get('id','')}}">
+			<div class="cv-callout cv-callout-info cv-callout-bordered clearfix row">
+				<div class="col-md-11">
+                    {% for trackchange in context.get('trackchanges') %}
+                        <p><b>Track Change: {{trackchange.get('descr','')}}</b>&nbsp;<small>(Select Title)</small></p>
+                        <table class="table table-condensed">
+                            {% for mapping in trackchange.get('mapping',[]) %}
+                                <tr>
+                                    {%set workflowTitleValue = str(trackchange.get('workflowid',0)) + '_' + str(mapping.get('toTitleId',0)) %}
+                                    <td width="20px"><input type="radio" name="trackchange" id="trackchangeid" onclick="starttrackchangebtn.disabled=false" value="{{workflowTitleValue}}"></td>
+                                    <td>{{mapping.get('toTitleDescr','')}}</td>
+                                </tr>
+                            {% end %}
+                        </table>
+                    {% end %}
+				</div>
+			</div>
+        </form>
+        <div class="col-xs-5 ta-left">
+            <button id="starttrackchangebtn" disabled class="starttrackchange btn btn-primary">Start Track Change</button>
+        </div>
+		<div class="wf-details-form-btn-bar col-xs-12">
+			<a data-section="wf-overview-item" class="overview-breadcrumb wf-details-footer-cancel wf-details-footer-back" href="#">
+				<span class="glyphicon glyphicon-circle-arrow-left"></span><span>Back</span>
+			</a>
+		</div>
+
+	</div>
+</div>
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	(function ($) {
+
+		$('body').on('click', '.starttrackchange', function(event){
+			var $this = $(this);
+			var $pcn = $('#pcn_id').val();
+			var $personid = $('#person_id').val();
+			var $wftitle = $("input[name=trackchange]:checked").val();
+			var $parts = $wftitle.split('_')
+			var $workflow = $parts[0];
+			var $title = $parts[1];
+			var sURL = '/appt/jobaction/create/' + $pcn + '/' + $workflow + '/' + $title + '/' + $personid
+			cvApp.ubiquitousPageRequest({
+				url: sURL,
+				data: JSON.stringify($('#mainform').serializeObject()),
+				errorMessage: '#modalerrormessage'
+			});
+		});
+
+		$('.wf-data-toggler').click(function(){
+			var $this = $(this),
+				$target = $('#'+$this.data('target'));
+			$this.toggle();
+			$target.toggle();
+		});
+
+	})(jQuery);
+
+	/*]]>*/
+</script>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,43 @@
+/*
+*  NOTE: The Default skin does actually have a Skim for the header - the Redux version is so different it is a copy pasta clone with many changes...
+*/
+
+
+/*
+*  Default Header
+*/
+
+.mpsheader { margin-bottom: 0; border-bottom: 0px; position:fixed; z-index:3; width:100%; top:0; margin-top:0; min-height:94px;}
+.mpsheader-top-container { background: #001a4b; }
+.mpsheader-top-inner { margin-left: 40px; margin-right: 40px; line-height: 60px; height:60px; padding-left: 0; padding-right: 0; border-radius: 0; -webkit-border-radius: 0; }
+.mpsheader-top-left { font-size: 28pt; }
+.mpsheader-top-image { vertical-align: middle; margin-right: 2px; }
+.mpsheader-top-maintext { color: #fefefe; }
+.mpsheader-top-right { font-size: 10pt; float: right; }
+.mpsheader-top-othertext { color: #fefefe; }
+.mpsheader-top-separator { color: #fefefe; margin-left: 5px; margin-right: 5px; }
+.mpsheader-bottom-container { background: #ffffff; }
+.mpsheader-bottom-inner { margin-left: 2px; margin-right: 2px; line-height: 30px; height: 30px; padding-left: 0; padding-right: 0; border-radius: 0; -webkit-border-radius: 0; }
+.mpsheader-sep { margin-top: 2px; height:2px; padding: 0; background-color: #000000; }
+
+/* Top Nav Strip */
+    /* Colors */
+.mpsheader .navbar li .glyphicon,
+.mpsheader .navbar-nav > li > a{                                           color:#ddd;}
+.mpsheader .navbar li a:hover .glyphicon{                                  color:#fff;}
+.mpsheader .navbar-collapse .navbar-nav, .mpsheader .navbar{ background-color:#000; }
+
+.mpsheader .navbar{top:60px; min-height:34px !important; height:34px; padding-left:15px;}
+.mpsheader .navbar-right{margin-right:10px;}
+.mpsheader .navbar li a{padding:7px 20px 7px 20px;}
+.mpsheader .navbar li .glyphicon{margin-right:6px; margin-left:5px; width:14px;}
+.mpsheader .navbar-header .navbar-toggle{margin-top:0;}
+.mpsheader .navbar .dropdown-menu{border:solid 1px #ccc; margin-left:15px;}
+.mpsheader .navbar .dropdown-menu a{padding-left:28px}
+.mpsheader .navbar .dropdown-menu .itemglyph {padding-left:7px}
+.mpsheader .navbar .dropdown-menu .itemglyph .glyphicon {color:#999;}
+.mpsheader .navbar .dropdown-menu .itemglyph:hover .glyphicon {color:#666;}
+.mpsheader .navbar-right{ padding-right:10px; }
+.mpsheader .navbar-right .dropdown-menu a{ padding-left:10px; }
+.mpsheader .navbar-collapse,
+.mpsheader .collapse{}

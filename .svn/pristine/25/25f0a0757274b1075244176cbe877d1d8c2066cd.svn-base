@@ -1,0 +1,65 @@
+#   File of site-specific role/permission assignments.
+#   Use the common 'common_role_permissions.txt' file for non-site-specific data.
+
+#application|site|role|permission
+
+#   Department User
+APPT|accept-umich|apptDeptUser|apptRosterView
+APPT|accept-umich|apptDeptUser|apptDashboardView
+APPT|accept-umich|apptDeptUser|apptCreatePosition
+APPT|accept-umich|apptDeptUser|apptViewAsCandidate
+APPT|accept-umich|apptDeptUser|apptJobActionOverview
+APPT|accept-umich|apptDeptUser|apptCreateJobAction
+APPT|accept-umich|apptDeptUser|apptPositionView
+APPT|accept-umich|apptDeptUser|apptPersonView
+APPT|accept-umich|apptDeptUser|apptCancelJobAction
+APPT|accept-umich|apptDeptUser|apptResendEmail
+
+APPT|accept-umich|apptDeptUser|dept_task
+APPT|accept-umich|apptDeptUser|approverfp_view
+APPT|accept-umich|apptDeptUser|canViewNPIPassword
+APPT|accept-umich|apptDeptUser|canrequestfieldrevisions
+APPT|accept-umich|apptDeptUser|revisions_notify
+
+
+#   Faculty Affairs User
+APPT|accept-umich|apptFacultyAffairs|apptRosterView
+APPT|accept-umich|apptFacultyAffairs|apptDashboardView
+APPT|accept-umich|apptFacultyAffairs|apptCreatePosition
+APPT|accept-umich|apptFacultyAffairs|apptViewAsCandidate
+APPT|accept-umich|apptFacultyAffairs|apptJobActionOverview
+APPT|accept-umich|apptFacultyAffairs|apptCancelJobAction
+APPT|accept-umich|apptFacultyAffairs|apptResendEmail
+
+APPT|accept-umich|apptFacultyAffairs|ofa_task
+APPT|accept-umich|apptFacultyAffairs|apptCreateJobAction
+APPT|accept-umich|apptFacultyAffairs|apptPositionView
+APPT|accept-umich|apptFacultyAffairs|apptPersonView
+APPT|accept-umich|apptFacultyAffairs|approverfp_edit
+APPT|accept-umich|apptFacultyAffairs|facultyAffairsUser
+
+#   Medical Staff Services User
+APPT|accept-umich|apptMedicalStaffServices|mss_task
+APPT|accept-umich|apptMedicalStaffServices|apptRosterView
+APPT|accept-umich|apptMedicalStaffServices|apptJobActionOverview
+APPT|accept-umich|apptMedicalStaffServices|apptDashboardView
+APPT|accept-umich|apptMedicalStaffServices|canViewNPIPassword
+APPT|accept-umich|apptMedicalStaffServices|revisions_notify
+APPT|accept-umich|apptMedicalStaffServices|canrequestfieldrevisions
+APPT|accept-umich|apptMedicalStaffServices|canViewSocialSecurity
+
+
+#   Provider Enrollment User
+APPT|accept-umich|apptProviderEnrollment|enroll_task
+APPT|accept-umich|apptProviderEnrollment|apptRosterView
+APPT|accept-umich|apptProviderEnrollment|apptJobActionOverview
+APPT|accept-umich|apptProviderEnrollment|apptDashboardView
+APPT|accept-umich|apptProviderEnrollment|canViewNPIPassword
+APPT|accept-umich|apptProviderEnrollment|canViewSocialSecurity
+
+#   Assistant Dean User
+
+APPT|accept-umich|apptAssitantDean|assist_dean_task
+APPT|accept-umich|apptAssitantDean|apptRosterView
+APPT|accept-umich|apptAssitantDean|apptJobActionOverview
+APPT|accept-umich|apptAssitantDean|apptDashboardView

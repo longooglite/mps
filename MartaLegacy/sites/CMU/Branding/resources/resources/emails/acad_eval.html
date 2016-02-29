@@ -1,0 +1,104 @@
+<div class="evaluatoremail" xmlns:th="http://www.thymeleaf.org" style="font-size: 10pt; line-height: 14px; max-width: 650px; padding-top: 20px;">
+    <div>
+        <div th:switch="${generateFor}" th:remove="tag">
+            <img th:case="'html'" style="height: 40px" src="../../webapp/img/default_head.png" th:src="${attachments['header'].content.htmlInlineSrc}"/>
+            <img th:case="'email'" style="height: 40px" src="../../webapp/img/default_head.png" th:src="${'cid:'+attachments['header'].contentId}"/>
+        </div>
+    </div>
+    <div th:object="${departmentInfo}" style="padding: 10px 0 0 78px; font-style: italic; font-weight: bold; font-size: 8pt;">
+        <span th:utext="*{address}">1500 E. Medical Center Dr<br/>1914 Taubman Center SPC 5316<br/>Ann Arbor, MI 48109-5316</span>
+    </div>
+    <div style="padding: 20px 0 0 10px; clear: both;" th:with="last=${prospect.salutation+' '+prospect.last},lastP=${prospect.salutation+' '+prospect.lastPossessive}">
+        <div class="toaddress" th:object="${evaluation.evaluator}">
+            <p>
+                <span th:text="*{nameAndDegree}">Mark Schneyer</span><br/>
+                <div th:each="title: *{titles}"  th:remove="tag">
+                    <span th:text="${title}">Professor</span><br/>
+                </div>
+                <span th:text="*{institution}">Univ. of Michigan</span>
+            </p>
+        </div>
+        <div class="letterbody">
+            <p th:object="${evaluation.evaluator}">
+                <span th:text="*{salutation}" th:remove="tag">Dear Dr.</span> <span th:text="*{last+','}" th:remove="tag">Schneyer</span>
+            </p>
+            <p>
+                <span th:text="${prospect.salutation+' '+prospect.firstSpaceLast}" th:remove="tag">Dr. Peter Clifton Jenkins</span> is being considered for promotion
+                to <span th:text="${title.name}" th:remove="tag">Clinical Lecturer</span>
+                <span th:if="${facTrack}" th:text="${'('+track.name+' Track)'}" th:remove="tag">(Instructional Track)</span> in the Department of <span th:text="${department.displayName}" th:remove="tag">
+                Internal Medicine, Division of General Medicine</span> at the University of Michigan Medical School.
+            </p>
+            <p th:if="${track.clinical}">
+                The University of Michigan has a Clinical Track distinct from the Instructional (Tenure) Track, that is used for clinicians whose main activities are in patient care and teaching with participation in scholarship and administration.
+            </p>
+            <div>
+                <p style="margin-bottom: 0; padding-bottom: 0;">We would appreciate your appraisal of <span th:text="${last}" th:remove="tag">Dr. Jenkins</span>:</p>
+                <ul style="margin-top: 0;">
+                    <li style="line-height: 14px;">How do you know <span th:text="${last}" th:remove="tag">Dr. Jenkins</span> (in what capacity and for how long?)</li>
+                    <li style="line-height: 14px;" th:if="${(track.instructional || track.research) &amp;&amp; !entryLevel}">Has <span th:utext="${lastP}" th:remove="tag">Dr. Jenkins</span> scholarship impacted their field or resulted in seminal advance?</li>
+                    <li style="line-height: 14px;" th:if="${facTrack &amp;&amp; !entryLevel}">How would you describe <span th:utext="${lastP}" th:remove="tag">Dr. Jenkins</span> scholarly and professional niche and how would you rank <span th:text="${last}" th:remove="tag">Dr. Jenkins</span> in terms of peers?</li>
+                    <li style="line-height: 14px;" th:if="${track.clinical &amp;&amp; !entryLevel}">What is your assessment of <span th:utext="${lastP}" th:remove="tag">Dr. Jenkins</span> involvement in regional and/or national peer organizational service - and how would you characterize these activities on committees, as reviewer, editor, etc.?</li>
+                    <li style="line-height: 14px;" th:if="${track.clinical &amp;&amp; !entryLevel}">How would you assess <span th:utext="${lastP}" th:remove="tag">Dr. Jenkins</span> skills and contributions as a clinician and an educator?</li>
+
+                    <!--<li style="line-height: 14px;" th:if="${facTrack &amp;&amp; !entryLevel}">Is this individual involved in significant national peer organizational service - and how would you characterize these activities on committees, as a reviewer, editor, etc.? </li>-->
+                    <li style="line-height: 14px;" th:if="${facTrack &amp;&amp; !entryLevel}">We would appreciate your comments on interdisciplinary achievements, unusual commitment to diversity, and national/international volunteerism.</li>
+
+                    <li style="line-height: 14px;" th:if="${track.clinical &amp;&amp; !entryLevel &amp;&amp; evaluation.external}">Does your institution have a rank equivalent to the rank in which <span th:text="${last}" th:remove="tag">Dr. Jenkins</span> is being promoted?  If so, would <span th:text="${last}" th:remove="tag">Dr. Jenkins</span> be likely to achieve the equivalent rank at your institution?</li>
+                    <li style="line-height: 14px;" th:if="${track.clinical &amp;&amp; !entryLevel &amp;&amp; evaluation.internal}">Do you believe this individual would be likely to achieve equivalent rank at this time at other institutions similar to the University of Michigan that have a similar clinical or clinician-educator track?</li>
+
+                    <li style="line-height: 14px;" th:if="${(track.instructional || track.research) &amp;&amp; !entryLevel &amp;&amp; evaluation.external}">Would this individual be likely to achieve equivalent rank at your institution at this time?</li>
+                    <li style="line-height: 14px;" th:if="${(track.instructional || track.research) &amp;&amp; !entryLevel &amp;&amp; evaluation.internal}">Do you believe this individual would be likely to achieve equivalent rank at other institutions similar to the University of Michigan at this time? </li>
+
+                    <li style="line-height: 14px;" th:if="${track.lecturer || (track.clinical &amp;&amp; entryLevel)}">How would you assess <span th:utext="${lastP}" th:remove="tag">Dr. Jenkins</span> skills and contributions as a clinician and an educator?</li>
+                    <li style="line-height: 14px;" th:if="${track.lecturer || (track.clinical &amp;&amp; entryLevel)}">How would you assess <span th:utext="${lastP}" th:remove="tag">Dr. Jenkins</span> scholarly activities and potential for a successful academic career?</li>
+                    <li style="line-height: 14px;" th:if="${track.research &amp;&amp; entryLevel}">How would you assess <span th:utext="${lastP}" th:remove="tag">Dr. Jenkins</span> scholarly activities and potential for a successful academic career?</li>
+                    <li style="line-height: 14px;" th:if="${entryLevel}">Is this individual someone you would wish to have as a colleague in your department?</li>
+                    <li style="line-height: 14px;">Any additional comments you would like to make would be welcome as well.</li>
+                </ul>
+            </div>
+            <div>
+                <p style="margin-bottom: 0; padding-bottom: 0;">To help you in this assessment, please click the Candidate Packet link below for access to the following items:</p>
+                <ul style="margin-top: 0;">
+                    <li style="line-height: 14px;">Our Medical School's specific criteria for appointment to the <span th:text="${title.name}" th:remove="tag">Professor</span> rank.</li>
+                    <li style="line-height: 14px;" th:if="${facTrack}">Selected papers selected by <span th:text="${last}" th:remove="tag">Dr. Jenkins</span>. </li>
+                    <li style="line-height: 14px;" th:if="${facTrack}">Highlights by the author on those selected papers (bibliographic notes) if applicable.</li>
+                    <li style="line-height: 14px;">The curriculum vitae of <span th:text="${last}" th:remove="tag">Dr. Jenkins</span>.</li>
+                </ul>
+
+            </div>
+            <p>
+                We request that you return your review to us by <span class="date wf-dyna-date" th:text="${#dates.format(evaluation.requestedReturnDate, 'MM/dd/yyyy')}">01/01/2010</span>.
+                To facilitate the process, you may return your assessment by uploading your letter in PDF format (on
+                your institution's letterhead and with signature) by clicking on the Upload Letter link below, or by mailing your
+                letter to my attention at the address on the letterhead above. If it is not
+                possible for you to respond in this time frame, please let us know what would work for you, as we greatly value
+                your assessment of Dr. <span th:text="${prospect.last}" th:remove="tag">Jenkins</span>.
+            </p>
+            <p>
+                <span th:if="${evaluation.armsLength}">We recognize your many commitments and appreciate your assistance with this review. Unbiased external peer evaluation guarantees the excellence that society relies upon in academic medicine.</span>
+                Please let me know if you are unable to provide this letter so we can contact another colleague to ensure we have the appropriate number of letters for <span th:utext="${lastP}" th:remove="tag">Dr. Jenkins</span> promotion. We are required to note  in the promotion record if you can not/did not respond.
+            </p>
+            <p>
+                If you have any questions or concerns, please contact <span th:text="${deptContactName}" th:remove="tag">Department Contact</span> at <span th:text="${deptContactEmail}" th:remove="tag">deptContact@domain.com</span>.
+            </p>
+
+            <p><a href="" target="_blank" th:href="${baseUrl + evaluation.packetLink}">Click Here to download Candidate Packet</a></p>
+            <p><a href="" target="_blank" th:href="${baseUrl + evaluation.uploadLink}">Click Here to Upload Letter</a></p>
+            <p>Thank you for your time and effort.</p>
+            <p>Sincerely,</p>
+            <div th:switch="${generateFor}" th:remove="tag">
+                <img th:case="'html'" style="height: 40px; padding-left: 10px; padding-bottom: 30px; padding-top: 30px;" src="../../webapp/img/default_sig.png" th:src="${attachments['chairSig'].content.htmlInlineSrc}"/>
+                <img th:case="'email'" style="height:40px" src="../../webapp/img/default_sig.png" th:src="${'cid:'+attachments['chairSig'].contentId}"/>
+            </div>
+            <p th:object="${departmentInfo}">
+                <span th:utext="*{chairWithDegree}">Laurence F. McMahon, Jr., MD. MPH</span><br/>
+                <span th:utext="*{chairTitles}"></span>
+            </p>
+        </div>
+        <div>
+            <p style='font-size:smaller;font-style:italic'>
+                Questions sometimes arise about the confidentiality of review letters, and we do want to advise you that your letter will be reviewed by senior faculty at the University of Michigan. As a public institution, legal considerations limit our ability to assure confidentiality, but it is our practice not to release review letters unless required to do so by law. The candidate has signed a document authorizing the University of Michigan to inquire about their qualifications for appointment and releasing from liability any person responding to such an inquiry. A copy of the release is on file at the University of Michigan and will be provided to you if requested.
+            </p>
+        </div>
+    </div>
+</div>

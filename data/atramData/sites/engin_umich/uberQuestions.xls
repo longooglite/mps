@@ -1,0 +1,3 @@
+#code	descr	display_text	header_text	cols_offset	cols_label	cols_prompt	required	wrap	encrypt	data_type	data_type_attributes	job_action_types	identifier_code	show_codes	hide_codes
+
+PromoReferenceList_Q1	Promo Reference List - Dummy Question	Promo Reference List Questions TBD		0	4	4	True	False	False	Text		PROMOTION			

@@ -1,0 +1,4 @@
+<div class="wf-summary-line clearfix">
+	<div class="wf-summary-label">{{ prompt.get('label','') }}:</div>
+	<span class="wf-summary-value">{{ promptVal }}</span>
+</div>

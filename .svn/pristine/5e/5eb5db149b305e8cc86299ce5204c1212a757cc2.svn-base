@@ -1,0 +1,37 @@
+<form class="wf-ajax-form wf-pi-form" action="{{ context.get('url','') }}" onSubmit="return false;">
+
+    <p>{{ context.get('instructional','') }}</p>
+    {% for position in context.get('secondarypositions',[]) %}
+        <div class="cv-callout cv-callout-info cv-callout-bordered clearfix row">
+            <div class="col-md-5">
+                <table class="table table-condensed">
+                    <tr>
+                        {% set checked = '' %}
+                        {% if position.get('position_is_selected',False) %}
+                            {% set checked = 'checked' %}
+                        {% end %}
+                        {% set positionId = 'position|' + str(position.get('positionid',''))%}
+                        <td><label><input type="checkbox" name="{{positionId}}" {{checked}} value="selected">&nbsp;{{ position.get('pcn','') }}&nbsp;{{position.get('department','')}}</label>
+                            {% set titleListId = 'title|' + str(position.get('positionid','')) %}
+                            <select id="{{titleListId}}" name="{{titleListId}}" class="form-control">
+                                {% for title in position.get('titles',[]) %}
+                                    {% set selected = '' %}
+                                    {% if position.get('selected_title_id',-1) == title.get('id','') %}
+                                        {% set selected = 'selected' %}
+                                    {% end %}
+                                    <option value="{{ title.get('id','') }}" {{selected}}>{{ title.get('descr','') }}</option>
+                                {% end %}
+                             </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    {% end%}
+
+    <div class="wf-details-form-btn-bar col-xs-12">
+		<button type="submit" class="wf-widget-form-btn btn btn-primary">Confirm</button>
+		{% include 'formChunk_cancelLink.html' %}
+	</div>
+</form>

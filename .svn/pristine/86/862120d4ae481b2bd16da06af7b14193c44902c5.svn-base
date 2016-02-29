@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>SmartPath&trade;</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/wf-main.css"/>
+</head>
+
+<body>
+	<div class="container-fluid">
+		{% set context['pageHeaderTitle'] = 'SmartPath' %}
+		{% include pageHeader.html %}
+		{% set message = context.get('errormessage','') %}
+		<div class="wf-workflow-content" id="workflow-content">
+			<div class="body-content">
+				<div>
+					<span id="errormessage" class="errormessage">{{message}}</span>
+				</div>
+			</div>
+		</div>
+		<h3 class="clearfix wf-toast">
+			<div class="wf-toast-msg">Your SmartPath<smaller>&trade;</smaller> session has ended.</div>
+			<div class="wf-toast-msg">Click <a href="{{context.get('loginURL','')}}">here</a> to log in.</div>
+		</h3>
+		{% if message %}
+			<h4 class="clearfix wf-toast">
+				<div class="wf-toast-msg">{{message}}</div>
+			</h4>
+		{% end %}
+	</div>
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+
+</body>
+</html>

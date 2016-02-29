@@ -1,0 +1,15 @@
+{
+	"environment": "devserver",
+	"listenport": 9001,
+	"dbhost": "localhost",
+	"dbport": 5432,
+	"dbname": "mpsauth",
+	"dbusername": "mps",
+	"dbpassword": "mps",
+	"loggingconfig": "config/devserver/MPSAuthSvc/logging.conf",
+	"wkhtmltopdfbinpath": "/usr/local/bin/wkhtmltopdf",
+    "pdftkbinpath":"/usr/bin/pdftk",
+	"skinfolderpath": "/usr/local/mps",
+	"email": "off",
+	"emailto": ["greg.poth@mountainpasssolutions.com"]
+}

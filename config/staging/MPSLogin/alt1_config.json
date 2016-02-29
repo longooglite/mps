@@ -1,0 +1,11 @@
+{
+	"environment": "staging",
+	"listenport": 8101,
+	"authserviceurl": "http://localhost:9100",
+	"loggingconfig": "config/staging/MPSLogin/alt1_logging.conf",
+	"wkhtmltopdfbinpath": "/usr/local/bin/wkhtmltopdf",
+    "pdftkbinpath":"/usr/bin/pdftk",
+	"skinfolderpath": "/usr/local/mps1",
+	"email": "off",
+	"emailto": ["chris.king@mountainpasssolutions.com"]
+}

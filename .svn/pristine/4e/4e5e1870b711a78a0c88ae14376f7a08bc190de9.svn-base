@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html class="no-js" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8"/>
+    <title>Provider Enrollment Information</title>
+    <meta name="description" content=""/>
+
+    <style media="print,screen">
+        body {
+            font-family: sans-serif;
+            font-size: 10pt;
+            /*width: 800px;*/
+        }
+        @page {
+            size: 8.5in 11in;
+            margin: 0.25in 0.4in 0.5in 0.4in;
+            -fs-flow-top: "header";
+            -fs-flow-bottom: "footer";
+            -fs-flow-left: "left";
+            -fs-flow-right: "right";
+            padding: 1em;
+
+            @bottom-left { content: element(footer); }
+        }
+        @media print {
+            #footer { display: block; position: running(footer); font-size: 8pt; margin-left: 15px; }
+        }
+        #pagenumber:before { content: counter(page); }
+        #pagecount:before { content: counter(pages); }
+
+        .sectionheader {
+            border-bottom: 2px solid #006;
+            width:240px;
+            margin-bottom:12px;
+        }
+
+        .section {
+            margin-bottom:40px;
+        }
+
+    </style>
+</head>
+<body>
+<div id="footer" style="font-weight: bold;">Generated on <span th:text="${#dates.format(#dates.createNow(), 'MMM dd, yyyy hh:mm a')}"></span></div>
+
+<div style="margin-top:-20px;">
+    <h2 style='float:left;'>M-ACE</h2>
+    <h2 style='float:right;'>Provider Enrollment Information</h2>
+</div>
+
+<div style="clear:both;border-bottom: 2px solid #006;"></div>
+
+<div style="margin-top:-10px;">
+    <h3 style="float:left;">Candidate Name: <span th:text="${prospect.name}">Full Name</span></h3>
+    <div style="clear:both;">
+        <div class="section">
+            <h4 class="sectionheader">Position Details</h4>
+            <div th:if="!${primaryAppt}">No Position available</div>
+            <div th:if="${primaryAppt}" th:remove="tag">
+                <div>Type: Faculty</div>
+                <div>Department: <span th:text="${primaryAppt.position.department.name}">Department</span></div>
+                <div>Title: <span th:text="${primaryAppt.title.name}">Title</span></div>
+                <div>Department Contact: Discuss at Advisory</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4 class="sectionheader">Candidate Details</h4>
+            <div>Legal Name: <span th:text="${prospect.name}">Prospect Name</span></div>
+            <div th:if="${personalInfo}" th:remove="tag">
+                <label>Aliases:</label>
+                <div th:each="alias, iStat:${personalInfo.aliases}" th:remove="tag">
+                    <span th:text="${alias}">Alias</span><span th:if="${!iStat.last}">; </span>
+                </div>
+            </div>
+            <div>Uniqname: <span th:text="${prospect.loginId}">uniqname</span></div>
+            <div>Email Address: <span th:text="${prospect.email}">email</span></div>
+            <div th:if="${personalInfo}">Phone: <span th:text="${personalInfo.addressPhone}">(123) 323-3123</span></div>
+            <div>Missing Question about name on SSN matching Michigan Medical License??? See Commented Code Below</div>
+            <!--<div>${(properties["form.demographics.name.confirmation"])!''} ${candidate.workflow.samename?string("Yes", "No")}</div>-->
+        </div>
+
+        <div class="section">
+            <h4 class="sectionheader">Credentialing Details</h4>
+            <div>How do we know if person is already credentialed or needs credentialing?????</div>
+            <!--<div>Currently Credentialed: ${candidate.workflow.alreadyCredentialed?string("Yes", "No")} </div>-->
+            <!--<div>Need Credentialing: ${candidate.workflow.credentialingRequired?string("Yes", "No")}</div>-->
+        </div>
+
+        <div class="section">
+            <h4 class="sectionheader">Enrollment Details</h4>
+            <div>On Billing Track? Yes</div>
+            <div th:if="!${npi}">No NPI</div>
+            <div th:if="${npi}" th:remove="tag">
+                <div>NPI number: <span th:text="${npi.number}">123456789</span></div>
+                <div>NPI username: <span th:text="${npi.userid}">userid</span></div>
+                <div>NPI password: <span th:text="${npi.password}">password</span></div>
+            </div>
+            <div>FPSC Designation: Need new Story to collect this</div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
+

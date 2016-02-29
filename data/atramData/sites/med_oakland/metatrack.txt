@@ -1,0 +1,1 @@
+#Code|Description|Supplemental|Active||Standard|Standard|0|1||Tenured|Tenured|0|1||TenureTrack|Tenure Track|0|1||

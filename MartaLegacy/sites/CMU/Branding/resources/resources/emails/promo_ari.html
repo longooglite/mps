@@ -1,0 +1,12 @@
+<div xmlns:th="http://www.thymeleaf.org">
+	<p>
+		<span>Dear Dr.</span> <span th:text="${prospect.lastName}">Schneyer</span>
+	</p>
+    <p>As the promotion process gets underway, one of the first steps is for you to review and sign the Authorization and Release for Immunity (ARI). The ARI authorizes the University to solicit Letters of Recommendation on your behalf and is necessary to move forward with the promotion process.</p>
+    <p>To electronically approve your ARI, <a th:href="${baseUrl + '/web/candidate/ari/view/' + prospect.id}">please click here</a>. Sign in using your <span th:text="#{branding.password}">password</span>. Please complete this required step within 72 hours.</p>
+    <p>If you have not yet received additional information regarding your promotion from your Department Representative, additional instructions and timelines will be forthcoming.</p>
+    <p>We look forward to working with you on your promotion.</p>
+    <p>Thank you,</p>
+    <p><span th:text="${sig}">Claire Cabrera</span></p>
+
+</div>

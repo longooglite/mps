@@ -1,0 +1,59 @@
+/* [Copyright] */
+/* SmartPath v1.0 */
+/* Copyright 2014-2015 Mountain Pass Solutions, Inc. */
+/* This unpublished material is proprietary to Mountain Pass Solutions, Inc. */
+/* [End Copyright] */
+
+/* New Workflow Page Dials */
+.wf-dial{position:relative; left:-5px; top:0px;}
+.wf-dial{position:relative; left:-5px; top:0px;}
+.wf-dial-border{display:block !important; color:#e2e2e2; height:1px; border-top:solid 1px #e2e2e2 !important;
+                margin:0px 15px 0 0 !important; position:relative; top:-5px;}
+.wf-left-title{text-align:center; width:90%; position:relative; display:block; left:-5px;}
+.wf-left-title h4{font-weight:bold; font-size:1.5rem; color:#333;}
+.wf-left-title .sub{position:relative; top:-6px;}
+.wf-left-title .wf-dial-btn{
+    position:absolute;
+    top:-3px;
+    right:-10px;
+    height:22px !important;
+    width:12px !important;
+    margin:0px !important;
+}
+.wf-left-title .wf-dial-btn .glyphicon{position:relative; left:6px; color:#999;}
+.wf-left-title:hover .glyphicon{color:#666 !important;}
+.wf-left-title:hover .wf-dial-btn{ background-color:#cceeff;}
+.wf-left-title:hover{text-decoration:none;}
+
+.wf-nav-highlight .wf-dial-btn {display:none;}
+.wf-nav-highlight .circular-bar .circular-bar-content {margin-bottom:30px;}
+
+.circular-bar {
+  text-align: center;
+  width:90%;
+}
+.circular-bar .circular-bar-content {
+  margin-bottom: 50px;
+  margin-top: -73px;
+  margin-left:-6px;
+  text-align: center;
+}
+.circular-bar .circular-bar-content strong {
+  display: block;
+  font-weight: 600;
+  font-size: 20px;
+  font-size: 1.1em;
+  line-height: 1.5em;
+  line-height: 24px;
+}
+.circular-bar .circular-bar-content label {
+  display: block;
+  font-weight: 300;
+  font-size: 16px;
+  font-size: 1em;
+  line-height: 1.25em;
+  line-height: 20px;
+}
+.circular-bar strong, .circular-bar label{
+    color:#333;
+}

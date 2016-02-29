@@ -1,0 +1,93 @@
+{% set groupCode = '' %}
+{% set groupList = context.get('categoryDict',{}).get('groupList',[]) %}
+{% if groupList %}
+	{% set groupCode = groupList[0].get('group_code','') %}
+{% end %}
+
+{% set editRowId = '0' %}
+{% set editURL = '' %}
+{% set groupDataDict = context.get('rowDataDict',{}).get(groupCode,{}) %}
+{% if groupDataDict %}
+	{% set rowList = groupDataDict.get('rowList',[]) %}
+	{% if rowList %}
+		{% set editRowId = rowList[0].get('row_id','0') %}
+		{% set editURL = rowList[0].get('editURL','') %}
+	{% end %}
+{% end %}
+
+
+<div class="page-header clearfix">
+	<h1>
+		<div class="page-header-controls">
+			<button class="cvHelpButton btn btn-sm btn-default">
+				<span class="glyphicon glyphicon-question-sign"></span>Help...
+			</button>
+			{% include 'partial_printMenu.html' %}
+			{% if not context.get('disabled', True) %}
+			<button class="cvmodaleditdetaillink btn btn-sm btn-primary" id="{{editRowId}}" data-toggle="modal" data-target="#editModal" data-rowid="{{editRowId}}" data-cv-url="{{editURL}}" title="Edit {{ groupDataDict.get('group_descr','') if groupDataDict else context.get('categoryDict',{}).get('category_descr','') }}">
+				<span class="glyphicon glyphicon-edit"></span> <span class="cvSingularize">Edit {{ groupDataDict.get('group_descr','') if groupDataDict else context.get('categoryDict',{}).get('category_descr','') }}...</span>
+			</button>
+			{% end %}
+		</div>
+		{{ cvOwnerName }}<br/>
+		<small>{{ groupDataDict.get('group_descr','') if groupDataDict else context.get('categoryDict',{}).get('category_descr','')}}</small>
+		{% set isMsg = True if len(context.get('errormessage','')) > 0 else False %}
+		<!--
+		<div id="errormessage" class="errormessage cv-callout cv-callout-info{{ '' if isMsg else ' starthidden'}}">
+			<h4><span class="glyphicon glyphicon-sm glyphicon-ok"></span>{{context.get('errormessage','')}}</h4>
+		</div>
+		-->
+	</h1>
+</div>
+
+<div class="cv-singleentry-outer-panel cvContentOuter">
+	<br/>
+
+	{% if not groupDataDict %}
+		<p class="mpscentertext mpsbold mpsfontplus4">No data available</p>
+	{% else %}
+
+			{% set rowList = groupDataDict.get('rowList',[]) %}
+			{% if rowList %}
+				{% set fieldList = rowList[0].get('fieldList',[]) %}
+				{% for attributeDict in fieldList %}
+					{% set displayValue = attributeDict.get('formatted_value','') %}
+					{% if displayValue %}
+						{% set displayOptions = attributeDict.get('field_list_display_options','') %}
+						{% set bold = '' %}
+						{% set italic = '' %}
+						{% set underline = '' %}
+						{% if 'bold' in displayOptions %} {% set bold = 'mpsbold' %} {% end %}
+						{% if 'italic' in displayOptions %} {% set italic = 'mpsitalic' %} {% end %}
+						{% if 'underline' in displayOptions %} {% set underline = 'mpsunderline' %} {% end %}
+
+						<div class="{{bold}} {{italic}} {{underline}} mpscentertext mpsfontplus4 cv-list-singleentry-row clearfix">
+							{% if 'label' in displayOptions %}
+								{{attributeDict.get('field_descr','')}}:
+							{% end %}
+							{% if attributeDict.get('affordance_code','').upper() == 'REPEATING_TEXT' %}
+								{% try %}
+									{% import json %}
+									{% set textList = json.loads(displayValue) %}
+									{% if len(textList) > 0 %}
+										{{ textList[0] }}
+										{% if len(textList) > 1 %}
+											{% for extraText in textList[1:] %}
+												</div>
+												<div class="{{bold}} {{italic}} {{underline}} mpscentertext mpsfontplus4 cv-list-singleentry-row">
+												{{ extraText }}
+											{% end %}
+										{% end %}
+									{% end %}
+								{% except %}
+								{% end %}
+							{% else %}
+								{{ displayValue }}
+							{% end %}
+						</div>
+					{% end %}
+				{% end %}
+				<div class="cv-list-singleentry-row">&nbsp;</div>
+			{% end %}
+	{% end %}
+</div>

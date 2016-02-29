@@ -1,0 +1,10 @@
+#site|community|user|application|sequencenbr
+shib|default|mpsadmin|MPSADMIN|1
+shib|default|mpsadmin|CV|2
+shib|default|mpsadmin|APPT|3
+shib|default|user1|CV|1
+shib|default|user2|CV|1
+shib|default|user3|CV|1
+shib|default|user4|CV|1
+shib|default|user5|CV|1
+shib|default|myself|CV|1

@@ -1,0 +1,7 @@
+# Site-specific overrides and settings only.
+#sitecode|code|value
+dev|skin|atram
+dev|auth|LDAP
+dev|dbname|dev
+dev|sessionidletimeoutmilliseconds|60000000
+dev|facultyaffairsemail|eric.paul@mountainpasssolutions.com

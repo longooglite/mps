@@ -1,0 +1,7 @@
+jobaction.locked=This item is locked
+
+fileupload.size.exceeded=File size exceeded. Max allowed size is 10 Mb
+
+evaluator.edit.upload.exists=Can not delete an evaluator if there's already an evaluation uploaded
+evaluator.edit.armslength=Document already uploaded. Cannot change arms length
+evaluator.edit.duplicateemail=Evaluator with that email already exists

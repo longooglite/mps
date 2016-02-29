@@ -1,0 +1,13 @@
+#site|community|username|password|first name|last name|email|auth_override|active
+# the password is the same as the username (except for mpsadmin)
+engin-umich|default|mpsadmin|8405a05b4ae6d1943b9d99f1e153837867a7dc20584505f76ee86e9605375bdc|MPS|Administrator|greg.poth@gomountainpass.com|MPS|true
+engin-umich|default|user1|0a041b9462caa4a31bac3567e0b6e6fd9100787db2ab433d96f6d178cabfce90|User|1|chris.king@gomountainpass.com|MPS|true
+engin-umich|default|user2|6025d18fe48abd45168528f18a82e265dd98d421a7084aa09f61b341703901a3|User|2|chris.king@gomountainpass.com|MPS|true
+engin-umich|default|user3|5860faf02b6bc6222ba5aca523560f0e364ccd8b67bee486fe8bf7c01d492ccb|User|3|chris.king@gomountainpass.com|MPS|true
+engin-umich|default|user4|5269ef980de47819ba3d14340f4665262c41e933dc92c1a27dd5d01b047ac80e|User|4|chris.king@gomountainpass.com|MPS|true
+engin-umich|default|user5|5a39bead318f306939acb1d016647be2e38c6501c58367fdb3e9f52542aa2442|User|5|chris.king@gomountainpass.com|MPS|true
+engin-umich|default|faculty|3dbd9cd5e1fb3e4f78542d53040b60990a9b4acfd6ab0b01133c5b8eeec45031|faculty|faculty|chris.king@gomountainpass.com|MPS|true
+engin-umich|default|rpm|9e7ab438597fee20e16e8e441bed0ce966bd59e0fb993fa7c94be31fb1384d88|rpm|rpm|chris.king@gomountainpass.com|MPS|true
+engin-umich|default|ofa|babfb5d5d00613e8a034de9cda63384ca2faf021d3f95cc3be5b140f74b1e374|OFA|User|chris.king@gomountainpass.com|MPS|true
+engin-umich|default|dept|656d84e0dabc849f6124a80fb219b1cff2f1a252ad6866537927a9e8daf4fdf8|Department|User|chris.king@gomountainpass.com|MPS|true
+engin-umich|default|myself|5a39bead318f306939acb1d016647be2e38c6501c58367fdb3e9f52542aa2442|Me|Myself|greg.poth@gomountainpass.com|shib|default|true

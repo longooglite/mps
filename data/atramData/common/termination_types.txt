@@ -1,0 +1,7 @@
+#code|descr
+TERMINATE|Terminate
+RETIRE|Retire
+DECEASED|Deceased
+ACCEPTEDOTHER|Accepted another position
+NOTREAPPOINTED|Not re-appointed
+

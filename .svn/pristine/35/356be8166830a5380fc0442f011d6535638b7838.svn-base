@@ -1,0 +1,58 @@
+#   File of site-specific role/permission assignments.
+#   Use the common 'common_role_permissions.txt' file for non-site-specific data.
+
+#application|site|role|permission
+
+#   Department User
+APPT|demo|apptDeptUser|apptRosterView
+APPT|demo|apptDeptUser|apptDashboardView
+APPT|demo|apptDeptUser|apptCreatePosition
+APPT|demo|apptDeptUser|apptViewAsCandidate
+APPT|demo|apptDeptUser|apptJobActionOverview
+APPT|demo|apptDeptUser|apptCreateJobAction
+APPT|demo|apptDeptUser|apptPositionView
+APPT|demo|apptDeptUser|apptPersonView
+APPT|demo|apptDeptUser|apptCancelJobAction
+APPT|demo|apptDeptUser|apptResendEmail
+
+APPT|demo|apptDeptUser|dept_task
+APPT|demo|apptDeptUser|approverfp_view
+APPT|demo|apptDeptUser|canViewNPIPassword
+
+
+#   Faculty Affairs User
+APPT|demo|apptFacultyAffairs|apptRosterView
+APPT|demo|apptFacultyAffairs|apptDashboardView
+APPT|demo|apptFacultyAffairs|apptCreatePosition
+APPT|demo|apptFacultyAffairs|apptViewAsCandidate
+APPT|demo|apptFacultyAffairs|apptJobActionOverview
+APPT|demo|apptFacultyAffairs|apptCancelJobAction
+APPT|demo|apptFacultyAffairs|apptResendEmail
+
+APPT|demo|apptFacultyAffairs|ofa_task
+APPT|demo|apptFacultyAffairs|apptCreateJobAction
+APPT|demo|apptFacultyAffairs|apptPositionView
+APPT|demo|apptFacultyAffairs|apptPersonView
+APPT|demo|apptFacultyAffairs|approverfp_edit
+APPT|demo|apptFacultyAffairs|facultyAffairsUser
+
+#   Medical Staff Services User
+APPT|demo|apptMedicalStaffServices|mss_task
+APPT|demo|apptMedicalStaffServices|apptRosterView
+APPT|demo|apptMedicalStaffServices|apptJobActionOverview
+APPT|demo|apptMedicalStaffServices|apptDashboardView
+APPT|demo|apptMedicalStaffServices|canViewNPIPassword
+
+#   Provider Enrollment User
+APPT|demo|apptProviderEnrollment|enroll_task
+APPT|demo|apptProviderEnrollment|apptRosterView
+APPT|demo|apptProviderEnrollment|apptJobActionOverview
+APPT|demo|apptProviderEnrollment|apptDashboardView
+APPT|demo|apptProviderEnrollment|canViewNPIPassword
+
+#   Assistant Dean User
+
+APPT|demo|apptAssitantDean|assist_dean_task
+APPT|demo|apptAssitantDean|apptRosterView
+APPT|demo|apptAssitantDean|apptJobActionOverview
+APPT|demo|apptAssitantDean|apptDashboardView

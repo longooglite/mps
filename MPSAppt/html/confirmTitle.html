@@ -1,0 +1,59 @@
+<form class="wf-ajax-form wf-pi-form" action="{{ context.get('url','') }}" onSubmit="return false;">
+
+    {% if context.get('secondary_appointment_mode',False) %}
+        <div class="form-row clearfix">
+            <label class="col-xs-1 ta-right">{{context.get('departmentText','Department')}}:</label>
+            <div class="col-xs-5">
+                <select id="department_list" name="department_list" class="form-control">
+                    {% for department in context.get('department_selection',[]) %}
+                        {% if len(department.get('children',[])) > 0 %}
+                            <optgroup label="{{ department.get('descr','') }}">
+                                {% for child in department.get('children',[]) %}
+                                    {% set selected = '' %}
+                                    {% if child.get('id','') == context.get('selected_appt_dept_id',0) %}
+                                        {% set selected = 'selected' %}
+                                    {% end %}
+                                    <option value="{{ child.get('id',0) }}" {{selected}}>{{ child.get('full_descr','') }}</option>
+                                {% end %}
+                            </optgroup>
+                        {% else %}
+                            {% set selected = '' %}
+							{% if department.get('id',0) == context.get('selected_appt_dept_id',1) %}
+								{% set selected = 'selected' %}
+							{% end %}
+                            <option value="{{ department.get('id',0) }}" {{selected}}>{{ department.get('full_descr','') }}</option>
+                        {% end %}
+                    {% end %}
+                </select>
+            </div>
+        </div>
+    {% end %}
+
+    <div class="form-row clearfix">
+		<label class="col-xs-1 ta-right">Title:</label>
+		<div class="col-xs-5">
+			<select id="track_title_list" name="track_title_list" class="form-control">
+				{% for track in context.get('track_title_selection',{})['track'] %}
+					{% set trackdescr = track.keys()[0] %}
+					<optgroup label="{{ trackdescr }}">
+						{% for title in track[trackdescr] %}
+							{% set titledescr = title['title_descr'] %}
+							{% set titleId = title['title_id'] %}
+							{% set disabled = 'disabled="disabled"' if title['isactionable'] == False else '' %}
+							{% set selected = '' %}
+							{% if titleId == context.get('selected_appt_title_id',0) %}
+								{% set selected = 'selected' %}
+							{% end %}
+							{% if title['isactionable'] == True %}<option value="{{ titleId }}" {{ selected }} {{disabled}}>{{ titledescr }}</option>{% end %}
+						{% end %}
+					</optgroup>
+				{% end %}
+			</select>
+		</div>
+	</div>
+
+    <div class="wf-details-form-btn-bar col-xs-12">
+		<button type="submit" class="wf-widget-form-btn btn btn-primary">Confirm</button>
+		{% include 'formChunk_cancelLink.html' %}
+	</div>
+</form>

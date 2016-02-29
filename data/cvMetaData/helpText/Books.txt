@@ -1,0 +1,47 @@
+[Category]
+<h4>Bibliography / Publications - Books</h4>
+<p>This page displays books you have authored or co-authored.<p>
+<p>The content of this page can be sorted by clicking on any column title.</p>
+<hr>
+<p>To <strong>add</strong> an additional entry, click the “+ Add …” button in the upper right portion of the page.</p>
+<p>To <strong>edit</strong> an existing entry, click the blue text in the row you would like to edit.</p>
+<p>To <strong>delete</strong> an entry, click the X at the end of the row you would like to delete. Then confirm the deletion.</p>
+<p>To <strong>print</strong> this section of the CV, click the “Print this section” button in the upper right portion of the page or select “Print Section” from the Print menu found in the menu bar.</p>
+
+
+[BooksBookTitle]
+<p>Please enter book title.</p>
+<hr>
+<p>This item is required</p>
+
+[BooksBookAuthors]
+<p>Please enter the book authors.</p>
+<hr>
+<p>This item is required</p>
+
+[BooksEdition]
+<p>Please enter the book edition.</p>
+
+[BooksPages]
+<p>Please enter the number of pages.</p>
+
+[BooksPublisher]
+<p>Please enter the publishers name.</p>
+<hr>
+<p>This item is required</p>
+
+[BooksLocation]
+<p>Please enter the publishers office location.</p>
+<hr>
+<p>This item is required</p>
+
+[BooksVolume]
+<p>Please enter the volume of the book.</p>
+
+[BooksChapter]
+<p>Please enter the number of chapters.</p>
+
+[BooksPublicationYear]
+<p>Please enter books publish year.</p>
+<hr>
+<p>This item is required</p>

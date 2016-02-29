@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Appointments</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/wf-main.css"/>
+</head>
+<body class="cv-proxy-page wf-details-page">
+<div class="container-fluid mps-body">
+	{% set context['pageHeaderTitle'] = 'Appointments' %}
+	{% include pageHeader.html %}
+	<div class="body-content cv-body cv-body-no-menu">
+		<div class="page-header clearfix">
+			<h1>
+				Cancel Job Action
+				{% set sTitle = context.get('title_descr', '[Title Descr]') %}
+				{% set sDept = context.get('department_descr', '[Dept Descr]') %}
+				{% set sJA = context.get('jobAction_descr', '[Job Action Descr]') %}
+				{% set sPCN = context.get('pcn_descr', '[PCN Descr]') %}
+				{% if sTitle != '' or sDept != '' %}
+				<br/><small>
+					{% if sPCN != '' %}<span>{{sPCN}}: </span>{% end %}
+					{% if sJA != '' %}<span>{{sJA}}</span>{% end %}
+					{% if sJA != '' or sPCN != '' %}<br/>{% end %}
+					{% if sTitle != '' %}<span>{{sTitle}}</span><br/>{% end %}
+					{% if sDept != '' %}<span>{{sDept}}</span>{% end %}
+				</small>
+				{% end %}
+			</h1>
+		</div>
+		<form id="mainform" onsubmit="return false;">
+			<input type=hidden name="jobactionid" id="job_action_id" value="{{context.get('job_action_id',-1)}}">
+			<div class="cv-callout cv-callout-info cv-callout-bordered wf-page-callout clearfix">
+				<label for="comment">Reason for Cancelation:</label>
+				<br/>
+				<textarea rows="5" id="comment" name="comment"></textarea>
+				<div class="wf-details-form-btn-bar col-xs-12">
+					<button class="cancelappointment btn btn-primary">Cancel Job Action</button>
+					<a data-section="wf-overview-item" class="overview-breadcrumb wf-details-footer-cancel wf-details-footer-back" href="#">
+						<span class="glyphicon glyphicon-circle-arrow-left"></span><span>Back</span>
+					</a>
+				</div>
+			</div>
+		</form>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	(function ($) {
+
+		$('body').on('click', '.cancelappointment', function(event){
+			var $this = $(this);
+				isSure = window.confirm('Note: There is no undo after a Job Action is canceled.\n\nAre you certain you wish to cancel this Job Action?')
+			if(isSure){
+				var $jobactionid = $('#job_action_id').val();
+				var sURL = '/appt/jobaction/cancel/' + $jobactionid
+				cvApp.ubiquitousPageRequest({
+					url: sURL,
+					data: JSON.stringify($('#mainform').serializeObject()),
+					errorMessage: '#modalerrormessage'
+				});
+			}
+		});
+
+	})(jQuery);
+
+	/*]]>*/
+</script>
+</div>
+</body>
+</html>

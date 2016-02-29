@@ -1,0 +1,20 @@
+<form class="wf-ajax-form wf-pi-form" action="{{ context.get('url','') }}" onSubmit="return false;">
+
+    <p>{{ context.get('instructional','') }}</p>
+    {% for item in context.get('items',[]) %}
+        {% set checked = '' %}
+        {% if item.get('selected',False) %}
+            {% set checked = 'checked' %}
+        {% end %}
+        <div class="form-row clearfix">
+            <div class="col-xs-5">
+                <label><input type="checkbox" name="{{item.get('value','')}}" {{checked}} value="selected">&nbsp;{{ item.get('descr','') }}</label>
+            </div>
+        </div>
+    {% end%}
+
+    <div class="wf-details-form-btn-bar col-xs-12">
+		<button type="submit" class="wf-widget-form-btn btn btn-primary">Confirm</button>
+		{% include 'formChunk_cancelLink.html' %}
+	</div>
+</form>

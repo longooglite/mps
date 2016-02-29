@@ -1,0 +1,30 @@
+[Category]
+<h4>Honors, Awards & Prizes</h4>
+<p>
+This page displays your major honors, awards and prizes. Entries can be International, National, Regional or Institutional. The number of entries within each region will be displayed in () on the tabs. Departmental teaching awards can be listed here under Institutional.
+</p>
+<p>The content of this page can be sorted by clicking on any column title.</p>
+<hr>
+<p>To <strong>add</strong> an additional entry, click the “+ Add …” button in the upper right portion of the page.</p>
+<p>To <strong>edit</strong> an existing entry, click the blue text in the row you would like to edit.</p>
+<p>To <strong>delete</strong> an entry, click the X at the end of the row you would like to delete. Then confirm the deletion.</p>
+<p>To <strong>print</strong> a section of the CV, click the “Print this section” button in the upper right portion of the page or select “Print Section” from the Print menu found in the menu bar.</p>
+
+
+[HonorsRegion]
+<p>Please select a Region for this entry.</p>
+<hr>
+<p>This item is required</p>
+[HonorsDescription]
+<p>Please enter a description for this entry.</p>
+<hr>
+<p>This item is required</p>
+[HonorsStart]
+<p>Please enter a start date for this entry.</p>
+<hr>
+<p>This item is required</p>
+<p>Hover your mouse over the field to see supported date formats</p>
+[HonorsEnd]
+<p>Please enter an end date for this entry.</p>
+<hr>
+<p>Hover over the field to see supported date formats</p>

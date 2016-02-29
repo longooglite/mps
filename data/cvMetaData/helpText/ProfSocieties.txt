@@ -1,0 +1,33 @@
+[Category]
+<h4>Professional Societies</h4>
+<p>This page displays your Professional Society memberships.
+</p>
+<p>The content of this page can be sorted by clicking on any column title.</p>
+<hr>
+<p>To <strong>add</strong> an additional entry, click the “+ Add …” button in the upper right portion of the page.
+</p>
+<p>To <strong>edit</strong> an existing entry, click the blue text in the row you would like to edit.</p><p>
+To <strong>delete</strong> an entry, click the X at the end of the row you would like to delete. Then confirm the deletion.
+</p>
+
+
+[ProfSocietiesName]
+<p>Please enter the professional society name.</p>
+<hr>
+<p>This item is required</p>
+
+[ProfSocietiesMemberType]
+<p>Please select a membership type.</p>
+<hr>
+<p>This item is required</p>
+
+[ProfSocietiesStart]
+<p>Please enter the start date for this entry.</p>
+<hr>
+<p>This item is required</p>
+<p>Hover over the field to see supported date formats</p>
+
+[ProfSocietiesEnd]
+<p>Please enter the end date for this entry.</p>
+<hr>
+<p>Hover over the field to see supported date formats</p>

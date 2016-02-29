@@ -1,0 +1,114 @@
+#SPECIALTY_CD|SPECIALTY_DESC
+04|Adult Allergy / Immunology
+CG|Adult Cardiology: General
+CI|Adult Cardiology: Invasive
+CV|Adult Cardiology: Invasive Interventional
+CN|Adult Cardiology: Noninvasive
+09|Adult Critical Care
+22|Adult Emergency Medicine
+23|Adult Endocrinology / Metabolism
+27|Adult Gastroenterology
+39|Adult General Internal Medicine
+G1|Adult Genetics 
+72|Adult Hematology
+40|Adult Hepatology
+ZP|Adult Hospitalists
+37|Adult Infectious Disease
+MI|Adult Medical Oncology with Infusion
+74|Adult Medical Oncology without Infusion
+46|Adult Nephrology
+58|Adult Otorhinolaryngology
+59|Adult Psychiatry
+73|Adult Pulmonary Disease
+77|Adult Rheumatology
+03|Ambulatory Gynecology
+06|Anesthesiology
+ZE|Audiology
+15|Bone Marrow Transplant
+CE|Cardiology: Electrophysiology
+17|Dermatology
+25|Family Medicine (with OB)
+26|Family Medicine (without OB)
+28|Geriatrics
+29|Gynecological Oncology
+M5|Gynecology
+42|Maternal and Fetal Medicine
+18|MOHS Surgery
+51|Neurology: Alzheimers / Dementia
+56|Neurology: Epilepsy / EEG
+44|Neurology: General
+53|Neurology: Neuromuscular
+55|Neurology: Sleep Medicine
+52|Obstetrics / Gynecology
+54|Occupational Medicine
+91|Ophthalmology: Corneal / Refractive Surgery
+90|Ophthalmology: General / Comprehensive
+92|Ophthalmology: Glaucoma
+93|Ophthalmology: Neuro
+95|Ophthalmology: Oculoplastic / Reconstructive Surgery
+97|Ophthalmology: Optometry
+94|Ophthalmology: Pediatric
+96|Ophthalmology: Retinal
+70|Orthopedic Surgery: Foot / Ankle
+57|Orthopedic Surgery: General
+36|Orthopedic Surgery: Hand
+35|Orthopedic Surgery: Joint
+62|Orthopedic Surgery: Oncology
+88|Orthopedic Surgery: Shoulder / Elbow
+31|Orthopedic Surgery: Spine
+85|Orthopedic Surgery: Sports Medicine
+24|Orthopedic Surgery: Trauma
+19|Pain Management
+07|Pathology: Anatomic
+14|Pathology: Clinical
+80|Pathology: Surgical
+A5|Pediatric Critical Care
+67|Pediatric Orthopedic Surgery
+66|Pediatric Surgery
+41|Pediatrics: Adolescent Medicine
+05|Pediatrics: Allergy / Immunology
+63|Pediatrics: Cardiology
+33|Pediatrics: Cardiology-Invasive
+34|Pediatrics: Cardiology-Noninvasive
+A2|Pediatrics: Developmental
+20|Pediatrics: Emergency Medicine
+64|Pediatrics: Endocrinology
+A8|Pediatrics: Gastroenterology
+61|Pediatrics: General Medicine
+A7|Pediatrics: Hematology / Oncology
+43|Pediatrics: Hospitalists
+11|Pediatrics: Infectious Disease
+48|Pediatrics: Neonatal Medicine
+49|Pediatrics: Nephrology
+12|Pediatrics: Neurology
+68|Pediatrics: Otorhinolaryngology
+65|Pediatrics: Psychiatry
+A6|Pediatrics: Pulmonology
+45|Pediatrics: Rehabilitation
+21|Pediatrics: Rheumatology
+69|Physical Medicine
+ZA|Podiatry
+60|Psychology
+79|Radiation Oncology
+75|Radiology: Diagnostic
+38|Radiology: Interventional
+47|Radiology: Nuclear Medicine
+76|Reproductive Endocrinology
+13|Surgery: Burn
+81|Surgery: Cardiac
+16|Surgery: Colon and Rectal
+32|Surgery: General
+50|Surgery: Neurological
+A0|Surgery: Oral
+71|Surgery: Plastic
+87|Surgery: Thoracic
+ZT|Surgery: Trauma
+86|Surgery: Vascular
+02|Surgical Oncology
+TS|Transplant Surgery: General
+08|Transplant Surgery: Heart
+84|Transplant Surgery: Heart / Lung
+10|Transplant Surgery: Kidney
+89|Transplant Surgery: Liver
+78|Uro-Gynecology
+82|Urology

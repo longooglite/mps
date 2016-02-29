@@ -1,0 +1,5 @@
+#code|descr|supplemental|active
+1|Faculty|0|1|
+2|Lecturer|0|1|
+3|Supplemental|1|1|
+4|Dummy|0|0|

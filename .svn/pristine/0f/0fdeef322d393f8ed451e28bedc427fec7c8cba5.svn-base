@@ -1,0 +1,17 @@
+<div class="cv-menu">
+	<ul class="nav nav-stacked nav-pills">
+		{% for cvMenuDict in context.get('cvMenuList',[]) %}
+			{% if cvMenuDict.get('show','') == 'true' %}
+			   {% if cvMenuDict.get('is_submenu','') == 'false' %}
+				   <li id="{{cvMenuDict.get('code','')}}" class="cv-menuitem {{'active' if cvMenuDict.get('selected','') == 'true' else ''}}">
+					   <a href="/cv/view/{{cvMenuDict.get('community','')}}/{{cvMenuDict.get('username','')}}/{{cvMenuDict.get('code','')}}">{{cvMenuDict.get('descr','')}}{% if cvMenuDict.get('selected','') == 'true' %}<span class="glyphicon glyphicon-chevron-right"></span>{% end %}</a>
+				   </li>
+			   {% else %}
+				   <li id="{{cvMenuDict.get('code','')}}" class="cv-submenuitem {{'active' if cvMenuDict.get('selected','') == 'true' else ''}}">
+					   <a href="/cv/view/{{cvMenuDict.get('community','')}}/{{cvMenuDict.get('username','')}}/{{cvMenuDict.get('code','')}}">{{cvMenuDict.get('descr','')}}{% if cvMenuDict.get('selected','') == 'true' %}<span class="glyphicon glyphicon-chevron-right"></span>{% end %}</a>
+				   </li>
+			   {% end %}
+			{% end %}
+		{% end %}
+	</ul>
+</div>

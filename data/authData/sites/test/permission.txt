@@ -1,0 +1,4 @@
+#   File of site-specific permissions.
+#   Use the common 'common_permissions.txt' file for non-site-specific permissions.
+
+#site_code|application|code|description

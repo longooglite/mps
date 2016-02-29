@@ -1,0 +1,3 @@
+#sitecode|appcode
+accept-umich|APPT
+accept-umich|MPSADMIN

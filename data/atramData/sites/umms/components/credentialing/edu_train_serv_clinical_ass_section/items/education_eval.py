@@ -1,0 +1,306 @@
+# [Copyright]
+# SmartPath v1.0
+# Copyright 2014-2015 Mountain Pass Solutions, Inc.
+# This unpublished material is proprietary to Mountain Pass Solutions, Inc.
+# [End Copyright]
+
+education_eval = {
+	"code": "education_eval",
+	"comment":"",
+	"descr": "Manage Professional Education Evaluations",
+	"header": "Manage Professional Education Evaluations",
+	"componentType": "Task",
+	"affordanceType":"Item",
+	"optional": False,
+	"enabled": True,
+	"logEnabled": True,
+	"accessPermissions": ["dept_task","mss_task"],
+	"viewPermissions": ["dept_task","mss_task","ofa_task"],
+	"blockers": [],
+	"containers": [],
+	"statusMsg": "",
+	"successMsg":"",
+	"className": "Evaluations",
+	"config": {
+		"assessment_header":"Professional Education Evaluations",
+		"headerImageOverride":"cred_default_head.png",
+		"omitCodes": [],
+		"printHeader": "Professional Education Evaluation",
+
+		"addEvalDashboardEvents": [],
+		"removeEvalDashboardEvents":[],
+		"activityLog": {
+			"enabled": True,
+			"activityLogText": "Only used as a comment template",
+			"comments": [
+				{
+					"commentCode": "deleteComment",
+					"commentLabel": "Comment",
+					"accessPermissions": ["ofa_task","dept_task"],
+					"viewPermissions": ["ofa_task","dept_task"],
+				},
+				{
+					"commentCode": "declineComment",
+					"commentLabel": "Please enter a reason for declining this evaluator",
+					"accessPermissions": ["ofa_task","dept_task"],
+					"viewPermissions": ["ofa_task","dept_task"],
+				},
+				{
+					"commentCode": "reviewComment",
+					"commentLabel": "Comment",
+					"accessPermissions": ["ofa_task","dept_task"],
+					"viewPermissions": ["ofa_task","dept_task"],
+				},
+			],
+		},
+		"addActivityLog": {
+			"enabled": True,
+			"activityLogText": "Add Evaluator",
+		},
+		"editActivityLog": {
+			"enabled": True,
+			"activityLogText": "Edit Evaluator",
+		},
+		"declineActivityLog": {
+			"enabled": True,
+			"activityLogText": "Decline Evaluator",
+		},
+		"deleteActivityLog": {
+			"enabled": True,
+			"activityLogText": "Delete Evaluator",
+		},
+		"sendActivityLog": {
+			"enabled": True,
+			"activityLogText": "Send Solicitation Email",
+		},
+		"submitActivityLog": {
+			"enabled": True,
+			"activityLogText": "Evaluator Form Submission",
+		},
+		"draftActivityLog": {
+			"enabled": True,
+			"activityLogText": "Evaluator Form Submission (draft)",
+		},
+		"approveActivityLog": {
+			"enabled": True,
+			"activityLogText": "Evaluator Approved",
+		},
+		"denyActivityLog": {
+			"enabled": True,
+			"activityLogText": "Evaluator Denied",
+		},
+
+		"deleteCommentCode": "deleteComment",
+		"declineCommentCode": "declineComment",
+		"reviewCommentCode": "reviewComment",
+
+		"min": "1",
+		"max": "10",
+		"showMaxAllowed":False,
+		"evaluatorSources": [],
+		"evaluatorTypes": [],
+		"evaluatorTypeCollections": [],
+
+		"prompts": [
+			{
+				"code": "evaluator_source",
+				"label": "Suggested by",
+				"enabled": False,
+				"required": False,
+				"data_type": "string",
+			},
+			{
+				"code": "evaluator_type",
+				"label": "Evaluator Type",
+				"enabled": False,
+				"required": False,
+				"data_type": "string",
+			},
+			{
+				"code": "first_name",
+				"label": "First Name",
+				"enabled": True,
+				"required": True,
+				"data_type": "string",
+			},
+			{
+				"code": "middle_name",
+				"label": "Middle Name",
+				"enabled": True,
+				"required": False,
+				"data_type": "string",
+			},
+			{
+				"code": "last_name",
+				"label": "Last Name",
+				"enabled": True,
+				"required": True,
+				"data_type": "string",
+			},
+			{
+				"code": "suffix",
+				"label": "Suffix",
+				"enabled": True,
+				"required": False,
+				"data_type": "string",
+			},
+			{
+				"code": "degree",
+				"label": "Degree",
+				"enabled": True,
+				"required": True,
+				"data_type": "string",
+			},
+			{
+				"code": "salutation",
+				"label": "Salutation",
+				"enabled": True,
+				"required": True,
+				"data_type": "string",
+			},
+			{
+				"code": "email",
+				"label": "Email",
+				"enabled": True,
+				"required": True,
+				"data_type": "string",
+			},
+			{
+				"code": "phone",
+				"label": "Phone",
+				"enabled": True,
+				"required": False,
+				"data_type": "string",
+			},
+			{
+				"code": "titles",
+				"label": "Title",
+				"enabled": True,
+				"required": True,
+				"data_type": "list",
+			},
+			{
+				"code": "program",
+				"label": "Program",
+				"enabled": True,
+				"required": True,
+				"data_type": "list",
+			},
+			{
+				"code": "admission_date",
+				"label": "Admission Date",
+				"enabled": True,
+				"required": True,
+				"data_type": "date",
+				"date_format":"M/D/Y",
+			},
+			{
+				"code": "institution",
+				"label": "Institution",
+				"enabled": True,
+				"required": True,
+				"data_type": "string",
+			},
+			{
+				"code": "address_lines",
+				"label": "Address",
+				"enabled": True,
+				"required": True,
+				"data_type": "list",
+			},
+			{
+				"code": "city",
+				"label": "City",
+				"enabled": True,
+				"required": True,
+				"data_type": "string",
+			},
+			{
+				"code": "state",
+				"label": "State",
+				"enabled": True,
+				"required": True,
+				"data_type": "list",
+			},
+			{
+				"code": "postal",
+				"label": "Postal Code",
+				"enabled": True,
+				"required": True,
+				"data_type": "string",
+			},
+			{
+				"code": "reason",
+				"label": "Evaluator Bio/Reason for Selection",
+				"enabled": False,
+				"required": True,
+				"data_type": "string",
+			},
+			{
+				"code": "country",
+				"label": "Country",
+				"enabled": True,
+				"required": True,
+				"data_type": "list",
+			},
+
+		],
+
+		"emailTemplateName": "umms_cred_edu_solicit.html",
+		"emailSubjectLine": "Evaluation Request",
+		"emailSendBlockers": [],
+
+		"reviewPermissions": ['dept_task','mss_task'],
+
+		"packet_code": "umms_edu_eval_packet",
+		"omitTOC":True,
+		"add_num_pages_toc_specifier": False,
+		"add_last_page_toc_entry": False,
+		"title":"",
+
+		"packetEnabled": True,
+		"packetText": "View/Download Packet",
+		"reviewersEnabled": False,
+		"reviewersText": "",
+		"letterEnabled": True,
+		"letterText": "View/Download Letter",
+
+		"importEnabled": True,
+		"importSources": [
+			{
+				"taskCode": "cred_edu_training",
+				"header": "",
+				"summaryColumns": [
+					{ "code": "ET_PROGRAM", "descr": "Program" },
+					{ "code": "ET_DEGREE", "descr": "Degree" },
+					{ "code": "ET_BEGIN_DATE", "descr": "Begin Date" },
+					{ "code": "ET_END_DATE", "descr": "End Date" },
+				],
+				"importColumns": {
+					"evaluator_source_id": "",
+					"evaluator_type_id": "",
+					"first_name": "",
+					"middle_name": "",
+					"last_name": "ET_DIRECTOR_NAME",
+					"suffix": "",
+					"email": "ET_DIRECTOR_EMAIL",
+					"phone": "",
+					"salutation": "",
+					"degree": "ET_DEGREE",
+					"titles": "",
+					"institution": "ET_INSTITUTION",
+					"address_lines": "ET_ADDRESSLINES",
+					"city": "ET_CITY",
+					"state": "ET_STATE",
+					"postal": "ET_ZIP",
+					"country": "ET_COUNTRY",
+					"admission_date": "ET_BEGIN_DATE",
+					"program": "ET_PROGRAM",
+					"reason": "",
+				},
+			},
+		],
+	},
+
+
+}

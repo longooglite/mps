@@ -1,0 +1,31 @@
+<h3><center>Department Listing</center></h3>
+<table width="700px">
+<hr>
+
+    <tr>
+        <th align="left">Code</th>
+        <th align="left">Description</th>
+        <th align="left">Contact</th>
+    </tr>
+    {% for department in context.get('departments',{}) %}
+        <tr>
+            <td valign="top">{{department.get('code','')}}</td>
+            <td valign="top">{{department.get('full_descr','')}}</td>
+            <td><small>
+                {% set address_lines = eval(department.get('address_lines')) %}
+                {% for line in address_lines %}
+                    {{line}}<br>
+                {% end %}
+                {{ department.get('city','') + ','}}&nbsp;{{ department.get('state','') }}&nbsp;&nbsp;{{ department.get('postal','') }}
+                {% if department.get('address_suffix','') %}
+                    {% set suffixes = eval(department.get('address_suffix','' )) %}
+                    {% for suffix in suffixes %}
+                         {{ suffix }}
+                    {% end %}
+                {% end %}
+                </small>
+                 <br/><br/>
+            </td>
+        </tr>
+    {% end %}
+</table>

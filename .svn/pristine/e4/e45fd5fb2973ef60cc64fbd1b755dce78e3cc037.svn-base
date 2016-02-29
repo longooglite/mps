@@ -1,0 +1,63 @@
+{% set disabled = '' %}
+{% if context.get('disabled', True) %}
+	{% set disabled = 'disabled="disabled"' %}
+{% end %}
+
+<body>
+	<div>
+		<ol>
+			<li>I certify that, if I am subject to the requirements of PA 27, 28, or 29 of 2006, I have not been convicted of a crime or offense that prohibits my employment, hire, or granting of clinical privileges in a longterm psychiatric or other qualifying care setting as required by PA 27, 28 and 29 of 2006, within the applicable time period prescribed by each crime.  I can find out whether I am subject to PA 27, 28, or 29 of 2006 by contacting: (734) 647-5538. A current list of the relevant crimes and offenses is available in the "Legal Guide" posted at: <a target='_blank' href='https://miltcpartnership.org/Documents/LegalGuide.pdf'>https://miltcpartnership.org/Documents/LegalGuide.pdf</a>.  I understand that conviction of one of the listed crimes is good cause for termination of employment, contract, or status.</li>
+			<li>
+				I certify that (check box if agree):
+				<div>
+					{% set checked = ''%}
+					{% if context.get('not_crook', False) %}
+						{% set checked = "checked" %}
+					{% end %}
+					<input type="radio" id="notCrook" name="crook" value="false" {{checked}} {% raw disabled %}>
+					<label class="wf-inline" for="notCrook">I have never been convicted, pled guilty, or pled  nolo contendere to any crime.  No substantiated finding of patient or resident neglect, abuse, or misappropriation of property has ever been made against me by a federal or state agency, an employer, or any other agency or entity.  I have never been sanctioned for federal health care program or federal contractor fraud, abuse, or misconduct.  I have never pled "not guilty by reason of insanity" or an equivalent defense and I have never been subject to an order or disposition of "not guilty by reason of insanity" or equivalent order or disposition for any crime.</label>
+				</div>
+				<div>
+					{% set checked = ''%}
+					{% if context.get('is_crook', False) %}
+						{% set checked = "checked" %}
+					{% end %}
+					<input type="radio" id="crook" name="crook" value="true" {{checked}} {% raw disabled %}>
+					<label class="wf-inline" for="crook">The list below in Section 3 of my convictions, guilty pleas, nolo contendere pleas; substantiated findings against me of patient or resident neglect, abuse, or misappropriation of property; sanctions for federal health care program and federal contractor fraud, abuse and  misconduct; and "not guilty by reason of insanity" pleas, orders, or  dispositions is true, correct, and complete to the best of my knowledge.</label>
+				</div>
+			</li>
+			<li class="offenses">
+				<p>I disclose, by listing below:</p>
+				<ul>
+					<li>All offenses for which I have been convicted, pled guilty, or pled nolo contendere, including all terms and conditions of sentencing, parole and probation.</li>
+					<li>Any substantiated finding (whether by a court, an employer, or otherwise) of patient or resident neglect, abuse, or misappropriation of property.</li>
+					<li>Any instance of federal health care program or federal contractor fraud, abuse, or misconduct for which sanctions have been imposed. </li>
+					<li>Any instance when I pled "not guilty by reason of insanity" and any instance in which I was subject to an order or disposition of "not guilty by reason of insanity" for any crime.</li>
+					{% include disclosureOffenses.html %}
+				</ul>
+			</li>
+		</ol>
+	</div>
+
+    <script type="text/javascript">
+        /*<![CDATA[*/
+
+        $(function() {
+            var $crook = $('#crook');
+            var $notCrook = $('#notCrook');
+            $('.offenses').toggle($crook.is(':checked'));
+
+            $crook.on('change', function () {
+                var checked = ($(this).is(':checked'));
+                $('.offenses').slideToggle(!checked);
+            });
+
+            $notCrook.on('change', function () {
+                var checked = ($(this).is(':checked'));
+                $('.offenses').slideToggle(!checked);
+            });
+        });
+
+        /*]]>*/
+    </script>
+</body>

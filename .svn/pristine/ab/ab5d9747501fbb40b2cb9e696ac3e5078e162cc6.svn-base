@@ -1,0 +1,77 @@
+# [Copyright]
+# SmartPath v1.0
+# Copyright 2014-2015 Mountain Pass Solutions, Inc.
+# This unpublished material is proprietary to Mountain Pass Solutions, Inc.
+# [End Copyright]
+
+cred_approve_delineation = {
+	"code": "cred_approve_delineation",
+	"descr": "Approve Delineation of Privileges",
+	"header": "Approve Delineation of Privileges",
+	"componentType": "Task",
+	"affordanceType":"Item",
+	"optional": False,
+	"enabled": True,
+	"logEnabled": True,
+	"freezable": True,
+	"accessPermissions": ['dept_task'],
+	"viewPermissions": ['dept_task',"mss_task"],
+	"overviewOnly":False,
+	"blockers": ["cred_upload_delineation"],
+	"statusMsg": "",
+	"successMsgApprove":"Delineation of Privileges approved",
+	"successMsgRevisions":"Delineation of Priveleges required",
+	"className": "Approval",
+	"config": {
+		"approve": True,
+		"approveText": "Approve",
+		"approveStatusMsg": "Delineation of Priveleges Approved",
+		"approveFreeze": {
+			"freezeJobAction": False,
+			"freezeSelf": False,
+			"freezeAllPredecessors": False,
+			"freezeTasks": ["cred_upload_delineation"],
+			"unfreezeJobAction": False,
+			"unfreezeSelf": True,
+			"unfreezeAllPredecessors": False,
+			"unfreezeTasks": [],
+			"setJobActionRevisionsRequired": False,
+			"clearJobActionRevisionsRequired": True,
+			"clearSubmitStatus": "",
+			"activityLogText": "Delineation of Priveleges Approved",
+		},
+		"deny": False,
+		"revisionsRequired": True,
+		"revisionsRequiredText": "Delineation of Priveleges Revisions Required",
+		"revisionsRequiredStatusMsg": "Delineation of Priveleges Revisions Required",
+		"revisionsRequiredFreeze": {
+			"freezeJobAction": False,
+			"freezeSelf": False,
+			"freezeAllPredecessors": False,
+			"freezeTasks": [],
+			"unfreezeJobAction": False,
+			"unfreezeSelf": False,
+			"unfreezeAllPredecessors": False,
+			"unfreezeTasks": ["submitrfp"],
+			"unfreezeOptions": ["cred_upload_delineation"],
+			"setJobActionRevisionsRequired": True,
+			"clearJobActionRevisionsRequired": False,
+			"clearSubmitStatus": "",
+			"activityLogText": "Delineation of Priveleges Revisions Required",
+		},
+		"activityLog": {
+			"enabled": True,
+			"activityLogText": "Delineation of Priveleges Approved",
+			"comments": [
+				{
+					"commentCode": "rfpCommentEverybody",
+					"commentLabel": "Comment",
+					"accessPermissions": ["dept_task"],
+					"viewPermissions": ["dept_task","mss_task"],
+				},
+			],
+		},
+		"activityLogTaskCodes": ["cred_approve_delineation"],
+		"vote": False,
+	},
+}

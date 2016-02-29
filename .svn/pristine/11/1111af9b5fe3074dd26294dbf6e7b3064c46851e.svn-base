@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>{{context.get('windowTitle', '')}}</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+</head>
+
+{% set mode = context.get('mode', '') %}
+{% set isAdd = (mode != 'edit') %}
+{% set track = context.get('track', {}) %}
+{% set trackId = track.get('id', 0) %}
+
+{% set isMsg = True if len(context.get('errormessage','')) > 0 else False %}
+<body class="{{ 'cv-show-global-message' if isMsg else '' }} cv-proxy-page mps-admin-page">
+	<div class="container-fluid mps-body">
+		{% include pageHeader.html %}
+		<div class="body-content cv-body cv-body-no-menu">
+			<div class="page-header clearfix">
+				<div class="page-header-controls">
+					<button class="cvHelpButton btn btn-sm btn-default">
+						<span class="glyphicon glyphicon-question-sign"></span>Help...
+					</button>
+					<button class="btn btn-sm btn-primary saveTrackBtn">
+						<span class="glyphicon glyphicon-floppy-disk"></span> <span>Save Changes...</span>
+					</button>
+				</div>
+				<h1>
+					Manage Tracks<br/>
+					<small>
+						<a href="/{{context.get('appUriPrefix','')}}/tracks" class="cv-head-bread">All Tracks</a><span class="cv-head-bread-sep">/</span>
+						<span class="cv-head-bread-leaf">{{ 'New Track' if isAdd else track.get('descr','') }}</span>
+					</small>
+				</h1>
+			</div>
+
+			<form id="trackdetailform" class="form-horizontal">
+				{% include ajax-hidden-fields.html %}
+				<input type="hidden" name="mode" value="{{mode}}" />
+				{% if not isAdd %}
+					<input type="hidden" name="trackId" value="{{trackId}}" />
+				{% end %}
+
+				<div class="row">
+					<div class="col-md-6 cv-user-form">
+						<h3 class="section-header">
+							<span class="glyphicon glyphicon-edit"></span>
+							Track Settings:
+						</h3>
+
+						<div class="cv-callout cv-callout-info cv-callout-bordered clearfix mps-skin-border">
+							<h4>Track:</h4><br/>
+							<div class="clearfix form-row">
+								<label for="code" class="col-xs-2 control-label">* Code:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="code" name="code" value="{{track.get('code', '')}}" placeholder="Unique track code">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="descr" class="col-xs-2 control-label">* Description:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="descr" name="descr" value="{{track.get('descr', '')}}">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="active" class="col-xs-2 control-label">Active:</label>
+								<div class="col-xs-8">
+									{% set checked = '' %}
+									{% if track.get('active',False) %}
+										{% set checked = 'checked' %}
+									{% end %}
+									<input type="checkbox" id="active" name="active" value="true" {{checked}}>
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="metatrack_id" class="col-xs-2 control-label">Metatrack:</label>
+								<div class="col-xs-8">
+									<select class="form-control" id="metatrack_id" name="metatrack_id">
+										<option value="" selected>None</option>
+										{% set selectedMetatrackId = track.get('metatrack_id','') %}
+										{% for option in context.get('metatracks', []) %}
+											{% set optionId = option.get('id','') %}
+											{% set selected = 'selected' if optionId == selectedMetatrackId else '' %}
+											<option value="{{optionId}}" {{selected}}>{{ option.get('descr','') }}</option>
+										{% end %}
+									</select>
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="tags" class="col-xs-2 control-label">Tags:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="tags" name="tags" value="{{track.get('tags','')}}">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	$('.saveTrackBtn').on('click', function(event){
+
+		//
+		// BUGBUG: clean this up a bit: sometimes it is errors{}, sometimes just {"errors": "User not found"}
+		//
+
+		var $body = $('.cv-user-form');
+		cvApp.ubiquitousPageRequest({
+			url: '/{{context.get('appUriPrefix','')}}/tracks/save',
+			data: JSON.stringify($('#trackdetailform').serializeObject()),
+			success: function(data, textStatus, xhr){
+				cvApp._commonErrorHandler($body, data, textStatus, xhr);
+			}
+		});
+	});
+
+	/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

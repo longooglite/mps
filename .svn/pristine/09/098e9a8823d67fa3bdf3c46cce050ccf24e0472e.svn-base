@@ -1,0 +1,101 @@
+<div class="evaluatoremail" style="font-size: 10pt; line-height: 14px; max-width: 650px; padding-top: 20px;">
+    <div>
+        
+            <img style="height: 40px" src="data:image/png;base64,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" />
+            
+        
+    </div>
+    <div style="padding: 10px 0 0 78px; font-style: italic; font-weight: bold; font-size: 8pt;">
+        <span>Department of Internal Medicine<br/>Division of Allergy and Clinical Immunology<br/>24 Frank Lloyd Wright Drive<br/>P.O. Box 422, Suite H-2100<br/>Ann Arbor, MI  48106</span>
+    </div>
+    <div style="padding: 20px 0 0 10px; clear: both;">
+        <div class="toaddress">
+            <p>
+                <span>Judy Judie, None</span><br />
+                
+                    <span>Housewife</span><br />
+                
+                <span>Cary Grant</span>
+            </p>
+        </div>
+        <div class="letterbody">
+            <p>
+                Dear Dr. Judie,
+            </p>
+            <p>
+                Dr. Jack of Trades is being considered for promotion
+                to Associate Professor with Tenure
+                (Instructional Track) in the Department of Internal Medicine - Allergy at the University of Michigan Medical School.
+            </p>
+            
+            <div>
+                <p style="margin-bottom: 0; padding-bottom: 0;">We would appreciate your appraisal of Dr. Trades:</p>
+                <ul style="margin-top: 0;">
+                    <li style="line-height: 14px;">How do you know Dr. Trades (in what capacity and for how long?)</li>
+                    <li style="line-height: 14px;">Has Dr. Trades' scholarship impacted their field or resulted in seminal advance?</li>
+                    <li style="line-height: 14px;">How would you describe Dr. Trades' scholarly and professional niche and how would you rank Dr. Trades in terms of peers?</li>
+                    
+                    
+
+                    <!--<li style="line-height: 14px;" th:if="${facTrack &amp;&amp; !entryLevel}">Is this individual involved in significant national peer organizational service - and how would you characterize these activities on committees, as a reviewer, editor, etc.? </li>-->
+                    <li style="line-height: 14px;">We would appreciate your comments on interdisciplinary achievements, unusual commitment to diversity, and national/international volunteerism.</li>
+
+                    
+                    
+
+                    <li style="line-height: 14px;">Would this individual be likely to achieve equivalent rank at your institution at this time?</li>
+                    
+
+                    
+                    
+                    
+                    
+                    <li style="line-height: 14px;">Any additional comments you would like to make would be welcome as well.</li>
+                </ul>
+            </div>
+            <div>
+                <p style="margin-bottom: 0; padding-bottom: 0;">To help you in this assessment, please click the Candidate Packet link below for access to the following items:</p>
+                <ul style="margin-top: 0;">
+                    <li style="line-height: 14px;">Our Medical School's specific criteria for appointment to the Associate Professor with Tenure rank.</li>
+                    <li style="line-height: 14px;">Selected papers selected by Dr. Trades. </li>
+                    <li style="line-height: 14px;">Highlights by the author on those selected papers (bibliographic notes) if applicable.</li>
+                    <li style="line-height: 14px;">The curriculum vitae of Dr. Trades.</li>
+                </ul>
+
+            </div>
+            <p>
+                We request that you return your review to us by <span class="date wf-dyna-date">02/13/2015</span>.
+                To facilitate the process, you may return your assessment by uploading your letter in PDF format (on
+                your institution's letterhead and with signature) by clicking on the Upload Letter link below, or by mailing your
+                letter to my attention at the address on the letterhead above. If it is not
+                possible for you to respond in this time frame, please let us know what would work for you, as we greatly value
+                your assessment of Dr. Trades.
+            </p>
+            <p>
+                <span>We recognize your many commitments and appreciate your assistance with this review. Unbiased external peer evaluation guarantees the excellence that society relies upon in academic medicine.</span>
+                Please let me know if you are unable to provide this letter so we can contact another colleague to ensure we have the appropriate number of letters for Dr. Trades' promotion. We are required to note  in the promotion record if you can not/did not respond.
+            </p>
+            <p>
+                If you have any questions or concerns, please contact display:schneyer at schneyer@mountainpasssolutions.com.
+            </p>
+
+            <p><a href="http://localhost:9090/mps/web/public/peer/academic/packet/2/232f08fb-f576-42ee-888d-f4426d53ce02" target="_blank">Click Here to download Candidate Packet</a></p>
+            <p><a href="http://localhost:9090/mps/web/public/peer/academic/2/232f08fb-f576-42ee-888d-f4426d53ce02" target="_blank">Click Here to Upload Letter</a></p>
+            <p>Thank you for your time and effort.</p>
+            <p>Sincerely,</p>
+            
+                <img style="height: 40px; padding-left: 10px; padding-bottom: 30px; padding-top: 30px;" src="data:image/png;base64,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" />
+                
+            
+            <p>
+                <span>James L. Baldwin MD</span><br />
+                <span>Clinical Associate Professor or Internal Medicine<br/>Interim Chief, Division of Allergy and Clinical Immunology</span>
+            </p>
+        </div>
+        <div>
+            <p style="font-size:smaller;font-style:italic">
+                Questions sometimes arise about the confidentiality of review letters, and we do want to advise you that your letter will be reviewed by senior faculty at the University of Michigan. As a public institution, legal considerations limit our ability to assure confidentiality, but it is our practice not to release review letters unless required to do so by law. The candidate has signed a document authorizing the University of Michigan to inquire about their qualifications for appointment and releasing from liability any person responding to such an inquiry. A copy of the release is on file at the University of Michigan and will be provided to you if requested.
+            </p>
+        </div>
+    </div>
+</div>

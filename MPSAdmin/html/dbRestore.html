@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>MPS Admin</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+</head>
+
+<body class="mps-admin-page">
+	<div class="container-fluid mps-body">
+		{% include pageHeader.html %}
+
+		<div class="body-content">
+ 			<div>
+				<h3>Database Restore</h3><br/>
+			</div>
+
+			<form id="restoreForm" class="form-horizontal">
+				{% include ajax-hidden-fields.html %}
+				<div class="formContainer">
+					<div class="clearfix form-row">
+						<label for="restoreSite" class="col-xs-1 control-label">Site:</label>
+						<div class="col-xs-4">
+							<select class="form-control sitedrop" id="restoreSite" name="restoreSite">
+								<option value="" selected disabled>Select</option>
+								{% for siteDict in context.get('siteList', []) %}
+									{% set optionCode = siteDict.get('code','') %}
+									{% if optionCode %}
+										<option value="{{optionCode}}">{{optionCode}} ({{siteDict.get('descr','')}})</option>
+									{% else %}
+										<option value="" disabled>----------------------------------------</option>
+									{% end %}
+								{% end %}
+							</select>
+						</div>
+					</div>
+
+					<div class="clearfix form-row">
+						<label class="col-xs-1 text-right">Filename:</label>
+						<div class="col-xs-11 wf-form-right clearfix">
+							{% if context.get('fileList', []) %}
+								{% set option = context.get('fileList', [])[0] %}
+								{% set optionSite = option.get('site','') %}
+								{% set optionFilename = option.get('filename','') %}
+								{% set optionKey = option.get('key','') %}
+								<label for="{{optionKey}}"><input type="radio" name="dumpSiteFilename" id="dumpSiteFilename" value="{{optionKey}}"> [{{optionSite}}] {{optionFilename}}</label>
+							{% end %}
+						</div>
+
+						{% for option in context.get('fileList', [])[1:] %}
+							<div class="col-xs-offset-1 col-xs-11 clearfix">
+								{% set optionSite = option.get('site','') %}
+								{% set optionFilename = option.get('filename','') %}
+								{% set optionKey = option.get('key','') %}
+								<label for="{{optionKey}}"><input type="radio" name="dumpSiteFilename" value="{{optionKey}}"> [{{optionSite}}] {{optionFilename}}</label>
+							</div>
+						{% end %}
+					</div>
+
+					<div class="clearfix form-row">
+						<input type="button" id="restoreDatabaseBtn" class="col-xs-offset-1 btn btn-sm btn-primary" value="Restore Database">&nbsp;
+						<input type="button" id="deleteFileBtn" class="btn btn-sm btn-primary" value="Delete File">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+{% include cache-js.html %}
+
+<script type="text/javascript" src="/{{skin}}/js/3rdParty/moment.js"></script>
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	$('#restoreDatabaseBtn').on('click', function(event){
+		var $body = $('.formContainer');
+		var $form = $('#restoreForm')
+		cvApp.ubiquitousPageRequest({
+			url: '/admin/db/restore',
+			type: 'POST',
+			data: JSON.stringify($form.serializeObject()),
+			success: function(data, textStatus, xhr){
+				cvApp._commonErrorHandler($body, data, textStatus, xhr);
+			}
+		});
+	});
+
+	$('#deleteFileBtn').on('click', function(event){
+		var $body = $('.formContainer');
+		var $form = $('#restoreForm')
+		cvApp.ubiquitousPageRequest({
+			url: '/admin/db/delete',
+			type: 'POST',
+			data: JSON.stringify($form.serializeObject()),
+			success: function(data, textStatus, xhr){
+				cvApp._commonErrorHandler($body, data, textStatus, xhr);
+			}
+		});
+	});
+
+	/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

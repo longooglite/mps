@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Appointments</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+</head>
+
+<body class="cv-proxy-page">
+<div class="container-fluid mps-body">
+	{% set context['pageHeaderTitle'] = 'Appointments' %}
+	{% include pageHeader.html %}
+	<div class="body-content cv-body cv-body-no-menu">
+        <div class="page-header clearfix">
+			<h1>
+				{{ context.get('fullname','') }}<br/>
+				<small>
+					Provide reason for termination below:
+				</small>
+			</h1>
+		</div>
+		<form id="mainform" class="form-horizontal" onsubmit="return false;">
+            <input type=hidden name="workflowid" id="workflowid" value="{{context.get('workflow',{}).get('id',-1)}}">
+            <input type=hidden name="appointmentid" id="appointmentid" value="{{context.get('appointment_id',-1) }}">
+            <input type=hidden name="personid" id="personid" value="{{context.get('personid',-1) }}">
+
+            <div class="row">
+                <div class="col-md-7">
+                    <h3 class="section-header starthidden">
+                        <span class="glyphicon glyphicon-edit"></span>
+                        {{context.get('terminationText','Reason')}} &amp; Title:
+                    </h3>
+                    <div class="cv-callout cv-callout-info cv-callout-bordered clearfix">
+                        <div class="form-row clearfix">
+                            <label class="col-xs-2 control-label" for="termination_type">{{context.get('terminationText','Reason')}}:</label>
+                            <div class="col-xs-5">
+                                <select id="termination_type" name="termination_type" class="form-control">
+                                    {% for termination_type in context.get('termination_types',[]) %}
+                                        <option value="{{ termination_type.get('id',0) }}">{{ termination_type.get('descr','') }}</option>
+                                    {% end %}
+                                </select>
+                            </div>
+                            <div class="clearfix form-row">
+                                <div class="col-xs-2 ta-right">
+                                    <button class="fire btn btn-primary">Terminate</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	(function ($) {
+
+		$('body').on('click', '.fire', function(event){
+			var $this = $(this);
+			var $termination_type = $('#termination_type').val();
+			var $appointmentid = $('#appointmentid').val();
+			var $workflowid = $('#workflowid').val();
+			var $personid = $('#personid').val();
+
+			var sURL = '/appt/appointment/terminate/' + $appointmentid + '/' + $termination_type + '/' + $workflowid + '/' + $personid
+			cvApp.ubiquitousPageRequest({
+				url: sURL,
+				data: JSON.stringify($('#mainform').serializeObject()),
+				errorMessage: '#modalerrormessage'
+			});
+		});
+
+	})(jQuery);
+
+	/*]]>*/
+</script>
+</div>
+</body>
+</html>

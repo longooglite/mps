@@ -1,0 +1,138 @@
+# [Copyright]
+# SmartPath v1.0
+# Copyright 2014-2015 Mountain Pass Solutions, Inc.
+# This unpublished material is proprietary to Mountain Pass Solutions, Inc.
+# [End Copyright]
+
+sec_ofa_approve_rfp1 = {
+	"code": "sec_ofa_approve_rfp1",
+	"descr": "OFA Approval for Secondary RFP",
+	"header": "OFA Approval for Secondary RFP",
+	"componentType": "Task",
+	"affordanceType":"Item",
+	"optional": False,
+	"enabled": True,
+	"logEnabled": True,
+	"freezable": True,
+	"accessPermissions": ['ofa_task'],
+	"viewPermissions": ['ofa_task','dept_task',"mss_task"],
+	"overviewOnly":True,
+	"blockers": ["sec_dept_approve_rfp1"],
+	"statusMsg": "",
+	"successMsgApprove":"RFP approved",
+	"successMsgDeny":"RFP denied",
+	"successMsgRevisions":"RFP revisions required",
+	"className": "Approval",
+	"config": {
+		"approveDashboardEvents": [{
+			"code":["sec_rfp_ofa_approve1"],
+			"eventType":"remove",
+		},{
+			"code":"sec_rfp1_ofa_approved",
+			"sortOrder":"d3",
+			"eventDescription":"Secondary RFP Approved",
+			"eventType":"create",
+			"permission":["dept_task"]
+		}],
+		"denyDashboardEvents": [{
+			"code":"sec_rfp_ofa_approve1",
+			"eventType":"remove",
+		},{
+			"code":"sec_rfp1_denied",
+			"sortOrder":"d3",
+			"eventDescription":"Secondary RFP Denied",
+			"eventType":"create",
+			"permission":["dept_task"]
+		}],
+		"revisionsDashboardEvents": [{
+			"code":["sec_rfp_ofa_approve1"],
+			"eventType":"remove",
+		},{
+			"code":"sec_rfp1_revisions",
+			"sortOrder":"d2",
+			"eventDescription":"Secondary RFP Revisions Required",
+			"eventType":"create",
+			"permission":["dept_task"]
+		}],
+
+		"disclosureGroup":{"code":"sec1","descr":"1st Secondary Appointment"},
+		"alert": {
+			"sendToUser":False,
+			"sendToDepartment":True,
+			"sendToSitePref":[],
+			"sendToAddresses":[],
+			"sendToCCAddresses":[],
+			"sendToBCCAddresses":[],
+			"emailTextComplete":"Secondary RFP Approved",
+			"emailTextRevisions":"Secondary RFP Revisions Required",
+		},
+		"approve": True,
+		"approveText": "Approve",
+		"approveStatusMsg": "RFP Approved",
+		"approveFreeze": {
+			"freezeJobAction": False,
+			"freezeSelf": True,
+			"freezeAllPredecessors": False,
+			"freezeTasks": ["sec_rfp1","sec_confirm_title1","sec_submit_rfp1","sec_dept_approve_rfp1"],
+			"unfreezeJobAction": False,
+			"unfreezeSelf": False,
+			"unfreezeAllPredecessors": False,
+			"unfreezeTasks": [],
+			"setJobActionRevisionsRequired": False,
+			"clearJobActionRevisionsRequired": True,
+			"clearSubmitStatus": "",
+			"activityLogText": "RFP Approved",
+		},
+		"deny": True,
+		"denyIsNotDone":"True",
+		"confirmDeny":True,
+		"denyText": "Deny",
+		"denyStatusMsg": "RFP Denied",
+		"denyFreeze": {
+			"freezeJobAction": False,
+			"freezeSelf": False,
+			"freezeAllPredecessors": False,
+			"freezeTasks": [],
+			"unfreezeJobAction": False,
+			"unfreezeSelf": False,
+			"unfreezeAllPredecessors": False,
+			"unfreezeTasks": [],
+			"setJobActionRevisionsRequired": False,
+			"clearJobActionRevisionsRequired": True,
+			"clearSubmitStatus": "",
+			"activityLogText": "RFP Denied",
+		},
+		"revisionsRequired": True,
+		"revisionsRequiredText": "RFP Revisions Required",
+		"revisionsRequiredStatusMsg": "RFP Revisions Required",
+		"revisionsRequiredFreeze": {
+			"freezeJobAction": False,
+			"freezeSelf": False,
+			"freezeAllPredecessors": False,
+			"freezeTasks": [],
+			"unfreezeJobAction": False,
+			"unfreezeSelf": False,
+			"unfreezeAllPredecessors": False,
+			"unfreezeTasks": ["sec_submit_rfp1","sec_dept_approve_rfp1"],
+			"unfreezeOptions": ["sec_confirm_title1","sec_rfp1"],
+			"setJobActionRevisionsRequired": True,
+			"clearJobActionRevisionsRequired": False,
+			"clearSubmitStatus": ["sec_submit_rfp1","sec_dept_approve_rfp1"],
+			"activityLogText": "RFP Revisions Required",
+		},
+		"activityLog": {
+			"enabled": True,
+			"activityLogText": "RFP Approved",
+			"comments": [
+				{
+					"commentCode": "rfpsec1CommentEverybody",
+					"commentLabel": "Comment",
+					"accessPermissions": ["approverfp_edit"],
+					"viewPermissions": ["approverfp_view","approverfp_edit"],
+				},
+			],
+		},
+		"activityLogTaskCodes": ["sec_dept_approve_rfp1","sec_submit_rfp1"],
+		"vote": False,
+	},
+}

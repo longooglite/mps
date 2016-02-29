@@ -1,0 +1,8 @@
+African American
+Asian
+Hawaiian
+Hispanic
+Native American
+White
+2 or more
+Other

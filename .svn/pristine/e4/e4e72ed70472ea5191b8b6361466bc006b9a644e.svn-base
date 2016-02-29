@@ -1,0 +1,15 @@
+dn: dc=mntnpass,dc=com
+objectclass: dcObject
+objectclass: organization
+o: Mountain Pass
+dc: mntnpass
+
+dn: ou=users,dc=mntnpass,dc=com
+objectClass: organizationalUnit
+objectClass: top
+ou: users
+
+dn: ou=groups,dc=mntnpass,dc=com
+objectClass: organizationalUnit
+objectClass: top
+ou: groups

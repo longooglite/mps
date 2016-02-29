@@ -1,0 +1,11 @@
+{% set candidateName = context.get('personDict',{}).get('first_name','') %}
+{% set url = context.get('container',{}).containerDict.get('config',{}).get('candidateurl','') %}
+
+<html>
+    <body>
+    <p>Revisions are required for submitted items. Click
+        <a href="{{url}}">here</a>
+        to log in and begin.</p>
+    <p><em>This is an automated message. Please do not reply.</em></p>
+    </body>
+</html>

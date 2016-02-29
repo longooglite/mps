@@ -1,0 +1,7 @@
+<h3><center>Oracle Table Report</center></h3>
+<table width="700px">
+    {% for each in context.get('oracleTableData',[]) %}
+        <tr><td>{% raw each.get('data','') %}</td></tr>
+        <tr><td>&nbsp;</td></tr>
+    {% end %}
+</table>

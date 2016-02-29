@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>{{context.get('windowTitle', '')}}</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+	<style>
+		.wf-heading-prompt { display: inline-block; width: 125px; margin-bottom: 5px; }
+		.editor-controls { float:right; position:relative; top:10px; }
+		.editor-controls .btn { margin-top:-5px; background-color:#fff; }
+		.editor-controls .btn:hover { background-color:#d1d1d1; }
+		.disabled-option { padding: 3px 15px; color: #aaa; }
+		.tight-h3 { margin-top: 2px; }
+	</style>
+</head>
+
+{% include adminWorkflowPermissions.html %}
+
+{% set wfDict = context.get('wfDict', {}) %}
+{% set wfId = wfDict.get('id', 0) %}
+{% set titleId = context.get('titleId', 0) %}
+{% set viewMode = context.get('viewMode', 'full') %}
+{% set editMode = context.get('editMode', 'item') %}
+
+{% set labelClass = 'col-xs-2' %}
+{% set promptClass = 'col-xs-8' %}
+
+{% set isMsg = True if len(context.get('errormessage','')) > 0 else False %}
+<body class="{{ 'cv-show-global-message' if isMsg else '' }} cv-user-admin-pg mps-admin-page">
+	<div class="container-fluid mps-body">
+		{% include pageHeader.html %}
+
+		<div class="body-content cv-body cv-body-no-menu">
+			<div class="page-header clearfix">
+				<div class="page-header-controls">
+					<button class="btn btn-sm">
+						<span class="glyphicon glyphicon-circle-arrow-left"></span> <a href="/appt/wf/{{wfId}}/{{titleId}}/{{editMode}}/{{viewMode}}">Back to Wizard</a>
+					</button>
+					<button class="btn btn-sm btn-primary createWorkflowBtn">
+						<span class="glyphicon glyphicon-floppy-disk"></span> <span>Create Workflow</span>
+					</button>
+				</div>
+				<h1>
+					Create WorkFlow<br/>
+				</h1>
+			</div>
+
+			<div class="col-xs-12">
+				<form id="createform" class="form-horizontal cv-user-form">
+					<div class="clearfix form-row">
+						<label for="code" class="{{labelClass}} control-label">* Code:</label>
+						<div class="{{promptClass}}">
+							<input type="text" class="form-control" id="code" name="code" value="" placeholder="Unique component code">
+						</div>
+					</div>
+
+					<div class="clearfix form-row">
+						<label for="descr" class="{{labelClass}} control-label">* Description:</label>
+						<div class="{{promptClass}}">
+							<input type="text" class="form-control" id="descr" name="descr" value="">
+						</div>
+					</div>
+
+					<div class="clearfix form-row">
+						<label for="jobActionType" class="{{labelClass}} control-label">* Job Action Type:</label>
+						<div class="{{promptClass}}">
+							<select class="form-control" id="jobActionType" name="jobActionType">
+								<option value="" selected disabled></option>
+								{% for option in context.get('jobActionTypeList', []) %}
+									{% set optionId = option.get('code','') %}
+									<option value="{{optionId}}">{{ option.get('descr','') }}</option>
+								{% end %}
+							</select>
+						</div>
+					</div>
+
+					{% set tooltip = 'options are: %s' % ','.join(context.get('metatrackNameList', [])) %}
+					<div class="clearfix form-row" title="{% raw tooltip %}">
+						<label for="metaTrackCodes" class="{{labelClass}} control-label">MetaTrack Codes:</label>
+						<div class="{{promptClass}}">
+							<input type="text" class="form-control" id="metaTrackCodes" name="metaTrackCodes" value="">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+<script type="text/javascript" src="/{{skin}}/js/wf.core.js"></script>
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	$('.createWorkflowBtn').on('click', function(event){
+		var $body = $('.cv-user-form');
+		var $form = $('#createform')
+		cvApp.ubiquitousPageRequest({
+			url: '/{{context.get('appUriPrefix','')}}/wf/createworkflow/{{wfId}}/{{titleId}}/{{editMode}}/{{viewMode}}',
+			data: JSON.stringify($form.serializeObject()),
+			success: function(data, textStatus, xhr){
+				wfApp._WF_commonErrorHandler($form, data, textStatus, xhr);
+			}
+		});
+	});
+
+	/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

@@ -1,0 +1,89 @@
+<script language="JavaScript">
+	//
+	// Generic JS/JSON Loader for an AJAX delivered Template/Form/Item.  Currently only in use for Field Level Rev Reqd
+	//
+	var itemJSON = itemJSON || { currentItem: {} };
+	itemJSON.currentItem.taskCode = '{% raw context.get('taskcode','') %}';
+	itemJSON.currentItem.isFieldLevelRevisable = ('True' == '{% raw context.get('isFieldLevelRevisable', False) %}') ? true : false;
+	itemJSON.currentItem.canSeeFieldLevelRevisions = ('True' == '{% raw context.get('canSeeFieldLevelRevisions', False) %}') ? true : false;
+	itemJSON.currentItem.RevisionsRequiredFieldNames = {% raw context.get('RevisionsRequiredFieldNames', []) %};
+	itemJSON.currentItem.field_level_revisions_url = '{% raw context.get('field_level_revisions_url', '') %}';
+	// console.log('itemJSON set by Tornado Template:', itemJSON);
+</script>
+<form class="wf-ajax-form wf-qa-form mps-form" action="{{ context.get('url','') }}" onSubmit="return false;" data-json-load="{% raw context.get('taskcode','') %}">
+	{% set uberInstance = context.get('uber_instance',{}) %}
+	{% set context['uberContainer'] = uberInstance.get('questions',{}) %}
+	{% set bTemplatesEnabled = True if context.get('saved_sets_enabled', False) else False %}
+	{% if bTemplatesEnabled %}
+		{% set bTemplatesEmpty = True if len( context.get('saved_sets', []) ) < 1 else False %}
+		<p class="wf-template-toggled">Complete a new form or <a href="#" class="wf-template-toggler">use a Template</a></p>
+		<div class="cv-panel-body quest_wrap wf-templates-wrap wf-template-toggled starthidden clearfix">
+			{% if bTemplatesEmpty %}
+				You have no saved Templates - to create one, <a href="#" class="wf-template-toggler">fill out the form from scratch</a>, and then use the 'Save as Template' button at the bottom of the form to Name and Save the template for later use.
+			{% else %}
+				<a href="#" class="wf-template-toggler wf-templates-close"><span class="glyphicon glyphicon-remove"></span>Cancel</a>
+				<p style="font-weight:bold;">Saved Templates:</p>
+
+				{% for option in context.get('saved_sets', []) %}
+				<div class="row">
+					<div class="col-xs-4">
+						<button type="submit" class="btn btn-md btn-primary" href="#" data-wf-url="{{option.get('apply_url','')}}">Load {{option.get('descr','')}}</button>
+					</div>
+					<div class="col-xs-8 wf-template-delete">
+						<a href="#" data-wf-url="{{option.get('delete_url','')}}" class="btn wf-reload-current-item" style="">Delete {{option.get('descr','')}}</a>
+					</div>
+				</div>
+				{% end %}
+			{% end %}
+		</div>
+	{% end %}
+
+	<div class="wf-template-toggled">
+		{% module Template("uberContainer.html", context=context, skin=context['skin']) %}
+	</div>
+
+	<div class="wf-details-form-btn-bar col-xs-12 wf-template-toggled">
+		{% if context.get('submit_enabled', True) %}
+			<button type="submit" class="wf-widget-form-btn btn btn-primary" data-wf-url="{{ context.get('submit_url','') }}">{{ context.get('submit_text','') }}</button>
+		{% end %}
+		{% if context.get('draft_enabled', False) %}
+			<button type="submit" class="wf-widget-form-btn btn btn-primary" data-wf-url="{{ context.get('draft_url','') }}">{{ context.get('draft_text','') }}</button>
+		{% end %}
+		{% if bTemplatesEnabled %}
+			<button type="info" class="wf-widget-form-btn btn btn-primary wf-save-template">Save as New Template...</button>
+		{% end %}
+		{% include 'formChunk_cancelLink.html' %}
+		<span class="starthidden">
+			<label class="text-right" for="saved_set_name">Save new Template as:</label>
+			<input type="text" id="saved_set_name" name="saved_set_name" class="wf-validate-non-empty" />
+			<button type="submit" class="btn btn-primary wf-reload-current-item wf-validate-non-empty-button" data-wf-url="{{ context.get('add_url','') }}" style="float:none;" disabled="disabled">Save</button>
+			<a href="#" class="wf-save-template" style="float:none; margin-left:15px;">Cancel</a>
+		</span>
+        {% if context.get('print_enabled',True) %}
+            <a class="wf-print-item btn btn-primary wf-irregular-trigger" target="_blank" href="{{ context.get('print_url','') }}"><span class="glyphicon glyphicon-print"></span>Print...</a>
+	    {% end %}
+    </div>
+</form>
+<script language="JavaScript">
+	/* RFP Templates (for now) specific JS to support dynamic UXs on this page */
+	$(function() {
+		$('.wf-template-toggler').click(function(e){
+			var zToggle = $(this).closest('form').find('.wf-template-toggled');
+			zToggle.slideToggle().toggleClass('starthidden');
+			e.preventDefault();
+		});
+
+		$('.wf-save-template').click(function(e){
+			$(this).closest('.wf-details-form-btn-bar').children().toggle();
+			$(this).closest('.wf-details-form-btn-bar').find('input:first').focus();
+			e.preventDefault();
+			e.stopPropagation();
+		});
+
+		$('.wf-validate-non-empty').keyup(function(e){
+			var $this = $(this);
+			$this.parent().find('.wf-validate-non-empty-button').prop('disabled', (($this.val() != '') ? false : true));
+		});
+	});
+</script>
+

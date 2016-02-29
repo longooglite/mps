@@ -1,0 +1,27 @@
+#site|community|username|password|first name|last name|email|auth_override|active
+# for all userN, the password is the same as the username
+med-oakland|default|mpsadmin|8405a05b4ae6d1943b9d99f1e153837867a7dc20584505f76ee86e9605375bdc|MPS|Administrator|greg.poth@gomountainpass.com|MPS|true
+med-oakland|default|bindmountainpass||Mountain Pass|LDAP Search Bind User|greg.poth@gomountainpass.com||true
+
+med-oakland|default|user1|0a041b9462caa4a31bac3567e0b6e6fd9100787db2ab433d96f6d178cabfce90|User|1|chris.king@gomountainpass.com|MPS|true
+med-oakland|default|user2|6025d18fe48abd45168528f18a82e265dd98d421a7084aa09f61b341703901a3|User|2|chris.king@gomountainpass.com|MPS|true
+med-oakland|default|user3|5860faf02b6bc6222ba5aca523560f0e364ccd8b67bee486fe8bf7c01d492ccb|User|3|chris.king@gomountainpass.com|MPS|true
+med-oakland|default|user4|5269ef980de47819ba3d14340f4665262c41e933dc92c1a27dd5d01b047ac80e|User|4|chris.king@gomountainpass.com|MPS|true
+med-oakland|default|user5|5a39bead318f306939acb1d016647be2e38c6501c58367fdb3e9f52542aa2442|User|5|chris.king@gomountainpass.com|MPS|true
+
+med-oakland|default|pitts||Deirdre|Pitts|pitts@oakland.edu||true
+med-oakland|default|jmdewitt||Janine|DeWitte|jmdewitt@oakland.edu||true
+med-oakland|default|bjdecem2||Brian|December|bjdecem2@oakland.edu||true
+med-oakland|default|chall23||Ciona|Hall|chall23@oakland.edu||true
+med-oakland|default|terrien||Sue|Terrien|terrien@oakland.edu||true
+med-oakland|default|french||Tim|French|french@oakland.edu||true
+med-oakland|default|edwilson||Emmanuel|Wilson|edwilson@oakland.edu||true
+
+med-oakland|default|ofa|babfb5d5d00613e8a034de9cda63384ca2faf021d3f95cc3be5b140f74b1e374|OFA|User|chris.king@gomountainpass.com|MPS|true
+med-oakland|default|dept|656d84e0dabc849f6124a80fb219b1cff2f1a252ad6866537927a9e8daf4fdf8|Department|User|chris.king@gomountainpass.com|MPS|true
+
+med-oakland|default|cred|55d91a3561684b32df5e58a0d91968b93798af4f924bba383e1c98625ec0c834|Credentialing|User|chris.king@gomountainpass.com|MPS|true
+med-oakland|default|dcapt|e922960fbf1c399c2a55501cdfa5f396f77b22a8f4fdc86cb87648afb4e5752a|DCAPT|User|chris.king@gomountainpass.com|MPS|true
+med-oakland|default|dcaptchair|3dab02367b6572565ca4d15fb90c112d7c0b98058c8ab93f6ef8439158f9bb2c|DCAPT Chair|User|chris.king@gomountainpass.com|MPS|true
+med-oakland|default|capt|07fecdd1666ae890445d38cc5f71f7be65261d573259fcd8b6fe92500941d479|CAPT|User|chris.king@gomountainpass.com|MPS|true
+med-oakland|default|provost|f73650c8c84b1e423d826db3c22264395fa5fed625d061cf493235cb67fc1f35|Provost|User|chris.king@gomountainpass.com|MPS|true

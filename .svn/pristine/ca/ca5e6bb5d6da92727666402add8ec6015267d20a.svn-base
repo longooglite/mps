@@ -1,0 +1,17 @@
+{"MAceCredId1":{"container":"cred_app_status","workflow":"CREDENTIAL"},
+  "MAceCredId2":{"container":"pica_status","workflow":"CREDENTIAL"},
+  "MAceCredId3":{"container":"postgradedu_status","workflow":"CREDENTIAL"},
+  "MAceCredId4":{"container":"postgradtrain_status","workflow":"CREDENTIAL"},
+  "MAceCredId5":{"container":"servrank_status","workflow":"CREDENTIAL"},
+  "MAceCredId6":{"container":"tricare_status","workflow":"CREDENTIAL"},
+  "MAceCredId7":{"container":"clinical_ass_status","workflow":"CREDENTIAL"},
+  "MAceEnrollId1":{"container":"enroll_npi_pending_status","workflow":"ENROLL"},
+  "MAceEnrollId2":{"container":"enroll_npi_enrolled_status","workflow":"ENROLL"},
+  "MAceEnrollId3":{"container":"enroll_status_mi_license","workflow":"ENROLL"},
+  "MAceEnrollId4":{"container":"enroll_status_controlled_substance","workflow":"ENROLL"},
+  "MAceEnrollId5":{"container":"enroll_status_dea_license","workflow":"ENROLL"},
+  "MAceEnrollId6":{"container":"enroll_status_board_cert","workflow":"ENROLL"},
+  "MAceEnrollId7":{"container":"enroll_status_fellowship","workflow":"ENROLL"},
+  "MAceEnrollId8":{"container":"enroll_status_med_school_diploma","workflow":"ENROLL"},
+  "MAceEnrollId9":{"container":"enroll_status_sent_to_dept","workflow":"ENROLL"}
+}

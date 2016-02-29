@@ -1,0 +1,103 @@
+{% set npi = context.get('npi',{}) %}
+{% set prmpts = context.get('prompts',{}) %}
+{% set pi = npi %}
+
+<body>
+    <div>
+        <ol>
+            <li class="npisection">
+                <span>Look up or confirm your NPI number</span>
+                <a target="_blank" href="https://npiregistry.cms.hhs.gov/">&nbsp;here</a>
+                <span>&nbsp;and enter that number below</span>
+                <div class="npiinfono">
+                    {% set prompt = 'npi_nbr' %}
+		            {% if prmpts.get(prompt,{}).get('enabled',True) %}{% include 'formChunk_textInput.html' %}{% end %}
+                </div>
+                <br/><br/>
+                <div style="margin-left: 35px;">
+                    {% set checked = "" %}
+                    {% if npi.get('does_not_have_npi',False) %}
+                        {% set checked = "checked" %}
+                    {% end %}
+                    <input type="checkbox" name = "nodohavenpi" id="doNotHaveNpi" {{ checked }}/>
+                    <label for="doNotHaveNpi">
+						<span>I do not have an NPI (to verify, please search</span>
+						<a target="_blank" href="https://nppes.cms.hhs.gov/NPPESRegistry/NPIRegistrySearch.do?subAction=reset&searchType=ind">&nbsp;here</a>
+						<span>&nbsp;and ensure your name is not found).</span>
+					</label>
+                    <p style="font-style: italic; margin-top:10px;">If you do not have an NPI, {{context.get('institution_name','')}} will apply for one for you.</p>
+                </div>
+            </li>
+            <li class="npisection">
+                <span>Print this form (</span>
+                <a style="color: #ff0000;" target="_blank" href="/pdf/{{context.get('npi_pdf_form','')}}">
+                    NPI Authorization
+                </a>
+                <span>)</span>
+            </li>
+            <li class="npisection npiinfono">
+                <span>Call this number 1-800-465-3203</span><br/>
+                <span style="margin-left:75px;">press option 1,</span><br/>
+                <span style="margin-left:75px;">then option 0</span><br/>
+                <span>and ask for your user name and a temporary password.</span>
+                <div style="margin-top:10px;">
+                    <span>Record this information here (note: username and password are case-sensitive).</span>
+                    {% set prompt = 'npi_username' %}
+		            {% if prmpts.get(prompt,{}).get('enabled',True) %}{% include 'formChunk_textInput.html' %}{% end %}
+                    {% set prompt = 'npi_password' %}
+		            {% if prmpts.get(prompt,{}).get('enabled',True) %}{% include 'formChunk_textInput.html' %}{% end %}
+                </div>
+                <br/><br/>
+            </li>
+            <li class="npisection">
+                <span>The form you printed in step 2 is required whether you currently have an NPI or not. On the form</span>
+                <span style="color:#ff0000;font-weight:bold;">sign and date (part A only)</span>
+                <span>and mail the hard copy original to your department contact.</span>
+            </li>
+        </ol>
+        <div class="npisection">
+            {% set checked = "" %}
+            {% if npi.get('agree',False) %}
+            {% set checked = "checked" %}
+            {% end %}
+
+             <input type="checkbox" name="agree" id="agree" {{ checked }}/>
+             <label for="agree">I, {{ context.get('candidate_name','') }}, agree to allow the University of Michigan Provider Enrollment to manage my NPI information on my behalf.</label>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        /*<![CDATA[*/
+
+        $(function() {
+            $.each($('a.relative'), function(index, value) { $(this).attr('href', urlWithContext($(this).attr('href'))); });
+
+            var $donothavenpi = $('#doNotHaveNpi');
+            $('.npiinfono').toggle(!$donothavenpi.is(':checked'));
+
+            $donothavenpi.on('change', function () {
+                var checked = ($(this).is(':checked'));
+                $('.npiinfono').slideToggle(!checked);
+                $('[name="doNotHaveNpi"]').val(checked);
+            });
+        });
+
+        var luhncheck = function(input) {
+            if (input.length != 10) return false;
+            var first = (input.substring(0, 1));
+            if (first != "1" && first != "2") return false;
+
+            input = '80840' + input;
+
+            var i, sum = 0;
+            for (i=0; i<13; i+=2) sum += parseInt(input.substring(i, i+1));
+
+            var delta = new Array(0, 2, 4, 6, 8, 1, 3, 5, 7, 9);
+            for (i=1; i<14; i+=2) sum += delta[parseInt(input.substring(i, i+1))];
+
+            return ((sum * 9) % 10) == parseInt(input.substring(14, 15));
+        };
+
+        /*]]>*/
+    </script>
+</body>

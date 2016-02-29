@@ -1,0 +1,9 @@
+#   File of site-specific roles.
+#   Use the common 'common_roles.txt' file for non-site-specific roles.
+
+#site|application|code|descr
+accept-umich|APPT|apptDeptUser|Department
+accept-umich|APPT|apptFacultyAffairs|Faculty Affairs
+accept-umich|APPT|apptAssitantDean|Assistant Dean
+accept-umich|APPT|apptMedicalStaffServices|Medical Staff Services
+accept-umich|APPT|apptProviderEnrollment|Provider Enrollment

@@ -1,0 +1,1 @@
+#code	descr	display_text	header_text	cols_offset	cols_label	cols_prompt	required	wrap	encrypt	data_type	data_type_attributes	job_action_types	identifier_code	show_codes	hide_codes

@@ -1,0 +1,124 @@
+{% set taskCode = context.get('taskcode','') %}
+{% set disabled = '' %}
+{% if context.get('disabled', True) %}
+	{% set disabled = 'disabled="disabled"' %}
+{% end %}
+
+{% set isLDAP = False %}
+{% set isStartAppt = False %}
+{% set sawCommunity = False %}
+{% set promptCommunity = context.get('promptCommunity', False) %}
+{% set defaultCommunity = context.get('community', 'default') %}
+{% for prompt in context.get('prompts',[]) %}
+	{% if prompt.get('enabled', False) %}
+		{% set code = prompt.get('code','') %}
+		{% if code == 'community' %}
+			{% set sawCommunity = True %}
+		{% else %}
+			{% set searchURL = prompt.get('ldapsearch_url','') %}
+			{% if searchURL %}
+				{% set isLDAP = True %}
+				{% set isStartAppt = True %}
+			{% end %}
+		{% end %}
+	{% end %}
+{% end %}
+
+<form class="wf-ajax-form wf-pi-form wf-no-curtain" id="{{ taskCode }}_form" action="{{ context.get('url','') }}" onSubmit="return false;" data-notdisabled="{{ '' if context.get('disabled', True) else 'not' }}">
+	{% if isLDAP %}
+		<div class="form-row"><div class="col-xs-10 wf-form-right">
+			Identify the candidate and click the Lookup button:
+			{% if not sawCommunity %}
+				<input type="hidden" name="community" value="{{defaultCommunity}}" />
+			{% end %}
+		</div></div>
+	{% end %}
+
+	{% for prompt in context.get('prompts',[]) %}
+		{% if prompt.get('enabled', False) %}
+			{% set label = prompt.get('label','') %}
+			{% set code = prompt.get('code','') %}
+			{% set value = prompt.get('value','') %}
+			{% set optional = '<span class="wf-qa-optional">Optional</span>' if not prompt.get('required',False) else '' %}
+
+			<!-- NEW: when used for Start Appt, we have a special UX Mode where things disable until an LDAP response is retrieved: -->
+			{% if code == 'community' %}
+				{% if promptCommunity %}
+					<div class="clearfix form-row">
+						<label class="col-xs-2 text-right" >
+							{{ label }}:
+						</label>
+
+						<div class="col-xs-7 wf-form-right">
+							{% raw optional %}
+							{% set nonLdapDisable = 'disabled="disabled"' if (context.get('disabled', True)) else '' %}
+							<select class="form-control" id="community" name="community" {{ nonLdapDisable }}>
+								<option value="" selected disabled>Select</option>
+								{% for communityDict in context.get('communityList', []) %}
+									{% set optionCode = communityDict.get('code','') %}
+									{% set selected = 'selected' if optionCode == defaultCommunity else '' %}
+									<option value="{{optionCode}}" {{selected}}>{{communityDict.get('descr','')}}</option>
+								{% end %}
+							</select>
+						</div>
+					</div>
+				{% end %}
+			{% else %}
+				{% set searchURL = prompt.get('ldapsearch_url','') %}
+				<div class="form-row clearfix">
+					<label class="col-xs-2 text-right" >
+						{{ label }}:
+					</label>
+
+					<div class="col-xs-7 wf-form-right">
+						{% raw optional %}
+						{% set nonLdapDisable = 'disabled="disabled"' if (context.get('disabled', True)) or (isStartAppt and code != 'username') else '' %}
+						<input type="text" name="{{ code }}" value="{{ value }}" class="form-control" {{ nonLdapDisable }}/>
+					</div>
+					{% if searchURL %}
+						<div class="col-xs-1">
+							<button class="btn btn-primary pull-right wf-ldap-btn" type="submit" data-wf-formname="#{{taskCode}}_form" data-wf-url="{{ searchURL }}" type="button">Lookup</button>
+						</div>
+						<br/>
+					{% end %}
+				</div>
+			{% end %}
+		{% end %}
+	{% end %}
+    {% set relatedWorkflows = context.get('relatedWorkflows',[]) %}
+    {% if relatedWorkflows %}
+        <hr>
+        <div class="form-row clearfix">
+            <label class="col-xs-2 text-right" ></label>
+            <div class="col-xs-7 wf-form-right">
+                <label><input type="checkbox" name="relatedworkflows_None" value="true" {{ nonLdapDisable }}>&nbsp;Will Not Require Additional Workflows</label>
+            </div>
+        </div>
+
+        {% set i = 0 %}
+            {% for relatedWorkflow in relatedWorkflows %}
+				{% if relatedWorkflow.get('inProgress',False) %}
+					<div class="form-row clearfix">
+                        <label class="col-xs-2 text-right" ></label>
+						<div class="col-xs-7 wf-form-right">
+							<p>{{relatedWorkflow.get('workflowdescr','') + ' has been started'}}</p>
+						</div>
+					</div>
+				{% else %}
+					{% set rwvalue = relatedWorkflow.get('workflowcode','') %}
+					{% set i += 1 %}
+					{% set controlName = 'relatedworkflow_%i' % (i) %}
+					<div class="form-row clearfix">
+						<label class="col-xs-2 text-right" ></label>
+						<div class="col-xs-7 wf-form-right">
+							<label><input type="checkbox" name="{{ controlName }}" value="{{ rwvalue }}" {{ nonLdapDisable }}>&nbsp;{{ relatedWorkflow.get('prompt','') }}</label>
+						</div>
+					</div>
+				{% end %}
+            {% end %}
+    {% end %}
+	<div class="wf-details-form-btn-bar col-xs-12 ">
+		<button type="submit" class="wf-widget-form-btn btn btn-primary" data-wf-url="{{ context.get('submitURL', '')}}" {% if isLDAP %}disabled="disabled"{% end %}>Submit</button>
+		{% include 'formChunk_cancelLink.html' %}
+	</div>
+</form>

@@ -1,0 +1,93 @@
+<div class="evaluatoremail" style="font-size: 10pt; line-height: 14px; max-width: 650px; padding-top: 20px;">
+	{% set evaluator = context.get('evaluator',{}) %}
+	{% set evaluatorFullName = evaluator.get('full_name','') %}
+	{% set evaluatorDegree = evaluator.get('degree','') %}
+	{% set evaluatorInstitution = evaluator.get('institution','') %}
+	{% set evaluatorIsExternal = evaluator.get('evaluator_type_is_external',True) %}
+	{% set evaluatorIsInternal = not evaluatorIsExternal %}
+	{% set evaluatorIsArmsLength = evaluator.get('evaluator_type_is_arms_length',True) %}
+	{% set department = context.get('department',{}) %}
+	{% set departmentChairs = department.get('department_chair',[]) %}
+
+	{% set headerImageURL = department.get('header_image_url','') %}
+	{% if headerImageURL %}
+	<div style="margin-bottom: 10px;">
+		<img style="height: 40px" src="{{headerImageURL}}"/>
+	</div>
+	{% end %}
+
+	<div style="font-weight: bold; font-size: 8pt;">
+		<b>Medical Staff Services</b><br/>
+		2500 Green Rd., Ste. 700, Ann Arbor, MI 48105-1597<br/>
+		Phone: (734) 647-6865 Fax: (734) 936-9757<br/>
+	</div>
+    <hr style="height:1px; border:none; color:#000; background-color:#000;margin-bottom: 2px;">
+    <hr style="height:2px; border:none; color:#000; background-color:#000; margin-top: 1px;margin-bottom: 2px;">
+
+	<div style="padding: 20px 0 0 5px; clear: both;">
+        <div style="margin-bottom: 20px;">
+            <p>{{context.get('current_date','')}}</p>
+        </div>
+
+		<div class="toaddress">
+			<p>
+				{{evaluatorFullName}}, {{evaluatorDegree}}<br/>
+				{% for titleLine in evaluator.get('titles',[]) %}
+					{{titleLine}}<br/>
+				{% end %}
+				{{evaluatorInstitution}}<br/>
+			</p>
+		</div>
+
+		{% set evaluatorSalutation = evaluator.get('salutation','') %}
+		{% set evaluatorLastName = evaluator.get('last_name','') %}
+		<div class="letterbody">
+			<p>{{evaluatorSalutation}} {{evaluatorLastName}}:</p>
+			{% set person = context.get('person',{}) %}
+			{% set personLastName = person.get('last_name','') %}
+			{% set personFullName = person.get('full_name','') %}
+			{% set personDrSoAndSo = 'Dr. ' + personLastName %}
+			{% set personDrSoAndSoPossessive = 'Dr. ' + person.get('last_name_possessive','') %}
+			{% set title = context.get('title',{}) %}
+			{% set track = context.get('track',{}) %}
+			{% set department = context.get('department',{}) %}
+			{% set isClinicalInstructor = 'CLINICAL_INSTRUCTOR' in title.get('tags','').upper() %}
+			{% set isResearchInvestigator = 'RESEARCH_INVESTIGATOR' in title.get('tags','').upper() %}
+			{% set isResearch = 'RESEARCH' in track.get('tags','').upper() %}
+			{% set isClinical = 'CLINICAL' in track.get('tags','').upper() %}
+			{% set isInstructional = 'INSTRUCTIONAL' in track.get('tags','').upper() %}
+			{% set isLecturer = 'LECTURER' in track.get('tags','').upper() %}
+			{% set isFacTrack = isResearch or isClinical or isInstructional %}
+			{% set isEntryLevel = isLecturer or isClinicalInstructor or isResearchInvestigator %}
+			<p>
+                {{personFullName}}, M.D., has applied for Medical Staff membership at the University of Michigan Hospitals and Health Centers.
+                I am writing to request your appraisal of {{personDrSoAndSo}},
+                who we are considering appointing as an {{title.get('descr','')}} in the Department of {{department.get('full_descr')}}, along with Medical Staff membership that includes clinical privileges.
+			</p>
+            <p>
+                We are seeking your honest assessment of the applicant’s ability to practice.  Please complete the assessment by clicking on the link below.
+			</p>
+
+			<p>
+                <a href="{{context.get('form_url','')}}" target="_blank"><u>You can access the evaluation by clicking here</u></a>
+            </p>
+
+			<p>
+                <b>This assessment is a requirement for consideration of Medical Staff membership and clinical privileges.</b>
+			<p>
+                The applicant has signed a release authorizing the University of Michigan to perform this inquiry and releasing from liability any person responding to such inquiry.  A copy of the release is on file with the UMHHC Medical Staff Services.  Moreover, the University protects confidentiality of all peer review records, including records relied upon during the Medical Staff credentialing process, consistent with Michigan state law.  As a matter of policy, the University will not release such records absent a judicial or administrative order requiring disclosure, which the University will attempt to contest absent the drafter’s explicit agreement to disclose.
+            </p>
+            <p>
+                Please contact Medical Staff Services at (734) 647-6865 or by mail at 2500 Green Road, Suite 700, Ann Arbor, MI  48105-1597, if you wish to discuss the applicant with a member of the Credentials Committee or Chief of Staff.  You may also contact the Chair of the appointing department directly.
+            </p>
+            <p>Best wishes and many thanks</p>
+			<p>
+				James Ellis, MD<br/>
+				Credentialing Committee Chair<br/>
+				The University of Michigan Hospitals and Health Centers
+			</p>
+            <br/><br/>
+            <p><small>Ref:  MCLA 330.531, MCLA 330.533, MCLA 333.20175, MCLA 333.21513, and MCLA 333.21515</small></p>
+		</div>
+	</div>
+</div>

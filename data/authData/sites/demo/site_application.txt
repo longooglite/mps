@@ -1,0 +1,5 @@
+#sitecode|appcode
+demo|APPT
+demo|IMM
+demo|CV
+demo|MPSADMIN

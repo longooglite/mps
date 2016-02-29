@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+	body {
+		font-size: 13px;
+		font-family: "Arial", Verdana, sans-serif;
+	}
+	tr:nth-child(odd) {
+		background-color: #EEEEEE;
+	}
+	table {
+		border-collapse: collapse;
+		width:100%;
+	}
+</style>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body style='height:50px;overflow:hidden;margin:0;padding:0;'>
+	<center><h3> {{context.get('header','')}} </h3></center>
+	<center><h4> {{context.get('candidateName','')}} </h4></center>
+    {% if context.get('updatedate_display','') %}
+        <center><p style="padding-top: 0px;">Submitted on: {{context.get('updatedate_display','')}}</p></center>
+    {% end %}
+	{% for group in context.get('uberContent',[]) %}
+		{% set groupDescr = group.get('groupdescr','')%}
+		{% if groupDescr %}
+			{% raw groupDescr %}
+		{% end %}
+		<table cellpadding="8">
+			{% for item in group.get('items',{}) %}
+				<tr>
+                    {% set columnWidth = context.get("printLabelColumnWidth","500px")%}
+					<td valign="top" width="{{columnWidth}}">{% raw item.get('label','') %}</td>
+					<td valign="top">{% raw item.get('value','') %}</td>
+				</tr>
+			{% end %}
+		</table>
+	{% end %}
+</body>
+</html>

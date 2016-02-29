@@ -1,0 +1,71 @@
+#positioncode|trackcode|titlecode|titledescr|positioncriteria|active|rankorder|ISACTIONABLE
+OPENIN|Instructional|OPENIN|Open||0|0|0
+201001|Instructional|201001|Professor without Tenure|Professor.pdf|1|4|1
+201500|Instructional|201500|Associate Professor with Tenure|Associate.Professor.pdf|1|3|1
+201000|Instructional|201000|Professor with Tenure|Professor.pdf|1|5|1
+202000|Instructional|202000|Assistant Professor|Assistant.Professor.pdf|1|1|1
+201501|Instructional|201501|Associate Professor without Tenure|Associate.Professor.pdf|1|2|1
+202140|Clinical|202140|Clinical Assistant Professor|Clinical.Assistant.Professor.pdf|1|2|1
+OPENCL|Clinical|OPENCL|Open||0|0|0
+201140|Clinical|201140|Clinical Professor|Clinical.Professor.pdf|1|4|1
+201640|Clinical|201640|Clinical Associate Professor|Clinical.Associate.Professor.pdf|1|3|1
+202640|Clinical|202640|Clinical Instructor|Clinical.Instructor.pdf|1|1|1
+128940|Research|128940|Associate Research Scientist|Research.Scientist.Track.pdf|1|4|1
+128900|Research|128900|Research Investigator|Research.Investigator.pdf|1|1|1
+129530|Research|129530|Research Assistant Professor|Research.Professor.Track.pdf|1|3|1
+129520|Research|129520|Research Associate Professor|Research.Professor.Track.pdf|1|5|1
+129500|Research|129500|Research Professor|Research.Professor.Track.pdf|1|7|1
+128960|Research|128960|Research Scientist|Research.Scientist.Track.pdf|1|6|1
+128920|Research|128920|Assistant Research Scientist|Research.Scientist.Track.pdf|1|2|1
+203090N|Clinical Lecturer|203090N|Clinical Lecturer (Non GME)|Clinical.Lecturer.pdf|1|1|1
+203090|Clinical Lecturer|203090|Clinical Lecturer|Clinical.Lecturer.pdf|1|1|1
+202880|Leo Lecturer|202880|LEO Lecturer IV|Lecturer.pdf|1|4|1
+202860|Leo Lecturer|202860|LEO Lecturer III|Lecturer.pdf|1|3|1
+202820|Leo Lecturer|202820|LEO Lecturer I|Lecturer.pdf|1|1|1
+202840|Leo Lecturer|202840|LEO Lecturer II|Lecturer.pdf|1|2|1
+201530|Supplemental Instructional|201530|Adjunct Associate Professor|Associate.Professor.pdf|1|3|1
+201030|Supplemental Instructional|201030|Adjunct Professor|Professor.pdf|1|4|1
+202550|Supplemental Instructional|202550|Visiting Instructor|Instructor.pdf|1|1|1
+201550|Supplemental Instructional|201550|Visiting Associate Professor|Associate.Professor.pdf|1|3|1
+202050|Supplemental Instructional|202050|Visiting Assistant Professor I|Assistant.Professor.pdf|1|2|1
+202030|Supplemental Instructional|202030|Adjunct Assistant Professor|Assistant.Professor.pdf|1|2|1
+201120|Supplemental Instructional|201120|Assistant Professor Emeritus/A|Assistant.Professor.pdf|1|2|1
+201110|Supplemental Instructional|201110|Associate Professor Emeritus/A|Associate.Professor.pdf|1|3|1
+201070|Supplemental Instructional|201070|Professor Emeritus/A|Professor.pdf|1|4|1
+202530|Supplemental Instructional|202530|Adjunct Instructor|Instructor.pdf|1|1|1
+201050|Supplemental Instructional|201050|Visiting Professor I|Professor.pdf|1|1|1
+202070|Supplemental Clinical|202070|Adjunct Physician Instructor|Instructor.pdf|1|1|1
+202540|Supplemental Clinical|202540|Adjunct Clinical Instructor|Clinical.Instructor.pdf|1|2|1
+202040|Supplemental Clinical|202040|Adjunct Clinical Assistant Professor|Clinical.Assistant.Professor.pdf|1|3|1
+201540|Supplemental Clinical|201540|Adjunct Clinical Associate Professor|Clinical.Associate.Professor.pdf|1|4|1
+201040|Supplemental Clinical|201040|Adjunct Clinical Professor|Clinical.Professor.pdf|1|5|1
+201600|Supplemental Clinical|201600|Visiting Clinical Assistant Professor|Clinical.Assistant.Professor.pdf|1|3|1
+201012|Supplemental Clinical|201012|Clinical Assistant Professor Emeritus/A|Clinical.Assistant.Professor.pdf|1|3|1
+201011|Supplemental Clinical|201011|Clinical Associate Professor Emeritus|Clinical.Associate.Professor.pdf|1|4|1
+201010|Supplemental Clinical|201010|Clinical Professor Emeritus/A|Clinical.Professor.pdf|1|5|1
+128990|Supplemental Research|128990|Adjunct Research Scientist|Research.Scientist.Track.pdf|1|6|1
+128930|Supplemental Research|128930|Visiting Assistant Research Scientist|Research.Scientist.Track.pdf|1|2|1
+129560|Supplemental Research|129560|Visiting Research Professor|Research.Professor.Track.pdf|1|7|1
+129550|Supplemental Research|129550|Visiting Research Associate Professor|Research.Professor.Track.pdf|1|5|1
+129540|Supplemental Research|129540|Visiting Research Assistant Professor|Research.Professor.Track.pdf|1|3|1
+129230|Supplemental Research|129230|Research Scientist Emeritus|Research.Scientist.Track.pdf|1|6|1
+129030|Supplemental Research|129030|Adjunct Research Investigator|Research.Investigator.pdf|1|1|1
+129570|Supplemental Research|129570|Adjunct Research Assistant Professor|Research.Professor.Track.pdf|1|3|1
+129580|Supplemental Research|129580|Adjunct Research Associate Professor|Research.Professor.Track.pdf|1|5|1
+129590|Supplemental Research|129590|Adjunct Research Professor|Research.Professor.Track.pdf|1|7|1
+128890|Supplemental Research|128890|Adjunct Assistant Research Scientist|Research.Scientist.Track.pdf|1|2|1
+128980|Supplemental Research|128980|Adjunct Associate Research Scientist|Research.Scientist.Track.pdf|1|4|1
+128910|Supplemental Research|128910|Visiting Associate Research Scientist|Research.Scientist.Track.pdf|1|4|1
+128950|Supplemental Research|128950|Visiting Research Scientist I|Research.Scientist.Track.pdf|1|6|1
+128970|Supplemental Research|128970|Visiting Research Investigator I|Research.Investigator.pdf|1|1|1
+129110|Supplemental Research|129110|Visiting Research Investigator II|Research.Investigator.pdf|1|1|1
+129480|Supplemental Research|129480|Research Associate Professor Emeritus/A|Research.Professor.Track.pdf|1|5|1
+129490|Supplemental Research|129490|Research Professor Emeritus/A|Research.Professor.Track.pdf|1|7|1
+129270|Supplemental Research|129270|Assistant Research Scientist Emeritus|Research.Scientist.Track.pdf|1|2|1
+129250|Supplemental Research|129250|Associate Research Scientist Emeritus|Research.Scientist.Track.pdf|1|4|1
+201610|Supplemental Lecturer|201610|Visiting Clinical Lecturer|Clinical.Lecturer.pdf|1|1|1
+203050|Supplemental Lecturer|203050|Visiting Lecturer|Lecturer.pdf|1|1|1
+110370|Supplemental Lecturer|110370|Adjunct Clinical Associate|Clinical.Associate.pdf|1|1|1
+203040|Supplemental Lecturer|203040|Adjunct Clinical Lecturer|Clinical.Lecturer.pdf|1|1|1
+203030|Supplemental Lecturer|203030|Adjunct Lecturer|Lecturer.pdf|1|1|1
+000000|Dummy|000000|Dummy||0|0|0

@@ -1,0 +1,12 @@
+MEDSCHOOL|Medical School
+DENTSCHOOL|Dental School
+OPTSCHOOL|Optometry School
+PODSCHOOL|Podiatry School
+DOCTSCHOOL|Doctoral Program (PhD, PsyD)
+MASTPROG|Masters Program
+INTERN|Internship
+RESI|Residency
+POSTDOC|Postdoctoral Fellow
+RESFELL|Research Fellow
+EXTERNSHIP|Externship
+CLINTRAINING|Clinical Training

@@ -1,0 +1,65 @@
+[Category]
+<h4>Personal Info</h4>
+<p>This page displays your personal and contact information.<p>
+<p>Information entered on this page will be displayed in the header of your curriculum vitae.<p>
+<hr>
+<p>To <strong>add or edit</strong> an your personal information, click the “Edit Personal Info…” button in the upper right portion of the page.</p>
+<p>To <strong>print</strong> a section of the CV, click the “Print this section” button in the upper right portion of the page or select “Print Section” from the Print menu found in the menu bar.</p>
+
+[DemoFormalName]
+<p>Please enter your name as you would like to have it displayed on your curriculum vitae.</p>
+<hr>
+<p>This item is required</p>
+
+[DemoTitle]
+<p>Please enter your title(s) including track.</p>
+<hr>
+<p>This item is required</p>
+<p>To <strong>add</strong> an additional entry, click the “+” button next to the row.</p>
+<p>To <strong>delete</strong> an entry, click the “-” button at the end of the row.</p>
+
+[DemoDepartment]
+<p>Please select your primary department.</p>
+
+[DemoInstitution]
+<p>Please enter the name of your institution.</p>
+<hr>
+<p>This item is required</p>
+
+[DemoWorkAddress]
+<p>Please enter your office address.</p>
+<hr>
+<p>This item is required</p>
+<p>To <strong>add</strong> an additional entry, click the “+” button next to the row.</p>
+<p>To <strong>delete</strong> an entry, click the “-” button at the end of the row.</p>
+
+[DemoHomeAddress]
+<p>Please enter your office address.</p>
+<hr>
+<p>To <strong>add</strong> an additional entry, click the “+” button next to the row.</p>
+<p>To <strong>delete</strong> an entry, click the “-” button at the end of the row.</p>
+
+[DemoWorkPhone]
+<p>Please enter your work phone.</p>
+<hr>
+<p>This item is required</p>
+
+[DemoWorkFax]
+<p>Please enter your work fax.</p>
+
+[DemoWorkEMail]
+<p>Please enter your work email address.</p>
+<hr>
+<p>This item is required</p>
+
+[DemoDateOfBirth]
+<p>Please enter your date of birth.</p>
+
+[DemoCitizenship]
+<p>Please select your Citizenship.</p>
+<hr>
+<p>This item is required</p>
+
+[DemoGender]
+<p>Please select your gender.</p>
+

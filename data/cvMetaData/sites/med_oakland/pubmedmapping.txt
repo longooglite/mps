@@ -1,0 +1,122 @@
+[
+  {
+    "categoryCode": "PeerReviewed",
+    "dataElements": {
+      "isBook":"no",
+      "chapter": "",
+      "publishername": "",
+      "fulljournalname": "PeerReviewedJournalTitle",
+      "title": "",
+      "bookname": "",
+      "pages": "PeerReviewedPages",
+      "volume": "PeerReviewedJournalVolume",
+      "edition": "",
+      "epubdate": "PeerReviewedPublishedDate",
+      "authors": "",
+      "issue": "PeerReviewedJournalIssue",
+      "booktitle": "",
+      "uid": ""
+    }
+  },
+  {
+    "categoryCode": "NonPeerReviewed",
+    "dataElements": {
+      "isBook":"no",
+      "chapter": "",
+      "publishername": "",
+      "fulljournalname": "NonPeerReviewedJournalTitle",
+      "title": "NonPeerReviewedTitle",
+      "bookname": "",
+      "pages": "NonPeerReviewedPages",
+      "volume": "NonPeerReviewedJournalVolume",
+      "edition": "",
+      "epubdate": "NonPeerReviewedPublishedDate",
+      "authors": "NonPeerReviewedAuthors",
+      "issue": "NonPeerReviewedJournalIssue",
+      "booktitle": "",
+      "uid": "NonPeerReviewedPMID"
+    }
+  },
+  {
+    "categoryCode": "Books",
+    "dataElements": {
+      "isBook":"yes",
+      "chapter": "",
+      "publishername": "BooksPublisher",
+      "fulljournalname": "",
+      "title": "",
+      "bookname": "",
+      "issn": "",
+      "pages": "",
+      "volume": "BooksVolume",
+      "edition": "BooksEdition",
+      "epubdate": "BooksPublicationYear",
+      "authors": "BooksBookAuthors",
+      "uid": "",
+      "issue": "",
+      "booktitle": "BooksBookTitle",
+      "essn": ""
+    }
+  },
+  {
+    "categoryCode": "BookChapters",
+    "dataElements": {
+      "isBook":"yes",
+      "chapter": "BookChaptersChapter",
+      "publishername": "BookChaptersPublisher",
+      "fulljournalname": "",
+      "title": "",
+      "bookname": "",
+      "issn": "",
+      "pages": "BookChaptersPages",
+      "volume": "BookChaptersVolume",
+      "edition": "BookChaptersEdition",
+      "epubdate": "BookChaptersPublicationYear",
+      "authors": "BookChaptersAuthors",
+      "issue": "",
+      "booktitle": "BookChaptersBookTitle",
+      "essn": ""
+    }
+  },
+   {
+    "categoryCode": "Abstracts",
+    "dataElements": {
+      "isBook":"no",
+      "chapter": "",
+      "publishername": "",
+      "fulljournalname": "AbstractJournalTitle",
+      "title": "AbstractTitle",
+      "bookname": "",
+      "issn": "",
+      "pages": "AbstractPages",
+      "volume": "AbstractJournalVolume",
+      "edition": "",
+      "epubdate": "AbstractDate",
+      "authors": "AbstractAuthors",
+      "issue": "AbstractJournalIssue",
+      "booktitle": "",
+      "essn": ""
+    }
+  },
+   {
+    "categoryCode": "OtherMediaDetails",
+    "dataElements": {
+      "isBook":"no",
+      "chapter": "",
+      "publishername": "OtherMediaPublisher",
+      "fulljournalname": "",
+      "title": "OtherMediaTitle",
+      "bookname": "",
+      "issn": "",
+      "pages": "",
+      "volume": "",
+      "edition": "",
+      "epubdate": "OtherMediaPublicationYear",
+      "authors": "OtherMediaAuthors",
+      "issue": "",
+      "booktitle": "",
+      "essn": ""
+    }
+  }
+
+]

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>{{context.get('windowTitle', '')}}</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/wf-main.css"/>
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/jquery-ui.min.css"/>
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/wf.knobs.css"/>
+</head>
+
+{% set group = context.get('group', {}) %}
+{% set groupId = group.get('id', 0) %}
+
+{% set isMsg = True if len(context.get('errormessage','')) > 0 else False %}
+<body class="{{ 'cv-show-global-message' if isMsg else '' }} cv-proxy-page mps-admin-page">
+
+	<div class="container-fluid mps-body">
+		{% include pageHeader.html %}
+		<div class="body-content cv-body cv-body-no-menu">
+			<div class="page-header clearfix">
+				<h1>
+					Form Group Preview<br/>
+					<small>
+						<span class="cv-head-bread-leaf">{{ group.get('descr','[Group Description goes here]')}}</span>
+					</small>
+				</h1>
+			</div>
+
+			<form class="wf-ajax-form wf-qa-form wf-admin-form">
+				<div class="wf-widget-serverside-form form-row col-xs-offset-1 col-xs-10">
+					{% set uberInstance = context.get('uber_instance',{}) %}
+					{% set context['uberContainer'] = uberInstance.get('questions',{}) %}
+					{% module Template("uberContainer.html", context=context, skin=context['skin']) %}
+				</div>
+			</form>
+		</div>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+<script type="text/javascript" src="/{{skin}}/js/wf.core.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/3rdParty/jquery.knob.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/wf.adminForm.js"></script>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+$(function() {
+	// Non-Ajax'd forms need to initialize a few things like Date Pickers & Repeating Controls:
+	// Also expanding child items
+
+	$('form.wf-admin-form').wfAdminForm();
+
+});
+/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

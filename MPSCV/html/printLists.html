@@ -1,0 +1,12 @@
+<div>
+    {% set rowCounter = 0 %}
+    {% for currsubcategory in currcategory.get('subcategories',[]) %}
+        {% set categorydescr = currcategory.get('descr','') %}
+        {% set rowCounter = rowCounter + 1 %}
+        {% if rowCounter > 1 %}
+            {% set categorydescr = '' %}
+        {% end %}
+        {% set subcategorydescr = currsubcategory.get('descr','') %}
+	    {% include printTabledOutput.html %}
+    {% end %}
+</div>

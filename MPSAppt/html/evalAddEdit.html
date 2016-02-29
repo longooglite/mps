@@ -1,0 +1,181 @@
+{% set taskCode = context.get('taskcode','') %}
+{% set isAdd = context.get('is_add',False) %}
+
+{% set disabled = '' %}
+{% if context.get('disabled', True) %}
+	{% set disabled = 'disabled="disabled"' %}
+{% end %}
+
+<form class="wf-ajax-form wf-pi-form" id="{{ taskCode }}_form" action="{{ context.get('url','') }}" onSubmit="return false;">
+
+	{% set pi = context.get('initial_form_values', { 'salutation': 'Dear Dr.' }) %}
+	{% set prmpts = context.get('prompts',{}) %}
+
+	{% if prmpts.get('evaluator_source',{}).get('enabled',False) %}
+		{% set sourceList = context.get('evaluator_sources',[]) %}
+		{% if sourceList %}
+			<div class="form-row">
+				<label class="col-xs-2 text-right" >Suggested by:</label>
+				<div class="col-xs-8 wf-form-right">
+					{% if not prmpts.get('evaluator_source',{}).get('required', True) %}<span class="wf-qa-optional">Optional</span>{% end %}
+					{% set chosen = pi.get('evaluator_source_code','') %}
+					{% for each in sourceList %}
+						{% set optionCode = each.get('code','') %}
+						{% set optionDisabled = each.get('disabled',False) %}
+						<label> <input type="radio" name="evaluator_source" value="{{optionCode}}" {% raw disabled %} {{'checked="checked"' if chosen == optionCode else ''}} {{'disabled="disabled"' if optionDisabled else ''}}>{{each.get('descr','')}}</label>
+					{% end %}
+				</div>
+			</div>
+		{% end %}
+	{% end %}
+
+	{% if prmpts.get('evaluator_type',{}).get('enabled',False) %}
+		{% set typeList = context.get('evaluator_types',[]) %}
+		{% if typeList %}
+			<div class="form-row">
+				<label class="col-xs-2 text-right" >Evaluator Type:</label>
+				<div class="col-xs-8 wf-form-right">
+					{% if not prmpts.get('evaluator_type',{}).get('required', True) %}<span class="wf-qa-optional">Optional</span>{% end %}
+					<select id="evaluator_type" class="form-control" name="evaluator_type" {% raw disabled %}>
+						{% set chosen = pi.get('evaluator_type_code','') %}
+						<option value="" disabled selected>Select Evaluator Type</option>
+						{% for each in typeList %}
+							{% set optionCode = each.get('code','') %}
+							{% set optionDisabled = each.get('disabled',False) %}
+							<option value="{{optionCode}}" {{'selected="selected"' if chosen == optionCode else ''}} {{'disabled="disabled"' if optionDisabled else ''}}> {{each.get('descr','')}}</option>
+						{% end %}
+					</select>
+				</div>
+			</div>
+		{% end %}
+	{% end %}
+
+	{% set prompt = 'first_name' %}
+	{% if prmpts.get(prompt,{}).get('enabled',False) %}{% include 'formChunk_textInput.html' %}{% end %}
+
+	{% set prompt = 'middle_name' %}
+	{% if prmpts.get(prompt,{}).get('enabled',False) %}{% include 'formChunk_textInput.html' %}{% end %}
+
+	{% set prompt = 'last_name' %}
+	{% if prmpts.get(prompt,{}).get('enabled',False) %}{% include 'formChunk_textInput.html' %}{% end %}
+
+	{% set prompt = 'suffix' %}
+	{% if prmpts.get(prompt,{}).get('enabled',False) %}{% include 'formChunk_textInput.html' %}{% end %}
+
+	{% set prompt = 'degree' %}
+	{% if prmpts.get(prompt,{}).get('enabled',False) %}{% include 'formChunk_textInput.html' %}{% end %}
+
+	{% set prompt = 'salutation' %}
+	{% if prmpts.get(prompt,{}).get('enabled',False) %}{% include 'formChunk_textInput.html' %}{% end %}
+
+	{% set prompt = 'email' %}
+	{% set doClientValidateEmail = True %}
+	{% if prmpts.get(prompt,{}).get('enabled',False) %}{% include 'formChunk_textInput.html' %}{% end %}
+
+	{% set prompt = 'phone' %}
+	{% if prmpts.get(prompt,{}).get('enabled',False) %}{% include 'formChunk_textInput.html' %}{% end %}
+
+    {% set prompt = 'titles' %}
+	{% if prmpts.get(prompt,{}).get('enabled',False) %}
+		{% set promptUX = 'Title' %}
+		{% include 'formChunk_MultipleEntryText.html' %}
+	{% end %}
+
+	{% if prmpts.get('program',{}).get('enabled',False) %}
+		{% set programList = context.get('programs',[]) %}
+		{% if programList %}
+			<div class="form-row">
+				<label class="col-xs-2 text-right" >Program:</label>
+				<div class="col-xs-8 wf-form-right">
+					{% if not prmpts.get('program',{}).get('required', True) %}<span class="wf-qa-optional">Optional</span>{% end %}
+					<select id="program" class="form-control" name="program" {% raw disabled %}>
+						{% set chosen = pi.get('program','') %}
+						<option value="" disabled selected>Select Program</option>
+						{% for each in programList %}
+							{% set optionCode = each.get('code','') %}
+							{% set optionDisabled = each.get('disabled',False) %}
+							<option value="{{optionCode}}" {{'selected="selected"' if chosen == optionCode else ''}} {{'disabled="disabled"' if optionDisabled else ''}}> {{each.get('descr','')}}</option>
+						{% end %}
+					</select>
+				</div>
+			</div>
+		{% end %}
+	{% end %}
+
+    {% set prompt = 'admission_date' %}
+	{% if prmpts.get(prompt,{}).get('enabled',False) %}{% include 'formChunk_textInput.html' %}{% end %}
+
+	{% set prompt = 'institution' %}
+	{% if prmpts.get(prompt,{}).get('enabled',False) %}{% include 'formChunk_textInput.html' %}{% end %}
+
+    {% set prompt = 'address_lines' %}
+    {% if prmpts.get(prompt,{}).get('enabled',False) %}
+		{% set promptUX = 'Address' %}
+		{% include 'formChunk_MultipleEntryText.html' %}
+	{% end %}
+
+    {% set prompt = 'city' %}
+	{% if prmpts.get(prompt,{}).get('enabled',False) %}{% include 'formChunk_textInput.html' %}{% end %}
+
+	{% if prmpts.get('state',{}).get('enabled',False) %}
+		{% set stateList = context.get('states',[]) %}
+		{% if stateList %}
+			<div class="form-row">
+				<label class="col-xs-2 text-right" >State/Province:</label>
+				<div class="col-xs-8 wf-form-right">
+					{% if not prmpts.get('state',{}).get('required', True) %}<span class="wf-qa-optional">Optional</span>{% end %}
+					<select id="state" class="form-control" name="state" {% raw disabled %}>
+						{% set chosen = pi.get('state','') %}
+						<option value="" disabled selected>Select State</option>
+						{% for each in stateList %}
+							{% set optionCode = each.get('code','') %}
+							{% set optionDisabled = each.get('disabled',False) %}
+							<option value="{{optionCode}}" {{'selected="selected"' if chosen == optionCode else ''}} {{'disabled="disabled"' if optionDisabled else ''}}> {{each.get('descr','')}}</option>
+						{% end %}
+					</select>
+				</div>
+			</div>
+		{% end %}
+	{% end %}
+
+    {% set prompt = 'postal' %}
+	{% if prmpts.get(prompt,{}).get('enabled',False) %}{% include 'formChunk_textInput.html' %}{% end %}
+
+	{% if prmpts.get('country',{}).get('enabled',False) %}
+		{% set countryList = context.get('countries',[]) %}
+		{% if stateList %}
+			<div class="form-row">
+				<label class="col-xs-2 text-right" >Country:</label>
+				<div class="col-xs-8 wf-form-right">
+					{% if not prmpts.get('country',{}).get('required', True) %}<span class="wf-qa-optional">Optional</span>{% end %}
+					<select id="country" class="form-control" name="country" {% raw disabled %}>
+						{% set chosen = pi.get('country','') %}
+						<option value="" disabled selected>Select Country</option>
+						{% for each in countryList %}
+							{% set optionCode = each.get('code','') %}
+							{% set optionDisabled = each.get('disabled',False) %}
+							<option value="{{optionCode}}" {{'selected="selected"' if chosen == optionCode else ''}} {{'disabled="disabled"' if optionDisabled else ''}}> {{each.get('descr','')}}</option>
+						{% end %}
+					</select>
+				</div>
+			</div>
+		{% end %}
+	{% end %}
+
+	{% if prmpts.get('reason',{}).get('enabled',True) %}
+		<div class="form-row">
+			<label class="col-xs-2 text-right" for="reason">Evaluator Bio/Reason for Selection:</label>
+			<div class="col-xs-8 wf-form-right">
+				{% if not prmpts.get('reason',{}).get('required', True) %}<span class="wf-qa-optional">Optional</span>{% end %}
+				<textarea rows="5" name="reason" id="reason" {% raw disabled %}>{{pi.get('reason','')}}</textarea>
+			</div>
+		</div>
+	{% end %}
+
+	<div class="form-row">
+		<div class="wf-details-form-btn-bar col-xs-12">
+			<button class="btn btn-primary" type="submit" data-wf-formname="#{{taskCode}}_form" type="button" {% raw disabled %}>Submit</button>
+			{% include 'formChunk_cancelLink.html' %}
+		</div>
+	</div>
+</form>

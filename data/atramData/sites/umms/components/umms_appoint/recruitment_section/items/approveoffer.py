@@ -1,0 +1,145 @@
+# [Copyright]
+# SmartPath v1.0
+# Copyright 2014-2015 Mountain Pass Solutions, Inc.
+# This unpublished material is proprietary to Mountain Pass Solutions, Inc.
+# [End Copyright]
+
+approveoffer = {
+	"code": "approveoffer",
+	"descr": "Approve Offer",
+	"header": "Approve Offer",
+	"componentType": "Task",
+	"affordanceType":"Item",
+	"overviewOnly":False,
+	"optional": False,
+	"enabled": True,
+	"logEnabled": True,
+	"freezable": True,
+	"accessPermissions": ["ofa_task"],
+	"viewPermissions": ["ofa_task","dept_task","mss_task"],
+	"blockers": ["submitoffer"],
+	"statusMsg": "",
+	"successMsgApprove":"Offer approved",
+	"successMsgDeny":"Offer denied",
+	"successMsgRevisions":"Offer revisions required",
+	"className": "Approval",
+	"config": {
+		"alert": {
+			"sendToUser":False,
+			"sendToDepartment":True,
+			"sendToSitePref":[],
+			"sendToAddresses":[],
+			"sendToCCAddresses":[],
+			"sendToBCCAddresses":[],
+			"emailTextComplete":"Offer Approved",
+			"emailTextRevisions":"Offer Revisions Required",
+		},
+		"approveDashboardEvents": [{
+			"code":"offerrevisions",
+			"eventType":"remove",
+		},{
+			"code":"offersubmit",
+			"eventType":"remove",
+		},{
+			"code":"offerapproved",
+			"sortOrder":"c1",
+			"eventDescription":"Offer Approved",
+			"eventType":"create",
+			"permission":["dept_task"]
+		}],
+		"approve": True,
+		"approveText": "Approve",
+		"approveStatusMsg": "Offer Approved",
+		"approveFreeze": {
+			"freezeJobAction": False,
+			"freezeSelf": True,
+			"freezeAllPredecessors": True,
+			"freezeTasks": [],
+			"unfreezeJobAction": False,
+			"unfreezeSelf": False,
+			"unfreezeAllPredecessors": False,
+			"unfreezeTasks": [],
+			"setJobActionRevisionsRequired": False,
+			"clearJobActionRevisionsRequired": True,
+			"clearSubmitStatus": "",
+			"activityLogText": "Offer Approved",
+		},
+		"deny": True,
+		"confirmDeny":True,
+		"denyText": "Deny",
+		"denyStatusMsg": "Offer Denied",
+		"denyDashboardEvents": [{
+			"code":"offersubmit",
+			"eventType":"remove",
+		},{
+			"code":"offerdenied",
+			"sortOrder":"c3",
+			"eventDescription":"Offer Denied",
+			"eventType":"create",
+			"permission":["dept_task"]
+		}],
+		"denyFreeze": {
+			"freezeJobAction": True,
+			"freezeSelf": False,
+			"freezeAllPredecessors": False,
+			"freezeTasks": [],
+			"unfreezeJobAction": False,
+			"unfreezeSelf": False,
+			"unfreezeAllPredecessors": False,
+			"unfreezeTasks": [],
+			"setJobActionRevisionsRequired": False,
+			"clearJobActionRevisionsRequired": True,
+			"clearSubmitStatus": "",
+			"activityLogText": "Offer Denied",
+		},
+		"revisionsRequired": True,
+		"revisionsRequiredText": "Revisions Required",
+		"revisionsRequiredStatusMsg": "Revisions Required",
+		"revisionsDashboardEvents": [{
+			"code":"offersubmit",
+			"eventType":"remove",
+			"permission":["ofa_task"]
+		},{
+			"code":"offerrevisions",
+			"sortOrder":"c2",
+			"eventDescription":"Offer Revisions Required",
+			"eventType":"create",
+			"permission":["dept_task"]
+		}],
+		"revisionsRequiredFreeze": {
+			"freezeJobAction": False,
+			"freezeSelf": False,
+			"freezeAllPredecessors": False,
+			"freezeTasks": [],
+			"unfreezeJobAction": False,
+			"unfreezeSelf": False,
+			"unfreezeAllPredecessors": False,
+			"unfreezeTasks": ["submitoffer"],
+			"unfreezeOptions": ["edittitleplaceholder","identifycandidate","initialofferletter","aar","mou","provojustification"],
+			"setJobActionRevisionsRequired": True,
+			"clearJobActionRevisionsRequired": False,
+			"clearSubmitStatus": "submitoffer",
+			"activityLogText": "Offer Revisions Required",
+		},
+		"activityLog": {
+			"enabled": True,
+			"activityLogText": "Offer Approved",
+			"comments": [
+				{
+					"commentCode": "offerApprovalCommentEverybody",
+					"commentLabel": "Comment",
+					"accessPermissions": ["ofa_task"],
+					"viewPermissions": ["ofa_task","dept_task"],
+				},
+				{
+					"commentCode": "offerApprovalCommentOnlyOFA",
+					"commentLabel": "OFA-only Comment",
+					"accessPermissions": ["ofa_task"],
+					"viewPermissions": ["ofa_task"],
+				},
+			],
+		},
+		"activityLogTaskCodes": ["approveoffer","submitoffer"],
+		"vote": False,
+	},
+}

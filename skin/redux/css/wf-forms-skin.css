@@ -1,0 +1,39 @@
+.wf-qa-form .cv-panel-body
+{
+    border: none;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    border-bottom: solid #e2e2e2 1px;
+    padding: 22px 0;
+    font-weight: normal;
+}
+.wf-widget-serverside-form label
+{
+    font-size: 1.1em;
+    font-weight: normal;
+    padding-top: 0;
+    letter-spacing: 1px;
+    color: rgb(50, 50, 50);
+}
+.cv-panel-body .form-row
+{
+    margin-bottom: 20px;
+}
+.cv-panel-body .form-row:last-of-type
+{
+    margin-bottom: 0;
+}
+.wf-widget-serverside-form .form-row label
+{
+    padding-top: 0;
+}
+.UberRadio + span
+{
+    color: rgb(50, 50, 50);
+    letter-spacing: 1px;
+}
+.UberRadio[disabled=disabled] + span
+{
+    color: rgb(130, 130, 130);
+}

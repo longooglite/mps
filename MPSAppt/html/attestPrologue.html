@@ -1,0 +1,38 @@
+{% set gapsList = context.get('gapsList', []) %}
+{% if gapsList %}
+	{% set gapsEnforced = context.get('gapsEnforced', False) %}
+	{% set descrKeyName = 'gapsEnforcedDescr' if gapsEnforced else 'gapsPrintIntroText' %}
+	{% set gapsText = context.get(descrKeyName, '') %}
+
+	<div>
+		{% if gapsText %}
+			<h4>{% raw gapsText %}</h4>
+		{% end %}
+		{% for gapDict in gapsList %}
+			<p>
+				{% set descr = gapDict.get('descr', '') %}
+				{% if descr %}
+					{% raw descr %}<br/>
+				{% end %}
+				{% for dateDict in gapDict.get('gapList', []) %}
+					{% set naybuhDict = dateDict.get('prior', {}) %}
+					{% if naybuhDict %}
+						{{ naybuhDict.get('startDate', '') }} - {{ naybuhDict.get('endDate', '') }} {{ naybuhDict.get('name', '') }}<br/>
+					{% end %}
+
+                    <span style="color: red;">
+					    {{ dateDict.get('startDate', '') }} - {{ dateDict.get('endDate', '') }} ({{ dateDict.get('nbrDays', '') }} days) Please explain this gap.<br/>
+                    </span>
+
+					{% set naybuhDict = dateDict.get('subsequent', {}) %}
+					{% if naybuhDict %}
+						{{ naybuhDict.get('startDate', '') }} - {{ naybuhDict.get('endDate', '') }} {{ naybuhDict.get('name', '') }}<br/>
+					{% end %}
+					<br/>
+				{% end %}
+			</p>
+		{% end %}
+	</div>
+{% end %}
+
+<form class="wf-ajax-form wf-pi-form wf-clear-hash-on-success" action="{{ context.get('url','') }}" onSubmit="return false;">

@@ -1,0 +1,19 @@
+#!/bin/bash
+# description: MPS Platform Start, Alternate Environment 2
+# processname: mps2
+# chkconfig: - 89 11
+CAR_HOME=/home/mpsadmin/alt2/car
+
+case $1 in
+start)
+/bin/su mpsadmin -c 'python /home/mpsadmin/alt2/car/commands/skynyrd.py --dst /usr/local/mps2'
+/bin/su mpsadmin -c 'python /home/mpsadmin/alt2/car/MPSAuthSvc.py -e staging --file config/staging/MPSAuthSvc/alt2_config.json &'
+/bin/su mpsadmin -c 'python /home/mpsadmin/alt2/car/MPSAdmin.py -e staging --file config/staging/MPSAdmin/alt2_config.json &'
+/bin/su mpsadmin -c 'python /home/mpsadmin/alt2/car/MPSCV.py -e staging --file config/staging/MPSCV/alt2_config.json &'
+/bin/su mpsadmin -c 'python /home/mpsadmin/alt2/car/MPSCV.py -e staging --file config/staging/MPSCV/alt2_config_a.json &'
+/bin/su mpsadmin -c 'python /home/mpsadmin/alt2/car/MPSAppt.py -e staging --file config/staging/MPSAppt/alt2_config.json &'
+/bin/su mpsadmin -c 'python /home/mpsadmin/alt2/car/MPSAppt.py -e staging --file config/staging/MPSAppt/alt2_config_a.json &'
+/bin/su mpsadmin -c 'python /home/mpsadmin/alt2/car/MPSLogin.py -e staging --file config/staging/MPSLogin/alt2_config.json &'
+;;
+esac
+exit 0

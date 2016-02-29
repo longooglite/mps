@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>{{context.get('windowTitle', '')}}</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+</head>
+
+{% set mode = context.get('mode', '') %}
+{% set isAdd = (mode != 'edit') %}
+{% set building = context.get('building', {}) %}
+{% set buildingId = building.get('id', 0) %}
+
+{% set isMsg = True if len(context.get('errormessage','')) > 0 else False %}
+<body class="{{ 'cv-show-global-message' if isMsg else '' }} cv-proxy-page mps-admin-page">
+	<div class="container-fluid mps-body">
+		{% include pageHeader.html %}
+		<div class="body-content cv-body cv-body-no-menu">
+			<div class="page-header clearfix">
+				<div class="page-header-controls">
+					<button class="cvHelpButton btn btn-sm btn-default">
+						<span class="glyphicon glyphicon-question-sign"></span>Help...
+					</button>
+					<button class="btn btn-sm btn-primary saveBuildingBtn">
+						<span class="glyphicon glyphicon-floppy-disk"></span> <span>Save Changes...</span>
+					</button>
+				</div>
+				<h1>
+					Manage Buildings<br/>
+					<small>
+						<a href="/{{context.get('appUriPrefix','')}}/buildings" class="cv-head-bread">All Buildings</a><span class="cv-head-bread-sep">/</span>
+						<span class="cv-head-bread-leaf">{{ 'New Building' if isAdd else building.get('descr','') }}</span>
+					</small>
+				</h1>
+			</div>
+
+			<form id="buildingdetailform" class="form-horizontal">
+				{% include ajax-hidden-fields.html %}
+				<input type="hidden" name="mode" value="{{mode}}" />
+				{% if not isAdd %}
+					<input type="hidden" name="buildingId" value="{{buildingId}}" />
+				{% end %}
+
+				<div class="row">
+					<div class="col-md-6 cv-user-form">
+						<h3 class="section-header">
+							<span class="glyphicon glyphicon-edit"></span>
+							Building Settings:
+						</h3>
+
+						<div class="cv-callout cv-callout-info cv-callout-bordered clearfix mps-skin-border">
+							<h4>Building:</h4><br/>
+							<div class="clearfix form-row">
+								<label for="code" class="col-xs-2 control-label">* Code:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="code" name="code" value="{{building.get('code', '')}}" placeholder="Unique building code">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="descr" class="col-xs-2 control-label">* Description:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="descr" name="descr" value="{{building.get('descr', '')}}">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="active" class="col-xs-2 control-label">Active:</label>
+								<div class="col-xs-8">
+									{% set checked = '' %}
+									{% if building.get('active',False) %}
+										{% set checked = 'checked' %}
+									{% end %}
+									<input type="checkbox" id="active" name="active" value="true" {{checked}}>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<h3 class="section-header">
+							<span class="glyphicon glyphicon-edit"></span>
+							Address:
+						</h3>
+
+						{% set maxAddressLines = context.get('maxAddressLines', 5) %}
+						{% set addressLinesBreakout = building.get('address_lines_breakout', []) %}
+						<div class="cv-callout cv-callout-info cv-callout-bordered clearfix mps-skin-border">
+							<h4>Address:</h4><br/>
+							<div class="clearfix form-row">
+								<label for="address_line_1" class="col-xs-2 control-label">Address:</label>
+								<div class="col-xs-9">
+									<input type="text" class="form-control" id="address_line_1" name="address_line_1" value="{{addressLinesBreakout[0]}}">
+								</div>
+							</div>
+
+							{% for idx in range(2, 1 + maxAddressLines) %}
+								{% set controlName = 'address_line_' + str(idx) %}
+								<div class="clearfix form-row">
+									<div class="col-xs-offset-2 col-xs-9">
+										<input type="text" class="form-control" id="{{controlName}}" name="{{controlName}}" value="{{addressLinesBreakout[idx-1]}}">
+									</div>
+								</div>
+							{% end %}
+
+							<div class="clearfix form-row">
+								<label for="city" class="col-xs-2 control-label">City:</label>
+								<div class="col-xs-9">
+									<input type="text" class="form-control" id="city" name="city" value="{{building.get('city', '')}}">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="state" class="col-xs-2 control-label">State:</label>
+								<div class="col-xs-9">
+									<select id="state" name="state" class="form-control">
+										<option value=""></option>
+										{% for state in context.get('states') %}
+											{% set selected = '' %}
+											{% if state.get('code','') == building.get('state','') %}
+												{% set selected = 'selected="selected"' %}
+											{% end %}
+											<option value="{{ state.get('code','') }}" {{selected}}>{{ state.get('descr','') }}</option>
+										{% end %}
+									</select>
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="state" class="col-xs-2 control-label">Country:</label>
+								<div class="col-xs-9">
+									<select id="country" name="country" class="form-control">
+										<option value=""></option>
+										{% for country in context.get('countries') %}
+											{% set selected = '' %}
+											{% if country.get('code','') == building.get('country','') %}
+												{% set selected = 'selected="selected"' %}
+											{% end %}
+											<option value="{{ country.get('code','') }}" {{selected}}>{{ country.get('descr','') }}</option>
+										{% end %}
+									</select>
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="postal" class="col-xs-2 control-label">Postal:</label>
+								<div class="col-xs-9">
+									<input type="text" class="form-control" id="postal" name="postal" value="{{building.get('postal', '')}}">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+<script type="text/javascript" src="/{{skin}}/js/wf.core.js"></script>
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	$('.saveBuildingBtn').on('click', function(event){
+		var $body = $('.cv-user-form');
+		var $form = $('#buildingdetailform')
+		cvApp.ubiquitousPageRequest({
+			url: '/{{context.get('appUriPrefix','')}}/buildings/save',
+			data: JSON.stringify($form.serializeObject()),
+			success: function(data, textStatus, xhr){
+				wfApp._WF_commonErrorHandler($form, data, textStatus, xhr);
+			}
+		});
+	});
+
+	/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

@@ -1,0 +1,33 @@
+<div class = "category"><span class="title category-title">{{ categorydescr }}</span>
+{% set isNumbered = currcategory.get('isNumberedList', False)%}
+{% set rowList = currsubcategory.get('rows',[]) %}
+{% if not isNumbered %}
+    <div class="degrees">
+        {% set i = 0 %}
+        {% for row in rowList %}
+            <div class="degree">
+                {% set output = '' %}
+                {% set i += 1 %}
+                {% set fieldList = row.get('fields',[]) %}
+                {% for field in fieldList %}
+                    {% set output = field.get('formatted_value','') %}
+                    {% if output <> '' %}
+                        <span class = "degree-info">{% raw output %}</span>
+                    {% end %}
+                {% end %}
+            </div>
+        {% end %}
+    </div>
+{% else %}
+    <ol class="numberedlist">
+        {% for row in rowList %}
+            {% set i = 0 %}
+            {% set fieldList = row.get('fields',[]) %}
+            {% for field in fieldList %}
+                {% set output = field.get('formatted_value','') %}
+                <li>{% raw output %}</li>
+            {% end %}
+        {% end %}
+    </ol>
+{% end %}
+</div>

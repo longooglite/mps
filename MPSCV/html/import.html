@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>{{context.get('windowTitle', 'Curriculum Vitae')}}</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+</head>
+
+{% set isMsg = True if len(context.get('errormessage','')) > 0 else False %}
+<body class="cv cv-proxy-page {{ 'cv-show-global-message' if isMsg else '' }}">
+	<div class="container-fluid cv-wrap">
+		{% include pageHeader.html %}
+		 <div class="body-content cv-body cv-body-no-menu">
+			{% set cvOwnerName = context.get('cvOwner','') %}
+			<div class="page-header clearfix">
+				<div class="page-header-controls">
+					<button class="cvHelpButton btn btn-sm btn-default">
+						<span class="glyphicon glyphicon-question-sign"></span>Help...
+					</button>
+				</div>
+				<h1>
+					{{ context['userProfile']['userPreferences'].get('full_name','') }}<br/>
+					<small> {{ 'Import CV' }}</small>
+				</h1>
+			</div>
+
+			<form enctype="multipart/form-data" id="importform" method="POST" action="/cv/import" class="form-horizontal clearfix">
+				{% include ajax-hidden-fields.html %}
+				<input type="hidden" name="community" value="{{context.get('cvCommunity','')}}" />
+				<input type="hidden" name="username" value="{{context.get('cvOwner','')}}" />
+				<input type="hidden" name="_xsrf" value="{{context.get('_xsrf','')}}" />
+				<div class="row">
+					<div class="col-xs-6">
+						<p>To upload your CV, use the 'Browse...' button to select a CV file from your computer:</p>
+						<div class="input-group">
+							<span class="input-group-btn">
+								<span class="btn btn-primary btn-file">
+									Browse&hellip; <input type="file" name="file_data">
+								</span>
+							</span>
+							<input type="text" class="form-control cv-import-label" readonly>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6">
+						<p>After you have selected a file, click the 'Upload...' button to send it to the server:</p>
+						<input type="submit" class="btn btn-primary" name="importFilepath" value="Upload..." disabled="disabled"/>
+					</div>
+				</div>
+
+			</form>
+
+			<div class="cv-category-help starthidden">
+				<div class="cv-category-help-header clearfix">
+					<a class="cv-close-help pull-right" href="#" title="Close Help..."><span class="glyphicon glyphicon-remove"></span>Close</a>
+					Import Help
+				</div>
+				<div class="cv-category-help-body">
+					<h4>Import File Type:</h4>
+					<p>Import only works with the CV Application's JSON format at this time. Attempting to import from any other file type is not recommended.</p>
+					<h4>What happens?</h4>
+					<p>The Entire CV is replaced with the contents of the Imported file.  If something is missing from the import file, it will not appear in the CV after Import.</p>
+					<h4>Is there Undo?</h4>
+					<p>No, there is no Undo. Please save a copy of your CV (using Export) before playing with this feature.</p>
+				</div>
+			</div>
+
+		</div>
+	</div>
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+{% include cv-js.html %}
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	(function ($) {
+		$(document).on('change', '.btn-file :file', function() {
+			var input = $(this),
+			label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+			input.trigger('fileselect', [label]);
+		});
+
+		$('.btn-file :file').on('fileselect', function(event, label) {
+			$('input:submit').prop('disabled',false);
+			$('.cv-import-label').val(label);
+		});
+
+	})(jQuery);
+
+	/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

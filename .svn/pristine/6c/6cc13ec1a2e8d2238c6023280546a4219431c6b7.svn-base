@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html  class="no-js" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        html { font-family: sans-serif; color: #222; }
+        .page { margin-top: 20px; border-top: 3px solid #666666; }
+        .twocolumn { width: 305px; float:left; }
+        .addresstitle { font-style: italic;}
+        h5 {text-decoration: underline; margin: 0 0 4px; }
+
+    </style>
+</head>
+
+<body>
+<h2 style="text-align: center;">
+  <div th:text="#{branding.backgroundcheck.organizationaltitle}">University of Michigan Health System</div>
+  <div>Background Check Information, Consent and Disclosure</div>
+</h2>
+
+<div class="page">
+    <h3><span th:text="#{form.backgroundcheck.consent.header}"></span></h3>
+    <div th:utext="#{form.backgroundcheck.consent.text}">Text</div>
+    <div th:replace="::displayconfirmation (${backgroundcheck.consentSigned})"></div>
+</div>
+
+<div  class="page">
+  <h3><span th:text="#{form.backgroundcheck.disclosures.header}"></span></h3>
+  <ol>
+      <li th:utext="#{form.backgroundcheck.disclosures.item1}">Item 1</li>
+    <li>
+        <div th:text="#{form.backgroundcheck.disclosures.item2}">Item 2</div>
+        <span style="vertical-align: sub;"><img src="/marta/img/checkon.png"/></span>
+        <span th:if="${backgroundcheck.guilty}" th:text="#{form.backgroundcheck.disclosures.item2.choice2}"></span>
+        <span th:if="${backgroundcheck.notGuilty}" th:text="#{form.backgroundcheck.disclosures.item2.choice1}"></span>
+    </li>
+    <li th:if="${backgroundcheck.guilty}">
+        <div th:utext="#{form.backgroundcheck.disclosures.item3}">Item 3</div>
+        <div th:each="offense: ${offenses}" th:remove="tag">
+            <div style="margin-top:10px; page-break-inside: avoid;">
+                <label th:text="#{form.backgroundcheck.disclosures.offense}+':'"></label><span th:text="${offense.offense}"></span><br/>
+                <label th:text="#{form.backgroundcheck.disclosures.date}+':'"></label><span th:text="${offense.offenseDate}"></span><br/>
+                <label th:text="#{form.backgroundcheck.disclosures.conviction}+':'"></label><span th:text="${offense.conviction}"></span><br/>
+                <label th:text="#{form.backgroundcheck.disclosures.location}+':'"></label><span th:text="${offense.location}"></span><br/>
+                <label th:text="#{form.backgroundcheck.disclosures.sentence}+':'"></label><span th:text="${offense.sentence}"></span><br/>
+                <label th:text="#{form.backgroundcheck.disclosures.dischargedate}+':'"></label><span th:text="${offense.dischargeDate}"></span><br/>
+            </div>
+        </div>
+    </li>
+  </ol>
+</div>
+
+<div class="page">
+    <h3><span th:text="#{form.backgroundcheck.conditional.header}"></span></h3>
+    <div th:utext="#{form.backgroundcheck.conditional.text}">Text</div>
+    <div th:replace="::displayconfirmation (${backgroundcheck.employmentSigned})"></div>
+</div>
+
+<div class="page">
+    <h3><span th:text="#{form.backgroundcheck.applicantrights.header}"></span></h3>
+    <div th:utext="#{form.backgroundcheck.applicantrights.text}">Text</div>
+    <div th:replace="::displayconfirmation (${backgroundcheck.rightsSigned})"></div>
+</div>
+
+<div th:utext="#{form.backgroundcheck.general.text}">Text</div>
+<div class="page">
+    <h3><span th:text="#{form.demographics.header}"></span></h3>
+    <div class="twocolumn" style="page-break-inside: avoid;">
+       <h5><span th:text="#{form.demographics.name.header}"></span></h5>
+        <label>Legal Name: </label><span th:text="${prospect.legalName}"> Legal Name</span> <br/>
+        <label>Aliases:</label>
+        <div th:each="alias, iStat:${pinfo.aliases}" th:remove="tag">
+            <span th:text="${alias}">Alias</span><span th:if="${!iStat.last}">;</span>
+        </div>
+         <br/>
+     </div>
+
+    <div class="twocolumn" style="page-break-inside: avoid;">
+        <h5><span th:text="#{form.demographics.birth.header}">Header</span></h5>
+        <label th:text="#{form.demographics.birthdate}+': '"></label><span th:text="${pinfo.dob}?${#dates.format(pinfo.dob,'MM/dd/yyyy')}"></span><br/>
+        <label th:text="#{form.demographics.ssn}+': '"></label><span th:text="${pinfo.ssn}">XXX-XX-1234</span><br/>
+    </div>
+
+    <div style="clear:both;padding-top:6px;page-break-inside: avoid;">
+        <h5><span th:text="#{form.demographics.address.header}">Header</span></h5>
+        <span class="addresstitle">Current Address:</span><br/>
+        <div th:if="${pinfo.livingInUs}" th:remove="tag">
+            <span th:text="${pinfo.streetAddress}">Street Address</span><br/>
+            <span th:text="${pinfo.addressLastLine}">Address Last Line</span><br/>
+        </div>
+        <div th:if="${!pinfo.livingInUs}" th:remove="tag">
+            <span th:text="${pinfo.streetAddress}">Street Address</span><br/>
+            <div th:if="${pinfo.addressLine2}" th:remove="tag"><span th:text="${pinfo.addressLine2}">Address Line 2</span><br/></div>
+            <div th:if="${pinfo.addressLine3}" th:remove="tag"><span th:text="${pinfo.addressLine3}">Address Line 3</span><br/></div>
+            <div th:if="${pinfo.addressLine4}" th:remove="tag"><span th:text="${pinfo.addressLine4}">Address Line 4</span><br/></div>
+            <span th:text="${pinfo.addressLastLine}">Address Last Line</span><br/>
+        </div>
+      </div>
+
+        <div style="margin-top:20px;">
+            <h5><span th:text="#{form.education.header}"></span></h5>
+            <div style="margin-top:10px; page-break-inside: avoid;">
+                <div style="font-weight:bold;" th:text="${pinfo.hdProgram} + ' - ' +${pinfo.hdInstitution}">Program - Institution</div>
+                <label th:text="#{form.education.program}+': '"></label> <span th:text="${pinfo.hdProgram}">Program</span><br/>
+                <label th:text="#{form.education.degree}+': '"></label>  <span th:text="${pinfo.hdDegree}">Degree</span><br/>
+                <label th:text="#{form.education.institution}+': '"></label><span th:text="${pinfo.hdInstitution}">Institution</span><br/>
+                <span th:text="${pinfo.hdAddress}">Address</span><br/>
+                <label th:text="#{form.education.nameOnDegree}+': '"></label><span th:text="${pinfo.hdName}">Name</span><br/>
+                <label th:text="#{form.education.startDate}+': '"></label><span th:text="${pinfo.hdStart}?${#dates.format(pinfo.hdStart,'MM/yyyy')}">Start Date</span><br/>
+                <label th:text="#{form.education.endDate}+': '">:</label><span th:text="${pinfo.hdEnd}?${#dates.format(pinfo.hdEnd,'MM/yyyy')}">End Date</span><br/>
+            </div>
+        </div>
+
+</div>
+
+<div th:fragment="displayconfirmation (confirmed)">
+    <div th:if="${confirmed}" th:remove="tag">
+        <span style="vertical-align: sub;"><img src="/marta/img/checkon.png"/></span>
+        <span th:text="'I, ' +${prospect.firstSpaceLast} + ', ' + #{form.backgroundcheck.confirmation.print.text}">I</span>
+    </div>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+[Category]
+<h4>Teaching Activities - Trainee</h4>
+<p>The Trainee section can include a list of students, trainees, clinical fellows, or postdoctoral fellows. You can also choose whether or not to display the trainee's information on your CV by clicking the appropriate box in the Edit and Add sections.<p>
+<p>The content of this page can be sorted by clicking on any column title.</p>
+<hr>
+<p>To <strong>add</strong> an additional entry, click the “+ Add …” button in the upper right portion of the page.</p>
+<p>To <strong>edit</strong> an existing entry, click the blue text in the row you would like to edit.</p>
+<p>To <strong>delete</strong> an entry, click the X at the end of the row you would like to delete. Then confirm the deletion.</p>
+<p>To <strong>print</strong> this section of the CV, click the “Print this section” button in the upper right portion of the page or select “Print Section” from the Print menu found in the menu bar.</p>
+
+[TraineeTraineeType]
+<p>Please select a type of appointment.</p>
+<hr>
+<p>This item is required</p>
+
+[TraineeName]
+<p>Please enter the name of your trainee.</p>
+<hr>
+<p>This item is required</p>
+
+[TraineeDegree]
+<p>Please enter the degree.</p>
+
+[TraineeInstitutionName]
+<p>Please enter the name of the institution where you worked with this trainee.</p>
+<hr>
+<p>This item is required</p>
+
+[TraineeInstitutionCity]
+<p>Please enter the city where the institution was located.</p>
+<hr>
+<p>This item is required</p>
+
+[TraineetInstitutionState]
+<p>Please enter the state where the institution was located.</p>
+
+[TraineeInstitutionCountry]
+<p>Please enter the country where the institution was located.</p>
+
+[TraineeDatesStart]
+<p>Please enter the date when you started working with this trainee.</p>
+<hr>
+<p>This item is required</p>
+<p>Hover over the field to see supported date formats</p>
+
+[TraineeDatesEnd]
+<p>Please enter the date when you started working with this trainee.</p>
+<hr>
+<p>Hover over the field to see supported date formats</p>
+

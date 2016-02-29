@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>{{context.get('windowTitle', 'Curriculum Vitae')}}</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+</head>
+
+{% set isMPSAdmin = context.get('isMPSAdmin', False) %}
+{% set showCommunity = context.get('showCommunity', False) %}
+{% set isMsg = True if len(context.get('errormessage','')) > 0 else False %}
+<body class="{{ 'cv-show-global-message' if isMsg else '' }} cv-user-admin-pg mps-admin-page">
+	<div class="container-fluid mps-body">
+		{% include pageHeader.html %}
+		<div class="body-content cv-body cv-body-no-menu">
+			<div class="page-header clearfix">
+				<div class="page-header-controls">
+					{% if isMPSAdmin %}
+						<button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">Select Site <span class="caret"></span></button>
+						<ul class="dropdown-menu">
+							{% for siteDict in context.get('siteList',[]) %}
+								<li><a class="sitedrop">{{siteDict.get('code','')}}</a></li>
+							{% end %}
+						</ul>
+					{% end %}
+					<button class="cvHelpButton btn btn-sm btn-default">
+						<span class="glyphicon glyphicon-question-sign"></span>Help...
+					</button>
+					<button class="btn btn-sm btn-primary addUserBtn">
+						<span class="glyphicon glyphicon-plus"></span> <span>Add New User...</span>
+					</button>
+				</div>
+				<h1>
+					Manage Users<br/>
+					<small>
+						User List
+						{% if isMPSAdmin %}
+							<br/>
+							<span>{{context.get('siteProfileDetail',{}).get('sitePreferences',{}).get('code','')}}</span>
+							<span class="mpsitalic">({{context.get('siteProfileDetail',{}).get('sitePreferences',{}).get('descr','')}})</span>
+						{% end %}
+					</small>
+				</h1>
+			</div>
+
+			<div class="row">
+				<div class="col-md-12">
+					<div class="cv-callout cv-callout-info cv-callout-bordered clearfix">
+						<h3 class="section-header">
+							<span class="glyphicon glyphicon-user"></span>
+							{{context.get('countDisplayString','')}}
+						</h3>
+						<table id="users" class="table table-striped table-bordered mpstable">
+							<thead>
+								<tr>
+									<th>Username</th>
+									{% if showCommunity %}
+										<th>Community</th>
+									{% end %}
+									<th>Last Name</th>
+									<th>First Name</th>
+									<th>Email</th>
+									<th class="cv-narrow">Active</th>
+								</tr>
+							</thead>
+							<tbody>
+							{% for userDict in context.get('userList',[]) %}
+								<tr>
+									<td><a href="/{{context.get('appUriPrefix','')}}/users/edit/{{userDict.get('community_code','')}}/{{userDict.get('username','')}}">{{userDict.get('username','')}}</a></td>
+									{% if showCommunity %}
+										<td>{{userDict.get('community_descr','')}}</td>
+									{% end %}
+									<td>{{userDict.get('last_name','')}}</td>
+									<td>{{userDict.get('first_name','')}}</td>
+									<td>{{userDict.get('email','')}}</td>
+									<td class="mpscentertext cv-narrow">
+										{% if userDict.get('active', False) %}
+											<span class="glyphicon glyphicon-check"></span>
+										{% end %}
+									</td>
+								</tr>
+							{% end %}
+							</tbody>
+						</table>
+						<a class="addUserBtn addUserFooterBtn">
+							<span class="glyphicon glyphicon-plus"></span>
+							<span class="">Add New User...</span>
+						</a>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="cv-category-help starthidden">
+				<div class="cv-category-help-header clearfix">
+					<a class="cv-close-help pull-right" href="#" title="Close Help..."><span class="glyphicon glyphicon-remove"></span>Close</a>
+					User Mgmt Help
+				</div>
+				<div class="cv-category-help-body">
+					<h4>Unique Fields:</h4>
+					<p>Only a Username is required to be unique.</p>
+					<h4>Activating or Inactivating Users:</h4>
+					<p>This page shows users' Active-ness as a Read Only property. To Activate or Inactivate a User, click on their Username to edit their details on the next page.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+
+<script type="text/javascript">
+/*<![CDATA[*/
+
+	$('.addUserBtn').on('click', function(event) { window.location.href = '/{{context.get('appUriPrefix','')}}/users/add'; });
+
+	$('#users').dataTable( {
+		"paging":   		true,
+		"ordering": 		true,
+		"info":     		false,
+		"lengthMenu": 		[[25, 50, 100, -1], [25, 50, 100, "All"]],
+		"pageLength": 		50
+		/* ,"scrollY":      "400px",
+		"scrollCollapse": 	true */
+		} );
+
+	{% if isMPSAdmin %}
+		var changeSiteFn = function(eventData, myurl)  {
+			var targetValue = eventData.currentTarget.text;
+			var payload = $.extend(true,{'target':targetValue},ajaxPayload)
+			$.ajax({ url: '/admin/users/site', type: 'POST',
+				data: JSON.stringify(payload),
+				headers: { 'Content-Type': 'application/json' },
+				success: function(data, textStatus, xhr) {
+					window.location.href = data.redirect;
+				},
+				error: function(jqXHR, textStatus, errorThrown) { $('#adminerrormessage').html(textStatus); }
+			});
+		};
+		$(function() {
+			$('.sitedrop').on('click', changeSiteFn);
+		});
+	{% end %}
+
+/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

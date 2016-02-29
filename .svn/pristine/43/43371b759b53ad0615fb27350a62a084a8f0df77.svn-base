@@ -1,0 +1,142 @@
+#user  nobody;
+worker_processes  1;
+
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+error_log  logs/error.log  debug;
+
+#pid        logs/nginx.pid;
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    client_max_body_size 10m;
+
+    #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+    #                  '$status $body_bytes_sent "$http_referer" '
+    #                  '"$http_user_agent" "$http_x_forwarded_for"';
+
+    #access_log  logs/access.log  main;
+
+    sendfile        on;
+    keepalive_timeout  65;
+
+    gzip  on;
+    gzip_types      text/plain text/css application/x-javascript text/xml application/xml application/xml+rss text/javascript application/json;
+    gzip_min_length 10240;
+
+    upstream cvapp {
+        server localhost:8002;
+    }
+
+    upstream adminapp {
+        server localhost:8003;
+    }
+
+    upstream apptapp {
+        server localhost:8004;
+    }
+
+    upstream authservice {
+        server localhost:9001;
+    }
+
+    server {
+        listen       8000;
+        server_name  ~^(?<site>[a-zA-Z0-9-]*)\.mps-car\.com$;
+
+        location /favicon.ico { root /usr/local/mps; }
+        location ~^\/([a-zA-Z0-9-]*)\/js\/.*$ { root /usr/local/mps; }
+        location ~^\/([a-zA-Z0-9-]*)\/css\/.*$ { root /usr/local/mps; }
+        location ~^\/([a-zA-Z0-9-]*)\/images\/.*$ { root /usr/local/mps; }
+        location ~^\/([a-zA-Z0-9-]*)\/fonts\/.*$ { root /usr/local/mps; }
+        location ~^\/pdf\/.*$ { root /tmp/; }
+
+        location /mps/login {
+        	proxy_pass http://mps-car.com:8001;
+        	proxy_set_header Site $site;
+        }
+
+        location /mps/mpslogin {
+		    proxy_pass http://localhost:8001;
+		    proxy_set_header Site $site;
+	    }
+
+        location /mps/toast {
+        	proxy_pass http://localhost:8001;
+        	proxy_set_header Site $site;
+        }
+
+        location /admin {
+        	proxy_set_header Site $site;
+        	if ($http_cookie ~ "mpsid=[a-f,0-9]{32,32}") {
+        		proxy_pass http://adminapp;
+        		break;
+        	}
+        	return 302 /mps/login;
+        }
+
+        location /cv {
+        	proxy_set_header Site $site;
+        	if ($http_cookie ~ "mpsid=[a-f,0-9]{32,32}") {
+        		proxy_pass http://cvapp;
+        		break;
+        	}
+        	return 302 /mps/login;
+        }
+
+        location /appt {
+        	proxy_set_header Site $site;
+        	if ($http_cookie ~ "mpsid=[a-f,0-9]{32,32}") {
+        		proxy_pass http://apptapp;
+        		break;
+        	}
+        	return 302 /mps/login;
+        }
+
+        location /appt/visitor {
+        	proxy_set_header Site $site;
+        	proxy_pass http://apptapp;
+        }
+
+
+        location / {
+        	proxy_set_header Site $site;
+        	if ($http_cookie ~ "mpsid=[a-f,0-9]{32,32}") {
+        		proxy_pass http://cvapp;
+        		break;
+        	}
+        	return 302 /mps/login;
+        }
+
+
+        #error_page  404              /404.html;
+
+        # redirect server error pages to the static page /50x.html
+        #
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+    }
+
+    server {
+        listen       9000;
+        server_name  localhost;
+
+        location / {
+        	proxy_pass http://authservice;
+        }
+
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+    }
+}

@@ -1,0 +1,5 @@
+#appid|descr|url
+APPT|Appointments|http://${site}.mps-car.com:8000/appt
+IMM|Immigration|http://${site}.mps-car.com:8000/imm
+CV|Curriculum Vitae|http://${site}.mps-car.com:8000/cv
+MPSADMIN|MPS Administration|http://${site}.mps-car.com:8000/admin

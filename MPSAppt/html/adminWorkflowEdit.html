@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>{{context.get('windowTitle', '')}}</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+	<style>
+		.wf-heading-prompt { display: inline-block; width: 125px; margin-bottom: 5px; }
+		.editor-controls { float:right; position:relative; top:10px; }
+		.editor-controls .btn { margin-top:-5px; background-color:#fff; }
+		.editor-controls .btn:hover { background-color:#d1d1d1; }
+		.disabled-option { padding: 3px 15px; color: #aaa; }
+		.tight-h3 { margin-top: 2px; }
+	</style>
+</head>
+
+{% include adminWorkflowPermissions.html %}
+
+{% set wfDict = context.get('wfDict', {}) %}
+{% set titleDict = context.get('titleDict', {}) %}
+{% set containerDict = context.get('containerDict', {}) %}
+{% set isTitleOverride = context.get('isTitleOverride', False) %}
+{% set hasTitleOverride = context.get('hasTitleOverride', False) %}
+{% set overrideDict = context.get('overrideDict', {}) %}
+
+{% set wfId = wfDict.get('id', 0) %}
+{% set titleId = titleDict.get('id', 0) %}
+{% set containerCode = containerDict.get('code', '') %}
+{% set viewMode = context.get('viewMode', 'full') %}
+{% set editMode = context.get('editMode', 'item') %}
+
+{% set isMsg = True if len(context.get('errormessage','')) > 0 else False %}
+<body class="{{ 'cv-show-global-message' if isMsg else '' }} cv-user-admin-pg mps-admin-page">
+	<div class="container-fluid mps-body">
+		{% include pageHeader.html %}
+
+		<div class="body-content cv-body cv-body-no-menu">
+			<div class="page-header clearfix">
+				<div class="page-header-controls">
+					<button class="btn btn-sm">
+						<span class="glyphicon glyphicon-circle-arrow-left"></span> <a href="/appt/wf/{{wfId}}/{{titleId}}/{{editMode}}/{{viewMode}}">Back to Wizard</a>
+					</button>
+					<button class="btn btn-sm btn-primary saveWfItemBtn">
+						<span class="glyphicon glyphicon-floppy-disk"></span> <span>Save Changes</span>
+					</button>
+				</div>
+				<h1>
+					WorkFlow Component Editor<br/>
+				</h1>
+				<h4>
+					<span class="wf-heading-prompt">WorkFlow:</span>{{wfDict.get('descr', '')}}
+					<br/><span class="wf-heading-prompt">Component:</span>{{containerDict.get('descr', '')}}
+					{% if context.get('canWriteSingleFileToDisk', False) %}
+						<br/><span class="wf-heading-prompt">Relative Path:</span>{{containerDict.get('car_relative_path', '')}}
+					{% end %}
+				</h4>
+			</div>
+
+			<div class="col-xs-12">
+				<div class="editor-controls">
+					<button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+						More Actions <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu pull-right" role="menu">
+						{% if context.get('canUseItemEditMode', False) %}
+							<li><a href="{{ context.get('itemEditModeUrl', '') }}"><span class="glyphicon glyphicon-pencil"></span> Switch to Item edit mode</a></li>
+						{% end %}
+						{% if context.get('canUseRawEditMode', False) %}
+							<li><a href="{{ context.get('rawEditModeUrl', '') }}"><span class="glyphicon glyphicon-pencil"></span> Switch to Raw edit mode</a></li>
+						{% end %}
+						{% if context.get('canWriteSingleFileToDisk', False) %}
+							<li><a href="#" class="writeWfItemBtn"><span class="glyphicon glyphicon-file"></span> Save changes, write file to source tree</a></li>
+						{% end %}
+						{% if isTitleOverride %}
+							{% if canDeleteTitleOverride %}
+								{% if hasTitleOverride %}
+									<li><a href="#" class="deleteWfItemBtn"><span class="glyphicon glyphicon-ban-circle"></span> Delete Override</a></li>
+								{% else %}
+									<li><span class="disabled-option"><span class="glyphicon glyphicon-ban-circle"></span> Delete Override</span></li>
+								{% end %}
+							{% end %}
+						{% else %}
+							{% if canDeleteComponent %}
+								<li><a href="#" class="deleteWfItemBtn"><span class="glyphicon glyphicon-ban-circle"></span> Delete Component</a></li>
+							{% end %}
+						{% end %}
+					</ul>
+				</div>
+				<h4>
+					{% if isTitleOverride %}
+						Edit override for Title: {{titleDict.get('descr', '')}}
+					{% else %}
+						Edit base component
+					{% end %}
+				</h4>
+			</div>
+
+			{% if editMode == 'raw' %}
+				{% if isTitleOverride %}
+					{% if hasTitleOverride %}
+						<form id="rawdataform" class="form-horizontal">
+							<div class="row">
+								<div class="col-xs-10 cv-user-form">
+									<textarea class="form-control" id="data" name="data" rows="20">{% raw context.get('rawData', '') %}</textarea>
+								</div>
+							</div>
+						</form>
+					{% else %}
+						<div class="col-xs-12">
+							<h4>There is no Title Override for this Workflow and Title.</h4>
+							{% if canCreateTitleOverride %}
+								<h4>Click <a href="/appt/wf/createoverride/{{wfId}}/{{titleId}}/{{containerCode}}/{{editMode}}/{{viewMode}}">here</a> to create one.</h4>
+							{% else %}
+							{% end %}
+						</div>
+					{% end %}
+				{% else %}
+					<form id="rawdataform" class="form-horizontal">
+						<div class="row">
+							<div class="col-xs-10 cv-user-form">
+								<textarea class="form-control" id="data" name="data" rows="20">{% raw context.get('rawData', '') %}</textarea>
+							</div>
+						</div>
+						{% if context.get('canWriteSingleFileToDisk', False) %}
+							<h5>Relative Path</h5>
+							<div class="row">
+								<div class="col-xs-10">
+									<input type="text" class="form-control" id="car_relative_path" name="car_relative_path" value="{{containerDict.get('car_relative_path', '')}}">
+								</div>
+							</div>
+						{% end %}
+					</form>
+				{% end %}
+			{% else %}
+				{% if isTitleOverride %}
+					{% if hasTitleOverride %}
+						<div class="row">
+							Title Override editing in Item mode not supported yet.
+						</div>
+					{% else %}
+						<div class="col-xs-12">
+							<h4>There is no Title Override for this Workflow and Title.</h4>
+							{% if canCreateTitleOverride %}
+								<h4>Click <a href="/appt/wf/createoverride/{{wfId}}/{{titleId}}/{{containerCode}}/{{editMode}}/{{viewMode}}">here</a> to create one.</h4>
+							{% else %}
+							{% end %}
+						</div>
+					{% end %}
+				{% else %}
+					<form id="rawdataform" class="form-horizontal">
+						<div class="row">
+							<div class="col-md-6 cv-user-form">
+								<h3 class="section-header tight-h3">
+									Common Attributes
+								</h3>
+								{% module Template("adminWorkflowEditCommon.html", context=context, skin=context['skin']) %}
+							</div>
+							<div class="col-md-6 cv-user-form">
+								<h3 class="section-header tight-h3">
+									Container-specific Attributes
+								</h3>
+								<div class="cv-callout cv-callout-info cv-callout-bordered clearfix">
+									Blah Blah Blah, Blah Blah Blah, Blah Blah Blah
+								</div>
+							</div>
+						</div>
+					</form>
+				{% end %}
+			{% end %}
+		</div>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+<script type="text/javascript" src="/{{skin}}/js/wf.core.js"></script>
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	$('.saveWfItemBtn').on('click', function(event){
+		var $body = $('.cv-user-form');
+		var $form = $('#rawdataform')
+		cvApp.ubiquitousPageRequest({
+			url: '/{{context.get('appUriPrefix','')}}/wf/save/{{wfId}}/{{titleId}}/{{containerCode}}/{{editMode}}/{{viewMode}}',
+			data: JSON.stringify($form.serializeObject()),
+			success: function(data, textStatus, xhr){
+				wfApp._WF_commonErrorHandler($form, data, textStatus, xhr);
+			}
+		});
+	});
+
+	$('.deleteWfItemBtn').on('click', function(event){
+		{% if isTitleOverride %}
+			var r = confirm("OK to delete Title Override?");
+		{% else %}
+			var r = confirm("Fer shure?\nYou cannot undo this action, and this workflow probably won't load anymore.");
+		{% end %}
+		if (r == true) {
+			var $body = $('.cv-user-form');
+			var $form = $('#rawdataform')
+			cvApp.ubiquitousPageRequest({
+				url: '/{{context.get('appUriPrefix','')}}/wf/deletecomponent/{{wfId}}/{{titleId}}/{{containerCode}}/{{editMode}}/{{viewMode}}',
+				data: JSON.stringify($form.serializeObject()),
+				success: function(data, textStatus, xhr){
+					wfApp._WF_commonErrorHandler($form, data, textStatus, xhr);
+				}
+			});
+		};
+	});
+
+	$('.writeWfItemBtn').on('click', function(event){
+		var $body = $('.cv-user-form');
+		var $form = $('#rawdataform')
+		cvApp.ubiquitousPageRequest({
+			url: '/{{context.get('appUriPrefix','')}}/wf/write/{{wfId}}/{{titleId}}/{{containerCode}}/{{editMode}}/{{viewMode}}',
+			data: JSON.stringify($form.serializeObject()),
+			success: function(data, textStatus, xhr){
+				wfApp._WF_commonErrorHandler($form, data, textStatus, xhr);
+			}
+		});
+	});
+
+	/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

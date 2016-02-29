@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>MPS Login</title>
+</head>
+
+<body class="cvLoginPage">
+	<div class="container-fluid">
+		<div class="mpsheader">
+			<div class="mpsheader-top-container">
+				<div class="mpsheader-top-inner">
+					<span class="mpsheader-top-left">
+					</span>
+				</div>
+			</div>
+		</div>
+
+		<form id="logginform" class="form-horizontal" role="form">
+			<div class="panel panel-primary">
+				<div class="panel-body">
+                    <p>We're sorry. The site is currently undergoing maintenance. Please try again in a few moments.</p>
+                    <p>{{ context.get('additionalMessage','xxx')}}</p>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

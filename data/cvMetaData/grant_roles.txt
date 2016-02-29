@@ -1,0 +1,7 @@
+Principle Investigator (PI)
+Co-Principle Investigator (Co-PI)
+Non-Faculty Principle Investigator (N-F PI)
+Co-Investigator (Co-I)
+Co-Investigator with Effort (Co-I w E)
+Co-Investigator without Effort (Co-I wo E)
+Other

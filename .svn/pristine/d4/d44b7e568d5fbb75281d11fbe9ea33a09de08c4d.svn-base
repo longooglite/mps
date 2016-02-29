@@ -1,0 +1,131 @@
+devserverInstallProcedure.txt
+02/13/2015
+=============================
+
+This document describes how to push MPS Platform code from your local machine to the
+development server (hosted by Online Tech), and get it running.
+
+
+Setup
+=====
+
+01) Make sure your CAR_HOME environment variable is set to the folder of the code you
+    want to install. This is usually set in your ~/.bash_profile, for example:
+    
+export CAR_HOME=/Users/gpoth/MPS/platform/trunk/car
+
+02) It's handy to have a scripts folder on your local machine that's on the command line
+    $PATH. You can put various scripts there and then simply type the name of the script
+    you want to execute in Terminal. Typical setup would be to create a /scripts folder:
+    
+$ mkdir ~/scripts
+
+    then put that folder on your path using ~/.bash_profile
+    
+export PATH=$PATH:~/scripts
+
+03) Copy the $CAR_HOME/config/devserver/pushToDevServer.sh to ~/scripts
+
+$ cp $CAR_HOME/config/devserver/pushToDevServer.sh ~/scripts
+
+
+Step-by-Step Instructions
+=========================
+
+01) Make sure your Subversion working copy has all the code you want to install:
+
+$ svn update
+
+02) Connect to the Online Tech VPN using the FortiClient software.
+
+03) Execute the pushToDevServer.sh script. This script will:
+    - start with your $CAR_HOME folder,
+    - remove cruft we don't need on the server,
+    - remove any existing folder named 'car' from your desktop,
+    - remove any existing file named 'car.tar' from your desktop,
+    - copy your $CAR_HOME folder to ~/Desktop/car,
+    - make a tarball in ~/Desktop/car.tar,
+    - set your local working directory to ~/Desktop (i.e. where car.tar got created),
+    - begin an sftp connection to the dev server
+    
+04) Type in the password to gain access to the dev server. You are now in an sftp session,
+    and your working directory is mpsadmin's home folder: 
+    
+sftp> pwd
+Remote working directory: /home/mpsadmin
+sftp> 
+
+05) All files we transfer from local machines to the server are placed in the 
+    /home/mpsadmin/transfer folder by convention. So 'cd' there, remove the old car.tar,
+    and push the new car.tar to the server:
+    
+sftp> cd transfer
+sftp> rm car.tar
+Removing /home/mpsadmin/transfer/car.tar
+sftp> put car.tar
+
+06) This completes the sftp portion of the program, so exit sftp and log back into the
+    server via ssh:
+    
+sftp> exit
+$ ssh mpsadmin@10.64.139.145
+mpsadmin@10.64.139.145's password: 
+Last login: [whenever]
+[mpsadmin@mpslnx01 ~]$
+
+07) Terminate any existing MPS platform programs that are running. THIS IS A MANUAL
+    PROCESS:
+
+[mpsadmin@mpslnx01 ~]$ ps aux | grep MPS
+mpsadmin 16031  0.0  0.0 103244   872 pts/0    S+   07:21   0:00 grep MPS
+mpsadmin 21552  0.0  0.8 265152 17284 ?        S    Feb13   0:10 python MPSAuthSvc.py -e devserver
+mpsadmin 21560  0.0  1.0 268352 20424 ?        S    Feb13   0:00 python MPSAdmin.py -e devserver
+mpsadmin 21567  0.0  1.2 271708 23800 ?        S    Feb13   0:18 python MPSCV.py -e devserver
+mpsadmin 21575  0.0  0.9 265576 17560 ?        S    Feb13   0:00 python MPSLogin.py -e devserver
+[mpsadmin@mpslnx01 ~]$ 
+[mpsadmin@mpslnx01 ~]$ kill -9 21575
+[mpsadmin@mpslnx01 ~]$ kill -9 21567
+[mpsadmin@mpslnx01 ~]$ kill -9 21560
+[mpsadmin@mpslnx01 ~]$ kill -9 21552
+[mpsadmin@mpslnx01 ~]$ 
+[mpsadmin@mpslnx01 ~]$ ps aux | grep MPS
+mpsadmin 16031  0.0  0.0 103244   872 pts/0    S+   07:21   0:00 grep MPS
+[mpsadmin@mpslnx01 ~]$ 
+
+08) Install the updated software. There is a script for this on the dev server. The script
+    is in the ~/scripts folder, which has been placed on the PATH, so you can simply type
+    the name of the script.
+    
+    Execute install.sh to:
+    - remove old code,
+    - untar the new code to the correct location
+
+[mpsadmin@mpslnx01 ~]$ install.sh
+
+09) Make sure nginx is running:
+
+[mpsadmin@mpslnx01 ~]$ ps aux | grep nginx
+root      1826  0.0  0.0  44744  1344 ?        Ss   Feb11   0:00 nginx: master process /usr/sbin/nginx -c /etc/nginx/nginx.conf
+nginx     1828  0.0  0.1  45684  3720 ?        S    Feb11   0:10 nginx: worker process                   
+mpsadmin 16187  0.0  0.0 103248   876 pts/0    S+   07:48   0:00 grep nginx
+[mpsadmin@mpslnx01 ~]$ 
+
+If you don't see the root and nginx processes, then you'll need to start nginx:
+
+[mpsadmin@mpslnx01 ~]$ sudo service nginx start
+Starting nginx:                                            [  OK  ]
+[mpsadmin@mpslnx01 ~]$ 
+
+10) Start the MPS Platform programs. There is a script for this on the dev server. The script
+    is in the ~/scripts folder, which has been placed on the PATH, so you can simply type
+    the name of the script.
+
+[mpsadmin@mpslnx01 ~]$ startmps.sh
+
+11) Disconnect from the development server:
+
+[mpsadmin@mpslnx01 ~]$ exit
+logout
+Connection to 10.64.139.145 closed.
+$ 
+

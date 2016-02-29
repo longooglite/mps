@@ -1,0 +1,15 @@
+#site|community|user|application|sequencenbr
+engin-umich|default|mpsadmin|MPSADMIN|1
+engin-umich|default|mpsadmin|CV|2
+engin-umich|default|mpsadmin|APPT|3
+engin-umich|default|faculty|APPT|1
+engin-umich|default|rpm|APPT|1
+engin-umich|default|dept|APPT|1
+engin-umich|default|ofa|APPT|1
+
+engin-umich|default|user1|CV|1
+engin-umich|default|user2|CV|1
+engin-umich|default|user3|CV|1
+engin-umich|default|user4|CV|1
+engin-umich|default|user5|CV|1
+engin-umich|default|myself|CV|1

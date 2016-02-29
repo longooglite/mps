@@ -1,0 +1,6 @@
+#code|descr|is_external|is_arms_length|requires_approval
+AL_EXTERNAL|External Arm's Length|True|True|True
+NAL_EXTERNAL|External Non-Arm's Length|False|True|False
+INTERNAL|Internal|False|False|False
+UNDERGRAD|Undergraduate Students|False|False|False
+GRAD|Graduate Students|False|False|False

@@ -1,0 +1,10 @@
+	{% set disabled = '' %}
+	{% if context.get('disabled', True) %}
+		{% set disabled = 'disabled="disabled"' %}
+	{% end %}
+
+	<div class="wf-details-form-btn-bar col-xs-12">
+		<button type="submit" class="wf-widget-form-btn btn btn-primary" data-wf-url="{{ context.get('button_url','') }}" {% raw disabled %}>{{ context.get('button_text','') }}</button>
+		{% include 'formChunk_cancelLink.html' %}
+	</div>
+</form>

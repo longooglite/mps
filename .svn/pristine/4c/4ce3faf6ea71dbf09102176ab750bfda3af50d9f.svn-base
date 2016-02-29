@@ -1,0 +1,26 @@
+{% set taskCode = context.get('taskcode','') %}
+<form class="wf-ajax-form wf-qa-form" id="{{ taskCode }}_form" action="{{ context.get('url','') }}" onSubmit="return false;">
+	<h4 class="wf-alt-breadcrumb wf-header-title" style="display:none;">Send/Resend Email</h4>
+	<h5 class="wf-eval-sub-title">To: {{ context.get('evaluator',{}).get('full_name','') }} ({{context.get('evaluator',{}).get('email','')}})</h5>
+	<div class="form-row">
+		<label class="wf-label-above" for="return_date">Requested Return Date:</label>
+		<div class="col-xs-4 wf-form-right clearfix form-group">
+			<input class="form-control mps-date-picker" type="text" id="return_date" name="return_date"  size="50" placeholder="MM/DD/YYYY" value="{{context.get('evaluator',{}).get('emailed_due_date','')}}"/>
+		</div>
+	</div>
+
+	<div class="form-row clearfix">
+		<label class="wf-label-above" for="cc_addresses">Additional CC:</label>
+		<div class="col-xs-6 wf-form-right clearfix">
+			<input class="form-control" type="text" name="cc_addresses" id="cc_addresses" value=""/>
+		</div>
+	</div>
+
+	<div class="form-row clearfix mb15">
+		<label class="wf-label-above" for="subject_line">Subject Line:</label>
+		<div class="col-xs-6 wf-form-right clearfix">
+			<input class="form-control" type="text" name="subject_line" id="subject_line" value="{{context.get('subject_line', 'Letter of Recommendation Request')}}"/>
+		</div>
+	</div>
+
+	<hr/>

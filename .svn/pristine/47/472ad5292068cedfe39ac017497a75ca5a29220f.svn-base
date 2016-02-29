@@ -1,0 +1,23 @@
+{% set candidateName = context.get('container').personDict.get('first_name','') %}
+{% set url = context.get('container',{}).containerDict.get('config',{}).get('candidateurl','') %}
+
+<html>
+    <body>
+    <span> {{'Dear ' + candidateName + ','}}</span><br/>
+    <p>Welcome to the University of Michigan Medical School online Pre-Hire Process. Click
+        <a href="{{url}}">here</a>
+        to log in and begin. Please complete the required steps <strong>within 72 hours</strong>.</p>
+    <p>Your initial steps will include some or all of the following:</p>
+    <ul>
+        <li>Complete a personal information form</li>
+        <li>Complete a background check authorization</li>
+        <li>Complete an Authorization for Release and Immunity form</li>
+        <li>Complete a form authorizing our Provider Enrollment Department to access your National Provider Identifier account.</li>
+    </ul>
+    <p>Your department contact will be contacting you separately with further
+        information, and can help anytime if you have questions or issues. </p>
+    <p>If you are unable to click on the above, please copy and paste the following address into the
+        address bar of you browser: <span>{{url}}</span></p>
+    <p><em>This is an automated message. Please do not reply.</em></p>
+    </body>
+</html>

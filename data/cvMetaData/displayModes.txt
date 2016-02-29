@@ -1,0 +1,6 @@
+#Category List and Detail display modes
+ListSingleEntry	List: Single Entry (Name)
+ListSingleList	List: Single List
+ListBySubcategoryGroup	List: By Subcategory Group
+DetailSingleEntry	Detail: Single Entry (Name)
+DetailByFieldGroup	Detail: By Field Group

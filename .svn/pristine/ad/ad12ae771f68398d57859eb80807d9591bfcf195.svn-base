@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Appointments</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/wf-main.css"/>
+</head>
+
+{% set person = context.get('person',{}) %}
+{% set workflow_list = context.get('workflowlist',{}) %}
+
+<body class="cv-proxy-page wf-details-page">
+<div class="container-fluid mps-body">
+	{% set context['pageHeaderTitle'] = 'Person' %}
+	{% include pageHeader.html %}
+	<div class="body-content cv-body cv-body-no-menu">
+        <div class="page-header clearfix">
+			<h1>
+				<!-- <div style="float:left; height:60px; margin-right:5px;">Faculty Detail:</div>-->
+				{{ person.get('full_name','') }}<br/>
+				{% set sTitle = context.get('primary_appt', {}).get('title',{}).get('descr', '') %}
+				{% set sDept = context.get('primary_appt', {}).get('department',{}).get('full_descr', '') %}
+				<small>
+				{% if sTitle != '' or sDept != '' %}
+					{% if sTitle != '' %}<span>{{context.get('primary_appt', {}).get('title',{}).get('descr', '')}}</span><br/>{% end %}
+					{% if sDept != '' %}<span>{{context.get('primary_appt', {}).get('department',{}).get('full_descr', '')}}</span>{% end %}
+				{% else %}
+					<span>(No Current Primary Appointment)</span>
+				{% end %}
+				</small>
+			</h1>
+		</div>
+
+		<form id="mainform" class="form-horizontal wf-person-page" onsubmit="return false;">
+			<input type=hidden name="pcn" id="pcn_id" value="{{context.get('position_id','')}}">
+			<input type=hidden name="personid" id="person_id" value="{{context.get('person_id','')}}">
+			<div class="cv-callout cv-callout-info cv-callout-bordered clearfix row">
+				<div class="col-md-11">
+                    <table class="table table-condensed">
+                        <tr>
+                            <th>PCN</th>
+                            <th>{{context.get('departmentText','Department')}}</th>
+                            <th>Track</th>
+                            <th>Title</th>
+                            <th>Action</th>
+                            <th>Status</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+							<th>Last Update</th>
+                            <th>Actions</th>
+                        </tr>
+                        {% set i = 0 %}
+                        {% for appt in context.get('appointments',{}) %}
+                            <tr>
+                                <td>
+                                    <a href="{{ appt.get('appointment').get('position_url','') }}">{{ appt.get('position',{}).get('pcn','') }}</a>
+                                </td>
+                                {% if appt.get('position',{}).get('is_primary') %}
+                                    <td>{{ appt.get('department',{}).get('full_descr','') + ' (Primary)' }}</td>
+                                {% else %}
+                                    <td>{{ appt.get('department',{}).get('full_descr','') + ' (Secondary)' }}</td>
+                                {% end %}
+                                <td>{{ appt.get('track',{}).get('descr','') }}</td>
+                                <td>{{ appt.get('title',{}).get('descr','') }}</td>
+                                {% if appt.get('appointment').get('url','') %}
+									{% if appt.get('jobAction',None) %}
+                                    	<td><a href="{{ appt.get('appointment').get('url','') }}">{{ appt.get('jobAction').get('jobActionType',{}).get('descr','') }}</a></td>
+	                                {% else %}
+	                                    <td>&nbsp;</td>
+                                	{% end %}
+								{% else %}
+									{% if appt.get('jobAction',None) %}
+                                     	<td>{{ appt.get('jobAction').get('jobActionType',{}).get('descr','') }}</td>
+	                                {% else %}
+	                                    <td>&nbsp;</td>
+									{% end %}
+                                {% end %}
+                                <td>{{ appt.get('appointment',{}).get('apptstatus_descr','') }}</td>
+                                <td>{{ appt.get('appointment',{}).get('start_date','') }}</td>
+                                <td>{{ appt.get('appointment',{}).get('end_date','') }}</td>
+								<td>{{ appt.get('appointment',{}).get('updated','') }}</td>
+                                {% if appt.get('appointment',{}).get('allowableJobActions',[]) %}
+                                    <td>
+										<div class="btn-group wf-actions-button dropright">
+											<button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+												Actions
+												<span class="caret"></span>
+											</button>
+											<ul class="dropdown-menu pull-right" role="menu">
+												{% for action in appt.get('appointment',{}).get('allowableJobActions',[]) %}
+													<li><a href="{{ action.get('url','') }}">{{ action.get('descr','') }}...</a></li>
+												{% end %}
+											</ul>
+										</div>
+                                    </td>
+                                {% else %}
+                                    <td>&nbsp;</td>
+                                {% end %}
+                            </tr>
+                        {% end %}
+                    </table>
+				</div>
+			</div>
+        </form>
+
+		<div class="wf-details-form-btn-bar col-xs-12">
+			<a data-section="wf-overview-item" class="overview-breadcrumb wf-details-footer-cancel wf-details-footer-back" href="#">
+				<span class="glyphicon glyphicon-circle-arrow-left"></span><span>Back</span>
+			</a>
+		</div>
+	</div>
+</div>
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}

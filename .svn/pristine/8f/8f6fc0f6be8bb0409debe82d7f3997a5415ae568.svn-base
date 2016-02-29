@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Promotion</title>
+        {% include header-prologue.html %}
+        {% include core-css.html %}
+    </head>
+
+    {% set person = context.get('person',{}) %}
+    {% set workflow_list = context.get('workflowlist',{}) %}
+    <body class="cv-proxy-page">
+        <div class="container-fluid mps-body">
+            {% set context['pageHeaderTitle'] = 'Person' %}
+            {% include pageHeader.html %}
+            <div class="body-content cv-body cv-body-no-menu">
+                <div class="page-header clearfix">
+					<h1>
+						<!-- <div style="float:left; height:60px; margin-right:5px;">Faculty Detail:</div>-->
+						{{ person.get('full_name','') }}<br/>
+						{% set sTitle = context.get('primary_appt', {}).get('title',{}).get('descr', '') %}
+						{% set sDept = context.get('primary_appt', {}).get('department',{}).get('full_descr', '') %}
+						<small>
+						{% if sTitle != '' or sDept != '' %}
+							{% if sTitle != '' %}<span>{{context.get('primary_appt', {}).get('title',{}).get('descr', '')}}</span><br/>{% end %}
+							{% if sDept != '' %}<span>{{context.get('primary_appt', {}).get('department',{}).get('full_descr', '')}}</span>{% end %}
+						{% else %}
+							<span>(No Current Primary Appointment)</span>
+						{% end %}
+						</small>
+					</h1>
+                </div>
+
+                <form id="mainform" class="form-horizontal" onsubmit="return false;">
+                    <input type=hidden name="pcn" id="pcn_id" value="{{context.get('position_id','')}}">
+                    <input type=hidden name="personid" id="person_id" value="{{context.get('person_id','')}}">
+                    <div class="cv-callout cv-callout-info cv-callout-bordered clearfix">
+                        <div class="col-md-7">
+                            {% set disabled = "disabled='disabled'"%}
+                            {% if context.get('is_promotable',True) %}
+                                {% set disabled = "" %}
+                            {% end %}
+
+                            {% set titles = context.get('promotable_titles',[]) %}
+                            <label class="col-xs-2 control-label" for="title_list">Select Title:</label>
+                            <div class="col-xs-5">
+                                <select {{disabled}} id="title_list" name="title_list" class="form-control">
+                                    <option value="-1"></option>
+                                    {% for title in titles %}
+                                        <option value="{{ title.get('id',-1) }}">{{ title.get('descr','') }}</option>
+                                    {% end %}
+                                </select>
+                            </div>
+
+                            {% set starthidden = 'starthidden' if len(context.get('workflowlist',[])) == 1 else '' %}
+                            <div class="clearfix form-row {{starthidden}}">
+                                <label class="col-xs-2 control-label" for="workflow_list">* Workflow:</label>
+                                <div class="col-xs-5">
+                                    <select id="workflow_list" name="workflow_list" class="form-control">
+                                        {% for wf in context.get('workflowlist',[]) %}
+                                            <option value="{{ wf.get('id',0) }}" {{ 'selected="selected"' if len(context.get('workflowlist',[])) == 1 else ''}}>{{ wf.get('descr','') }}</option>
+                                        {% end %}-->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-2 ta-right">
+                                <button {{disabled}} class="startpromotion btn btn-primary">Start Promotion</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+         </div>
+    </body>
+</html>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	(function ($) {
+
+		$('body').on('click', '.startpromotion', function(event){
+			var $this = $(this);
+			var $pcn = $('#pcn_id').val();
+			var $person = $('#person_id').val();
+			var $title = $('#title_list').val();
+			var $workflow = $('#workflow_list').val();
+			var sURL = '/appt/jobaction/create/' + $pcn + '/' + $workflow + '/' + $title + '/' + $person
+			cvApp.ubiquitousPageRequest({
+				url: sURL,
+				data: JSON.stringify($('#mainform').serializeObject()),
+				errorMessage: '#modalerrormessage'
+			});
+		});
+
+	})(jQuery);
+
+	/*]]>*/
+</script>

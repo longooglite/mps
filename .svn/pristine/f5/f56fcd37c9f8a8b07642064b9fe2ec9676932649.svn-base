@@ -1,0 +1,12 @@
+#   File of site-specific roles.
+#   Use the common 'common_roles.txt' file for non-site-specific roles.
+
+#site|application|code|descr
+med-oakland|APPT|apptDeptUser|Department
+med-oakland|APPT|apptFacultyAffairs|Faculty Affairs
+
+med-oakland|APPT|apptCredUser|Credentialing
+med-oakland|APPT|apptDcaptUser|DCAPT User
+med-oakland|APPT|apptDcaptChairUser|DCAPT Chair User
+med-oakland|APPT|apptCaptUser|CAPT User
+med-oakland|APPT|apptProvostUser|Provost

@@ -1,0 +1,9 @@
+#positioncode|trackcode|titledescr|positioncriteria|active|rankorder|isactionable|tags
+OPENCL|Clinical|Open||1|0|0|
+100001|Clinical|Clinical Assistant Professor|clinical_asst_prof_criteria.pdf|1|2|1|
+100002|Clinical|Clinical Associate Professor|clinical_assoc_prof_criteria.pdf|1|3|1|
+100003|Clinical|Clinical Professor|clinical_prof_criteria.pdf|1|4|1|
+OPENIN|Instructional|Open||1|0|0|
+200001|Instructional|Instructional Assistant Professor|asst_prof_criteria.pdf|1|1|1|
+200002|Instructional|Instructional Associate Professor|assoc_professor_criteria.pdf|1|3|1|
+200003|Instructional|Instructional Professor|professor_criteria.pdf|1|5|1|

@@ -1,0 +1,39 @@
+#   File of site-specific role/permission assignments.
+#   Use the common 'common_role_permissions.txt' file for non-site-specific data.
+
+#application|site|role|permission
+
+#   Department User
+APPT|shib|apptDeptUser|apptRosterView
+APPT|shib|apptDeptUser|apptDashboardView
+APPT|shib|apptDeptUser|apptCreatePosition
+APPT|shib|apptDeptUser|apptViewAsCandidate
+APPT|shib|apptDeptUser|apptJobActionOverview
+APPT|shib|apptDeptUser|apptCreateJobAction
+APPT|shib|apptDeptUser|apptPositionView
+APPT|shib|apptDeptUser|apptPersonView
+APPT|shib|apptDeptUser|apptCancelJobAction
+APPT|shib|apptDeptUser|apptResendEmail
+
+APPT|shib|apptDeptUser|dept_task
+APPT|shib|apptDeptUser|approverfp_view
+APPT|shib|apptDeptUser|canViewNPIPassword
+APPT|shib|apptDeptUser|canrequestfieldrevisions
+APPT|shib|apptDeptUser|revisions_notify
+
+
+#   Faculty Affairs User
+APPT|shib|apptFacultyAffairs|apptRosterView
+APPT|shib|apptFacultyAffairs|apptDashboardView
+APPT|shib|apptFacultyAffairs|apptCreatePosition
+APPT|shib|apptFacultyAffairs|apptViewAsCandidate
+APPT|shib|apptFacultyAffairs|apptJobActionOverview
+APPT|shib|apptFacultyAffairs|apptCancelJobAction
+APPT|shib|apptFacultyAffairs|apptResendEmail
+
+APPT|shib|apptFacultyAffairs|ofa_task
+APPT|shib|apptFacultyAffairs|apptCreateJobAction
+APPT|shib|apptFacultyAffairs|apptPositionView
+APPT|shib|apptFacultyAffairs|apptPersonView
+APPT|shib|apptFacultyAffairs|approverfp_edit
+APPT|shib|apptFacultyAffairs|facultyAffairsUser

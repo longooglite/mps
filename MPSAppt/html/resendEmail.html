@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Appointments</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/wf-main.css"/>
+    <style>
+		#mainform tr{height:32px;}
+		#mainform td{vertical-align:middle !important; line-height:32px !important;}
+		#mainform td label{position:relative; top:1px; font-weight:normal;}
+		#mainform td input{padding-left:5px !important;}
+    </style>
+</head>
+
+<body class="cv-proxy-page">
+<div class="container-fluid mps-body">
+	{% set context['pageHeaderTitle'] = 'Appointments' %}
+	{% include pageHeader.html %}
+	<div class="body-content cv-body cv-body-no-menu">
+        <div class="page-header clearfix">
+			<h1>
+				Resend Email
+				{% set sTitle = context.get('title_descr', '[Title Descr]') %}
+				{% set sDept = context.get('department_descr', '[Dept Descr]') %}
+				{% set sJA = context.get('jobAction_descr', '[Job Action Descr]') %}
+				{% set sPCN = context.get('pcn_descr', '[PCN Descr]') %}
+				{% if sTitle != '' or sDept != '' %}
+				<br/><small>
+					{% if sPCN != '' %}<span>{{sPCN}}</span>:{% end %}
+					{% if sJA != '' %}<span>{{sJA}}</span>{% end %}
+					{% if sJA != '' or sPCN != '' %}<br/>{% end %}
+					{% if sTitle != '' %}<span>{{sTitle}}</span><br/>{% end %}
+					{% if sDept != '' %}<span>{{sDept}}</span>{% end %}
+				</small>
+				{% end %}
+			</h1>
+		</div>
+		<form id="mainform" class="form-horizontal" onsubmit="return false;">
+            <input type=hidden name="job_action_id" id="job_action_id" value="{{context.get('job_action_id','')}}">
+            <div class="row">
+                <h3 class="section-header starthidden">
+                    <span class="glyphicon glyphicon-edit"></span>
+                </h3>
+                <div class="cv-callout cv-callout-info cv-callout-bordered wf-page-callout-wide clearfix">
+                    <div class="col-md-12">
+                        {% if context.get('emails',[])%}
+                        <h4>Select an auto-generated email to resend:<br/><br/></h4>
+                            <table width="100%" class="table table-condensed">
+                                <tr>
+                                    <th></th>
+                                    <th>Subject</th>
+                                    <th>Date Sent</th>
+                                    <th>Recipient</th>
+                                </tr>
+                                {% for email in context.get('emails',[]) %}
+                                    <tr>
+                                        <td width="20px"><input type="radio" name="selected_email" id="selected_email" value="{{ email.get('id',-1) }}"></td>
+                                        <td><label>{{ email.get('email_subject') }}</label></td>
+										<td><label>{{ email.get('email_date') }}</label></td>
+                                        {% set recipientId = "recipient_%i" % (email.get('id',-1)) %}
+                                        <td class="form-row"><input size="50" type="text" name="{{ recipientId }}" value="{{ email.get('email_to') }}" class="mps-validate-email" required="required"/></td>
+
+                                    </tr>
+                                {% end %}
+                            </table>
+
+                        {% else %}
+						<h4>This Job Action has no auto-generated emails to resend.</h4>
+						{% end %}
+
+                    <div class="col-xs-2 ta-right">
+
+                    </div>
+					<div class="wf-details-form-btn-bar col-xs-12">
+						<a data-section="wf-overview-item" class="overview-breadcrumb wf-details-footer-cancel wf-details-footer-back" href="#">
+							<span class="glyphicon glyphicon-circle-arrow-left"></span><span>Back</span>
+						</a>
+						{% if context.get('emails',[])%}<button class="resendEmail btn btn-primary" id="send_mail_btn" disabled="disabled">Send</button>{% end %}
+					</div>
+                </div>
+            </div>
+        </form>
+	</div>
+</div>
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+<script type="text/javascript" src="/{{skin}}/js/wf.core.js"></script>
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	(function ($) {
+
+		$('body').on('click', '.resendEmail', function(event){
+			var $this = $(this);
+			var $jobactionid = $('#job_action_id').val();
+			var sURL = '/appt/jobaction/resendemail/' + $jobactionid
+			cvApp.ubiquitousPageRequest({
+				url: sURL,
+				data: JSON.stringify($('#mainform').serializeObject()),
+				errorMessage: '#modalerrormessage'
+			});
+		});
+
+		// UX one-offs: fake labels on date strings & enable button on radio selection
+		$('#mainform').on('click', 'label', function(e){$(this).closest('tr').find('input[name="selected_email"]').click();});
+		$('#mainform').on('click', 'input[name="selected_email"]', function(e){$('#send_mail_btn').prop('disabled', false);});
+
+		$('#mainform').trigger('safeInitFormWidgets', [{'allowedDelimiter':','}]);
+
+		/*
+		$('#mainform').on('blur', '.wf-validate-email', function(e){
+			var $mail = $(this),
+				str = $mail.val(),
+				zStrs = str.split(',');
+			if(zStrs.length > 1){
+				var allClear = true;
+				for(i=0; i < zStrs.length;i++){
+					if($.trim(zStrs[i]).length > 0 && !mpsApp._isValidEmailAddy($.trim(zStrs[i]))){
+						wfApp._renderFormErrors([{message:'Valid email addresses are required', code:$mail.attr('name')}], $('#mainform'));
+						return false;
+					}
+				}
+			}
+			else if(str.length > 0 && !mpsApp._isValidEmailAddy(str)){
+				wfApp._renderFormErrors([{message:'A valid email address is required', code:$mail.attr('name')}], $('#mainform'));
+			}
+
+			return true;
+		});
+		*/
+
+	})(jQuery);
+
+	/*]]>*/
+</script>
+</div>
+</body>
+</html>

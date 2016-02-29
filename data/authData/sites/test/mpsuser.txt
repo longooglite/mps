@@ -1,0 +1,6 @@
+#site|community|username|password|first name|last name|email|auth_override|active
+test|default|mpsadmin|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|MPS|Administrator|greg.poth@mountainpasssolutions.com|MPS|true
+test|default|chris|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Chris|King|chris.king@mountainpasssolutions.com|MPS|true
+test|default|eric|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Eric|Paul|eric.paul@mountainpasssolutions.com|MPS|true
+test|default|greg|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Greg|Poth|greg.poth@mountainpasssolutions.com|MPS|true
+test|default|josh|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Joshua|King|josh.king@mountainpasssolutions.com|MPS|true

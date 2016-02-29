@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>{{context.get('windowTitle', 'Appointment')}}</title>
+        {% include header-prologue.html %}
+        {% include core-css.html %}
+        <style>
+            .mps-date-picker-wrapper .btn{color:#fff;}
+            .form-row .wf-form-right{padding:0px !important;}
+        </style>
+    </head>
+
+    <body class="cv-user-admin-pg">
+        {% set config = context.get('config',{}) %}
+        <div class="container-fluid mps-body">
+            {% include pageHeader.html %}
+            <div class="body-content cv-body cv-body-no-menu">
+                <div class="page-header clearfix">
+                    <h1>
+                        Reporting<br/>
+                        <small>
+                            {{ config.get('reportName','') }}
+                        </small>
+                    </h1>
+                </div>
+                <p>{% raw config.get('instructional','') %}</p>
+
+                <form class="wf-ajax-form" id="reportingentry_form">
+                    <input type="hidden" value="{{context.get('_xsrf','')}}" name="_xsrf">
+                    <input type="hidden" value="{{context.get('configFile','')}}" name="config">
+
+                    <div class="formContainer">
+                        {% include ajax-hidden-fields.html %}
+                        {% set prompts = context.get('config',{}).get('prompts',[])%}
+                        {% for prompt in prompts %}
+                            {% set tableName = prompt.get('tableName','') %}
+                            {% set controlName = prompt.get('controlName','') %}
+                            {% set dataSource = context.get(tableName,[]) %}
+                            {% if prompt.get('affordancetype','') == 'singlepicklist' or prompt.get('affordancetype','') == 'multipicklist' %}
+                                {% set multiple = ''%}
+                                {% if prompt.get('affordancetype','') == 'multipicklist' %}
+                                    {% set multiple = 'multiple'%}
+                                {% end %}
+                                <div class="form-row clearfix">
+                                    <label class="col-xs-1 control-label" for="{{controlName}}">{{prompt.get('label','Unknown')}}:</label>
+                                    <div class="col-xs-5 wf-form-right">
+                                        <select {{multiple}} id="{{controlName}}" name="{{controlName}}" class="form-control">
+                                            {% for entity in context.get(tableName,[]) %}
+                                                {% if len(entity.get('children',[])) > 0 %}
+                                                    <optgroup label="{{ entity.get('descr','') }}">
+                                                        {% for child in entity.get('children',[]) %}
+                                                            {% if child.get('full_descr','') %}
+                                                                <option value="{{ child.get('id',0) }}">{{ child.get('full_descr','') }}</option>
+                                                            {% else %}
+                                                                <option value="{{ child.get('id',0) }}">{{ child.get('descr','') }}</option>
+                                                            {% end %}
+                                                        {% end %}
+                                                    </optgroup>
+                                                {% else %}
+                                                    {% if entity.get('full_descr','') %}
+                                                        <option value="{{ entity.get('id',0) }}">{{ entity.get('full_descr','') }}</option>
+                                                    {% else %}
+                                                        <option value="{{ entity.get('id',0) }}">{{ entity.get('descr','') }}</option>
+                                                    {% end %}
+                                                {% end %}
+                                            {% end %}
+                                        </select>
+                                    </div>
+                                </div>
+                            {% elif prompt.get('affordancetype','') == 'date_entry' %}
+                                <div class="clearfix form-row">
+                                    <label class="col-xs-1 control-label" for="{{controlName}}">{{prompt.get('label','Unknown')}}:</label>
+                                    <div class="col-xs-2 wf-form-right">
+                                        {% set defaultValue = ''%}
+                                        {% if prompt.get('defaultValue','') %}
+                                            {% set defaultValue = prompt.get('defaultValue','') %}
+                                        {% end %}
+                                        <input type="text" class="form-control mps-date-picker" id="{{controlName}}" name="{{controlName}}" value="{{ defaultValue }}"  placeholder="{{ prompt.get('date_format','') }}" />
+                                    </div>
+                                </div>
+                            {% elif prompt.get('affordancetype','') == 'checkbox' %}
+                                <div class="clearfix form-row">
+                                    <label class="col-xs-1 control-label" for="{{controlName}}">{{prompt.get('label','Unknown')}}:</label>
+                                    <div class="col-xs-1 wf-form-right">
+                                        <input type="checkbox" class="form-control" id="{{controlName}}" name="{{controlName}}" value="on"/>
+                                    </div>
+                                </div>
+                            {% end %}
+                            <br/>
+                        {% end %}
+                        <div class="clearfix form-row">
+                            <label class="col-xs-1 control-label" for="file_type">Output format:</label>
+                            <div class="col-xs-5 wf-form-right">
+                                <input type="radio" name="file_type" id="file_type" checked="checked" value="PDF">&nbsp;PDF&nbsp;
+                                <input type="radio" name="file_type" value="EXCEL">&nbsp;Excel
+                            </div>
+                        </div>
+                        {% if config.get('orderBy',[]) %}
+                            {% set checked = 'checked="checked"'%}
+                            <div class="clearfix form-row">
+                                <label class="col-xs-1 control-label">Order by:</label>
+                                <div class="col-xs-5 wf-form-right">
+                                    {% for order in config.get('orderBy','') %}
+                                        <input type="radio" name="orderBy" {{checked}} value="{{order}}">&nbsp;{{order}}&nbsp;
+                                        {% set checked = ''%}
+                                    {% end %}
+                                </div>
+                            </div>
+                        {% end %}
+                        <div class="wf-details-form-btn-bar col-xs-12">
+                            <hr/>
+                            <button class="col-xs-offset-1 btn btn-primary" id = "submitBtn" type="button">Submit</button>
+                        </div>
+                     </div>
+                </form>
+            </div>
+        </div>
+        {% include footer.html %}
+        {% include ajax-payload.html %}
+        {% include core-js.html %}
+        {% if context.get('envCode', 'dev') != 'dev' %}
+            {% include google_analytics.html %}
+        {% end %}
+        <script type="text/javascript" src="/{{skin}}/js/wf.core.js"></script>
+
+        <script type="text/javascript">
+        /*<![CDATA[*/
+            var $this = this;
+            $this.$form = $('#reportingentry_form');
+            mpsApp.mpsDatePickerizeDom($this.$form);
+
+
+        $('#submitBtn').on('click', function(event){
+		var $body = $('.formContainer');
+		var $form = $('#reportingentry_form')
+		cvApp.ubiquitousPageRequest({
+			url: '/appt/reporting/configFile',
+			type: 'POST',
+			data: JSON.stringify($form.serializeObject()),
+			success: function(data, textStatus, xhr){
+				cvApp._commonErrorHandler($body, data, textStatus, xhr);
+			}
+		});
+	});
+
+
+        /*]]>*/
+        </script>
+
+    </body>
+</html>

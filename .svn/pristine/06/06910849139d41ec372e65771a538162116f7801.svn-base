@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>{{context.get('windowTitle', 'Appointment')}}</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/wf-main.css"/>
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/3rdParty/multiple-select.css"/>
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/3rdParty/dataTables.tableTools.min.css"/>
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/wf-roster-default.css"/>
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/wf-roster-skin.css"/>
+</head>
+{% set isMsg = True if len(context.get('errormessage','')) > 0 else False %}
+<body class="{{ 'wf-show-global-message' if isMsg else '' }} wf-page">
+<div class="container-fluid mps-body">
+{% include pageHeader.html %}
+<div class="body-content cv-body cv-body-no-menu">
+
+	<div class="page-header clearfix">
+		<h1>
+            {% if context.get('canCreatePosition',True) %}
+                <div class="page-header-controls">
+                    <a href="/appt/pcncreate" class="btn btn-sm btn-default">Create New Position...</a>
+                </div>
+            {% end %}
+			<span class="pg-title">Roster</span>
+			<small>
+				<div id="wf-rosterdash-count">&nbsp;</div>
+			</small>
+		</h1>
+	</div>
+
+	<div id="wf-left-content" class="wf-roster-wrap">
+
+		<div id="wf-pseudo-reporting" class="starthidden">
+			<div id="wf-stats-tr"></div>
+			<table id="wf-roster-stats" cellpadding="0" cellspacing="0" border="0" class="starthidden wf-stats-closed">
+				<thead>
+					<tr>
+						<th class="wf-hm wf-fcc">Primary:</th>
+						<th class="wf-hm"><span id="wf-pseudo-reporting-primary"><span>0</span></span></th>
+						<th class="wf-hm wf-fcc">Secondary:</th>
+						<th class="wf-hm"><span id="wf-pseudo-reporting-secondary"><span>0</span></span></th>
+						<th class="wf-hm wf-fcc">Supplemental:</th>
+						<th class="wf-hm"><span id="wf-pseudo-reporting-supplemental"><span>0</span></span></th>
+						<th><a href="#" id="wf-roster-stat-toggler" title="Hide or Show Primary/Secondary/Supplemental details..."><span class="glyphicon glyphicon-chevron-down"></span></a></th>
+					</tr>
+				</thead>
+				<tbody class="starthidden">
+					<tr>
+						<td class="wf-fcc">Filled:</td>
+						<td><span id="wf-pseudo-reporting-total"><span>0</span></span></td>
+						<td>&nbsp;</td>
+						<td><span id="wf-pseudo-reporting-secondary"><span>0</span></span></td>
+						<td>&nbsp;</td>
+						<td><span id="wf-pseudo-reporting-supplemental"><span>0</span></span></td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td class="wf-fcc">Pending:</td>
+						<td><span id="wf-pending-reporting-primary"><span>0</span></span></td>
+						<td>&nbsp;</td>
+						<td><span id="wf-pending-reporting-secondary"><span>0</span></span></td>
+						<td>&nbsp;</td>
+						<td><span id="wf-vacant-reporting-secondary"><span>--</span></span></td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td class="wf-fcc">Vacant:</td>
+						<td><span id="wf-vacant-reporting-primary"><span>0</span></span></td>
+						<td>&nbsp;</td>
+						<td><span id="wf-pending-reporting-supplemental"><span>0</span></span></td>
+						<td>&nbsp;</td>
+						<td><span id="wf-vacant-reporting-supplemental"><span>0</span></span></td>
+						<td>&nbsp;</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div id="wf-rooster" class="wf-gridWidget wf-rosterGrid" data-url="/appt/page/grid" data-filter-bar="#wf-rooster-filters">
+			<div class="wf-actions-btn-wrapper pull-right">
+				<div class="btn-group wf-actions-button dropright">
+				  <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+					Actions <span class="caret"></span>
+				  </button>
+				  <ul class="dropdown-menu pull-right" role="menu">
+					<li><a href="#" data-command="print">Print...</a></li>
+					<li><a href="#" data-command="csv">Export to CSV...</a></li>
+					<li><a href="#" data-command="excel">Export to Excel XLS...</a></li>
+					<!-- <li><a href="/appt/pcncreate">Create New Position...</a></li> -->
+				  </ul>
+				</div>
+			</div>
+			<div class="cv-table-loading"><img src="/{{skin}}/images/ajax-loader.gif"/>Loading...</div>
+		</div>
+	</div>
+
+</div>
+</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+<script type="text/javascript" src="/{{skin}}/js/3rdParty/underscore-min.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/3rdParty/jq.dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/3rdParty/jq.pdfmake.min.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/3rdParty/jq.dataTables.vfs_fonts.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/3rdParty/jq.dataTables.fixedHeader.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/3rdParty/jquery.multiple.select.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/wf.core.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/wf.rosterWidget.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/wf.page.roster.js"></script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

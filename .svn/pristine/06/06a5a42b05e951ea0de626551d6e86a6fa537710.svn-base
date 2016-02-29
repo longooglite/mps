@@ -1,0 +1,131 @@
+{% set taskCode = context.get('taskcode','') %}
+<form class="wf-ajax-form wf-pi-form wf-no-curtain" id="{{ taskCode }}_form" action="{{ context.get('url','') }}" onSubmit="return false;">
+    <input type=hidden name="buildingsJSON" id="buildingsJSON_id" value="{{context.get('buildingsJSON','')}}">
+
+	{% for prompt in context.get('prompts',[]) %}
+        {% set label = prompt.get('label','') %}
+        {% set code = prompt.get('code','') %}
+        {% set value = prompt.get('value','') %}
+        {% set optional = '<span class="wf-qa-optional">Optional</span>' if not prompt.get('required',False) else '' %}
+
+        <div class="form-row clearfix">
+            <label class="col-xs-2 text-right" >
+                {{ label }}:
+            </label>
+            {% set disabled = '' %}
+            {% if not prompt.get('enabled', True) %}
+                {% set disabled = 'disabled="disabled"' %}
+            {% end %}
+            {% if prompt.get('code','') == 'building_descr'%}
+                <div class="col-xs-5 wf-form-right">
+                    <select id="building_list" name="building_list" class="form-control mps-multifill-master" data-master-key="code" {{disabled}}>
+                        <option value="-1"></option>
+                        {% for building in context.get('buildings') %}
+                            {% set selected = '' %}
+                            {% if building.get('code','') == prompt.get('value','') %}
+                                {% set selected = 'selected="selected"' %}
+                            {% end %}
+                            <option value="{{ building.get('code','') }}" {{selected}}>{{ building.get('descr','') }}</option>
+                        {% end %}
+                    </select>
+                </div>
+            {% elif prompt.get('code','') == 'state'%}
+                <div class="col-xs-5 wf-form-right">
+                    <select id="state_list" name="state_list" class="form-control" data-child-key="state" {{disabled}}>
+                        <option value="-1"></option>
+                        {% for state in context.get('states') %}
+                            {% set selected = '' %}
+                            {% if state.get('code','') == prompt.get('value','') %}
+                                {% set selected = 'selected="selected"' %}
+                            {% end %}
+                            <option value="{{ state.get('code','') }}" {{selected}}>{{ state.get('descr','') }}</option>
+                        {% end %}
+                    </select>
+                </div>
+            {% elif prompt.get('code','') == 'country'%}
+                <div class="col-xs-5 wf-form-right">
+                    <select id="country_list" name="country_list" class="form-control" data-child-key="country" {{disabled}}>
+                        <option value="-1"></option>
+                        {% for country in context.get('countries') %}
+                            {% set selected = '' %}
+                            {% if country.get('code','') == prompt.get('value','') %}
+                                {% set selected = 'selected="selected"' %}
+                            {% end %}
+                            <option value="{{ country.get('code','') }}" {{selected}}>{{ country.get('descr','') }}</option>
+                        {% end %}
+                    </select>
+                </div>
+            {% elif prompt.get('data_type','') == 'repeatingtext'%}
+                {% set response = prompt.get('value','') %}
+                {% if response %}
+                    <div class="col-xs-5 wf-form-right cvRowRepeating_Text clearfix" data-fieldname="address">
+                        {% for val in response %}
+                            <div class="Repeating_Text clearfix">
+                                <input class="form-control" data-child-key="address_lines" type="text" id="address_lines" name="address_lines" value="{{val}}" {% raw disabled %}>
+                                <div class="cv-repeating-controls pull-right"> </div>
+                            </div>
+                        {% end %}
+                    </div>
+                {% else %}
+                    <div class="col-xs-5 wf-form-right cvRowRepeating_Text clearfix" data-fieldname="address">
+                        <div class="Repeating_Text clearfix">
+                            <input class="form-control" data-child-key="address_lines" type="text" id="address_lines" name="address_lines" value="" {% raw disabled %}>
+                            <div class="cv-repeating-controls pull-right"> </div>
+                        </div>
+                    </div>
+                {% end %}
+            {% elif prompt.get('code','') == 'membership_category' %}
+                {% set memberCats = context.get('membershipCategories',[]) %}
+                {% if memberCats %}
+                    <div class="col-xs-5 wf-form-right">
+                        <select id="membership_category_list" name="membership_category_list" class="form-control">
+                            <option value="" disabled="disabled" selected="selected">Please select</option>
+                            {% for memCat in memberCats %}
+                                {% if len(memCat.get('subcategories',[])) > 0 %}
+                                    <optgroup label="{{ memCat.get('descr','') }}" value="{{ memCat.get('descr','') }}">
+                                        {% for subCat in memCat.get('subcategories',[]) %}
+                                            {% set selected = '' %}
+                                            {% if subCat.get('code','') == prompt.get('value','') %}
+                                                {% set selected = 'selected="selected"' %}
+                                            {% end %}
+                                            <option value="{{ subCat.get('code','') }}" {{selected}}>{{ subCat.get('descr','') }}</option>
+                                        {% end %}
+                                    </optgroup>
+                                {% else %}
+                                    {% set selected = '' %}
+                                    {% if memCat.get('code','') == prompt.get('value','') %}
+                                        {% set selected = 'selected="selected"' %}
+                                    {% end %}
+                                    <option value="{{ memCat.get('code','') }}" {{selected}}>{{ memCat.get('descr','') }}</option>
+                                {% end %}
+                            {% end %}
+                        </select>
+                    </div>
+                {% end %}
+            {% else %}
+                <div class="col-xs-5 wf-form-right">
+                    {% raw optional %}
+                    <input type="text" name="{{ code }}" data-child-key="{{ code }}" value="{{ value }}" class="form-control" {{disabled}}/>
+                    {% if prompt.get('code','') == 'fax' %}
+                        <p>Fax # is mandatory for Courtesy Physicians.</p>
+                    {% end %}
+                </div>
+            {% end %}
+        </div>
+    {% end %}
+
+	<div class="wf-details-form-btn-bar col-xs-12 ">
+		<button type="submit" class="wf-widget-form-btn btn btn-primary" data-wf-url="{{ context.get('submitURL', '')}}">Submit</button>
+		{% include 'formChunk_cancelLink.html' %}
+	</div>
+</form>
+<script type="text/javascript">
+/*<![CDATA[*/
+    $(function() {
+        var jBuildingsJSON = ({% raw context.get('buildingsJSON','{}') %});
+        $('#building_list').mpsFormFillingSelect({
+            'data': jBuildingsJSON
+        });
+    });
+/*]]>*/
+</script>

@@ -1,0 +1,33 @@
+{% set container = context.get('container',{}) %}
+{% set indent = context.get('indent',0) %}
+{% set indentClass = 'wf-cascade-indent' if indent > 0 else '' %}
+{% set headerClass = 'wf-edit-link-enabled' if container.getIsEnabled() else 'wf-edit-link-disabled' %}
+{% set url = container.getContainerDict().get('url', '') %}
+{% set tooltip = container.getContainerDict().get('tooltip', '') %}
+
+{% if container.getIsMissing() %}
+	{% set headerClass = 'wf-edit-link-missing' %}
+{% end %}
+
+<div class="col-xs-12 {{ indentClass }} {{ headerClass }}">
+	{% if container.getIsMissing() %}
+		{{ container.getDescr() }} ({{ container.getCode() }})
+	{% else %}
+		<a href="{{url}}" title="{% raw tooltip %}">{{ container.getDescr() }}</a> <span class="wf-muted">({{ container.getCode() }})</span>
+	{% end %}
+
+	{% set childrenContainList = container.getContainers() %}
+	{% if childrenContainList %}
+		{% set context['indent'] = context.get('indent',0) + 1 %}
+		<div class="foo">
+			{% for child in childrenContainList %}
+				{% set context['container'] = child %}
+				{% if context['container'] %}
+					{% module Template("adminWorkflowContainer.html", context=context, skin=context['skin']) %}
+				{% end %}
+			{% end %}
+		</div>
+		{% set context['indent'] = context.get('indent',0) - 1 %}
+	{% end %}
+
+</div>

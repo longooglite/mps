@@ -1,0 +1,15 @@
+#   File of site-specific permissions.
+#   Use the common 'common_permissions.txt' file for non-site-specific permissions.
+
+#site_code|application|code|description
+
+#   Primary role permissions
+engin-umich|APPT|dept_task|View/Edit Department Items
+engin-umich|APPT|ofa_task|View/Edit OFA Items
+engin-umich|APPT|revisions_notify|Notify candidate of revisions required
+
+engin-umich|APPT|approverfp_edit|View/Edit Approve RFP
+engin-umich|APPT|approverfp_view|View Approve RFP
+
+engin-umich|APPT|faculty_task|View/Edit Faculty Items
+engin-umich|APPT|rpm_task|View/Edit RPM Items

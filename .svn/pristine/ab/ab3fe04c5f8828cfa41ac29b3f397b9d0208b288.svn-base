@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="en">
+<head>
+    <style>
+        .category
+            {
+               font-size: 12pt !important;
+               color: #000 !important;
+               font-family: "Helvetica" !important;
+               font-weight: bold;
+            }
+        .middlecategory
+            {
+               font-size: 11pt !important;
+               color: #000 !important;
+               font-family: "Helvetica" !important;
+               font-weight: bold;
+               padding-left:7px;
+            }
+        .subcategory
+            {
+               font-size: 10pt !important;
+               color: #000 !important;
+               font-family: "Helvetica" !important;
+               text-decoration: underline;
+               font-weight: bold;
+               padding-left:15px;
+            }
+        .lineitem1
+            {
+               font-size: 10pt !important;
+               color: #000 !important;
+               font-family: "Helvetica" !important;
+               padding-left:15px;width:125px;
+               vertical-align: text-top;
+            }
+        .lineitem2
+            {
+               font-size: 10pt !important;
+               color: #000 !important;
+               font-family: "Helvetica" !important;
+               padding-left:15px; width:72*5px;
+               vertical-align: text-top;
+            }
+        .singleListItem
+            {
+               font-size: 12pt !important;
+               color: #000 !important;
+               font-family: "Helvetica" !important;
+               padding-left:15px; width:72*5px;
+               text-align: center;
+            }
+        .numberedlist
+            {
+               font-size: 10pt !important;
+               color: #000 !important;
+               font-family: "Helvetica" !important;
+               vertical-align: text-top;
+               line-height:175%;
+            }
+        .tableitem
+            {
+                font-size: 10pt !important;
+                color: #000 !important;
+                font-family: "Helvetica" !important;
+            }
+        table, tr, td, th, tbody, thead, tfoot {
+            page-break-inside: avoid !important;
+            }
+
+
+    </style>
+
+</head>
+<body style="margin:10px; padding:10px;">
+    {% for currcategory in context.get('printDicts',[]) %}
+        {% if currcategory.get('mode_code','') == 'ListSingleEntry' %}
+            {% include printRow.html %}
+        {% elif currcategory.get('mode_code','') == 'ListSingleList' %}
+            {% include printLists.html %}
+        {% elif currcategory.get('mode_code','') == 'ListBySubcategoryGroup' %}
+            {% include printLists.html %}
+        {% end %}
+        <br/>
+    {% end %}
+</body>
+</html>

@@ -1,0 +1,22 @@
+<div class = "category">
+    {% set rowCounter = 0 %}
+    {% for currsubcategory in currcategory.get('subcategories',[]) %}
+            {% set categorydescr = currcategory.get('descr','') %}
+            {% set subcategory_code = currsubcategory.get('subcategory_code','') %}
+            {% set rowCounter = rowCounter + 1 %}
+
+            {% if rowCounter > 1 %}
+                {% set categorydescr = '' %}
+            {% end %}
+            {% set subcategorydescr = currsubcategory.get('descr','') %}
+            {% if currcategory.get('category_code') == 'Education' %}
+                {% include printEdTable.html %}
+            {% elif subcategory_code == 'TeachingActivityUofM' %}
+                {% include uomTeachingActivity.html %}
+            {% elif subcategory_code in ['PastGrantContracts','CurrentGrantsContracts','PendingGrantsContracts'] %}
+                {% include grants.html %}
+            {% else %}
+                {% include printTabledOutput.html %}
+            {% end %}
+    {% end %}
+</div>

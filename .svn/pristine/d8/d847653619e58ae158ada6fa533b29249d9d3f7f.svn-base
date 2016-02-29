@@ -1,0 +1,78 @@
+<form class="wf-ajax-form wf-qa-form" action="/appt/jobaction/qa/{{ context.get('jobactionid',0) }}/{{ context.get('taskcode','') }}" onSubmit="return false;">
+    {% set questions = context.get('questionAndAnswers',{}) %}
+    {% set responses = context.get('question_responses',{}) %}
+	{% set pi = context.get('date_responses',{}) %}
+    {% set prmpts = context.get('prompts',{}) %}
+	{% set colsLeft = 4 %}
+	{% set colsRight = 6 %}
+
+    {% for qa in questions %}
+        <div class="form-row cv-panel-body quest_wrap clearfix" id="fr_{{qa.get('code','')}}">
+			{% set question_id = qa.get('id',0) %}
+			{% set response = responses.get(question_id,{}) %}
+			{% set options = qa.get('options',[]) %}
+
+			{% set isDate = False %}
+			{% if qa.get('code','') in context.get('dateFieldIdentifiers',[])%}
+				{% set isDate = True %}
+				{% set prompt = qa.get('code','') %}
+				{% if prmpts.get(prompt,{}).get('enabled',True) %}{% include 'formChunk_textInput.html' %}{% end %}
+			{%else%}
+				<label class="col-xs-4 text-right" >{{ qa.get('prompt','') }} <!--{{ ('*' if qa.get('required',True) else '') }}--></label>
+				<div class="col-xs-6 wf-form-right">
+			{% end %}
+			{% if not qa.get('required', True) %}<span class="wf-qa-optional">Optional</span>{% end %}
+			{% if not options %}
+				{% if not isDate %}
+					<textarea class="form-control" rows="{{ qa.get('nbr_rows',1) }}" name="{{ qa.get('code','') }}" id="{{ qa.get('code','') }}">{{ response.get('text_response','') }}</textarea>
+				{% end %}
+			{% else %}
+				{% set iOpt = 0 %}
+				{% for option in options %}
+					{% set option_id = option.get('id',0) %}
+					{% set optionResponse = "" %}
+					{% set checked = ''%}
+					{% if option_id == response.get('question_option_id',0) %}
+						{% set checked = "checked" %}
+						{% set optionResponse = response.get('text_response','') %}
+					{% end %}
+					{% set sId = ('opt_' + qa.get('code','') + '_' + str(iOpt)) %}
+					{% set expando = sId if (option.get('has_text',False)) else '' %}
+					<input type="radio" data-expando="{{expando}}" id="{{sId}}" name="{{ 'opt_' + qa.get('code','') }}" value="{{ option.get('option_text','') }}" {{checked}}><label for="{{sId}}">{{ option.get('option_text','') }}</label>
+					{% set iOpt = iOpt+1 %}
+				{% end %}
+				{% set iOpt = 0 %}
+				{% for option in options %}
+					{% set option_id = option.get('id',0) %}
+					{% set optionResponse = "" %}
+					{% set checked = ''%}
+					{% if option.get('has_text',False) %}
+					{% set sId = ('opt_' + qa.get('code','') + '_' + str(iOpt)) %}
+					{% set expando = sId if (option.get('has_text',False)) else '' %}
+					{% set starthidden = 'starthidden'%}
+					{% if option_id == response.get('question_option_id',0) %}
+						{% set starthidden = '' %}
+						{% set optionResponse = response.get('text_response','') %}
+					{% end %}
+					<div data-target="{{ expando }}" class="{{starthidden}} opt_target">
+						<div>{{ option.get('text_title','') }}</div>
+						{% if not option.get('text_required', True) %}<span class="wf-qa-optional">Optional</span>{% end %}
+						<textarea class="form-control" rows="{{ option.get('nbr_rows',1) }}" name="{{ option.get('code','') }}" id="{{option.get('code','') }}">{{ optionResponse }}</textarea>
+
+					</div>
+					{% end %}
+					{% set iOpt = iOpt+1 %}
+				{% end %}
+			{% end %}
+			</div>
+		</div>
+
+    {% end %}
+
+    <div class="wf-details-form-btn-bar col-xs-12">
+		<button type="submit" class="wf-widget-form-btn btn btn-primary">Save</button>
+		<button class="btn btn-primary" type="submit" data-wf-url="{{context.get('save_as_draft_url','')}}">Save as Draft</button>
+		{% include 'formChunk_cancelLink.html' %}
+	</div>
+
+</form>

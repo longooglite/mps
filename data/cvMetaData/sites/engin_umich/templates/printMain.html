@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="en">
+<head>
+    <style>
+        *
+        {
+            font-family: Verdana, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            line-height: 1.2em;
+        }
+        table, .subcategory, .category
+        {
+            page-break-inside: avoid;
+            border-collapse: collapse;
+        }
+        .category
+        {
+            margin-bottom: 40px;
+        }
+        .subcategory, .degree
+        {
+            padding: 5px;
+            margin: 5px;
+        }
+        .degree-info
+        {
+            display: inline-block;
+        }
+        .header
+        {
+            font-size: 2em;
+        }
+        .category-title
+        {
+            display: block;
+            text-align: right;
+            font-size: 1.5em;
+        }
+        .subcategory-title
+        {
+            display: block;
+            text-align: left;
+            font-size: 1.25em;
+            margin-bottom: 10px;
+        }
+        .row
+        {
+            margin: 15px;
+        }
+        li
+        {
+            margin-bottom: 10px;
+        }
+        td, th
+        {
+            border: solid black 1px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body class="cv">
+    {% for currcategory in context.get('printDicts',[]) %}
+        {% if currcategory.get('mode_code','') == 'ListSingleEntry' %}
+            {% include printRow.html %}
+        {% elif currcategory.get('mode_code','') == 'ListSingleList' %}
+            {% include printLists.html %}
+        {% elif currcategory.get('mode_code','') == 'ListBySubcategoryGroup' %}
+            {% include printLists.html %}
+        {% end %}
+    {% end %}
+</body>
+</html>

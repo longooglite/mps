@@ -1,0 +1,6 @@
+<form class="wf-ajax-form" action="{{ context.get('url','') }}" onSubmit="return false;">
+    <div class="wf-details-form-btn-bar col-xs-12">
+		<button type="submit" class="wf-widget-form-btn btn btn-primary" data-wf-url="{{ context.get('button_url','') }}">{{ context.get('button_text','') }}</button>
+		{% include 'formChunk_cancelLink.html' %}
+	</div>
+</form>

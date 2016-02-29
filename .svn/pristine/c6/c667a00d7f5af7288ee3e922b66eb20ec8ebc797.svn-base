@@ -1,0 +1,68 @@
+<h3><center>Time To Completion</center></h3>
+<h5><center>{{context.get('start_date','')}} - {{context.get('end_date','')}}</center></h5>
+
+{% if not context.get('jobActionAverages',[]) %}
+    <h3><center> {{context.get('noDataMessage','0 items meet report criteria')}} </center></h3>
+{% end %}
+
+
+{% for actionType in context.get('jobActionAverages',[]) %}
+    <hr>
+    <table width="500">
+        <tr>
+            <td>
+                <b><u>{{ actionType.get('jobActionType','') }}</u></b>
+            </td>
+            <td>
+                Total Actions:&nbsp;{{str(len(actionType.get('items',0)))}}
+            </td>
+            <td>
+                Mean Average (days):&nbsp;{{str(actionType.get('average',0))}}
+            </td>
+            <td>
+                Median Average (days):&nbsp;{{str(actionType.get('median',0))}}
+            </td>
+        </tr>
+    </table>
+    <br/>
+    <table width="700">
+        <tr>
+            <th align="left">Name</th>
+            <th align="left">Department</th>
+            <th align="left">Title</th>
+            <th>&nbsp;</th>
+        </tr>
+        {% for action in actionType.get('items',[]) %}
+            <tr>
+                <td nowrap="nowrap"><a href="{{ action.get('url','') }}" target="_blank">{{action.get('first_name','')}} {{action.get('last_name','')}}</a></td>
+                <td nowrap="nowrap">{{ action.get('department_descr','') }}</td>
+                <td nowrap="nowrap">{{ action.get('title_descr','') }}</td>
+                <td nowrap="nowrap"></td>
+            </tr>
+            <tr>
+                <td nowrap="nowrap">{{ 'Proposed Start Date: ' + str(action.get('proposed_start_date','')) }}</td>
+                <td nowrap="nowrap">{{ 'Began ' + actionType.get('jobActionType','') + ': ' + str(action.get('start','')) }}</td>
+                <td nowrap="nowrap">{{ 'Completed ' + actionType.get('jobActionType','') + ': ' + str(action.get('end','')) }}</td>
+                {% if action.get('days','0') > actionType.get('average',0) %}
+                    <td style="color:red;" nowrap="nowrap">{{ 'Days: ' + str(action.get('days','')) }}</td>
+                {% else %}
+                    <td nowrap="nowrap">{{ 'Days: ' + str(action.get('days','')) }}</td>
+                {% end %}
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+        {% end %}
+    </table>
+{% end %}
+{% if context.get('graph','') %}
+    <center>
+        <div style="width:600px;height:450px;">
+            {% raw context.get('graph') %}
+        </div>
+    </center>
+{% end %}
+

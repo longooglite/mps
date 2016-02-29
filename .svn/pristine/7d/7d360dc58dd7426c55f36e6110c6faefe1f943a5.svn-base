@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>MPS Admin</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+</head>
+
+{% set disabled = context.get('disabled', '') %}
+<body class="mps-admin-page">
+	<div class="container-fluid mps-body">
+		{% include pageHeader.html %}
+
+		<div class="body-content">
+			<div class="col-xs-offset-1 col-xs-11">
+				<span id="adminerrormessage" class="adminerrormessage">{{context.get('errormessage','')}}</span>
+			</div>
+			<form id="roledetailform" class="form-horizontal" role="form">
+				{% include ajax-hidden-fields.html %}
+				<input type="hidden" name="mode" value="{{context.get('mode','')}}" />
+				<input type="hidden" name="site_code" value="{{context.get('siteProfileDetail',{}).get('sitePreferences',{}).get('code','')}}" />
+				{% if context.get('mode','') == 'edit' %}
+					<input type="hidden" name="code" value="{{context.get('roleDict',{}).get('code','')}}" />
+					<input type="hidden" name="app_code" value="{{context.get('roleDict',{}).get('app_code','')}}" />
+				{% end %}
+
+				<div class="form-group">
+					<label for="sitecode" class="col-xs-2 control-label">Site Code</label>
+					<div class="col-xs-4">
+						<p class="form-control-static" id="sitecode">{{context.get('siteProfileDetail',{}).get('sitePreferences',{}).get('code','')}}</p>
+					</div>
+					<div class="clear"></div>
+
+					<label for="app_code" class="col-xs-2 control-label">App Code</label>
+					<div class="col-xs-4">
+					{% if context.get('mode','') == 'edit' %}
+						<p class="form-control-static" id="app_code">{{context.get('roleDict',{}).get('app_code','')}}</p>
+					{% else %}
+						<select class="form-control" id="app_code" name="app_code">
+							<option value=""></option>
+							{% for appDict in context.get('appList',[]) %}
+								{% set optionCode = appDict.get('code','') %}
+								<option value="{{optionCode}}">{{optionCode}} ({{appDict.get('descr','')}})</option>
+							{% end %}
+						</select>
+					{% end %}
+					</div>
+					<div class="clear"></div>
+
+					<label for="rolecode" class="col-xs-2 control-label">Role Code</label>
+					<div class="col-xs-4">
+					{% if context.get('mode','') == 'edit' %}
+						<p class="form-control-static" id="rolecode">{{context.get('roleDict',{}).get('code','')}}</p>
+					{% else %}
+						<input type="text" class="form-control" id="rolecode" name="code" value="{{context.get('roleDict',{}).get('code','')}}">
+					{% end %}
+					</div>
+					<div class="clear"></div>
+
+					<label for="inputdescription" class="col-xs-2 control-label">Description</label>
+					<div class="col-xs-4">
+						<input type="text" class="form-control" id="inputdescription" name="descr" value="{{context.get('roleDict',{}).get('descr','')}}" {{context.get('disabled','')}}>
+					</div>
+					<div class="clear"></div>
+					<br/>
+
+					<div class="col-xs-offset-1">
+						<table id="permissions" class="table table-striped table-bordered mpstable">
+							<tr>
+								<th></th>
+								<th>Application</th>
+								<th>Code</th>
+								<th>Description</th>
+							</tr>
+							{% for permDict in context.get('permissionList',[]) %}
+								<tr>
+									<td align="center"><input type="checkbox" name="permissions" value="{{permDict.get('key','')}}" {{permDict.get('checked','')}} {{context.get('disabled','')}}></td>
+									<td>{{permDict.get('app_code','')}}</td>
+									<td>{{permDict.get('code','')}}</td>
+									<td>{{permDict.get('descr','')}}</td>
+								</tr>
+							{% end %}
+						</table>
+
+						<div class="col-xs-12">
+							<input type="button" id="saveRoleBtn" class="btn btn-primary" value="Save" {{context.get('disabled','')}}>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+{% include cache-js.html %}
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	var saveRoleFn = function()  {
+		$form = $('#roledetailform')
+		$.ajax({ url: "/admin/role/save", type: 'POST',
+			data: JSON.stringify($form.serializeObject()),
+			headers: { 'Content-Type': 'application/json' },
+			success: function(data, textStatus, xhr) {
+				if ('exception' in data) { $('#adminerrormessage').html(data.exceptionMessage); return; }
+				if ('errors' in data) { $('#adminerrormessage').html(data.errors); return; }
+				if ('message' in data) { $('#adminerrormessage').html(data.message); return; }
+				if ('msgid' in data) { $.cookie('msgid', data.msgid, { path: '/'}); }
+				if ('redirect' in data) { window.location.href = data.redirect; }
+			},
+			error: function(jqXHR, textStatus, errorThrown) { $('#adminerrormessage').html(textStatus); }
+		});
+	};
+
+	$(function() {
+		$('#saveRoleBtn').on('click', saveRoleFn);
+	});
+
+	/*]]>*/
+</script>
+
+</body>
+</html>

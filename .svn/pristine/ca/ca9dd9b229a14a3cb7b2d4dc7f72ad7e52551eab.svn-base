@@ -1,0 +1,10 @@
+<html>
+    {% set last_name = context.get('candidate',{}).get('last_name','') %}
+    {% set url = context.get('candidate_url','')%}
+	<p>
+		<span>Dear Dr.</span> <span>{{last_name}}</span>
+	</p>
+    <p><a href="{{url}}">please click here to begin the promotion process</a>.</p>
+    <p>Thank you</p>
+
+</html>

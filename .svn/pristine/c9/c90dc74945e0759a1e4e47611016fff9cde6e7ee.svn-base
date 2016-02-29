@@ -1,0 +1,27 @@
+{% set taskCode = context.get('taskcode','') %}
+{% set disabled = '' %}
+{% if context.get('disabled', True) %}
+	{% set disabled = 'disabled="disabled"' %}
+{% end %}
+
+<form class="wf-ajax-form" id="{{ taskCode }}_form" action="{{ context.get('url','') }}" onSubmit="return false;">
+
+	{% for comment in context.get('comment_prompt_list', []) %}
+	<div class="form-row">
+		{% set commentCode = comment.get('comment_code','') %}
+		<label class="col-xs-2 text-right" for="{{commentCode}}" class="wf-submitWidget-label">{{ comment.get('comment_label','') }}:</label>
+		<div class="col-xs-8 wf-form-right clearfix">
+			{% if not comment.get('required',{}).get('required', False) %}<span class="wf-qa-optional">Optional</span>{% end %}
+			<textarea class="form-control" {{ disabled }} rows="5" name="{{commentCode}}" id="name="{{commentCode}}""></textarea>
+		</div>
+	</div>
+	{% end %}
+
+	<div class="form-row">
+		<div class="wf-details-form-btn-bar col-xs-12 ">
+			<button class="btn btn-primary" type="submit" data-wf-formname="#{{taskCode}}_form" data-wf-url="{{ context.get('approve_url','') }}">Approve</button>
+			<button class="btn btn-primary" type="submit" data-wf-formname="#{{taskCode}}_form" data-wf-url="{{ context.get('deny_url','') }}">Deny</button>
+			{% include 'formChunk_cancelLink.html' %}
+		</div>
+	</div>
+</form>

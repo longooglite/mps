@@ -1,0 +1,50 @@
+[Category]
+<h4>Visiting Professorships</h4>
+<p>This section covers your Visiting Professorships including: Extramural Invited Presentation, Seminars and Visiting Professorships.<p>
+<p>The content of this page can be sorted by clicking on any column title.</p>
+<hr>
+<p>To <strong>add</strong> an additional entry, click the “+ Add …” button in the upper right portion of the page.</p>
+<p>To <strong>edit</strong> an existing entry, click the blue text in the row you would like to edit.</p>
+<p>To <strong>delete</strong> an entry, click the X at the end of the row you would like to delete. Then confirm the deletion.</p>
+<p>To <strong>print</strong> this section of the CV, click the “Print this section” button in the upper right portion of the page or select “Print Section” from the Print menu found in the menu bar.</p>
+
+[VisitingProfessorshipsDetailsRegion]
+<p>Please select a Region for this entry.</p>
+<hr>
+<p>This item is required</p>
+
+[VisitingProfessorshipsDetailsType]
+<p>Please select a type for this entry.</p>
+<hr>
+<p>This item is required</p>
+
+[VisitingProfessorshipsDetailsSeminarTitle]
+<p>Please enter the title for this entry.</p>
+<hr>
+<p>This item is required</p>
+
+[VisitingProfessorshipsLocationName]
+<p>Please enter the name of the institution for this entry.</p>
+<hr>
+<p>This item is required</p>
+[VisitingProfessorshipsLocationCity]
+<p>Please enter the city where the institution was located.</p>
+<hr>
+<p>This item is required</p>
+[VisitingProfessorshipsLocationState]
+<p>Please enter the state where the institution was located.</p>
+
+[VisitingProfessorshipsLocationCountry]
+<p>Please enter the country where the institution was located.</p>
+
+[VisitingProfessorshipsDatesStart]
+<p>Please enter the start date for this entry.</p>
+<hr>
+<p>This item is required</p>
+<p>Hover over the field to see supported date formats</p>
+
+[VisitingProfessorshipsDatesEnd]
+<p>Please enter the end date for this entry.</p>
+<hr>
+<p>Hover over the field to see supported date formats</p>
+

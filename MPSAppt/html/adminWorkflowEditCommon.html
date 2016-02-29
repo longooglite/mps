@@ -1,0 +1,214 @@
+{% include adminWorkflowPermissions.html %}
+
+{% set componentDataDict = context.get('componentDataDict', {}) %}
+{% set labelClass = 'col-xs-3' %}
+{% set promptClass = 'col-xs-8' %}
+{% set isWorkflowComponent = True if componentDataDict.get('componentType', '').upper() == 'WORKFLOW' else False %}
+{% set isContainerComponent = True if componentDataDict.get('componentType', '').upper() == 'CONTAINER' else False %}
+{% set isTaskComponent = True if componentDataDict.get('componentType', '').upper() == 'TASK' else False %}
+
+<div class="cv-callout cv-callout-info cv-callout-bordered clearfix">
+	<div class="clearfix form-row">
+		{% set disabled = 'disabled="disabled"' if not canEditCode else '' %}
+		<label for="code" class="{{labelClass}} control-label">* Code:</label>
+		<div class="{{promptClass}}">
+			<input type="text" class="form-control" id="code" name="code" value="{{componentDataDict.get('code', '')}}" placeholder="Unique component code" {{disabled}}>
+		</div>
+	</div>
+
+	<div class="clearfix form-row">
+		<label for="descr" class="{{labelClass}} control-label">* Description:</label>
+		<div class="{{promptClass}}">
+			<input type="text" class="form-control" id="descr" name="descr" value="{{componentDataDict.get('descr', '')}}">
+		</div>
+	</div>
+
+	<div class="clearfix form-row">
+		{% set disabled = 'disabled="disabled"' if not canEditComponentType else '' %}
+		<label for="componentType" class="{{labelClass}} control-label">* Component Type:</label>
+		<div class="{{promptClass}}">
+			<select class="form-control" id="componentType" name="componentType" {{disabled}}>
+				<option value="" selected disabled></option>
+				{% set selectedValue = componentDataDict.get('componentType', '').upper() %}
+				{% for option in context.get('componentTypeList', []) %}
+					{% set optionId = option.get('code','') %}
+					{% set selected = 'selected' if optionId == selectedValue else '' %}
+					<option value="{{optionId}}" {{selected}}>{{ option.get('descr','') }}</option>
+				{% end %}
+			</select>
+		</div>
+	</div>
+
+	<div class="clearfix form-row">
+		{% set disabled = 'disabled="disabled"' if not canEditClassName else '' %}
+		<label for="className" class="{{labelClass}} control-label">* Class Name:</label>
+		<div class="{{promptClass}}">
+			<select class="form-control" id="className" name="className" {{disabled}}>
+				<option value="" selected disabled></option>
+				{% set selectedValue = componentDataDict.get('className', '') %}
+				{% for option in context.get('classNameList', []) %}
+					{% set selected = 'selected' if option == selectedValue else '' %}
+					<option value="{{option}}" {{selected}}>{{option}}</option>
+				{% end %}
+			</select>
+		</div>
+	</div>
+
+	<div class="clearfix form-row">
+		<label for="affordanceType" class="{{labelClass}} control-label">Affordance Type:</label>
+		<div class="{{promptClass}}">
+			<select class="form-control" id="affordanceType" name="affordanceType">
+				{% set selectedValue = componentDataDict.get('affordanceType', '').upper() %}
+				{% for option in context.get('affordanceTypeList', []) %}
+					{% set optionId = option.get('code','') %}
+					{% set selected = 'selected' if optionId == selectedValue else '' %}
+					<option value="{{optionId}}" {{selected}}>{{ option.get('descr','') }}</option>
+				{% end %}
+			</select>
+		</div>
+	</div>
+
+	<div class="clearfix form-row">
+		{% set checked = 'checked' if componentDataDict.get('optional', False) else '' %}
+		<label for="optional" class="{{labelClass}} control-label">Optional:</label>
+		<div class="{{promptClass}}">
+			<input type="checkbox" class="form-control" id="optional" name="optional" value="true" {{checked}}/>
+		</div>
+	</div>
+
+	<div class="clearfix form-row">
+		{% set checked = 'checked' if componentDataDict.get('enabled', False) else '' %}
+		<label for="enabled" class="{{labelClass}} control-label">Enabled:</label>
+		<div class="{{promptClass}}">
+			<input type="checkbox" class="form-control" id="enabled" name="enabled" value="true" {{checked}}/>
+		</div>
+	</div>
+
+	{% if isTaskComponent %}
+		<div class="clearfix form-row">
+			{% set checked = 'checked' if componentDataDict.get('logEnabled', False) else '' %}
+			<label for="logEnabled" class="{{labelClass}} control-label">Log Enabled:</label>
+			<div class="{{promptClass}}">
+				<input type="checkbox" class="form-control" id="logEnabled" name="logEnabled" value="true" {{checked}}/>
+			</div>
+		</div>
+
+		<div class="clearfix form-row">
+			{% set checked = 'checked' if componentDataDict.get('freezable', False) else '' %}
+			<label for="freezable" class="{{labelClass}} control-label">Freezable:</label>
+			<div class="{{promptClass}}">
+				<input type="checkbox" class="form-control" id="freezable" name="freezable" value="true" {{checked}}/>
+			</div>
+		</div>
+
+		<div class="clearfix form-row">
+			{% set checked = 'checked' if componentDataDict.get('overviewOnly', False) else '' %}
+			<label for="overviewOnly" class="{{labelClass}} control-label">Overview only:</label>
+			<div class="{{promptClass}}">
+				<input type="checkbox" class="form-control" id="overviewOnly" name="overviewOnly" value="true" {{checked}}/>
+			</div>
+		</div>
+
+		<div class="clearfix form-row">
+			{% set checked = 'checked' if componentDataDict.get('isProtectedCandidateItem', False) else '' %}
+			<label for="isProtectedCandidateItem" class="{{labelClass}} control-label">Protected Candidate Item:</label>
+			<div class="{{promptClass}}">
+				<input type="checkbox" class="form-control" id="isProtectedCandidateItem" name="isProtectedCandidateItem" value="true" {{checked}}/>
+			</div>
+		</div>
+	{% end %}
+
+	{% if isWorkflowComponent %}
+		{% set tooltip = 'options are: %s' % ','.join(context.get('metatrackNameList', [])) %}
+		<div class="clearfix form-row" title="{% raw tooltip %}">
+			{% set rawData = componentDataDict.get('metaTrackCodes', []) %}
+			{% set displayValue = ','.join(rawData) if type(rawData) == type([]) else '' %}
+
+			{% set disabled = 'disabled="disabled"' if not canEditMetaTrackCode else '' %}
+			<label for="metaTrackCodes" class="{{labelClass}} control-label">MetaTrack Codes:</label>
+			<div class="{{promptClass}}">
+				<input type="text" class="form-control" id="metaTrackCodes" name="metaTrackCodes" value="{{displayValue}}" {{disabled}}>
+			</div>
+		</div>
+
+		<div class="clearfix form-row">
+			{% set disabled = 'disabled="disabled"' if not canEditJobActionType else '' %}
+			<label for="jobActionType" class="{{labelClass}} control-label">Job Action Type:</label>
+			<div class="{{promptClass}}">
+				<select class="form-control" id="jobActionType" name="jobActionType" {{disabled}}>
+					<option value="" selected disabled></option>
+					{% set selectedValue = componentDataDict.get('jobActionType', '').upper() %}
+					{% for option in context.get('jobActionTypeList', []) %}
+						{% set optionId = option.get('code','') %}
+						{% set selected = 'selected' if optionId == selectedValue else '' %}
+						<option value="{{optionId}}" {{selected}}>{{ option.get('descr','') }}</option>
+					{% end %}
+				</select>
+			</div>
+		</div>
+	{% end %}
+
+	<div class="clearfix form-row">
+		{% set rawData = componentDataDict.get('accessPermissions', []) %}
+		{% set displayValue = ','.join(rawData) if type(rawData) == type([]) else '' %}
+		{% set disabled = 'disabled="disabled"' if not canEditPermissions else '' %}
+		<label for="accessPermissions" class="{{labelClass}} control-label">Access Permimssions:</label>
+		<div class="{{promptClass}}">
+			<input type="text" class="form-control" id="accessPermissions" name="accessPermissions" value="{{displayValue}}" {{disabled}}>
+		</div>
+	</div>
+
+	<div class="clearfix form-row">
+		{% set rawData = componentDataDict.get('viewPermissions', []) %}
+		{% set displayValue = ','.join(rawData) if type(rawData) == type([]) else '' %}
+		{% set disabled = 'disabled="disabled"' if not canEditPermissions else '' %}
+		<label for="viewPermissions" class="{{labelClass}} control-label">View Permimssions:</label>
+		<div class="{{promptClass}}">
+			<input type="text" class="form-control" id="viewPermissions" name="viewPermissions" value="{{displayValue}}" {{disabled}}>
+		</div>
+	</div>
+
+	<div class="clearfix form-row">
+		{% set rawData = componentDataDict.get('blockers', []) %}
+		{% set displayValue = ','.join(rawData) if type(rawData) == type([]) else '' %}
+		{% set disabled = 'disabled="disabled"' if not canEditBlockers else '' %}
+		<label for="blockers" class="{{labelClass}} control-label">Blockers:</label>
+		<div class="{{promptClass}}">
+			<input type="text" class="form-control" id="blockers" name="blockers" value="{{displayValue}}" {{disabled}}>
+		</div>
+	</div>
+
+	<div class="clearfix form-row">
+		<label for="statusMsg" class="{{labelClass}} control-label">Status Message:</label>
+		<div class="{{promptClass}}">
+			<input type="text" class="form-control" id="statusMsg" name="statusMsg" value="{{componentDataDict.get('statusMsg', '')}}">
+		</div>
+	</div>
+
+	{% if isTaskComponent %}
+		<div class="clearfix form-row">
+			<label for="successMsg" class="{{labelClass}} control-label">Success Message:</label>
+			<div class="{{promptClass}}">
+				<input type="text" class="form-control" id="successMsg" name="successMsg" value="{{componentDataDict.get('successMsg', '')}}">
+			</div>
+		</div>
+	{% end %}
+
+	{% if isWorkflowComponent or isContainerComponent %}
+		<div class="clearfix form-row">
+			{% set rawData = componentDataDict.get('containers', []) %}
+			{% set displayValue = ','.join(rawData) if type(rawData) == type([]) else '' %}
+			<label for="containers" class="{{labelClass}} control-label">Containers:</label>
+			<div class="{{promptClass}}">
+				<textarea class="form-control" id="containers" name="containers" rows="3">{{displayValue}}</textarea>
+			</div>
+		</div>
+	{% end %}
+
+	<div class="clearfix form-row">
+		<label for="comment" class="{{labelClass}} control-label">Comment:</label>
+		<div class="{{promptClass}}">
+			<input type="text" class="form-control" id="comment" name="comment" value="{{componentDataDict.get('comment', '')}}">
+		</div>
+	</div>
+</div>

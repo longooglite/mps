@@ -1,0 +1,216 @@
+
+
+/*
+*  General Body Centering differences for entire page below ( against top-most body > div.mps-body )
+*/
+html { overflow-y: scroll; height:100%; }
+body{
+    margin: 0;
+    background-color: #283e5a;
+    padding:0;
+    padding-top:128px;
+    padding-bottom:20px;
+    height:100%;
+    min-height:100%;
+}
+
+/*
+*   Magic gutters
+*/
+
+body .mps-body,
+body .cv-wrap,
+body .mpsheader,
+body .mpsfooter-navbar{
+    width:100%;
+    margin:0 auto !important;
+    max-width: 1200px;
+    min-width: 748px;
+    background-color: #fff;
+    padding-bottom:36px;
+}
+
+/*
+* Admin Pages (BUGBUG: Need a body.className, maybe?)
+*/
+.mps-body .body-content,
+.cv-wrap .body-content
+{ padding-bottom:46px; }
+
+
+/*
+*  MPS/APPT (?) BODY
+*/
+.mps-body{ height:100%; min-height:100% }
+.mps-body .cv-body{
+    margin-right:0px;
+}
+.mps-body .body-content{
+    margin-left:0; margin-right:0;
+}
+
+/*
+*   Exploratory 'No More cv-callouts' classes... works on most pages, but something like Admin > User Details is a little awkward without them.
+*
+*   .mps-skin-border is for the few uses of cv-callout we do want to have borders on in skins that don't want them otherwise
+*/
+body div .cv-callout, body div .cv-callout-info, body div .cv-callout-bordered{
+    border-width:0;
+}
+body div .mps-skin-border {
+    border-color: #ccc;
+    border-image: none;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px 1px 1px 3px;
+    margin: 10px 0;
+    padding: 10px;
+    background-color:#fff;
+    border-left-color: #1b809e;
+}
+
+/* ADMIN Pages */
+.mps-admin-page .body-content{ padding-left:30px !important; padding-right:30px !important; }
+
+/*
+*  CV ONLY (Mostly - *** be careful as there are copy-pasta cv classes in some APPT templates... ***
+*  body.cv (No Space!) was added to help with this for Redux.
+*  Slightly Different page DOMs from APPT, either way
+*/
+
+/*      Some CV Specific (?) change to make it work in the new gutter'd centered Redux Skin */
+body.cv .cv-wrap .cv-menu{
+    padding-bottom: 46px;
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+}
+body.cv .cv-body{width:100%;}
+body.cv .cv-body,
+body.cv .cv-body-content,
+body.cv .cv-body-no-menu,
+body .body-content{
+    background-color:#fff !important;
+}
+body.cv .cv-body-content{
+    min-height:700px;
+}
+body.cv .cv-body{
+    margin: 0 !important;
+    width: calc(100% - 235px);
+    display: inline-block;
+}
+body .cv-body-no-menu,
+body.cv .cv-body-no-menu{
+    margin-left:0 !important;
+}
+body.cv .cv-body-no-menu{
+    padding-left:30px !important;
+}
+body.cv,
+body.cv .cv-wrap{
+    min-height:100%;
+    height:100%;
+}
+body.cv .cv-category-help{
+    top:2px;z-index:99;right:0px;bottom:1px;
+}
+body.cvHelpOpen .mps-body,
+body.cvHelpOpen .cv-wrap,
+body.cvHelpOpen .mpsheader{
+    margin-right:255px !important;
+    width:81%;
+}
+
+/* Visitor File Upload needs a couple adjustments */
+.wf-eval-upload .mps-body {
+    top: 128px !important;
+}
+.wf-eval-upload .wf-candidate-info{
+    height: (100%-25) !important;
+}
+
+/* Back to Global & Shared page Styles */
+
+/*
+*  REDUX HEADER, quite different from Default
+*/
+.mpsheader{
+    position:fixed;
+    top:0;
+    z-index: 3;
+    min-height:128px;
+    padding:0 28px;
+    border-bottom:solid 1px #bfd5e6;
+}
+
+
+.mpsheader .mpsheader-top-container a,
+.mpsheader nav.navbar a{
+    color:#3d81b6;
+    font-weight:600;
+}
+.mpsheader-top-image{position:relative; top:37px;}
+.mpsheader nav.navbar a{text-transform:uppercase;}
+.mpsheader .mpsheader-top-container a:hover,
+.mpsheader nav.navbar a:hover{
+    color:#1d6196;
+}
+
+.mpsheader nav.navbar{
+    /* Overrides */
+    background-color: transparent;
+    position:absolute !important;
+    left: 100px;
+    right:28px;
+    top: 60px;
+    border:0;
+}
+
+.mpsheader-top-left{float:left;}
+.mpsheader-top-right {
+    color:#3d81b6; float:right;
+    margin-top:25px;
+}
+
+.mpsheader .navbar li .glyphicon{
+    margin-right: 6px;
+    display:none;
+}
+
+/* DropDowns Inner */
+.mpsheader .navbar-nav > li > a{ padding:5px 15px !important; }
+.mpsheader nav.navbar .dropdown-menu{ min-width:100%; }
+.mpsheader nav.navbar .dropdown-menu a{
+    text-transform:none;
+    font-weight:normal;
+}
+.mpsheader nav.navbar .open .dropdown-toggle{
+    background-color:transparent;
+    border:solid 1px #ccc;
+    border-bottom:0;
+    color:#1d6196;
+}
+
+
+
+/*
+*   Footer Differences
+*/
+
+.mpsfooter-navbar{
+    z-index:9;
+    height:36px !important;
+}
+.mpsfooter,
+.mpsfooter-navbar,
+.mpsfooter-top-container {
+    background-color:#2b577a !important;
+}
+.mpsfooter-navbar, .mpsfooter{
+    text-align:center !important;
+}
+.mpsfooter .mpsfooter-top-inner,
+.mpsfooter .mpsfooter-top-right{
+    font-size:13px; line-height:34px; position:relative; top:-1px;
+}

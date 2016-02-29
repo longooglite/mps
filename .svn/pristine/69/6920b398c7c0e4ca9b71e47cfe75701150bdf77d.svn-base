@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <h3>
+        <b><center>{{ context.get('packet_title','') }}</center></b>
+    </h3>
+    <h5>
+
+        <center>{{ context.get('candidate_name','') }}</center>
+        <center>
+            {% for titledept in context.get('titles','') %}
+                {{ titledept }}
+                <br/>
+            {% end %}
+        </center>
+    </h5>
+    <hr>
+    <center>
+        <table>
+            {% for item in context.get('toc',[]) %}
+                <tr><td width="420px">{{item.get('description','')}}</td><td width="80px">{{item.get('page','')}}</td></tr>
+            {% end %}
+        </table>
+    </center>
+</body>
+</html>

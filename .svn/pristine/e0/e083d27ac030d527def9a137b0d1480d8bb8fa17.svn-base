@@ -1,0 +1,365 @@
+worker_processes  1;
+error_log  logs/error.log  debug;
+
+events {
+	worker_connections  1024;
+}
+
+http {
+	include       mime.types;
+	default_type  application/octet-stream;
+	client_max_body_size 10m;
+	ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # omit SSLv3 because of POODLE (CVE-2014-3566)
+
+	access_log          logs/access.log;
+	sendfile            on;
+	keepalive_timeout   65;
+	gzip  on;
+	gzip_types      text/plain text/css application/x-javascript text/xml application/xml application/xml+rss text/javascript application/json;
+	gzip_min_length 10240;
+
+
+	############################################################################
+	#   PRIMARY ENVIRONMENT.
+	#   Sites:  All except for those specifically
+	#           running in Alternate Environments.
+	############################################################################
+
+	upstream cvapp {
+		server localhost:8002;
+		server localhost:8012;
+	}
+	upstream adminapp {
+		server localhost:8003;
+	}
+	upstream apptapp {
+		server localhost:8004;
+		server localhost:8014;
+	}
+	upstream authservice {
+		server localhost:9001;
+	}
+
+	server {
+		listen       443 ssl;
+		server_name  ~^(?<site>[a-zA-Z0-9-]*)\.mntnpass\.com$;
+		ssl_certificate      /etc/nginx/mntnpass.crt;
+		ssl_certificate_key  /etc/nginx/mntnpass.key;
+		ssl_dhparam          /etc/nginx/dhparams.pem;
+		ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA';
+		ssl_prefer_server_ciphers on;
+
+		location /favicon.ico { root /usr/local/mps; }
+		location ~^\/([a-zA-Z0-9-]*)\/js\/.*$ { root /usr/local/mps; }
+		location ~^\/([a-zA-Z0-9-]*)\/css\/.*$ { root /usr/local/mps; }
+		location ~^\/([a-zA-Z0-9-]*)\/images\/.*$ { root /usr/local/mps; }
+		location ~^\/([a-zA-Z0-9-]*)\/fonts\/.*$ { root /usr/local/mps; }
+		location ~^\/pdf\/.*$ { root /tmp/; }
+
+		location /mps/login {
+			proxy_pass http://localhost:8001;
+			proxy_set_header Site $site;
+		}
+
+		location /mps/mpslogin {
+			proxy_pass http://localhost:8001;
+			proxy_set_header Site $site;
+		}
+
+		# No toast page in non-shibboleth environments.
+		#location /mps/toast {
+		#	proxy_pass http://localhost:8001;
+		#	proxy_set_header Site $site;
+		#}
+
+		location /admin {
+			proxy_set_header Site $site;
+			if ($http_cookie ~ "mpsid=[a-f0-9]{32,32}") {
+				proxy_pass http://adminapp;
+				break;
+			}
+			return 302 /mps/login;
+		}
+
+		location /cv {
+			proxy_set_header Site $site;
+			if ($http_cookie ~ "mpsid=[a-f0-9]{32,32}") {
+				proxy_pass http://cvapp;
+				break;
+			}
+			return 302 /mps/login;
+		}
+
+		location /appt {
+			proxy_set_header Site $site;
+			if ($http_cookie ~ "mpsid=[a-f0-9]{32,32}") {
+				proxy_pass http://apptapp;
+				break;
+			}
+			return 302 /mps/login;
+		}
+
+		location /appt/visitor {
+			proxy_set_header Site $site;
+			proxy_pass http://apptapp;
+		}
+
+		location / {
+			proxy_set_header Site $site;
+			if ($http_cookie ~ "mpsid=[a-f0-9]{32,32}") {
+				proxy_pass http://cvapp;
+				break;
+			}
+			return 302 /mps/login;
+		}
+
+		#error_page  404              /404.html;
+		error_page   500 502 503 504  /50x.html;
+		location = /50x.html { root   html; }
+	}
+
+	server {
+		listen       9000;
+		server_name  localhost;
+		location / { proxy_pass http://authservice; }
+	}
+
+
+	############################################################################
+	#   ALTERNATE ENVIRONMENT 1.
+	#   Site: accept-umich
+	############################################################################
+
+	upstream cvapp1 {
+		server localhost:8102;
+		server localhost:8112;
+	}
+	upstream adminapp1 {
+		server localhost:8103;
+	}
+	upstream apptapp1 {
+		server localhost:8104;
+		server localhost:8114;
+	}
+	upstream authservice1 {
+		server localhost:9101;
+	}
+
+	server {
+		listen       443 ssl;
+		server_name  accept-umich.mntnpass.com;
+		set $site "accept-umich";
+		ssl_certificate      /etc/nginx/mntnpass.crt;
+		ssl_certificate_key  /etc/nginx/mntnpass.key;
+		ssl_dhparam          /etc/nginx/dhparams.pem;
+		ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA';
+		ssl_prefer_server_ciphers on;
+
+		location /favicon.ico { root /usr/local/mps1; }
+		location ~^\/([a-zA-Z0-9-]*)\/js\/.*$ { root /usr/local/mps1; }
+		location ~^\/([a-zA-Z0-9-]*)\/css\/.*$ { root /usr/local/mps1; }
+		location ~^\/([a-zA-Z0-9-]*)\/images\/.*$ { root /usr/local/mps1; }
+		location ~^\/([a-zA-Z0-9-]*)\/fonts\/.*$ { root /usr/local/mps1; }
+		location ~^\/pdf\/.*$ { root /tmp/; }
+
+		location /mps/login {
+			proxy_pass http://localhost:8101;
+			proxy_set_header Site $site;
+		}
+
+		location /mps/mpslogin {
+			proxy_pass http://localhost:8101;
+			proxy_set_header Site $site;
+		}
+
+		# No toast page in non-shibboleth environments.
+		#location /mps/toast {
+		#	proxy_pass http://localhost:8101;
+		#	proxy_set_header Site $site;
+		#}
+
+		location /admin {
+			proxy_set_header Site $site;
+			if ($http_cookie ~ "mpsid=[a-f0-9]{32,32}") {
+				proxy_pass http://adminapp1;
+				break;
+			}
+			return 302 /mps/login;
+		}
+
+		location /cv {
+			proxy_set_header Site $site;
+			if ($http_cookie ~ "mpsid=[a-f0-9]{32,32}") {
+				proxy_pass http://cvapp1;
+				break;
+			}
+			return 302 /mps/login;
+		}
+
+		location /appt {
+			proxy_set_header Site $site;
+			if ($http_cookie ~ "mpsid=[a-f0-9]{32,32}") {
+				proxy_pass http://apptapp1;
+				break;
+			}
+			return 302 /mps/login;
+		}
+
+		location /appt/visitor {
+			proxy_set_header Site $site;
+			proxy_pass http://apptapp1;
+		}
+
+		location / {
+			proxy_set_header Site $site;
+			if ($http_cookie ~ "mpsid=[a-f0-9]{32,32}") {
+				proxy_pass http://cvapp1;
+				break;
+			}
+			return 302 /mps/login;
+		}
+
+		#error_page  404              /404.html;
+		error_page   500 502 503 504  /50x.html;
+		location = /50x.html { root   html; }
+	}
+
+	server {
+		listen       9100;
+		server_name  localhost;
+		location / { proxy_pass http://authservice1; }
+	}
+
+
+	############################################################################
+	#   ALTERNATE ENVIRONMENT 2.
+	#   Site: Shibboleth Testing
+	############################################################################
+
+	upstream cvapp2 {
+		server localhost:8202;
+		server localhost:8212;
+	}
+	upstream adminapp2 {
+		server localhost:8203;
+	}
+	upstream apptapp2 {
+		server localhost:8204;
+		server localhost:8214;
+	}
+	upstream authservice2 {
+		server localhost:9201;
+	}
+
+	server {
+		listen       443 ssl;
+		server_name  shib.mntnpass.com;
+		set $site "shib";
+		ssl_certificate      /etc/nginx/mntnpass.crt;
+		ssl_certificate_key  /etc/nginx/mntnpass.key;
+		ssl_dhparam          /etc/nginx/dhparams.pem;
+		ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA';
+		ssl_prefer_server_ciphers on;
+
+		# Shitboleth shit
+
+		location = /shibauthorizer {
+			internal;
+			include fastcgi_params;
+			fastcgi_pass unix:/tmp/shibauthorizer.sock;
+		}
+
+		# FastCGI responder for SSO
+		location /Shibboleth.sso {
+			include fastcgi_params;
+			fastcgi_pass unix:/tmp/shibresponder.sock;
+		}
+
+		# A secured location.  Here all incoming requests query the
+		# FastCGI authorizer.  Watch out for performance issues and spoofing.
+		location /secure {
+			more_clear_input_headers 'Variable-*' 'Shib-*' 'Remote-User' 'REMOTE_USER' 'Auth-Type' 'AUTH_TYPE';
+			shib_request /shibauthorizer;
+			proxy_pass http://localhost:8201/mps/shiblogin;
+			proxy_set_header Site $site;
+		}
+
+		location /favicon.ico { root /usr/local/mps2; }
+		location ~^\/([a-zA-Z0-9-]*)\/js\/.*$ { root /usr/local/mps2; }
+		location ~^\/([a-zA-Z0-9-]*)\/css\/.*$ { root /usr/local/mps2; }
+		location ~^\/([a-zA-Z0-9-]*)\/images\/.*$ { root /usr/local/mps2; }
+		location ~^\/([a-zA-Z0-9-]*)\/fonts\/.*$ { root /usr/local/mps2; }
+		location ~^\/pdf\/.*$ { root /tmp/; }
+
+		location /mps/login {
+			return 302 /mps/shiblogin;
+		}
+
+		location /mps/shiblogin {
+			proxy_pass http://localhost:8201;
+			proxy_set_header Site $site;
+			shib_request /shibauthorizer;
+		}
+
+		location /mps/mpslogin {
+			proxy_pass http://localhost:8201;
+			proxy_set_header Site $site;
+		}
+
+		location /mps/toast {
+			proxy_pass http://localhost:8201;
+			proxy_set_header Site $site;
+		}
+
+		location /admin {
+			proxy_set_header Site $site;
+			if ($http_cookie ~ "mpsid=[_a-f0-9]{32,33}") {
+				proxy_pass http://adminapp2;
+				break;
+			}
+			return 302 /mps/login;
+		}
+
+		location /cv {
+			proxy_set_header Site $site;
+			if ($http_cookie ~ "mpsid=[_a-f0-9]{32,33}") {
+				proxy_pass http://cvapp2;
+				break;
+			}
+			return 302 /mps/login;
+		}
+
+		location /appt {
+			proxy_set_header Site $site;
+			if ($http_cookie ~ "mpsid=[_a-f0-9]{32,33}") {
+				proxy_pass http://apptapp2;
+				break;
+			}
+			return 302 /mps/login;
+		}
+
+		location /appt/visitor {
+			proxy_set_header Site $site;
+			proxy_pass http://apptapp2;
+		}
+
+		location / {
+			proxy_set_header Site $site;
+			if ($http_cookie ~ "mpsid=[_a-f0-9]{32,33}") {
+				proxy_pass http://cvapp2;
+				break;
+			}
+			return 302 /mps/login;
+		}
+
+		#error_page  404              /404.html;
+		error_page   500 502 503 504  /50x.html;
+		location = /50x.html { root   html; }
+	}
+
+	server {
+		listen       9200;
+		server_name  localhost;
+		location / { proxy_pass http://authservice2; }
+	}
+}

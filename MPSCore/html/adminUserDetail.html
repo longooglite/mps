@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>{{context.get('windowTitle', 'Curriculum Vitae')}}</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+</head>
+
+{% set isMPSAdmin = context.get('isMPSAdmin', False) %}
+{% set isMPSAppt = context.get('isMPSAppt', False) %}
+{% set showCommunity = context.get('showCommunity', False) %}
+{% set promptCommunity = context.get('promptCommunity', False) %}
+{% set isMsg = True if len(context.get('errormessage','')) > 0 else False %}
+<body class="{{ 'cv-show-global-message' if isMsg else '' }} cv-proxy-page mps-admin-page">
+	<div class="container-fluid mps-body">
+		{% include pageHeader.html %}
+		<div class="body-content cv-body cv-body-no-menu">
+			<div class="page-header clearfix">
+				<div class="page-header-controls">
+					<button class="cvHelpButton btn btn-sm btn-default">
+						<span class="glyphicon glyphicon-question-sign"></span>Help...
+					</button>
+					<button class="btn btn-sm btn-primary saveUserBtn">
+						<span class="glyphicon glyphicon-floppy-disk"></span> <span>Save Changes...</span>
+					</button>
+				</div>
+				<h1>
+					Manage Users<br/>
+					<small>
+						<a href="/{{context.get('appUriPrefix','')}}/users" class="cv-head-bread">All Users</a><span class="cv-head-bread-sep">/</span>
+						<span class="cv-head-bread-leaf">{{ 'New User' if len(context.get('subjectProfile',{}).get('username','')) == 0 else context.get('subjectProfile',{}).get('username','') }}</span>
+					</small>
+				</h1>
+			</div>
+
+			<form id="userdetailform" class="form-horizontal">
+				{% include ajax-hidden-fields.html %}
+				<input type="hidden" name="mode" value="{{context.get('mode','')}}" />
+				<input type="hidden" name="disabledApps" value="{{context.get('disabledApps','[]')}}" />
+				<input type="hidden" name="disabledRoles" value="{{context.get('disabledRoles','[]')}}" />
+				{% if context.get('mode','') == 'edit' %}
+					<input type="hidden" name="username" value="{{context.get('subjectProfile',{}).get('username','')}}" />
+				{% end %}
+
+				<div class="row">
+						<div class="col-md-6 cv-user-form">
+							<h3 class="section-header">
+								<span class="glyphicon glyphicon-edit"></span>
+								Account Settings:
+							</h3>
+
+							<div class="cv-callout cv-callout-info cv-callout-bordered mps-skin-border clearfix">
+								<h4>User Demographics:</h4><br/>
+
+								{% set community = context.get('subjectProfile',{}).get('community','') %}
+								{% if promptCommunity %}
+									<div class="clearfix form-row">
+										<label for="community" class="col-xs-2 control-label">Community:</label>
+										<div class="col-xs-8">
+											<select class="form-control communitydrop" id="community" name="community">
+												<option value="" selected disabled>Select</option>
+												{% for communityDict in context.get('communityList', []) %}
+													{% set optionCode = communityDict.get('code','') %}
+													<option value="{{optionCode}}">{{communityDict.get('descr','')}}</option>
+												{% end %}
+											</select>
+										</div>
+									</div>
+								{% else %}
+									<input type="hidden" name="community" value="{{community}}" />
+									{% if showCommunity %}
+										<div class="clearfix form-row">
+											<label for="community" class="col-xs-2 control-label">Community:</label>
+											<div class="col-xs-8">
+												<p class="form-control-static" id="community">{{ context.get('subjectProfile',{}).get('community_descr','') }}</p>
+											</div>
+										</div>
+									{% end %}
+								{% end %}
+
+								<div class="clearfix form-row">
+									<label for="username" class="col-xs-2 control-label">* Username:</label>
+									<div class="col-xs-8">
+									{% if context.get('mode','') == 'edit' %}
+										<p class="form-control-static" id="username">{{context.get('subjectProfile',{}).get('username','')}}</p>
+									{% else %}
+										<input type="text" class="form-control" id="username" name="username" value="{{context.get('subjectProfile',{}).get('username','')}}" placeholder="Unique username">
+									{% end %}
+									</div>
+								</div>
+
+								<div class="clearfix form-row">
+									<label for="first_name" class="col-xs-2 control-label">* First Name:</label>
+									<div class="col-xs-8">
+										<input type="text" class="form-control" id="first_name" name="first_name" value="{{context.get('subjectProfile',{}).get('userPreferences',{}).get('first_name','')}}">
+									</div>
+								</div>
+
+								<div class="clearfix form-row">
+									<label for="last_name" class="col-xs-2 control-label">* Last Name:</label>
+									<div class="col-xs-8">
+										<input type="text" class="form-control" id="last_name" name="last_name" value="{{context.get('subjectProfile',{}).get('userPreferences',{}).get('last_name','')}}">
+									</div>
+								</div>
+
+								<div class="clearfix form-row">
+									<label for="email" class="col-xs-2 control-label">Email:</label>
+									<div class="col-xs-8">
+										<input type="text" class="form-control" id="email" name="email" value="{{context.get('subjectProfile',{}).get('userPreferences',{}).get('email','')}}">
+									</div>
+								</div>
+
+								<div class="clearfix form-row">
+									<label for="active" class="col-xs-2 control-label">Active:</label>
+									<div class="col-xs-8">
+										{% set checked = '' %}
+										{% if context.get('subjectProfile',{}).get('userPreferences',{}).get('active',False) %}
+											{% set checked = 'checked' %}
+										{% end %}
+										<input type="checkbox" id="active" name="active" value="true" {{checked}}>
+									</div>
+								</div>
+
+								{% if isMPSAdmin %}
+									<div class="clearfix form-row">
+										<label for="auth_override" class="col-xs-2 control-label">Auth Override:</label>
+										<div class="col-xs-8">
+											<input type="text" class="form-control" id="auth_override" name="auth_override" value="{{context.get('subjectProfile',{}).get('userPreferences',{}).get('auth_override','')}}">
+										</div>
+									</div>
+
+									<div class="clearfix form-row">
+										<label for="password" class="col-xs-2 control-label">Password:</label>
+										<div class="col-xs-8">
+											<input type="text" class="form-control" id="password" name="password" value="{{context.get('subjectProfile',{}).get('userPreferences',{}).get('password','')}}">
+										</div>
+									</div>
+								{% end %}
+							</div>
+
+							<div class="cv-callout cv-callout-info cv-callout-bordered mps-skin-border clearfix">
+								<h4>Applications:</h4><br/>
+								<div class="col-xs-12">
+									<table id="apps" class="table table-striped cv-data-table CVtable-bordered table-condensed ui-sortable ui-sortable-form">
+										<thead>
+											<tr>
+												<th class="cvReorderHead">
+													<a href="#" data-toggle="tooltip" data-placement="right"
+													   data-original-title="The Applications in this list may be moved Up and Down to set the order they will appear in the User's Applications Menu."
+														><span class="glyphicon glyphicon-question-sign"></span></a>
+												</th>
+												<th>Application</th>
+												<th>Description</th>
+											</tr>
+										</thead>
+										<tbody>
+										{% for appDict in context.get('appList',[]) %}
+											<tr class="{{ 'item ui-sortable-handle' }}" data-item-id="{{appDict.get('code','')}}" >
+												<td class="cvReorderRow">
+													<a href="#" class="cvReorder cvReorderUp"><span class="glyphicon glyphicon-sm glyphicon-chevron-up"></span></a><br/>
+													<a href="#" class="cvDragHandle"><span class="glyphicon glyphicon-align-justify"></span></a><br/>
+													<a href="#" class="cvReorder cvReorderDown"><span class="glyphicon glyphicon-sm glyphicon-chevron-down"></span></a>
+												</td>
+												<td>
+													<input type="checkbox" name="apps" id="chk_{{appDict.get('code','')}}" value="{{appDict.get('code','')}}" {{appDict.get('checked','')}} {{appDict.get('disabled','')}}/>
+													<label for="chk_{{appDict.get('code','')}}">{{appDict.get('code','')}}</label>
+												</td>
+												<td>{{appDict.get('descr','')}}</td>
+											</tr>
+										{% end %}
+										</tbody>
+									</table>
+								</div>
+							</div>
+
+							{% if isMPSAppt %}
+								<div class="cv-callout cv-callout-info cv-callout-bordered mps-skin-border clearfix">
+									<h4>{{context.get('departmentText','Department')}} Access:</h4><br/>
+									<div class="col-xs-12">
+										<table id="departments" class="table table-striped table-bordered mpstable">
+											<thead>
+												<tr>
+													<th>
+														<label for="deptSelectAll" style="padding:0; margin:0;" title="Select/Deselect All {{context.get('departmentText','Department')}}s">
+															<input type="checkbox" id="deptSelectAll" class="tbl-header-select-all" data-nth-col="1" data-tbl-id="departments" title="Select/Deselect All {{context.get('departmentText','Department')}}s"/>
+															Access
+														</label>
+													</th>
+													<th>Code</th>
+													<th>Description</th>
+												</tr>
+											</thead>
+											<tbody>
+											{% for deptDict in context.get('departmentList',[]) %}
+												{% set children = deptDict.get('children', []) %}
+												{% if children %}
+													{% set prefix = deptDict.get('descr','') + ' - ' %}
+													{% for kiddoDict in children %}
+														<tr>
+															<td align="center"><input type="checkbox" name="departments" value="{{kiddoDict.get('code','')}}" {{kiddoDict.get('checked','')}}></td>
+															<td>{{ kiddoDict.get('code','') }}</td>
+															<td>{{ prefix + kiddoDict.get('descr','') }}</td>
+														</tr>
+													{% end %}
+												{% else %}
+													<tr>
+														<td align="center"><input type="checkbox" name="departments" value="{{deptDict.get('code','')}}" {{deptDict.get('checked','')}}></td>
+														<td>{{ deptDict.get('code','') }}</td>
+														<td>{{ deptDict.get('descr','') }}</td>
+													</tr>
+												{% end %}
+											{% end %}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							{% end %}
+						</div>
+
+						<div class="col-md-6">
+							<h3 class="section-header">
+								<span class="glyphicon glyphicon-edit"></span>
+								System Access:
+							</h3>
+							<div class="cv-callout cv-callout-info cv-callout-bordered mps-skin-border clearfix">
+								<h4>Roles / Permissions:</h4><br/>
+								<div class="col-xs-12">
+									<table id="roles" class="table table-striped table-bordered mpstable">
+										<thead>
+											<tr>
+												<th>Roles</th>
+												<th>Application</th>
+												<th>Code</th>
+												<th>Description</th>
+											</tr>
+										</thead>
+										{% for roleDict in context.get('roleList',[]) %}
+											<tr>
+												<td align="center"><input type="checkbox" name="roles" value="{{roleDict.get('key','')}}" {{roleDict.get('checked','')}} {{roleDict.get('disabled','')}}></td>
+												<td>{{roleDict.get('application_code','')}}</td>
+												<td>{{roleDict.get('code','')}}</td>
+												<td>{{roleDict.get('descr','')}}</td>
+											</tr>
+										{% end %}
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+			</form>
+		</div>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	$('.saveUserBtn').on('click', function(event){
+
+		//
+		// BUGBUG: clean this up a bit: sometimes it is errors{}, sometimes just {"errors": "User not found"}
+		//
+
+		var $body = $('.cv-user-form');
+		cvApp.ubiquitousPageRequest({
+			url: '/{{context.get('appUriPrefix','')}}/users/save',
+			data: JSON.stringify($('#userdetailform').serializeObject()),
+			success: function(data, textStatus, xhr){
+				cvApp._commonErrorHandler($body, data, textStatus, xhr);
+			}
+		});
+	});
+
+	/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

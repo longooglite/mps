@@ -1,0 +1,121 @@
+{% set rowList = groupDataDict.get('rowList',[]) %}
+{% set isDraggable = context.get('categoryDict',{}).get('category_user_sortable', False) and len(rowList) > 1 and not context.get('disabled', True) %}
+<table class="table table-striped cv-data-table CVtable-bordered table-condensed {{ 'ui-sortable ui-sortable-ajax' if isDraggable else 'cv-clientsort' }}">
+	<thead>
+		<tr>
+			{% if isDraggable %}
+				<th class="cvReorderHead">
+					<a href="#" data-toggle="tooltip" data-placement="left"
+					   data-original-title="The rows of this CV section may be moved Up and Down to set the Print Order in the CV.  Click the Up and Down arrows, or Mouse Drag the entire row vertically."
+						><span class="glyphicon glyphicon-question-sign"></span></a>
+				</th>
+			{% end %}
+			{% for fieldDict in context.get('categoryDict',{}).get('displayFieldList',[]) %}
+				{% set isDate = True if (len(fieldDict.get('field_date_format','')) > 0 ) else False %}
+				<th class="cv-row-sorter {{ 'sorter-cvdates' if isDate else '' }}" data-empty="none">
+					{{fieldDict.get('field_alt_descr','') or fieldDict.get('field_descr','')}}
+					{% if not isDraggable %}
+					<div class="cv-row-sort-controls">
+						<a href="#" class="cv-row-sorter-asc"><span class="glyphicon glyphicon-sm glyphicon-chevron-up"></span> </a>
+						<a href="#" class="cv-row-sorter-desc"><span class="glyphicon glyphicon-sm glyphicon-chevron-down"></span> </a>
+					</div>
+					{% end %}
+				</th>
+			{% end %}
+			<th class="cv-row-sorter" data-empty="none">
+				<span class="cv_last-update-title">Last Update</span>
+				{% if not isDraggable %}
+				<div class="cv-row-sort-controls">
+					<a href="#" class="cv-row-sorter-asc"><span class="glyphicon glyphicon-sm glyphicon-chevron-up"></span> </a>
+					<a href="#" class="cv-row-sorter-desc"><span class="glyphicon glyphicon-sm glyphicon-chevron-down"></span> </a>
+				</div>
+				{% end %}
+			</th>
+			{% set isEditor = context.get('isEditor', False) %}
+			{% if isEditor %}
+			<th class="sorter-false" width="1%">
+				&nbsp;
+			</th>
+			{% end %}
+		</tr>
+	</thead>
+	<tbody>
+		{% if len(rowList) < 1 %}
+			<tr>
+				<td colspan="42">
+					There are no items in this section. &nbsp;
+					{% if not context.get('disabled', True) %}
+					<a class="cvmodaleditdetaillink" href="#" id="0" data-toggle="modal" data-target="#editModal" data-rowid="0" data-cv-url="{{context.get('addURL','')}}" title="Add {{context.get('categoryDict',{}).get('category_descr','')}}">
+						<span class="glyphicon glyphicon-plus"></span> <span class="cvSingularize">Add {{context.get('categoryDict',{}).get('category_descr','')}}...</span>
+					</a>
+					{% end %}
+				</td>
+			</tr>
+		{% end %}
+		{% set numLinkColumns = 1 %}
+		{% for i in range(len(rowList)) %}
+			{% if len(rowList[i].get('fieldList',[])) > 0 %}
+				{% if len(rowList[i].get('fieldList',[])[0].get('formatted_value','').replace(' ','')) == 0 %}
+					{% set numLinkColumns = 2 %}
+				{% end %}
+			{% end %}
+		{% end %}
+		{% set numLinkColumns = 2 %} <!-- <- BUGBUG: Trying this on... -->
+		{% for rowDict in rowList %}
+			{% set editURL = rowDict.get('editURL','') %}
+			<tr class="{{ 'item ui-sortable-handle' if isDraggable else ''}}" data-item-id="{{rowDict.get('row_id','0')}}" data-cv-community="{{context.get('cvCommunity','')}}" data-cv-owner="{{context.get('cvOwner','')}}" data-origin-path="{{context.get('path','')}}" data-cv-url="{{editURL}}">
+				{% if isDraggable %}
+					<td class="cvReorderRow">
+						<a href="#" class="cvReorder cvReorderUp"><span class="glyphicon glyphicon-sm glyphicon-chevron-up"></span></a><br/>
+						<a href="#" class="cvDragHandle"><span class="glyphicon glyphicon-align-justify"></span></a><br/>
+						<a href="#" class="cvReorder cvReorderDown"><span class="glyphicon glyphicon-sm glyphicon-chevron-down"></span></a>
+					</td>
+				{% end %}
+				{% for i in range(len(rowDict.get('fieldList',[]))) %}
+					{% set fieldDict = rowDict.get('fieldList',[])[i] %}
+					{% set useLink = True if i < numLinkColumns else False %}
+					{% set displayOptions = fieldDict.get('field_list_display_options','') %}
+					{% set bold = '' %}
+					{% set italic = '' %}
+					{% set underline = '' %}
+					{% if 'bold' in displayOptions %} {% set bold = 'mpsbold' %} {% end %}
+					{% if 'italic' in displayOptions %} {% set italic = 'mpsitalic' %} {% end %}
+					{% if 'underline' in displayOptions %} {% set underline = 'mpsunderline' %} {% end %}
+					{% set isDate = True if fieldDict.get('affordance_code','') == 'Date' else False %}
+					{% if useLink %}
+						<td>
+							<a class="cvmodaleditdetaillink" href="#" id="{{ rowDict.get('row_id','0') }}" data-toggle="modal" data-target="#editModal" data-rowid="{{ rowDict.get('row_id','0') }}"{% if fieldDict.get('affordance_code','') == 'Date' %} data-cv-date="{{ fieldDict.get('attribute_value','')}}"{% end %} title="Edit this item"><span class="{{bold}} {{italic}} {{underline}}">{{ fieldDict.get('formatted_value','') }}</span></a>
+						</td>
+					{% else %}
+						<td class="cvField{{fieldDict.get('field_descr','')}}"><span class="{{bold}} {{italic}} {{underline}}"{% if fieldDict.get('affordance_code','') == 'Date' %} data-cv-date="{{ fieldDict.get('attribute_value','')}}"{% end %}>{{ fieldDict.get('formatted_value','') }}</span></td>
+					{% end %}
+				{% end %}
+				<td>
+				{% set rowUpdated = rowDict.get('row_updated','') %}
+				{% if rowUpdated %}
+					{% try %}
+						{% import json %}
+						{% set textList = json.loads(rowUpdated) %}
+						{% if len(textList) == 2 %}
+							<span class="cv-audit-note">{{textList[1]}}: {{textList[0]}}</span>
+						{% end %}
+					{% except %}
+					{% end %}
+				{% end %}
+				</td>
+				{% if isEditor %}
+				<td class="sorter-false cv-delete-cell">
+					<!-- <button class="btn btn-sm"><span class="glyphicon glyphicon-sm glyphicon-trash"></span> </button> -->
+					<a href="#" class="btn btn-sm cv-row-delete" title="Delete this item..."><span class="glyphicon glyphicon-sm glyphicon-remove"></span> </a>
+				</td>
+				{% end %}
+			</tr>
+		{% end %}
+
+	</tbody>
+</table>
+{% if len(rowList) >= 1 and not context.get('disabled', True) %}
+	<a class="cvmodaleditdetaillink cv-table-footer-add-link" href="#" id="0" data-toggle="modal" data-target="#editModal" data-rowid="0" data-cv-url="{{context.get('addURL','')}}" title="Add {{context.get('categoryDict',{}).get('category_descr','')}}">
+		<span class="glyphicon glyphicon-plus"></span> <span class="cvSingularize">Add Another {{context.get('categoryDict',{}).get('category_descr','')}}</span>
+	</a>
+{% end %}

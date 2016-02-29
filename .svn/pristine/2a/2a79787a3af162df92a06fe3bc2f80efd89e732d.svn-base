@@ -1,0 +1,25 @@
+/* Login Page */
+#logginform{margin-top:35px;}
+#logginform .panel{width:500px; margin-left:-250px; position:relative; left:50%; padding-left:0px; padding-right:0px;}
+#logginform .panel-danger .panel-heading{font-weight:bold; font-size:1.1em;}
+#logginform .panel-body{padding:40px 30px 20px 30px; }
+#logginform .panel .panel-heading{background-color:#093364 !important; font-weight:bold;}
+.login-forgot-password{font-size:.9em;padding-top:5px;text-align:right;}
+#logginform .errormessage{color: darkred !important;}
+.cvLoginPage .panel-body{position:relative;}
+.cvLoginPage .panel .panel-heading.cv-login-error{background-color:#ce4844 !important;}
+.cvLoginPage .cv-error-row{
+    position:relative;
+    top:-21px;
+    padding:0;
+}
+.cvLoginPage #errormessage{
+    background-color:#fff9d3;
+    padding:7px 7px 7px 20px;
+    border:2px solid #ce4844;
+    font-size:16px !important;
+    border-radius:5px;
+    border-color: #ce4844;
+    color: #1b809e;
+    display:block;
+}

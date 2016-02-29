@@ -1,0 +1,59 @@
+{% set rowList = currsubcategory.get('rows',[]) %}
+<center>
+<table border="1px" width="650px" cellpadding="5" style ="border-collapse: collapse;">
+    <tbody>
+    <tr>
+        <td class="tableitem" valign="center" style="cellspacing:20px;"><center><i>Term</i></center></td>
+        <td class="tableitem" valign="center" style="cellspacing:20px;"><center><i>Course #</i></center></td>
+        <td class="tableitem" valign="center" style="cellspacing:20px;"><center><i>Course Title</i></center></td>
+        <td class="tableitem" valign="center" style="cellspacing:20px;"><center><i>Course Type</i></center></td>
+        <td class="tableitem" valign="center" style="cellspacing:20px;"><center><i>Student Level</i></center></td>
+        <td class="tableitem" valign="center" style="cellspacing:20px;"><center><i>Course Role</i></center></td>
+        <td class="tableitem" valign="center" style="cellspacing:20px;"><center><i>Total Contact<br/>Teaching Hours</i></center></td>
+        <td class="tableitem" valign="center" style="cellspacing:20px;"><center><br>Estimate of Hours<br/>for Preparation</i></center></td>
+    </tr>
+    {% set i = 0 %}
+    {% for row in rowList %}
+        {% set i += 1 %}
+        {% set fieldList = row.get('fields',[]) %}
+        {% set term = '' %}
+        {% set courseNum = '' %}
+        {% set courseTitle = '' %}
+        {% set courseType = '' %}
+        {% set studentLevel = '' %}
+        {% set courseRole = '' %}
+        {% set totalContact = '' %}
+        {% set hoursEstimate = '' %}
+        {% for field in fieldList %}
+            {% if field.get('field_code','') == 'TeachCourseTerm'%}
+                {% set term = field.get('formatted_value','') %}
+            {% elif field.get('field_code','') == 'TeachCourseNumber'%}
+                {% set courseNum = field.get('formatted_value','') %}
+            {% elif field.get('field_code','') == 'TeachCourseTitle'%}
+                {% set courseTitle = field.get('formatted_value','') %}
+            {% elif field.get('field_code','') == 'TeachCourseType'%}
+                {% set courseType = field.get('formatted_value','') %}
+            {% elif field.get('field_code','') == 'TeachCourseStudentLevel'%}
+                {% set studentLevel = field.get('formatted_value','') %}
+            {% elif field.get('field_code','') == 'TeachRole'%}
+                {% set courseRole = field.get('formatted_value','') %}
+            {% elif field.get('field_code','') == 'TeachHours'%}
+                {% set totalContact = field.get('formatted_value','') %}
+            {% elif field.get('field_code','') == 'TeachHoursEstimate'%}
+                {% set hoursEstimate = field.get('formatted_value','') %}
+            {% end %}
+        {% end %}
+        <tr>
+            <td class="tableitem"> {% raw term %}</td>
+            <td class="tableitem">{% raw courseNum %}</td>
+            <td class="tableitem">{% raw courseTitle %}</td>
+            <td class="tableitem">{% raw courseType %}</td>
+            <td class="tableitem">{% raw studentLevel %}</td>
+            <td class="tableitem">{% raw courseRole %}</td>
+            <td class="tableitem">{% raw totalContact %}</td>
+            <td class="tableitem">{% raw hoursEstimate %}</td>
+        </tr>
+    {% end %}
+    </tbody>
+</table>
+</center>

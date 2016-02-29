@@ -1,0 +1,36 @@
+[Category]
+<h4>Certification & Licensure - Certification</h4>
+<p>This page displays your board certification and effective dates, if applicable.<p>
+<p>The content of this page can be sorted by clicking on any column title.</p>
+<hr>
+<p>To <strong>add</strong> an additional entry, click the “+ Add …” button in the upper right portion of the page.</p>
+<p>To <strong>edit</strong> an existing entry, click the blue text in the row you would like to edit.</p>
+<p>To <strong>delete</strong> an entry, click the X at the end of the row you would like to delete. Then confirm the deletion.</p>
+<p>To <strong>print</strong> this section of the CV, click the “Print this section” button in the upper right portion of the page or select “Print Section” from the Print menu found in the menu bar.</p>
+
+
+[CertBoard]
+<p>Please enter the board name.</p>
+<hr>
+<p>This item is required</p>
+
+[CertSpecialty]
+<p>Please enter the specialty if applicable.</p>
+
+[CertNumber]
+<p>Please enter the certification number if applicable.</p>
+
+[CertLifetime]
+<p>If this is a lifetime certification please click the checkbox.</p>
+
+[CertStart]
+<p>Please enter the start date for this entry.</p>
+<hr>
+<p>This item is required</p>
+<p>Hover over the field to see supported date formats</p>
+
+[CertEnd]
+<p>Please enter the end date for this entry.</p>
+<hr>
+<p>This item is required</p>
+<p>Hover over the field to see supported date formats</p>

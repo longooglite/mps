@@ -1,0 +1,26 @@
+{% set optional = '<span class="wf-qa-optional">Optional</span>' if not prmpts.get(prompt,{}).get('required',False) else '' %}
+{% set disabled = '' if not locals().get('disabled', False) else disabled %}
+<div class="form-row clearfix">
+    <label class="col-xs-2 text-right control-label">{{ prmpts.get(prompt,{}).get('label',promptUX) }}:</label>
+    <div class="col-xs-8 wf-form-right cvRowRepeating_Text clearfix" data-fieldname="{{prompt}}">
+        {% raw optional %}
+    {% if not isinstance(pi.get(prompt,''), list) %}
+        <div class="Repeating_Text">
+            <input class="form-control" type="text" placeholder="" maxlength="1000" value="{{ pi.get(prompt,'') }}" name="{{prompt}}">
+            <div class="cv-repeating-controls pull-right"> </div>
+        </div>
+    {% elif len(pi.get(prompt,[])) > 0 %}
+        {% for item in pi.get(prompt,[]) %}
+        <div class="Repeating_Text">
+            <input class="form-control" type="text" placeholder="" maxlength="1000" value="{{ item }}" name="{{prompt}}">
+            <div class="cv-repeating-controls pull-right"> </div>
+        </div>
+        {% end %}
+    {% else %}
+        <div class="Repeating_Text">
+            <input class="form-control" type="text" placeholder="" maxlength="1000" value="" name="{{prompt}}">
+            <div class="cv-repeating-controls pull-right"> </div>
+        </div>
+    {% end %}
+    </div>
+</div>

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>SmartPath&trade;</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/wf-main.css"/>
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/wf.knobs.css"/>
+</head>
+{% set isCandidateView = True if context.get('bodyClass','') == 'CandidateView' else False %}
+<body class="{{ 'wf-candidate-view' if isCandidateView else '' }}">
+	<div class="container-fluid mps-body">
+		{% set context['pageHeaderTitle'] = 'SmartPath Appointments' %}
+		<div id="wf-workflow-loading" class="wf-workflow-loading"><div class="cv-table-loading"><img src="/{{skin}}/images/ajax-loader.gif"/>Loading...</div></div>
+		{% include pageHeader.html %}
+
+		<div class="wf-workflow-content" id="workflow-content">
+			<div class="body-content starthidden">
+				<div class="">
+					<span id="errormessage" class="errormessage">{{context.get('errormessage','')}}</span>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+<div id="wf-global-msg-cache starthidden"></div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+
+<script type="text/html" id="wf-workflow-template-status">
+	<div id="wf-workflow-status" class="[[viewState]]">
+		<div class="starthidden" id="wf-wf-type">[[workflow.data.workflow.descr]]</div>
+		<h4>[[title.descr]], [[department.full_descr]] [[positionLink]] <a class="toggler" href="#"><span class="glyphicon glyphicon-chevron-[[viewStateIcon]]"></span></a></h4>
+		<h3>[[workflow.data.workflow.descr]][[nullablePersonLink]] [[uniqname]]</h3>
+		<div class="wf-status-global-links">
+			[[^hideProposedStartDate]]
+			<div class="wf-status-start-date">
+				<span class="wf-start-date-read">[[startDatePrefix]]<a href="#" class="wf-start-date-link">[[proposedStartDate]]</a>[[daysRemaining]]</span>
+				<div class="wf-start-date-enter starthidden">
+					<form action="/appt/jobaction/editstartdate/[[job_action.id]]" name="wf-start-date-form" class="mps-form-widgets wf-start-date-form" onSubmit="return false;">
+						<div class="wf-start-enter-controls">
+							<!-- <input class="wf-start-date-submit" type="submit" name="GoBtn" value="Go"/> -->
+							<a href="#" class="wf-start-date-link" alt="Cancel date change" title="Cancel date change"><span class="glyphicon glyphicon-remove"></span></a>
+						</div>
+						<input id="job_action_id" type="hidden" value="[[job_action.id]]" name="job_action_id"/>
+						<span>
+							<input id="start_date" class="form-control mps-date-picker" type="text" name="start_date" value="[[job_action.proposed_start_date]]"  placeholder="{{context.get('date_format','MM/DD/YYYY')}}"/>
+						</span>
+					</form>
+				</div>
+			</div>
+			[[/hideProposedStartDate]]
+			<a data-breadcrumb="Contact Information" data-section="WFContactInformation" href="#" class="wf-contact-info"><span class="glyphicon glyphicon-file"></span>Contact Information</a>
+			<a href="[[position.url]]" class="wf-overview-position-link"><span class="glyphicon glyphicon-file"></span>Position History</a>
+			[[^hideFacultyLink]]<a href="[[person.url]]" class="wf-overview-person-link"><span class="glyphicon glyphicon-file"></span>Faculty Detail</a>[[/hideFacultyLink]]
+			[[^hideCancelLink]]<a href="[[job_action.cancel_url]]" class="wf-overview-cancel-wf-link"><span class="glyphicon glyphicon-remove"></span>Cancel [[workflow.data.job_action_type.descr]]</a>[[/hideCancelLink]]
+			[[^hideResendLink]]<a href="[[job_action.resendemail_url]]" class="wf-overview-resend-link"><span class="glyphicon glyphicon-send"></span>Resend Email</a>[[/hideResendLink]]
+        </div>
+	</div>
+</script>
+
+<script type="text/html" id="wf-workflow-template-leftnav">
+	<div id="wf-details-toc" class="cv-menu [[viewState]]">
+		<div id="wf-details-toc-body">
+			<a href="#" id="wf-overview-link" class="wf-nav-highlight" data-section="wf-overview-item" data-breadcrumb="">
+				<span class="glyphicon glyphicon-home"></span>
+				[[workflow.data.job_action_type.descr]] Overview
+			</a>
+			<div class="wf-toc-header-statuses starthidden">
+				<div class="wf-toc-header-item">
+					<span class="lab">Status:</span><div class="val">[[status]]</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="wf-workflow-details">
+	<div id="wf-details-content" class="clearfix">
+		<div id="wf-details-titlebar" class="wf-details-titlebar">
+			<div id="wf-details-titlebar-help" class="wf-details-titlebar-help starthidden">Help (?)</div>
+			<div id="wf-details-titlebar-breadcrumbs" class="wf-details-titlebar-breadcrumbs">
+				<a href="#" class="overview-breadcrumb" data-section="wf-overview-item">[[workflow.data.job_action_type.descr]] Overview</a>
+				<span id="wf-breadcrumb-one" class="starthidden" data-code="">
+					<span class="bc-sep">&gt;</span>
+					<span class="stitle"></span>
+				</span>
+				<span id="wf-breadcrumb-two" class="starthidden">
+					<span class="bc-sep">&gt;</span>
+					<span class="stitle"></span>
+				</span>
+				<span id="wf-revisions-required-title" class="starthidden">
+					<span class="bc-sep">&gt;</span>
+					<span class="stitle">* Revisions are Required *</span>
+				</span>
+				<span id="wf-historical-appt-title" class="starthidden">
+					<span class="bc-sep">&gt;</span>
+					<span class="stitle">* Historical [[workflow.data.job_action_type.descr]] *</span>
+				</span>
+			</div>
+		</div>
+		<div id="wf-details-content-body" class="clearfix">
+			<div id="wf-workflow-loading-inner"><div class="cv-table-loading"><img src="/{{skin}}/images/ajax-loader.gif"/>Loading...</div></div>
+			<div id="wf-historical-action-note" class="alert alert-warning starthidden" role="alert">
+				<span class="glyphicon glyphicon-warning-sign wf-item-before"></span>
+				Historical [[workflow.data.job_action_type.descr]]: [[historicalIndicatorStatus]]
+			</div>
+			<div id="wf-revisions-required-note" class="alert alert-warning starthidden" role="alert">
+				<span class="glyphicon glyphicon-warning-sign wf-item-before"></span>
+				[[revReqdTxt]] <a href="#" class="wf-rr-toggle" data-toggle-text="Show Notes"><span class="wf-rr-text">Hide Notes</span><span class="glyphicon glyphicon-chevron-up" data-toggle-classes="glyphicon-chevron-up glyphicon-chevron-down"></span></a><pre class="wf-rr-target">[[revReqdNotes]]</pre>
+			</div>
+			<div id="wf-overview-item" class="wf-itemWidgetWrapper show">
+
+			</div>
+		</div>
+	</div>
+</script>
+<script type="text/html" id="wf-workflow-details-candidate">
+	<div id="wf-details-content" class="clearfix">
+		<div id="wf-details-titlebar" class="wf-details-titlebar">
+			<div id="wf-details-titlebar-help" class="wf-details-titlebar-help starthidden">Help (?)</div>
+			<div id="wf-details-titlebar-breadcrumbs" class="wf-details-titlebar-breadcrumbs">
+				<span onclick="return false;" class="overview-breadcrumb">Candidate [[workflow.data.job_action_type.descr]] Information</span>
+				<span id="wf-breadcrumb-one" class="starthidden" data-code="">
+					<span class="bc-sep">&gt;</span>
+					<span class="stitle"></span>
+				</span>
+				<span id="wf-breadcrumb-two" class="starthidden">
+					<span class="bc-sep">&gt;</span>
+					<span class="stitle"></span>
+				</span>
+				<span id="wf-revisions-required-title" class="starthidden">
+					<span class="bc-sep">&gt;</span>
+					<span class="stitle">* Revisions are Required *</span>
+				</span>
+			</div>
+		</div>
+		<div id="wf-details-content-body" class="clearfix">
+			<div id="wf-workflow-loading-inner"><div class="cv-table-loading"><img src="/{{skin}}/images/ajax-loader.gif"/>Loading...</div></div>
+			<div id="wf-revisions-required-note" class="alert alert-warning starthidden" role="alert">
+				<span class="glyphicon glyphicon-warning-sign wf-item-before"></span>
+				[[revReqdTxt]]: <pre class="zwf-rr-target">[[revReqdNotes]]</pre>
+			</div>
+
+			<div id="wf-overview-item" class="wf-itemWidgetWrapper show">
+				<div class="wf-overview-candidate-message starthidden">In order to complete your [[workflow.data.job_action_type.descr]], you must verify and complete the following items:</div>
+			</div>
+
+			<div id="wf-thankyou-item" class="wf-itemWidgetWrapper starthidden">
+				<p style="margin-top:20px; font-weight:bold;"><span class="glyphicon glyphicon-ok" style="color:darkgreen;"></span> Thank You!  You have completed the required candidate appointment information.</p>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="wf-workflow-overview-col">
+	<div class="wf-overview-col clearfix [[bordered]]">
+		<h4>[[title]]:</h4>
+		[[sections]]
+	</div>
+</script>
+
+<script type="text/html" id="wf-workflow-overview-col-section">
+	<div class="wf-overview-section">
+		<h5>[[title]]:</h5>
+		[[items]]
+	</div>
+</script>
+
+<script type="text/html" id="wf-workflow-overview-col-section-item-link">
+	<div class="wf-overview-item-wrap wf-overview-item-status-[[status]] [[wrapperExtraClasses]]" [[childDisclosure]]><a href="#" data-section="[[guid]]" data-highlight="[[daSectionParent]]" [[tooltip]]>[[pre_icon]]<span class="wf-overview-link-title">[[title]]</span></a>[[post_icon]]</div>
+</script>
+<script type="text/html" id="wf-workflow-overview-col-section-item-span">
+	<div class="wf-overview-item-wrap wf-overview-item-status-[[status]] [[wrapperExtraClasses]]" [[childDisclosure]]><span class="wf-item-disabled" href="#" data-section="[[guid]]" data-highlight="[[daSectionParent]]">[[pre_icon]]<span class="wf-overview-link-title">[[title]][[post_icon]]</span></span></div>
+</script>
+<script type="text/html" id="wf-workflow-overview-col-section-item-button" [[childDisclosure]]>
+	<div class="wf-overview-item-wrap wf-overview-item-button wf-overview-item-status-[[status]] [[wrapperExtraClasses]]"><a class="btn btn-primary wf-item-disabled" href="#" data-section="[[guid]]" data-highlight="[[daSectionParent]]">[[pre_icon]]<span class="wf-overview-link-title">[[title]]</span></a></div>
+</script>
+<script type="text/html" id="wf-workflow-overview-col-section-singlefile-upload">
+	<div class="wf-overview-item-wrap wf-overview-item-status-[[status]] [[wrapperExtraClasses]]" [[childDisclosure]] data-cv-upload="[[daGuid]]">
+		<form class="wf-single-file-upload-overview-form" action="[[uploadURL]]" method="POST" enctype="multipart/form-data" onSubmit="" target="wf_upload_target">
+			<input type="hidden" value="[[site]]" name="site">
+			<input type="hidden" value="[[mpsid]]" name="mpsid">
+			<input type="hidden" value="[[appCode]]" name="appCode">
+			<input type="hidden" value="[[xsrf]]" name="_xsrf">
+			<label for="[[daGuid]]_sum">[[pre_icon]]<span class="wf-overview-link-title">[[title]]</span></label>[[post_icon]]
+			<div class="wf-hidden-file">
+				<input id="[[daGuid]]_sum" type="file" name="file_data"/>
+			</div>
+		</form>
+	</div>
+</script>
+<script type="text/html" id="wf-workflow-overview-col-section-singlefile-download">
+	<div class="wf-overview-item-wrap wf-overview-item-status-[[status]] [[wrapperExtraClasses]]" [[childDisclosure]]><a href="[[daDlLink]]" target="_blank" title="View / Download [[title]] document..." class="[[extraClasses]]">[[pre_icon]][[title]]</a>[[post_icon]]</div>
+</script>
+
+<script type="text/html" id="wf-workflow-leftnav-container">
+	<div class="wf-leftnav-container clearfix" id="[[common.code]]">
+		<span class="status [[daStatus]]">[[daSummary]]</span>
+		<a href="#" class="section-title">
+			[[common.descr]]<span class="glyphicon glyphicon-chevron-[[daChevron]]"></span>
+		</a>
+		[[daSections]]
+	</div>
+</script>
+<script type="text/html" id="wf-workflow-leftnav-section">
+	<div class="sections indicator-wrapper [[daStatus]] [[daHide]]">
+		<div class="section">
+			<div class="indicator [[daStatus]]">[[daIndicator]]</div>
+			<div class="title" data-highlight="[[common.code]]">[[common.descr]]</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="wf-workflow-contact-information">
+	<div id="WFContactInformation" class="wf-contact-wrap wf-itemWidgetWrapper" data-breadcrumbone="Contact Information">
+		<div class="wf-contact-values">
+			<div class="item"><div class="lab">{{context.get('departmentText','Department')}}:</div><div class="val">[[department.descr]]</div></div>
+			<div class="item"><div class="lab">Status:</div><div class="val">[[status]]</div></div>
+			<div class="item"><div class="lab">Created:</div><div class="val">[[job_action.created]]</div></div>
+			<div class="item"><div class="lab">Date of Hire:</div><div class="val">[[appointment.start_date]]</div></div>
+			<div class="item"><div class="lab">Last Updated:</div><div class="val">[[job_action.updated]] by [[job_action.lastuser]]</div></div>
+			<br/>
+			<div class="item"><div class="lab">Dept Contact:</div><div class="val">[[department.email_address]]</div></div>
+			<br/>
+			<div class="item"><div class="lab">Candidate:</div><div class="val">[[person.full_name]]</div></div>
+			<div class="item"><div class="lab">Contact Info:</div><div class="val">[[person.email]]</div></div>
+		</div>
+	</div>
+</script>
+
+
+<script type="text/html" id="wf-workflow-template-accordion-header">
+	<h3 class="wf-accordion-title" data-section="[[sectionname]]">
+		<span class="tab-toggler glyphicon glyphicon-chevron-[[updown]]"></span>
+		<a id="[[sectionname]]" class="bookmark"></a>
+		<span class="">[[sectiontitle]]</span>
+		<span class="item-status glyphicon [[iconname]]" style="color:[[iconcolor]]"></span>
+	</h3>
+</script>
+
+<script type="text/html" id="wf-workflow-template-activities">
+	<div id="ActivityLog" class="wf-itemWidgetWrapper wf-contact-wrap starthidden" data-breadcrumbone="Activity Log">
+		<div class="wf-contact-values">
+		[[logs]]
+		</div>
+	</div>
+</script>
+<script type="text/html" id="wf-workflow-template-activity-logs">
+	<div class="item">
+		<div class="lab">[[datestamp]]:</div>
+		<div class="val">[[user]]: [[action]] [[comments]]</div>
+	</div>
+</script>
+<script type="text/html" id="wf-workflow-template-activity-comments">
+	<div class="wf-comment-content [[daHide]]">[[comment]]</div>
+</script>
+<script type="text/html" id="wf-workflow-common-header">
+	<a id="[[bookmark]]"></a>
+	<h4 class="wf-common-header">
+		<a href="#" class="headerLink">[[glyphIcon]][[linkTitle]]</a>
+		[[statusImg]]
+		<span class="wf-header-title">[[taskTitle]]</span>
+		<span class="wf-header-note">[[extraTitle]]</span>
+	</h4>
+</script>
+<script type="text/html" id="wf-workflow-upload-wrapper">
+	[[header]]
+	[[widget]]
+	[[backLink]]
+</script>
+<script type="text/html" id="wf-workflow-widget-upload-file">
+	<form class="form-horizontal clearfix wf-upload-form [[singleMultipleClass]] clearfix" action="[[uploadURL]]" method="POST" enctype="multipart/form-data" onSubmit="" target="wf_upload_target">
+		<input type="hidden" value="[[site]]" name="site">
+		<input type="hidden" value="[[mpsid]]" name="mpsid">
+		<input type="hidden" value="[[appCode]]" name="appCode">
+		<input type="hidden" value="[[xsrf]]" name="_xsrf">
+		[[existingSummary]]
+		<span class="wf-uploaded-history">
+			<a class="wf-item-history-toggle [[historyHide]]"><span class="glyphicon glyphicon-chevron-down"></span> History ([[historyCount]])</a>
+		</span>
+		<div class="form-row wf-upload-inputs [[starthidden]]">
+			<div class="input-group col-xs-5 pull-right wf-upload-buttons">
+				<input class="btn btn-default starthidden" type="submit" disabled="disabled" value="Uploading..." name="importFilepath">
+				<a class="wf-upload-cancel [[notstarthidden]]" href="#">Cancel</a>
+			</div>
+			<div class="input-group col-xs-7">
+				<span class="input-group-btn">
+					<span class="btn btn-primary btn-file">
+						Browse...
+						<input id="[[domGuid]]" type="file" name="file_data"/>
+					</span>
+				</span>
+				<input class="form-control cv-import-label" type="text" readonly="" data-for="[[domGuid]]">
+			</div>
+		</div>
+
+		<div class="wf-item-history item-history-closed">
+			<div class="wf-file-history-title">File History:</div>
+			[[current]]
+			[[history]]
+		</div>
+	</form>
+</script>
+<script type="text/html" id="wf-workflow-upload-file-summary">
+	<div class="wf-uploaded-summary">
+		File: <a class="wf-uploaded-file-title" target="_blank" href="[[currentFileUrl]]">[[currentFileName]]</a>
+		<span class="wf-uploaded-controls">
+			<button class="btn btn-sm btn-default wf-replace-file" type="button">Replace</button>
+			<button class="btn btn-sm btn-default deleteMarinaBtn" data-wf-url="[[currentFileDeleteUrl]]" type="button">Delete</button>
+			<a class="wf-item-history-toggle [[historyHide]]"><span class="glyphicon glyphicon-chevron-down"></span> History ([[historyCount]])</a>
+		</span>
+	</div>
+</script>
+<script type="text/html" id="wf-workflow-upload-file-history">
+	<div>[[lastuser]] updated <a class="wf-item-history-link" target="_blank" href="[[download_url]]">[[file_name]]</a> at [[created_display]]<br/></div>
+</script>
+
+<script type="text/html" id="wf-workflow-packetdownload">
+	<a href="[[url]]" target="_blank">Download [[name]]</a>
+</script>
+
+<script type="text/html" id="wf-workflow-submit-comments">
+	<span class="wf-submitWidget-label">[[comment_label]]</span>
+	<textarea class="form-control" [[disabled]] rows="5" name="[[comment_code]]"></textarea>
+</script>
+
+<script type="text/html" id="wf-workflow-serverside-ajax-form">
+	<h4 class="wf-header-title">[[descr]]</h4>
+	<div id="[[domGuid]]" class="wf-widget-serverside-form"></div>
+</script>
+
+<script type="text/html" id="wf-workflow-knob-template-enabled">
+	<div class="wf-dial clearfix [[dialHighlight]]">
+		<a href="[[dialUrl]]" class="wf-left-title">
+			<h4>[[dialTitle]]</h4>
+			<span class="sub">Status: <strong>[[dialStatus]]</strong></span>
+			<div class="wf-dial-btn btn btn-default"><span class="glyphicon glyphicon-chevron-right"></span></div>
+		</a>
+		<div class="circular-bar">
+			<input type="text" class="dial" data-fgColor="[[dialColor]]" data-width="85" data-height="85" data-linecap="round" value="[[dialPercent]]"/>
+			<div class="circular-bar-content">
+				<strong>[[dialPercent]]</strong>
+				<label>[[dialSubtitle]]</label>
+			</div>
+		</div>
+	</div>
+</script>
+<script type="text/html" id="wf-workflow-knob-template-readonly">
+	<div class="wf-dial clearfix [[dialHighlight]]">
+		<div class="wf-left-title">
+			<h4>[[dialTitle]]</h4>
+			<span class="sub">Status: <strong>[[dialStatus]]</strong></span>
+			<div class="wf-dial-btn btn btn-default"><span class="glyphicon glyphicon-chevron-right"></span></div>
+		</div>
+		<div class="circular-bar">
+			<input type="text" class="dial" data-fgColor="[[dialColor]]" data-width="85" data-height="85" data-linecap="round" value="[[dialPercent]]"/>
+			<div class="circular-bar-content">
+				<strong>[[dialPercent]]</strong>
+				<label>[[dialSubtitle]]</label>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/javascript" src="/{{skin}}/js/wf.core.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/wf.widget.superItem.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/wf.workFlowPage.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/wf.widget.fileupload.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/wf.widget.packetdownload.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/wf.widget.placeholder.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/wf.widget.serverSideAjaxForm.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/3rdParty/jquery.knob.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/wf.page.jobaction.js"></script>
+
+<div id="wf-modal-backdrop" class="modal-backdrop fade in starthidden"></div>
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	var mpsApp = mpsApp || {};
+	mpsApp._isCandidateView = {{'true' if isCandidateView else 'false' }};
+	var imgPath = '/{{skin}}/images/';
+	var _uploadWidget = false;
+	var _workflowWidget = false;
+
+	var uploadCallback = function(data){
+		if(typeof _uploadWidget._globalResponseHandler !== 'undefined'){
+			_uploadWidget._globalResponseHandler(data, false, false, _uploadWidget);
+		}
+		else{
+			_workflowWidget.refreshWorkflowPage(data);
+		}
+	}
+
+	var uploadLoad = function(el){
+		var $unexpectedContentError = $(el).contents().find('body').text();
+		if($unexpectedContentError.trim().length > 3){
+			if($unexpectedContentError.indexOf('413') > -1){
+				$unexpectedContentError = 'Your PDF is larger than the maximum size allowed.  Please reduce the size of the PDF and try again.';
+			}
+			else if($unexpectedContentError.indexOf('Please Login:') > -1){
+				$unexpectedContentError = 'As a security measure, your session has timed out from disuse. Your last action was not completed.<br/><br/><a href="/mps/login">Please re-login to continue...</a>';
+			}
+			else{
+				$unexpectedContentError = 'Our apologies, but something has gone wrong.  Please refresh the page and try again.  If you see this error a second time, please forward a brief description of what you were doing when this error occurred, plus the following information, to your system administrator:<br/><br/>' + $unexpectedContentError;
+			}
+			cvApp.showHeaderMessage($unexpectedContentError, 'danger', false, true);
+		}
+	}
+
+	/*]]>*/
+</script>
+<iframe id="wf_upload_target" name="wf_upload_target" method="post" src="" style="width:0px;height:0px;border:solid 0px blue;" onLoad="uploadLoad(this);"></iframe>
+
+</body>
+</html>

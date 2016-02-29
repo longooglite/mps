@@ -1,0 +1,24 @@
+<div class="form-row">
+	{% set sFB = prmpts.get(prompt,{}).get('label', '') %}
+	{% set optional = '<span class="wf-qa-optional">Optional</span>' if not prmpts.get(prompt,{}).get('required',False) else '' %}
+	{% set shint = prmpts.get(prompt,{}).get('date_format','') %}
+	{% set isDate = True if len(shint) > 0 else False %}
+	{% set clsLeft = 2 if not locals().get('colsLeft', False) else colsLeft %}
+	{% set clsRight = 8 if not locals().get('colsRight', False) else colsRight %}
+	{% set disabled = '' if not locals().get('disabled', False) else disabled %}
+	<label class="col-xs-{{clsLeft}} text-right" for="{{prompt}}">{{ sFB }}:</label>
+	{% if isDate %}
+	<div class="col-xs-{{clsRight}} wf-form-right clearfix form-group">
+		{% raw optional %}
+		<input type="text" class="form-control mps-date-picker" id="{{prompt}}" name="{{prompt}}"
+			size="50" value="{{ pi.get(prompt,'') }}" placeholder="{{ shint }}" {% raw disabled %} />
+	</div>
+	{% else %}
+	<div class="col-xs-{{clsRight}} wf-form-right clearfix">
+		{% raw optional %}
+		{% set emailClass = 'mps-validate-email' if locals().get('doClientValidateEmail', False) else '' %}
+		{% set doClientValidateEmail = False %}
+		<input class="form-control {{emailClass}}" type="text" id="{{prompt}}" name="{{prompt}}" size="50" value="{{ pi.get(prompt,'') }}" {% raw disabled %}/>
+	</div>
+	{% end %}
+</div>

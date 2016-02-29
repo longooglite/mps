@@ -1,0 +1,48 @@
+{% set taskCode = context.get('taskcode','') %}
+
+{% set disabled = '' %}
+{% if context.get('disabled', True) %}
+	{% set disabled = 'disabled="disabled"' %}
+{% end %}
+
+<form class="wf-ajax-form wf-pi-form" id="{{ taskCode }}_import_form" action="{{ context.get('url','') }}" onSubmit="return false;">
+
+	{% for summaryDict in context.get('summaryData', []) %}
+		<div class="wemightneedsomethinghere">
+			<h4>{% raw summaryDict.get('header', '') %}</h4>
+			<div class="row">
+				<div class="col-xs-offset-1 col-xs-10">
+					<table class="wf-evaluators-table table" style="clear:both;">
+						<thead>
+							<tr>
+								<th style="text-align:center">Select</th>
+								{% for summaryColumnDict in summaryDict.get('summaryColumns', []) %}
+									<th>{{ summaryColumnDict.get('descr', '') }}</th>
+								{% end %}
+							</tr>
+						</thead>
+						<tbody>
+							{% for dataRowDict in summaryDict.get('data', []) %}
+								<tr>
+									<td style="text-align:center">
+										<input type="checkbox" name="{{ dataRowDict.get('id','') }}" value="true">
+									</td>
+									{% for summaryColumnDict in summaryDict.get('summaryColumns', []) %}
+										<td>{{ dataRowDict.get(summaryColumnDict.get('code', '')) }}</td>
+									{% end %}
+								</tr>
+							{% end %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	{% end %}
+
+	<div class="form-row">
+		<div class="wf-details-form-btn-bar col-xs-12">
+			<button class="btn btn-primary" type="submit" data-wf-formname="#{{taskCode}}_input_form" type="button" {% raw disabled %}>Import</button>
+			{% include 'formChunk_cancelLink.html' %}
+		</div>
+	</div>
+</form>

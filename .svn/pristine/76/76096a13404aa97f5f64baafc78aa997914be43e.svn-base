@@ -1,0 +1,3 @@
+[
+  {"descr":"Oracle Table Report","permission":["dept_task","ofa_task"],"reportConfig":"oracleTableConfig"}
+]

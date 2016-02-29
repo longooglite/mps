@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>MPS Admin</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+</head>
+
+<body class="mps-admin-page">
+	<div class="container-fluid mps-body">
+		{% include pageHeader.html %}
+
+		<div class="body-content">
+			<div>
+				<span id="adminerrormessage" class="adminerrormessage">{{context.get('errormessage','')}}</span>
+			</div>
+			<h1>Welcome to MPS Admin</h1>
+			<div style="padding-left: 25px;">
+				<h4>Version: {{context.get('releaseVersion','')}}</h4>
+				<h4>Code Name: {{context.get('releaseCodeName','')}}</h4>
+				<h4>Status: {{context.get('releaseStatus','')}}</h4>
+				<h4>Build Date: {{context.get('releaseBuildDate','')}}</h4>
+			</div>
+		</div>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+{% include cache-js.html %}
+
+<script type="text/javascript">
+    /*<![CDATA[*/
+
+    /*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

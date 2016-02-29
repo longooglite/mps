@@ -1,0 +1,32 @@
+<span class="title category-title">{{ categorydescr }}</span>
+        {% set rowList = currsubcategory.get('rows',[]) %}
+        {% set isNumbered = currcategory.get('isNumberedList', False)%}
+        {% if not isNumbered %}
+        <ul class="subcategory">
+            <span class="title subcategory-title">{{ subcategorydescr }}</span>
+                {% for row in rowList %}
+                    <li class="row">
+                        {% set i = 0 %}
+                        {% set fieldList = row.get('fields',[]) %}
+                        {% for field in fieldList %}
+                            {% set output = field.get('formatted_value','') %}
+                            {% set i = i + 1 %}
+                            <span class="cell">{% raw output %}</span>
+                        {% end %}
+                    </li>
+                {% end %}
+        </ul>
+        {% else %}
+        <ol class="numberedlist subcategory">
+            <span class="title subcategory-title">{{ subcategorydescr }}</span>
+            {% for row in rowList %}
+                {% set i = 0 %}
+                {% set fieldList = row.get('fields',[]) %}
+                {% for field in fieldList %}
+                    {% set output = field.get('formatted_value','') %}
+                    <li>{% raw output %}</li>
+                {% end %}
+            {% end %}
+        </ol>
+    {% end %}
+

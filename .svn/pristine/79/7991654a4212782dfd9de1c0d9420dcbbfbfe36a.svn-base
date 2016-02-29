@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>{{context.get('windowTitle', 'Appointment')}}</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/wf-main.css"/>
+</head>
+{% set isMsg = True if len(context.get('errormessage','')) > 0 else False %}
+<body class="{{ 'wf-show-global-message' if isMsg else '' }} wf-page">
+<div class="container-fluid mps-body">
+{% include pageHeader.html %}
+<div class="body-content cv-body cv-body-no-menu">
+
+	<div class="page-header clearfix">
+		<h1>
+			<span class="pg-title">Dashboard</span>
+			<small>
+				<div id="wf-rosterdash-count">&nbsp;</div>
+			</small>
+		</h1>
+	</div>
+
+	<div id="wf-left-content" class="">
+		<div id="wf-filter-summary" class="clearfix wf-filter-summary">
+			<a class="wf-roster-filter-toggle" href="#">
+				<span class="glyphicon glyphicon-chevron-down"></span>
+			</a>
+			<a class="wf-filters-select-all">Select All</a>
+			<span class="wf-filter-title">
+				<select id="wf-metatrack" autocomplete="off">
+					<option value="All" selected="selected">All Workflow Types</option>
+					<option value="Appointments">Appointments</option>
+					<option value="Promotions">Promotions</option>
+					<option value="Credentialing">Credentialing</option>
+					<option value="Enrollment">Enrollment</option>
+				</select>
+			</span>
+			<span class="wf-filter-blurb" id="wf-summary-events" data-search-prop="events"><a href="#">All Events</a>|</span>
+			<span class="wf-filter-blurb" id="wf-summary-departments" data-search-prop="departments"><a href="#">All {{context.get('departmentText','Department')}}s</a>|</span>
+			<span class="wf-filter-blurb" id="wf-summary-tracks" data-search-prop="tracks"><a href="#">All Tracks</a>|</span>
+			<span class="wf-filter-blurb" id="wf-summary-titles" data-search-prop="titles"><a href="#">All Titles</a>|</span>
+
+			<!-- <span class="wf-filter-blurb" id="wf-summary-positions" data-search-prop="positions"><a href="#">All Positions</a>|</span> -->
+			<span class="wf-filter-blurb" id="wf-summary-actions" data-search-prop="actions"><a href="#">All Actions</a></span>
+
+		</div>
+
+		<div id="wf-rooster-filters" class="wf-grid-filters clearfix starthidden" data-summary-bar="#wf-filter-summary">
+			<div class="wf-filter-wrapper clearfix" data-search-prop="events" ></div>
+			<div class="wf-filter-wrapper clearfix" data-search-prop="actions" ></div>
+			<div class="wf-filter-wrapper clearfix" data-search-prop="tracks"></div>
+
+			<!--
+			<div style="float:left;">
+				<div class="wf-filter-wrapper wf-filter-wrapper-short clearfix" data-search-prop="positions"></div>
+				<div class="wf-filter-wrapper wf-filter-wrapper-short clearfix" data-search-prop="primality"></div>
+			</div>
+			-->
+
+			<div class="wf-filter-wrapper clearfix" data-search-prop="titles" ></div>
+			<div class="wf-filter-wrapper clearfix" data-search-prop="departments" ></div>
+
+			<div id="wf-filter-controls">
+				<a id="wf-filter-cancel" href="#">Cancel</a>
+				<button id="wf-filter" class="btn btn-primary">Filter...</button>
+			</div>
+		</div>
+
+		<div class="wf-actions-btn-wrapper pull-right starthidden">
+			<div class="btn-group wf-actions-button dropright">
+			  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+				Actions <span class="caret"></span>
+			  </button>
+			  <ul class="dropdown-menu pull-right" role="menu">
+				<li><a href="#">(TBD) Print...</a></li>
+				<li><a href="#">(TBD) Export to CSV...</a></li>
+			  </ul>
+			</div>
+		</div>
+
+		<div id="wf-rooster" class="wf-gridWidget wf-gridWidget-highlights wf-dashboard-pg" data-url="/appt/page/dashboard" data-filter-bar="#wf-rooster-filters">
+			<div class="cv-table-loading"><img src="/{{skin}}/images/ajax-loader.gif"/>Loading...</div>
+		</div>
+
+	</div>
+</div>
+</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+<script type="text/javascript" src="/{{skin}}/js/3rdParty/jq.dataTables.fixedHeader.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/wf.core.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/wf.dashboardWidget.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/wf.dashboardFilters.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/wf.page.dashboard.js"></script>
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

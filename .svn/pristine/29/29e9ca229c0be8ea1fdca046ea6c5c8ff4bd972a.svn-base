@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Appointments</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/wf-main.css"/>
+</head>
+<body class="cv-proxy-page wf-details-page">
+<div class="container-fluid mps-body">
+	{% set context['pageHeaderTitle'] = 'Appointments' %}
+	{% include pageHeader.html %}
+	<div class="body-content cv-body cv-body-no-menu">
+        <div class="page-header clearfix">
+			<h1>
+				<!-- <div style="float:left; height:60px; margin-right:5px;">Position History:</div>-->
+				PCN {{context.get('pcn','')}}
+				{% set sTitle = context.get('title_descr', '') %}
+				{% set sDept = context.get('department_descr', '') %}
+				{% if sTitle != '' or sDept != '' %}
+				<br/><small>
+					{% if sTitle != '' %}<span>{{sTitle}}</span><br/>{% end %}
+					{% if sDept != '' %}<span>{{sDept}}</span>{% end %}
+				</small>
+				{% end %}
+			</h1>
+		</div>
+		<form id="mainform" class="form-horizontal mps-form-widgets" onsubmit="return false;">
+            <input type=hidden name="pcn" id="pcn_id" value="{{context.get('position_id','')}}">
+            <div class="row">
+                <h3 class="section-header starthidden">
+                    <span class="glyphicon glyphicon-edit"></span>
+                    {{context.get('departmentText','Department')}} &amp; Title:
+                </h3>
+                <div class="cv-callout cv-callout-info cv-callout-bordered clearfix row">
+                    {% set isOpenAction = False %}
+                    <div class="col-md-12">
+                        {% if context.get('appointments',[])%}
+                            <table class="table table-condensed">
+                                <tr>
+                                    <th>Person</th>
+                                    <th>{{context.get('departmentText','Department')}}</th>
+                                    <th>Track</th>
+                                    <th>Title</th>
+                                    <th>Action</th>
+                                    <th>Status</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+									<th>Last Update</th>
+                                </tr>
+								{% for appt in context.get('appointments',[]) %}
+									{% set isOpenAction = True if appt.get('appointment').get('apptstatus_code','') == 'INPROGRESS' else isOpenAction %}
+                                    <tr>
+                                        {% set fullname = appt.get('person').get('full_name','') %}
+                                        <td>
+                                            {% if appt.get('appointment').get('person_url','') %}
+                                                <a href="{{ appt.get('appointment').get('person_url','') }}">{{ fullname }}</a>
+                                            {% else %}
+                                                <i>Vacant</i>
+                                            {% end %}
+                                        </td>
+
+                                        <td>{{ appt.get('department').get('full_descr','') }}</td>
+                                        <td>{{ appt.get('track').get('descr','') }}</td>
+                                        <td>{{ appt.get('title').get('descr','') }}</td>
+                                        <td>
+											{%if appt.get('jobAction') %}
+												{% if appt.get('appointment').get('url','') %}
+													<a href="{{ appt.get('appointment').get('url','') }}">{{ appt.get('jobAction').get('jobActionType',{}).get('descr','') }}</a>
+												{% else %}
+													{{ appt.get('jobAction').get('jobActionType',{}).get('descr','') }}
+												{% end %}
+											{%end%}
+                                        </td>
+										<td>
+										{% if appt.get('appointment').get('apptstatus_code','') == 'INPROGRESS' and appt.get('appointment').get('url','') %}
+											<a href="{{ appt.get('appointment').get('url','') }}">{{ appt.get('appointment').get('apptstatus_descr','') }}...</a>
+										{% else %}
+											{{ appt.get('appointment').get('apptstatus_descr','') }}
+										{% end %}
+										</td>
+                                        <td>{{ appt.get('appointment').get('start_date','') }}</td>
+                                        <td>{{ appt.get('appointment').get('end_date','') }}</td>
+										<td>{{ appt.get('appointment').get('updated','') }}</td>
+                                    </tr>
+                                {% end %}
+                            </table>
+						</div>
+                        {% end %}
+                        {% if context.get('canCreateAppointment', False) %}
+                            <a href="#" data-target="wf-new-appt" class="wf-data-toggler{% if not len(context.get('appointments',[])) > 0 %} starthidden{% end %}" style="margin-left:20px;">Start New Appointment...</a>
+							<div id="wf-new-appt" class="wf-details-form{% if len(context.get('appointments',[])) > 0 %} starthidden{% end %}">
+								<h5 style="margin-left:20px;">
+									{% if isOpenAction %} Use links in the above table to work on appointments already In Progress.<br/><br/>{% end %}
+									Use the form below to start a new appointment for this PCN:<br/><br/>
+								</h5>
+								<div class="row">
+									<label class="col-xs-2 control-label" for="track_title_list">Select Title:</label>
+									<div class="col-xs-5">
+										<select id="track_title_list" name="track_title_list" class="form-control">
+											{% for track in context.get('track_title_selection',{})['track'] %}
+												{% set trackdescr = track.keys()[0] %}
+												<optgroup label="{{ trackdescr }}">
+													{% for title in track[trackdescr] %}
+														{% set titledescr = title['title_descr'] %}
+														{% set titleId = title['title_id'] %}
+														{% set selected = '' %}
+														{% if titleId == context.get('title_id',0) %}
+															{% set selected = 'selected' %}
+														{% end %}
+														<option value="{{ titleId }}" {{ selected }}>{{ titledescr }}</option>
+													{% end %}
+												</optgroup>
+											{% end %}
+										</select>
+									</div>
+								</div>
+								<div class="row">
+									<label class="col-xs-2 control-label" for="workflow_list">Select Action:</label>
+									<div class="col-xs-5">
+										<select id="workflow_list" name="workflow_list" class="form-control">
+											{% for workflow in context.get('workflowlist',[]) %}
+												{% set workflowdescr = workflow.get('descr','') %}
+												{% set workflowid = workflow.get('id','') %}
+												<option value="{{ workflowid }}">{{ workflowdescr }}</option>
+											{% end %}
+										</select>
+									</div>
+                                </div>
+                                <div class="row">
+									<label class="col-xs-2 control-label" for="start_date">Proposed Start Date:</label>
+									<div class="col-xs-5">
+			                            <input class="form-control mps-date-picker" type="text" placeholder="{{ context.get('date_format','MM/DD/YYYY') }}"  value="" name="start_date" id="start_date"/>
+									</div>
+                                </div>
+
+				                <div class="wf-details-form-btn-bar col-xs-7">
+                                    <button class="startappointment btn btn-primary">Start Action</button>
+                                    {% if not context.get('appointments',[])%}
+                                        <button class="deletePosition btn">Delete Position</button>
+                                    {% end %}
+								</div>
+							</div>
+                        {% end %}
+                    </div>
+                </div>
+				<div class="wf-details-form-btn-bar col-xs-12">
+					<a data-section="wf-overview-item" class="overview-breadcrumb wf-details-footer-cancel wf-details-footer-back" href="#">
+						<span class="glyphicon glyphicon-circle-arrow-left"></span><span>Back</span>
+					</a>
+				</div>
+            </div>
+        </form>
+	</div>
+</div>
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	(function ($) {
+
+		$('body').on('click', '.startappointment', function(event){
+			var $this = $(this);
+			var $pcn = $('#pcn_id').val();
+			var $title = $('#track_title_list').val();
+			var $workflow = $('#workflow_list').val();
+			var sURL = '/appt/jobaction/create/' + $pcn + '/' + $workflow + '/' + $title
+			cvApp.ubiquitousPageRequest({
+				url: sURL,
+				data: JSON.stringify($('#mainform').serializeObject()),
+				errorMessage: '#modalerrormessage'
+			});
+		});
+
+		$('.wf-data-toggler').click(function(){
+			var $this = $(this),
+				$target = $('#'+$this.data('target'));
+			$this.toggle();
+			$target.toggle();
+		});
+
+	})(jQuery);
+
+		(function ($) {
+
+		$('body').on('click', '.deletePosition', function(event){
+			var $this = $(this);
+			var $pcn = $('#pcn_id').val();
+			var sURL = '/appt/pcndelete/' + $pcn
+			cvApp.ubiquitousPageRequest({
+				url: sURL,
+				data: JSON.stringify($('#mainform').serializeObject()),
+				errorMessage: '#modalerrormessage'
+			});
+		});
+
+	})(jQuery);
+
+
+	/*]]>*/
+</script>
+</div>
+</body>
+</html>

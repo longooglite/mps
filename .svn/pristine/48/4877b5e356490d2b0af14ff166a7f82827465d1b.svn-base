@@ -1,0 +1,26 @@
+[
+  {"descr":"Recruitment Tab","source_jaId":1,"taskcodes":["rfp","submitrfp","approverfp","jobposting","identifycandidate","confirmtitle","initialofferletter","signed_offer","aar","mou","provojustification","submitoffer","approveoffer","extendoffer","acceptoffer","startappointment","personalinfo","ari","npi","cbcGeneral","cbcConsent","cbcDisclosure","cbcConditional","cbcRights","cbcPersonalInfoRedux","candidatesubmit","cbc"]},
+  {"descr":"Everything up to Enter Uniqueid","source_jaId":1,"taskcodes":["rfp","submitrfp","approverfp","jobposting","identifycandidate","confirmtitle","initialofferletter","signed_offer","aar","mou","provojustification","submitoffer","approveoffer","extendoffer","acceptoffer"]},
+  {"descr":"Everything after Personal Info","source_jaId":1,"taskcodes":["cbcGeneral","cbcConsent","cbcDisclosure","cbcConditional","cbcRights","cbcPersonalInfoRedux",
+    "npi","ari","candidatesubmit","cbc","curriculum_vitae","bib_notes","recent_sig_pubs","acad_eval","teaching_eval","formb","transmittal","edu_portfolio","rsrch_portfolio","talking_pts","rs1","rs2","cl_summarized_evals","external_solicit",
+    "submitOFA","approveOFA","adv_meeting_minutes","advisory_vote","assist_dean_approval","dean_cover","exec_com_vote","dean_vote","evpma_auth","evpma_submit_date","evpma_vote","provost_vote","provost_submit_date","vp_research_vote","vp_submit_date","regents_vote"]},
+  {"descr":"RFP","source_jaId":1,"taskcodes":["rfp"]},
+  {"descr":"Submit & Approve RFP","source_jaId":1,"taskcodes":["submitrfp","approverfp"]},
+  {"descr":"Job Posting, Identify Candidate & Confirm Title","source_jaId":1,"taskcodes":["jobposting","identifycandidate","confirmtitle"]},
+  {"descr":"Offer-related Items","source_jaId":1,"taskcodes":["initialofferletter","aar","mou","provojustification"]},
+  {"descr":"Submit, Approve, Extend & Accept Offer","source_jaId":1,"taskcodes":["submitoffer","approveoffer","extendoffer","acceptoffer","signed_offer"]},
+  {"descr":"Personal Info","source_jaId":1,"taskcodes":["personalinfo"]},
+  {"descr":"CBC Auth, ARI & NPI","source_jaId":1,"taskcodes":["cbcGeneral","cbcConsent","cbcDisclosure","cbcConditional","cbcRights","cbcPersonalInfoRedux","ari","npi"]},
+  {"descr":"All Candidate Items","source_jaId":1,"taskcodes":["personalinfo","cbcGeneral","cbcConsent","cbcDisclosure","cbcConditional","cbcRights","cbcPersonalInfoRedux","npi","ari","candidatesubmit"]},
+  {"descr":"Background and Education Check Approval","source_jaId":1,"taskcodes":["cbc"]},
+  {"descr":"Appointment Tab","source_jaId":1,"taskcodes":["curriculum_vitae","bib_notes","recent_sig_pubs","acad_eval","teaching_eval","formb","transmittal","edu_portfolio","rsrch_portfolio","talking_pts","rs1","rs2","cl_summarized_evals","external_solicit"]},
+  {"descr":"Solicitation Section","source_jaId":1,"taskcodes":["curriculum_vitae","bib_notes","recent_sig_pubs"]},
+  {"descr":"Academic Evaluators Section","source_jaId":1,"taskcodes":["acad_eval"]},
+  {"descr":"Remaining Uploads Section","source_jaId":1,"taskcodes":["teaching_eval","formb","transmittal","edu_portfolio","rsrch_portfolio","talking_pts","rs1","rs2","cl_summarized_evals","external_solicit"]},
+  {"descr":"Approvals Tab","source_jaId":1,"taskcodes":["submitOFA","approveOFA","adv_meeting_minutes","advisory_vote","assist_dean_approval","dean_cover","exec_com_vote","dean_vote","evpma_auth","evpma_submit_date","evpma_vote","provost_vote","provost_submit_date","vp_research_vote","vp_submit_date","regents_vote"]},
+  {"descr":"Everything","source_jaId":1,"taskcodes":["rfp","submitrfp","approverfp","jobposting","identifycandidate","confirmtitle",
+    "initialofferletter","extendoffer","acceptoffer","signed_offer","aar","mou","provojustification","submitoffer","approveoffer","startappointment","personalinfo","cbcGeneral","cbcConsent","cbcDisclosure","cbcConditional","cbcRights","cbcPersonalInfoRedux",
+    "npi","ari","candidatesubmit","cbc","curriculum_vitae","bib_notes","recent_sig_pubs","acad_eval","teaching_eval","formb","transmittal","edu_portfolio","rsrch_portfolio","talking_pts","rs1","rs2","cl_summarized_evals","external_solicit",
+    "submitOFA","approveOFA","adv_meeting_minutes","advisory_vote","assist_dean_approval","dean_cover","exec_com_vote","dean_vote","evpma_auth","evpma_submit_date","evpma_vote","provost_vote","provost_submit_date","vp_research_vote","vp_submit_date","regents_vote"]}
+
+]

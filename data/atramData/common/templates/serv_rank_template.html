@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        h3 {font-family: 'Arial', Times, serif;font-size: 14px;}
+        p {font-family: 'Arial', Times, serif;font-size: 14px;}
+        td {font-family: 'Arial', Times, serif;font-size: 14px;}
+        hr {border-top: 3px solid #8c8b8b;}
+    </style>
+
+    <title></title>
+</head>
+<body>
+    <img src="{{ context.get('imagePath','') }}" alt="UM Logo" height="31" width="375">
+    <br/><br/>
+    <h3>
+        <center>
+            TO BE COMPLETED BY<br/>
+            THE UNIVERSITY OF MICHIGAN HOSPITALS AND HEALTH CENTERS<br/>
+            CHIEF OF SERVICE / PROGRAM DIRECTOR AND DEPARTMENT CHAIRMAN<br/>
+        </center>
+    </h3>
+    <br/>
+    <h3>SERVICE AND RANK</h3>
+    <p><b>Proposed: </b><u>{{ context.get('nameAndDegree','')}}</u> <b>for membership to the Medical Staff of the University of Michigan</b></p>
+    <p>
+        <b>Hospitals in the Department and Service of:</b> <u>{{context.get('department','')}}</u>
+    </p>
+
+    <p><b>Joint Department and Service: (Patient Care Only)</b> <u>{{context.get('jointDepartment','')}}</u></p>
+
+    {% set firstRow = True %}
+    {% set formatted_address_lines = context.get('formatted_address_lines',[]) %}
+
+    <table>
+        {% for address in formatted_address_lines %}
+            <tr>
+                {% if firstRow %}
+                    <td width="300px"><b>Office Address (includes Campus Box #)</b>:</td>
+                    <td>{{address}}</td>
+                    {% set firstRow = False %}
+                {% else %}
+                    <td>&nbsp;</td><td width="400px">{{address}}</td>
+                {% end %}
+            </tr>
+        {% end %}
+    </table>
+    <p><b>Office Phone:</b> <u>{{ context.get('phone','')}}</u></p>
+    <table>
+        <tr>
+            <td><b>Academic Rank (Title):</b> <u>{{ context.get('title','')}}</u></td>
+        </tr>
+        <tr><td>&nbsp;</td></tr>
+        <tr>
+            <td><b>Proposed Clinical Start Date:</b> <u>{{context.get('clinical_start','')}}</u></td>
+        </tr>
+        <tr>
+            <td>(<i>Clinical Start Date is contingent upon Medical School Appointment</i>)</td>
+        </tr>
+    </table>
+    {% set membershipCategory = context.get('membership_category','') %}
+    <p><b>Membership Category:</b> <u>{{ membershipCategory }}</u></p>
+    {% if str(membershipCategory).startswith('Courtesy') %}
+        <table>
+            <tr>
+                <td width="300px"><b>Email Address:</b> <u>{{ context.get('email','')}}</u></td>
+                <td width="200px"><b>Fax #:</b> <u>{{context.get('fax','')}}</u></td>
+            </tr>
+        </table>
+        <br/>
+    {% end %}
+    <table>
+        <tr>
+            <td><b>Department Contact:</b> <u>{{ context.get('department_contact','')}}</u></td>
+        </tr>
+        <tr><td>&nbsp;</td></tr>
+        <tr>
+            <td><b>Date:</b><u>{{context.get('today','')}}</u></td>
+        </tr>
+    </table>
+    <br/>
+    <br/>
+    <h3>
+        <center>
+            MEDICAL STAFF MEMBERSHIP APPROVALS
+        </center>
+    </h3>
+    <h3>
+        <center>
+            <hr>
+        </center>
+    </h3>
+    <table>
+        <tr>
+            <td width="400px"><h3>CREDENTIALS COMMITTEE</h3></td>
+            <td width="200px">Approved&nbsp;&#9634;&nbsp;&nbsp;&nbsp;Disapproved&nbsp;&#9634;</td>
+        </tr>
+    </table>
+    <table width="500px">
+        <tr>
+            <td nowrap="nowrap" width="125px">Date:&nbsp;____________</td>
+            <td nowrap="nowrap" width="375px">Signed&nbsp;-&nbsp;Member&nbsp;Credentials&nbsp;Committee:&nbsp;_____________________________</td>
+        </tr>
+    </table>
+    <br/>
+
+    <h3>
+        <center>
+            <hr>
+        </center>
+    </h3>
+    <table>
+        <tr>
+            <td width="400px"><h3>EXECUTIVE COMMITTEE ON CLINICAL AFFAIRS<br/>HOSPITALS AND HEALTH CENTERS EXECUTIVE BOARD</h3></td>
+            <td width="200px">Approved&nbsp;&#9634;&nbsp;&nbsp;&nbsp;Disapproved&nbsp;&#9634;</td>
+        </tr>
+    </table>
+    <table width="500px" >
+        <tr>
+            <td nowrap="nowrap" width="125px">Date:&nbsp;____________</td>
+            <td nowrap="nowrap" width="375px">Signed&nbsp;-&nbsp;Member&nbsp;Executive&nbsp;Committee&nbsp;on&nbsp;Clinical&nbsp;Affairs:&nbsp;_____________________________</td>
+        </tr>
+    </table>
+
+</body>
+</html>

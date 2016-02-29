@@ -1,0 +1,3 @@
+<html><body>
+Your Name is: {{context.get('profile', {}).get('userProfile', {}).get('username', '')}}
+</body></html>

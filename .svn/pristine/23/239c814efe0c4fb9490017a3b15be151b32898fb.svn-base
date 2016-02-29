@@ -1,0 +1,12 @@
+#site|community|user|application|sequencenbr
+accept-umich|default|mpsadmin|MPSADMIN|1
+accept-umich|default|mpsadmin|APPT|2
+accept-umich|default|mpsguru|MPSADMIN|1
+accept-umich|default|mpsguru|APPT|2
+accept-umich|default|dept1|APPT|1
+accept-umich|default|dept2|APPT|1
+accept-umich|default|dept3|APPT|1
+accept-umich|default|ofa|APPT|1
+accept-umich|default|ofaadmin|APPT|1
+accept-umich|default|mss|APPT|1
+accept-umich|default|enrollment|APPT|1

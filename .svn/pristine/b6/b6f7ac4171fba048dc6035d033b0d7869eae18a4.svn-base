@@ -1,0 +1,16 @@
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+$(function() {
+
+	// BUGBUG: to be deprecated with Form mode of Edit?
+	$('body').on('click', '#saveRowBtn', function(event){cvApp.ubiquitousPageRequest({
+		url: '/cv/save',
+		data: JSON.stringify($('#editdetailform').serializeObject()),
+		errorMessage: '#modalerrormessage'
+	});});
+
+});
+
+	/*]]>*/
+</script>

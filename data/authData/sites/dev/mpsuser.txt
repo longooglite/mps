@@ -1,0 +1,17 @@
+#site|community|username|password|first name|last name|email|auth_override|active
+dev|default|mpsadmin|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|MPS|Administrator|greg.poth@mountainpasssolutions.com|MPS|true
+dev|default|chris|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Chris|King|chris.king@mountainpasssolutions.com|MPS|true
+dev|default|eric|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Eric|Paul|eric.paul@mountainpasssolutions.com|MPS|true
+dev|default|greg|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Greg|Poth|greg.poth@mountainpasssolutions.com|MPS|true
+dev|default|josh|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Joshua|King|josh.king@mountainpasssolutions.com|MPS|true
+dev|default|buffy|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Buffy|Davis|buffy@mps-car.com|MPS|true
+dev|default|rider|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Chris|Rider|crider@scorchmark.com|MPS|true
+dev|default|dave|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|David|Morin|dave@morin.com|MPS|true
+dev|default|kchung|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Kevin|Chung|kchung@mps.edu|MPS|true
+dev|default|mgyetko|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Margaret|Gyetko|mgyetko@mps.edu|MPS|true
+dev|default|dkomorow|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Debra|Komorowski|dkomorow@mps.edu|MPS|true
+dev|default|gawd|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|The|Lord|gawd@heaven.org|MPS|true
+dev|default|kleahy|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Kim|Leahy|kleahy@mps.edu|MPS|true
+dev|default|darshe|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Darshe|Bloze|darshe@bloze.edu|MPS|true
+dev|default|maria|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Maria|Davis|maria@maria.edu|MPS|true
+dev|default|dean|b285e007e01a294d77b2c49e35748670e374ba138d79db95a39259370fe8e22d|Dean|Martin|dean@mps.edu|MPS|true

@@ -1,0 +1,30 @@
+<div class="page-header clearfix">
+	<h1>
+		<div class="page-header-controls">
+			<button class="cvHelpButton btn btn-sm btn-default">
+				<span class="glyphicon glyphicon-question-sign"></span>Help...
+			</button>
+			{% include 'partial_printMenu.html' %}
+			{% if not context.get('disabled', True) %}
+			<button class="cvmodaleditdetaillink btn btn-sm btn-primary" id="0" data-toggle="modal" data-target="#editModal" data-rowid="0" data-cv-url="{{context.get('addURL','')}}" title="Add {{context.get('categoryDict',{}).get('category_descr','')}}">
+				<span class="glyphicon glyphicon-plus"></span> <span class="cvSingularize">Add {{context.get('categoryDict',{}).get('category_descr','')}}...</span>
+			</button>
+			{% end %}
+		</div>
+		{{ cvOwnerName }}<br/>
+		<small>{{context.get('categoryDict',{}).get('category_descr','')}}</small>
+		{% set isMsg = True if len(context.get('errormessage','')) > 0 else False %}
+	</h1>
+</div>
+
+<div class="DEPRECATE-cv-list-singlelist-outer-panel cvContentOuter">
+	<br/>
+	{% set groupCode = '' %}
+	{% set groupList = context.get('categoryDict',{}).get('groupList',[]) %}
+	{% if groupList %}
+		{% set groupCode = groupList[0].get('group_code','') %}
+	{% end %}
+	{% set groupDataDict = context.get('rowDataDict',{}).get(groupCode,{}) %}
+	{% include listTable.html %}
+</div>
+

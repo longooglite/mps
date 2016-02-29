@@ -1,0 +1,40 @@
+/* [Copyright] */
+/* SmartPath v1.0 */
+/* Copyright 2014-2015 Mountain Pass Solutions, Inc. */
+/* This unpublished material is proprietary to Mountain Pass Solutions, Inc. */
+/* [End Copyright] */
+
+
+/* New */
+#wf-workflow-status{
+    margin-top:0px;
+}
+.wf-details-page-content{ position:relative; }
+.wf-workflow-content{ padding-top:0 !important; }
+
+#wf-details-toc-body .wf-nav-highlight{
+    width:225px !important;
+    line-height:20px !important;
+    border:solid 1px #e2e2e2 !important;
+    border-right:solid 1px #fff !important;
+    background-color:#fff !important;
+    padding:3px 0 3px 30px !important;
+    margin:10px -10px 0 -10px !important;
+    position:relative !important;
+    left:-17px  !important;
+    font-weight:bold !important;
+}
+
+#wf-details-toc{
+    position:absolute;
+    left:0px;
+    padding:0px 5px 30px 27px !important;
+    /* min-height:96%; */  /* This could/should use calc( ), but we need to move the workflow header out of the wrapper it shares with TOC first... */
+    min-height: calc(100% - 45px);
+    background-color:#f5f5f5 !important;
+}
+.wf-toc-short #wf-details-toc{
+    min-height: calc(100% - 70px);
+}
+.wf-details-toc-short{top:70px !important;}
+.wf-details-toc-tall{top:45px !important;}

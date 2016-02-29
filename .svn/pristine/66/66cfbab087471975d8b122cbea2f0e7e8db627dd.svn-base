@@ -1,0 +1,196 @@
+Greg's Notes for Installing Shibboleth on Centos 6 (Staging server)
+-------------------------------------------------------------------
+
+# Create a reference to the shibboleth repo by creating a file '/etc/yum.repos.d/shibboleth.repo'
+# with the contents of the file 'http://download.opensuse.org/repositories/security://shibboleth/CentOS_CentOS-6/security:shibboleth.repo'
+$ cd /etc/yum.repos.d
+$ sudo nano shibboleth.repo
+
+# Install shibboleth dependencies
+$ sudo yum install libcurl-openssl
+$ sudo yum install liblog4shib1
+$ sudo yum install libsaml8
+$ sudo yum install opensaml-schemas
+$ sudo yum install xmltooling-schemas
+$ sudo yum install libmemcached
+$ sudo yum install libtool-ltdl
+$ sudo yum install unixODBC
+$ sudo yum install boost
+
+# Get Shibboleth SP source code
+$ cd ~/
+$ mkdir shibboleth
+$ cd shibboleth
+$ wget http://shibboleth.net/downloads/service-provider/latest/shibboleth-sp-2.5.5.tar.gz
+$ tar -xvf shibboleth-sp-2.5.5.tar.gz
+
+# Get Boost source code
+$ wget -O boost_1_60_0.tar.gz http://downloads.sourceforge.net/project/boost/boost/1.60.0/boost_1_60_0.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fboost%2Ffiles%2Fboost%2F1.60.0%2Fboost_1_60_0.tar.gz%2Fdownload&ts=1452873383&use_mirror=iweb
+$ tar -xvf boost_1_60_0.tar.gz
+
+# Configure Shibboleth
+$ cd shibboleth-sp-2.5.5
+$ ./configure --with-boost=/home/mpsadmin/shibboleth/boost_1_60_0
+
+- won't work, get this:
+checking for log4shib-config... no
+configure: WARNING: log4shib-config not found, may need to use --with-log4shib option
+configure: WARNING: will look for original log4cpp library
+checking for log4cpp-config... no
+configure: error: log4cpp-config not found, may need to use --with-log4cpp option
+[mpsadmin@mpslnx03 shibboleth-sp-2.5.5]$
+
+# so try installing these:
+$ sudo yum install liblog4shib-devel
+$ sudo yum install libxerces-c-devel
+$ sudo yum install libxmltooling-devel
+$ sudo yum install libsaml-devel
+
+# and Finally, ./configure --with-openssl runs!
+
+# Try with fastcgi:
+$ ./configure --with-boost=/home/mpsadmin/shibboleth/boost_1_60_0 --with-fastcgi
+checking for fcgio.h... no
+configure: error: unable to find FastCGI header files
+[mpsadmin@mpslnx03 shibboleth-sp-2.5.5]$ yum search fastcgi
+
+$ sudo yum install fcgi
+$ sudo yum install fcgi-devel
+$ sudo yum install mod_fastcgi
+$ ./configure --with-boost=/home/mpsadmin/shibboleth/boost_1_60_0 --with-fastcgi
+# and Finally, ./configure runs!
+
+# Try make and install
+$ make
+$ sudo make install
+
+/usr/local/sbin/shibd
+/usr/local/lib/shibboleth/shibauthorizer
+/usr/local/lib/shibboleth/shibresponder
+
+# Install shibd as a service
+$ sudo cp /home/mpsadmin/shibboleth/shibboleth-sp-2.5.5/configs/shibd-redhat /etc/init.d/shibd
+# Change chkconfig: - 80 20
+#     to chkconfig: - 63 37
+$ cd /etc/init.d
+$ sudo chmod ugo+x shibd
+$ sudo chkconfig --add shibd
+$ sudo chkconfig shibd on
+
+# Install supervisor, use pip instead of yum to get latest version (3.2.0)
+# Supervisor will be used to control shibauthorizer and shibresponser applications
+$ sudo pip install supervisor
+$ sudo yum install python-meld3
+$ cd /etc/init.d
+# Put supervisord startup script in: /etc/init.d
+# Put supervisord.conf config file in: /etc/supervisord.conf
+$ sudo chmod ugo+x supervisord
+$ sudo chkconfig --add supervisord
+$ sudo chkconfig supervisord on
+
+# Configure shibd
+# /usr/local/etc/shibboleth/shibboleth2.xml
+# shibd log files are in: /usr/local/var/log/shibboleth
+
+# Change shibd logging to DEBUG sted INFO
+# in /usr/local/etc/shibboleth/shibd.logger
+# log4j.rootCategory=INFO, shibd_log, warn_log
+  log4j.rootCategory=DEBUG, shibd_log, warn_log
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Registering with TestShib (Staging server, shib.mntnpass.com)
+=============================================================
+# start shibd service
+# start supervisord service
+# navigate to https://shib.mntnpass.com/Shibboleth.sso/Metadata
+# this downloads a file named 'Metadata'
+# rename 'Metadata' as 'MountainPassTestShibMetadata' and save in svn
+# upload 'MountainPassTestShibMetadata' to the testshib web site: http://www.testshib.org/register.html
+# obtain testshib config file from: https://www.testshib.org/configure.html
+  - use 'shib.mntnpass.com' as the 'Hostname for your provider:'
+# save generated file as 'shibboleth2.xml.testshib' in svn
+# on server:
+$ sudo mv /usr/local/etc/shibboleth/shibboleth2.xml /usr/local/etc/shibboleth/shibboleth2.xml.real
+$ sudo nano /usr/local/etc/shibboleth/shibboleth2.xml
+  - paste in contents of 'shibboleth2.xml.testshib' and save
+$ /usr/local/sbin/shibd -t
+$ sudo chmod ugo+r /usr/local/etc/shibboleth/sp-key.pem [ so mpsadmin user can read file]
+$ sudo service shibd restart
+$ sudo service nginx restart
+
+# Install our certificate
+$ sudo mv /usr/local/etc/shibboleth/sp-cert.pem /usr/local/etc/shibboleth/sp-cert.pem.orig
+$ sudo mv /usr/local/etc/shibboleth/sp-key.pem /usr/local/etc/shibboleth/sp-key.pem.orig
+$ sudo cp ~/mntnpass.crt /usr/local/etc/shibboleth/sp-cert.pem
+$ sudo cp ~/mntnpass.key /usr/local/etc/shibboleth/sp-key.pem
+$ sudo service shibd restart
+$ sudo service nginx restart
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Temporary TestShib for U-M Engineering School(Production server, engin-umich.mntnpass.com)
+==========================================================================================
+# navigate to https://engin-umich.mntnpass.com/Shibboleth.sso/Metadata
+# this downloads a file named 'Metadata'
+# rename 'Metadata' as 'MountainPassUMEnginTestShibMetadata' and save in svn
+# upload 'MountainPassUMEnginTestShibMetadata' to the testshib web site: http://www.testshib.org/register.html
+# obtain testshib config file from: https://www.testshib.org/configure.html
+  - use 'engin-umich.mntnpass.com' as the 'Hostname for your provider:'
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Log file locations:
+===================
+# nginx: /etc/nginx/logs
+# shibd: /usr/local/var/log/shibboleth
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Executables
+===========
+/usr/local/sbin/shibd
+/usr/local/lib/shibboleth/shibauthorizer
+/usr/local/lib/shibboleth/shibresponder
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Sample response from TestShib IDP:
+
+[mpsadmin@mpslnx03 handlers]$ {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+ 'Accept-Encoding': 'gzip, deflate, sdch',
+ 'Accept-Language': 'en-US,en;q=0.8',
+ 'Affiliation': 'Member@testshib.org;Staff@testshib.org',
+ 'Auth_type': 'shibboleth',
+ 'Cache-Control': 'max-age=0',
+ 'Connection': 'close',
+ 'Cookie': '_shibsession_64656661756c7468747470733a2f2f736869622e6d6e746e706173732e636f6d2f73686962626f6c657468=_e22e57da12006ed00ab9262fbcf60186',
+ 'Entitlement': 'urn:mace:dir:entitlement:common-lib-terms',
+ 'Eppn': 'myself@testshib.org',
+ 'Host': 'localhost:8201',
+ 'Persistent-Id': 'https://idp.testshib.org/idp/shibboleth!https://shib.mntnpass.com/shibboleth!dp1uzD5GycyGEGgzPmG4Loagtko=',
+ 'Referer': 'https://idp.testshib.org/idp/profile/SAML2/Redirect/SSO',
+ 'Remote_user': 'myself@testshib.org',
+ 'Shib-Application-Id': 'default',
+ 'Shib-Authentication-Instant': '2016-01-25T16:50:01.719Z',
+ 'Shib-Authentication-Method': 'urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport',
+ 'Shib-Authncontext-Class': 'urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport',
+ 'Shib-Identity-Provider': 'https://idp.testshib.org/idp/shibboleth',
+ 'Shib-Session-Id': '_e22e57da12006ed00ab9262fbcf60186',
+ 'Shib-Session-Index': '_a56733b419e3188012e1fad9702ab4e3',
+ 'Site': 'shib',
+ 'Unscoped-Affiliation': 'Member;Staff',
+ 'Upgrade-Insecure-Requests': '1',
+ 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36'}
+2016-01-25 11:49:43,903 - tornado.access - INFO - 200 POST /siteprofile (127.0.0.1) 292.91ms
+2016-01-25 11:49:43,994 - tornado.access - INFO - 200 GET /mps/login (127.0.0.1) 408.51ms

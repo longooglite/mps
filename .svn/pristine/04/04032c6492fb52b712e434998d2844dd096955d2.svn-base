@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>{{context.get('windowTitle', '')}}</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+</head>
+
+{% set mode = context.get('mode', '') %}
+{% set isAdd = (mode != 'edit') %}
+{% set department = context.get('department', {}) %}
+{% set deptId = department.get('id', 0) %}
+
+{% set isMsg = True if len(context.get('errormessage','')) > 0 else False %}
+<body class="{{ 'cv-show-global-message' if isMsg else '' }} cv-proxy-page mps-admin-page">
+	<div class="container-fluid mps-body">
+		{% include pageHeader.html %}
+		<div class="body-content cv-body cv-body-no-menu">
+			<div class="page-header clearfix">
+				<div class="page-header-controls">
+					<button class="cvHelpButton btn btn-sm btn-default">
+						<span class="glyphicon glyphicon-question-sign"></span>Help...
+					</button>
+					<button class="btn btn-sm btn-primary saveDeptBtn">
+						<span class="glyphicon glyphicon-floppy-disk"></span> <span>Save Changes...</span>
+					</button>
+				</div>
+				<h1>
+					Manage {{context.get('departmentText','Department')}}s<br/>
+					<small>
+						<a href="/{{context.get('appUriPrefix','')}}/depts" class="cv-head-bread">All {{context.get('departmentText','Department')}}s</a><span class="cv-head-bread-sep">/</span>
+						<span class="cv-head-bread-leaf">{% if isAdd %}New {{context.get('departmentText','Department')}}{% else %}{{ department.get('full_descr','') }}{% end %}</span>
+					</small>
+				</h1>
+			</div>
+
+			<form id="deptdetailform" class="form-horizontal">
+				{% include ajax-hidden-fields.html %}
+				<input type="hidden" name="mode" value="{{mode}}" />
+				{% if not isAdd %}
+					<input type="hidden" name="deptId" value="{{deptId}}" />
+				{% end %}
+
+				<div class="row">
+					<div class="col-md-6 cv-user-form">
+						<h3 class="section-header">
+							<span class="glyphicon glyphicon-edit"></span>
+							{{context.get('departmentText','Department')}} Settings:
+						</h3>
+
+						<div class="cv-callout cv-callout-info cv-callout-bordered clearfix mps-skin-border">
+							<h4>Info:</h4><br/>
+							<div class="clearfix form-row">
+								<label for="code" class="col-xs-3 control-label">* Code:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="code" name="code" value="{{department.get('code', '')}}" placeholder="Unique department code">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="descr" class="col-xs-3 control-label">* Description:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="descr" name="descr" value="{{department.get('descr', '')}}">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="parent_id" class="col-xs-3 control-label">Parent:</label>
+								<div class="col-xs-8">
+									<select class="form-control" id="parent_id" name="parent_id">
+										<option value="" selected>None</option>
+										{% set selectedParentId = department.get('parent',{}).get('id','') %}
+										{% for option in context.get('parentalUnits', []) %}
+											{% set optionId = option.get('id','') %}
+											{% set selected = 'selected' if optionId == selectedParentId else '' %}
+											<option value="{{optionId}}" {{selected}}>{{ option.get('descr','') }}</option>
+										{% end %}
+									</select>
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="active" class="col-xs-3 control-label">Active:</label>
+								<div class="col-xs-8">
+									{% set checked = '' %}
+									{% if department.get('active',False) %}
+										{% set checked = 'checked' %}
+									{% end %}
+									<input type="checkbox" id="active" name="active" value="true" {{checked}}>
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="pcn" class="col-xs-3 control-label">* PCN Prefix:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="pcn" name="pcn" value="{{department.get('pcn',{}).get('code','')}}">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="cc_acct_cd" class="col-xs-3 control-label">Account Code:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="cc_acct_cd" name="cc_acct_cd" value="{{department.get('cc_acct_cd', '')}}">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="email_address" class="col-xs-3 control-label">Email:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="email_address" name="email_address" value="{{department.get('email_address', '')}}">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="header_image" class="col-xs-3 control-label">Header Image:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="header_image" name="header_image" value="{{department.get('header_image', '')}}">
+								</div>
+							</div>
+						</div>
+
+						{% set maxAddressLines = context.get('maxAddressLines', 5) %}
+						{% set addressLinesBreakout = department.get('address_lines_breakout', []) %}
+						<div class="cv-callout cv-callout-info cv-callout-bordered clearfix mps-skin-border">
+							<h4>Address:</h4><br/>
+							<div class="clearfix form-row">
+								<label for="address_line_1" class="col-xs-2 control-label">Address:</label>
+								<div class="col-xs-9">
+									<input type="text" class="form-control" id="address_line_1" name="address_line_1" value="{{addressLinesBreakout[0]}}">
+								</div>
+							</div>
+
+							{% for idx in range(2, 1 + maxAddressLines) %}
+								{% set controlName = 'address_line_' + str(idx) %}
+								<div class="clearfix form-row">
+									<div class="col-xs-offset-2 col-xs-9">
+										<input type="text" class="form-control" id="{{controlName}}" name="{{controlName}}" value="{{addressLinesBreakout[idx-1]}}">
+									</div>
+								</div>
+							{% end %}
+
+							<div class="clearfix form-row">
+								<label for="city" class="col-xs-2 control-label">City:</label>
+								<div class="col-xs-9">
+									<input type="text" class="form-control" id="city" name="city" value="{{department.get('city', '')}}">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="state" class="col-xs-2 control-label">State:</label>
+								<div class="col-xs-9">
+									<input type="text" class="form-control" id="state" name="state" value="{{department.get('state', '')}}">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="postal" class="col-xs-2 control-label">Postal:</label>
+								<div class="col-xs-9">
+									<input type="text" class="form-control" id="postal" name="postal" value="{{department.get('postal', '')}}">
+								</div>
+							</div>
+
+							{% set maxSuffixLines = context.get('maxAddressSuffixLines', 3) %}
+							{% set addressSuffixBreakout = department.get('address_suffix_breakout', []) %}
+							<div class="clearfix form-row">
+								<label for="address_suffix_1" class="col-xs-2 control-label">Suffix:</label>
+								<div class="col-xs-9">
+									<input type="text" class="form-control" id="address_suffix_1" name="address_suffix_1" value="{{addressSuffixBreakout[0]}}">
+								</div>
+							</div>
+
+							{% for idx in range(2, 1 + maxSuffixLines) %}
+								{% set controlName = 'address_suffix_' + str(idx) %}
+								<div class="clearfix form-row">
+									<div class="col-xs-offset-2 col-xs-9">
+										<input type="text" class="form-control" id="{{controlName}}" name="{{controlName}}" value="{{addressSuffixBreakout[idx-1]}}">
+									</div>
+								</div>
+							{% end %}
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<h3 class="section-header">
+							<span class="glyphicon glyphicon-edit"></span>
+							People:
+						</h3>
+
+						<div class="cv-callout cv-callout-info cv-callout-bordered clearfix mps-skin-border">
+							<h4>Chairs:</h4>
+							{% set maxChairs = context.get('maxChairs', 2) %}
+							{% set maxChairTitles = context.get('maxChairTitles', 5) %}
+
+							{% set chairBreakout = department.get('department_chair_breakout', []) %}
+							{% set chairIdx = 0 %}
+							{% for chair in chairBreakout %}
+								{% set chairIdx = chairIdx + 1 %}
+								<h5>Chair {{str(chairIdx)}}:</h5>
+
+								{% set degreeName = 'degree_' + str(chairIdx) %}
+								<div class="clearfix form-row">
+									<label for="{{degreeName}}" class="col-xs-3 control-label">Chair w/Degree:</label>
+									<div class="col-xs-8">
+										<input type="text" class="form-control" id="{{degreeName}}" name="{{degreeName}}" value="{{chair.get('chair_with_degree', '')}}">
+									</div>
+								</div>
+
+								{% set sigName = 'signature_' + str(chairIdx) %}
+								<div class="clearfix form-row">
+									<label for="{{sigName}}" class="col-xs-3 control-label">Signature:</label>
+									<div class="col-xs-8">
+										<input type="text" class="form-control" id="{{sigName}}" name="{{sigName}}" value="{{chair.get('chair_signature', '')}}">
+									</div>
+								</div>
+
+								{% set titleBreakout = chair.get('chair_titles_breakout', []) %}
+								{% set titleNameBase = 'title_' + str(chairIdx) + '_' %}
+								<div class="clearfix form-row">
+									{% set controlName = titleNameBase + '1' %}
+									<label for="{{controlName}}" class="col-xs-3 control-label">Titles:</label>
+									<div class="col-xs-8">
+										<input type="text" class="form-control" id="{{controlName}}" name="{{controlName}}" value="{{titleBreakout[0]}}">
+									</div>
+								</div>
+
+								{% for idx in range(2, 1 + maxChairTitles) %}
+									{% set controlName = titleNameBase + str(idx) %}
+									<div class="clearfix form-row">
+										<div class="col-xs-offset-3 col-xs-8">
+											<input type="text" class="form-control" id="{{controlName}}" name="{{controlName}}" value="{{titleBreakout[idx-1]}}">
+										</div>
+									</div>
+								{% end %}
+							{% end %}
+						</div>
+
+						<div class="cv-callout cv-callout-info cv-callout-bordered clearfix mps-skin-border">
+							<h4>Authorized Users for this {{context.get('departmentText','Department')}}:</h4>
+							<div class="clearfix form-row">
+								{% if context.get('userEditEnabled', False) %}
+									{% set anchorList = [] %}
+									{% for username in department.get('users', []) %}
+										{% set ankerTag = '<a target="_blank" href="/appt/users/edit/' + username + '">' %}
+										{% set anchorList.append(ankerTag + username + '</a>') %}
+									{% end %}
+									{% raw ' '.join(anchorList) %}
+								{% else %}
+									{{ ' '.join(department.get('users', [])) }}
+								{% end %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	$('.saveDeptBtn').on('click', function(event){
+
+		//
+		// BUGBUG: clean this up a bit: sometimes it is errors{}, sometimes just {"errors": "User not found"}
+		//
+
+		var $body = $('.cv-user-form');
+		cvApp.ubiquitousPageRequest({
+			url: '/{{context.get('appUriPrefix','')}}/depts/save',
+			data: JSON.stringify($('#deptdetailform').serializeObject()),
+			success: function(data, textStatus, xhr){
+				cvApp._commonErrorHandler($body, data, textStatus, xhr);
+			}
+		});
+	});
+
+	/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

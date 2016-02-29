@@ -1,0 +1,128 @@
+# [Copyright]
+# SmartPath v1.0
+# Copyright 2014-2015 Mountain Pass Solutions, Inc.
+# This unpublished material is proprietary to Mountain Pass Solutions, Inc.
+# [End Copyright]
+
+sec_int_dept_approve_rfp = {
+	"code": "sec_int_dept_approve_rfp",
+	"descr": "Department Approval for Secondary RFP",
+	"header": "Department Approval for Secondary RFP",
+	"componentType": "Task",
+	"affordanceType":"Item",
+	"optional": False,
+	"enabled": True,
+	"logEnabled": True,
+	"freezable": True,
+	"accessPermissions": ['dept_task'],
+	"viewPermissions": ['dept_task','ofa_task'],
+	"blockers": ["sec_int_submit_rfp"],
+	"statusMsg": "",
+	"successMsgApprove":"Secondary RFP approved",
+	"successMsgDeny":"Secondary RFP denied",
+	"successMsgRevisions":"Secondary RFP revisions required",
+	"className": "Approval",
+	"config": {
+		"approveDashboardEvents": [{
+			"code":["sec_int_submit_rfp"],
+			"eventType":"remove",
+		},{
+			"code":"sec_rfp_ofa_approve1",
+			"sortOrder":"d1",
+			"eventDescription":"Secondary RFP Awaiting Approval",
+			"eventType":"create",
+			"permission":["ofa_task"]
+		}],
+		"denyDashboardEvents": [{
+			"code":"sec_submit_rfp1",
+			"eventType":"remove",
+		},{
+			"code":"sec_rfp1_denied",
+			"sortOrder":"d3",
+			"eventDescription":"Secondary RFP Denied",
+			"eventType":"create",
+			"department":"primary",
+			"permission":["dept_task"]
+		}],
+		"revisionsDashboardEvents": [{
+			"code":["sec_submit_rfp1"],
+			"eventType":"remove",
+		},{
+			"code":"sec_rfp1_revisions",
+			"sortOrder":"d2",
+			"eventDescription":"Secondary RFP Revisions Required",
+			"eventType":"create",
+			"department":"primary",
+			"permission":["dept_task"]
+		}],
+
+		"approve": True,
+		"approveText": "Approve",
+		"approveStatusMsg": "Secondary RFP Approved",
+		"approveFreeze": {
+			"freezeJobAction": False,
+			"freezeSelf": True,
+			"freezeAllPredecessors": False,
+			"freezeTasks": ["sec_rfp1","sec_confirm_title1","sec_submit_rfp1"],
+			"unfreezeJobAction": False,
+			"unfreezeSelf": False,
+			"unfreezeAllPredecessors": False,
+			"unfreezeTasks": [],
+			"setJobActionRevisionsRequired": False,
+			"clearJobActionRevisionsRequired": True,
+			"clearSubmitStatus": "",
+			"activityLogText": "Secondary RFP Approved",
+		},
+		"deny": True,
+		"denyIsNotDone":"True",
+		"confirmDeny":True,
+		"denyText": "Deny",
+		"denyStatusMsg": "Secondary RFP Denied",
+		"denyFreeze": {
+			"freezeJobAction": False,
+			"freezeSelf": False,
+			"freezeAllPredecessors": False,
+			"freezeTasks": ["sec_rfp1","sec_confirm_title1","sec_submit_rfp1","sec_dept_approve_rfp1"],
+			"unfreezeJobAction": False,
+			"unfreezeSelf": False,
+			"unfreezeAllPredecessors": False,
+			"unfreezeTasks": [],
+			"setJobActionRevisionsRequired": False,
+			"clearJobActionRevisionsRequired": True,
+			"clearSubmitStatus": "",
+			"activityLogText": "Secondary RFP Denied",
+		},
+		"revisionsRequired": True,
+		"revisionsRequiredText": "Secondary RFP Revisions Required",
+		"revisionsRequiredStatusMsg": "Secondary RFP Revisions Required",
+		"revisionsRequiredFreeze": {
+			"freezeJobAction": False,
+			"freezeSelf": False,
+			"freezeAllPredecessors": False,
+			"freezeTasks": [],
+			"unfreezeJobAction": False,
+			"unfreezeSelf": False,
+			"unfreezeAllPredecessors": False,
+			"unfreezeTasks": ["sec_submit_rfp1"],
+			"unfreezeOptions": ["sec_confirm_title1","sec_rfp1"],
+			"setJobActionRevisionsRequired": True,
+			"clearJobActionRevisionsRequired": False,
+			"clearSubmitStatus": "sec_submit_rfp1",
+			"activityLogText": "Secondary RFP Revisions Required",
+		},
+		"activityLog": {
+			"enabled": True,
+			"activityLogText": "Secondary RFP Approved",
+			"comments": [
+				{
+					"commentCode": "sec1rfpCommentEverybody",
+					"commentLabel": "Comment",
+					"accessPermissions": ["dept_task"],
+					"viewPermissions": ["dept_task","ofa_task"],
+				},
+			],
+		},
+		"activityLogTaskCodes": ["sec_dept_approve_rfp1","sec_submit_rfp1"],
+		"vote": False,
+	},
+}

@@ -1,0 +1,56 @@
+[Category]
+<h4>Bibliography / Publications - Book Chapters</h4>
+<p>This page displays book chapters you have authored or co-authored.<p>
+<p>The content of this page can be sorted by clicking on any column title.</p>
+<hr>
+<p>To <strong>add</strong> an additional entry, click the “+ Add …” button in the upper right portion of the page.</p>
+<p>To <strong>edit</strong> an existing entry, click the blue text in the row you would like to edit.</p>
+<p>To <strong>delete</strong> an entry, click the X at the end of the row you would like to delete. Then confirm the deletion.</p>
+<p>To <strong>print</strong> this section of the CV, click the “Print this section” button in the upper right portion of the page or select “Print Section” from the Print menu found in the menu bar.</p>
+
+[BookChaptersTitle]
+<p>Please enter chapter title.</p>
+<hr>
+<p>This item is required</p>
+
+[BookChaptersAuthors]
+<p>Please enter chapter authors.</p>
+<hr>
+<p>This item is required</p>
+
+[BookChaptersBookTitle]
+<p>Please enter book title.</p>
+<hr>
+<p>This item is required</p>
+
+[BookChaptersBookAuthors]
+<p>Please enter book authors.</p>
+<hr>
+<p>This item is required</p>
+
+[BookChaptersEdition]
+<p>Please enter book edition.</p>
+
+[BookChaptersPublisher]
+<p>Please enter the publishers name.</p>
+<hr>
+<p>This item is required</p>
+
+[BookChaptersLocation]
+<p>Please enter the publishers office location.</p>
+<hr>
+<p>This item is required</p>
+
+[BookChaptersVolume]
+<p>Please enter the volume of the book.</p>
+
+[BookChaptersChapter]
+<p>Please enter the chapter of the book.</p>
+
+[BookChaptersPages]
+<p>Please enter the chapters page(s).</p>
+
+[BookChaptersPublicationYear]
+<p>Please enter books publish year.</p>
+<hr>
+<p>This item is required</p>

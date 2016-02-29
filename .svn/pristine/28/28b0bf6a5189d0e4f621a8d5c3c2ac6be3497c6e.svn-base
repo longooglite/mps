@@ -1,0 +1,53 @@
+<center><h3>Job Actions In Progress</h3></center>
+<center><p>Total Actions: {{ str(context.get('total_actions',0)) }}</p></center>
+
+{% if not context.get('actionsInProgress',[]) %}
+    <h3><center> {{context.get('noDataMessage','0 items meet report criteria')}} </center></h3>
+{% end %}
+
+{% for dept in context.get('actionsInProgress',[]) %}
+    <hr>
+    <h4>{{ dept.get('department_code','') + ' - ' + dept.get('department_descr','')}}</h4>
+    <p>Total Actions: {{ str(len(dept.get('actions',0))) }}</p>
+
+    <table width="700">
+        <tr>
+            <th align="left">Action Type</th>
+            <th align="left">Name</th>
+            <th align="left">Title</th>
+
+            <th>&nbsp;</th>
+        </tr>
+        {% for action in dept.get('actions',[]) %}
+            <tr>
+                <td nowrap="nowrap">{{action.get('job_action_type_descr','')}}</td>
+                {% if not action.get('person_id',None)%}
+                    {% set candidateName = 'Candidate Not Yet Identified'%}
+                {% else %}
+                    {% set candidateName = '%s %s' %(action.get('first_name',''),action.get('last_name',''))%}
+                {% end %}
+                <td nowrap="nowrap"><a href="{{ action.get('url','') }}" target="_blank">{{ candidateName }}</a></td>
+                <td nowrap="nowrap">{{ action.get('title_descr','') }}</td>
+            </tr>
+            <tr>
+                <td nowrap="nowrap">Proposed Start Date: {{ action.get('proposed_start_date','') }}</td>
+                <td nowrap="nowrap">Action Started: {{ action.get('start','') }}</td>
+                <td nowrap="nowrap">Status: {{ action.get('status','') }}</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+        {% end %}
+    </table>
+{% end %}
+{% for graph in context.get('graphs') %}
+    <center>
+        <div style="width:600px;height:450px;">
+            {% raw graph %}
+        </div>
+    </center>
+{% end %}
+

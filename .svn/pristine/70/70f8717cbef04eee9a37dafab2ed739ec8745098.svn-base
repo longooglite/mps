@@ -1,0 +1,5 @@
+#appid|descr|url
+MPSADMIN|MPS Administration|https://${site}.mntnpass.com:447/admin
+CV|Curriculum Vitae|https://${site}.mntnpass.com:447/cv
+APPT|Appointments|https://${site}.mntnpass.com:447/appt
+IMM|Immigration|https://${site}.mntnpass.com:447/imm

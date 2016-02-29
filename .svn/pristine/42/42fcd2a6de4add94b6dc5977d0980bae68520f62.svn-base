@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+	body {
+		font-size: 12px;
+		font-family: "Arial", Verdana, sans-serif;
+	}
+</style>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body style='height:50px;overflow:hidden;margin:0;padding:0;'>
+	<center><h3> {{context.get('header','')}} </h3></center>
+	<center><h4> {{context.get('candidateName','')}} </h4></center>
+	{% set gapsList = context.get('gapsList', []) %}
+	{% if gapsList %}
+		{% set introText = context.get('introText', '') %}
+
+		<div>
+			{% if introText %}
+				<h4>{% raw introText %}</h4>
+			{% end %}
+			{% for gapDict in gapsList %}
+				<p>
+					{% set descr = gapDict.get('descr', '') %}
+					{% if descr %}
+						{% raw descr %}<br/>
+					{% end %}
+					{% for dateDict in gapDict.get('gapList', []) %}
+						{% set naybuhDict = dateDict.get('prior', {}) %}
+						{% if naybuhDict %}
+							{{ naybuhDict.get('startDate', '') }} - {{ naybuhDict.get('endDate', '') }} {{ naybuhDict.get('name', '') }}<br/>
+						{% end %}
+
+						{{ dateDict.get('startDate', '') }} - {{ dateDict.get('endDate', '') }} Gap ({{ dateDict.get('nbrDays', '') }} days) Please explain this gap.<br/>
+
+						{% set naybuhDict = dateDict.get('subsequent', {}) %}
+						{% if naybuhDict %}
+							{{ naybuhDict.get('startDate', '') }} - {{ naybuhDict.get('endDate', '') }} {{ naybuhDict.get('name', '') }}<br/>
+						{% end %}
+						<br/>
+					{% end %}
+				</p>
+			{% end %}
+		</div>
+	{% end %}
+</body>

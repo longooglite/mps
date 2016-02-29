@@ -1,0 +1,19 @@
+apiKey = '392bff629e6d07593968592bbb629b0f'
+
+
+
+#http://api.elsevier.com:80/content/article/scopus_id/0037070197?apiKey=392bff629e6d07593968592bbb629b0f
+
+#http://api.elsevier.com/content/search/index:SCOPUS?query=[query]
+
+#http://www.scopus.com/results/affiliationResults.uri?selectionPageSearch=afsp&affilName=University+of+Michigan&cl=t&sort=afcnt-f&src=s&sid=72B2D67C88B703BB6B7E888764A26CFC.kqQeWtawXauCyC8ghhRGJg%3a230&sot=afsp&sdt=aff&sl=29&s=AFFIL%28University+of+Michigan%29&origin=SearchAffiliationLookup&txGid=0
+
+#http://www.scopus.com/results/authorNamesList.uri?origin=searchauthorlookup&src=al&edit=&poppUp=&basicTab=&affiliationTab=&advancedTab=&st1=Chung&st2=kevin&institute=University+of+Michigan&_exactSearch=on&orcidId=&authSubject=LFSC&_authSubject=on&authSubject=HLSC&_authSubject=on&authSubject=PHSC&_authSubject=on&authSubject=SOSC&_authSubject=on&s=AUTH-LAST-NAME%28Chung%29+AND+AUTH--FIRST%28kevin%29&sdt=al&sot=al&searchId=72B2D67C88B703BB6B7E888764A26CFC.kqQeWtawXauCyC8ghhRGJg%3A280&sid=72B2D67C88B703BB6B7E888764A26CFC.kqQeWtawXauCyC8ghhRGJg%3A280
+
+
+
+
+#http://api.elsevier.com/content/search/index:SCOPUS?apiKey=392bff629e6d07593968592bbb629b0f,query=(AUTH-LAST-NAME(Chung) AND AUTH--FIRST(kevin) AND AFFIL(University of Michigan))
+
+
+#unable to access service from my computer IP. WIll most likely need to develop and run from the IP that the licenseKey is registered to.

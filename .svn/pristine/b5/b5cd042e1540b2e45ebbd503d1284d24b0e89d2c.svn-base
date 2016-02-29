@@ -1,0 +1,31 @@
+#   File of site-specific permissions.
+#   Use the common 'common_permissions.txt' file for non-site-specific permissions.
+
+#site_code|application|code|description
+
+#   Primary role permissions
+dev|APPT|dept_task|View/Edit Department Items
+dev|APPT|ofa_task|View/Edit OFA Items
+dev|APPT|assist_dean_task|View/Edit Assistant Dean Items
+
+dev|APPT|taskA_view|View Task A
+dev|APPT|taskA_edit|View/Edit Task A
+dev|APPT|taskB_view|View Task B
+dev|APPT|taskB_edit|View/Edit Task B
+dev|APPT|taskC_view|View Task C
+dev|APPT|taskC_edit|View/Edit Task C
+dev|APPT|packetABC_view|View ABC Packet
+dev|APPT|submitD_view|View Submit Task D
+dev|APPT|submitD_edit|View/Edit Submit Task D
+dev|APPT|approvalD_view|View Approval Task D
+dev|APPT|approvalD_edit|View/Edit Approval Task D
+dev|APPT|taskE_view|View Task E
+dev|APPT|taskE_edit|View/Edit Task E
+dev|APPT|taskF_view|View Task F
+dev|APPT|taskF_edit|View/Edit Task F
+dev|APPT|taskG_view|View Task G
+dev|APPT|taskG_edit|View/Edit Task G
+dev|APPT|completeZ_view|View Completion Task E
+dev|APPT|completeZ_edit|View/Edit Completion Task E
+dev|APPT|approverfp_edit|View/Edit Approve RFP
+dev|APPT|approverfp_view|View Approve RFP

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Reporting Archive</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/wf-main.css"/>
+</head>
+<body class="cv-proxy-page wf-details-page">
+<div class="container-fluid mps-body">
+	{% set context['pageHeaderTitle'] = 'Appointments' %}
+	{% include pageHeader.html %}
+	<div class="body-content cv-body cv-body-no-menu">
+        <div class="page-header clearfix">
+			<h1>
+				Reporting Archive
+				<br/>
+			</h1>
+            <p>(Note that reports older than {{str(context.get('reportpurgedays','90'))}} days will automatically be removed from the archive.)</p>
+		</div>
+		<form id="mainform" class="form-horizontal" onsubmit="return false;">
+            <div class="row">
+                <h3 class="section-header starthidden">
+                    <span class="glyphicon glyphicon-edit"></span>
+                    Some text
+                </h3>
+                <div class="cv-callout cv-callout-info cv-callout-bordered clearfix row">
+                    <div class="col-md-8">
+                        <table class="table table-condensed">
+							{% if not context.get('reports',[]) %}
+								<tr><td>There are no reports available at this time</td></tr>
+							{% else %}
+								<tr>
+									<th>Report Name</th>
+									<th>Date/Time</th>
+									<th>File Type</th>
+									<th>&nbsp;</th>
+								</tr>
+								{% for report in context.get('reports',[])%}
+									<tr>
+										<td><a href="{{ report.get('report_url') }}" target="_blank">{{ report.get('report_name','') }}</a></td>
+                                        {% if report.get('date_read','') %}
+                                            <td>{{report.get('date_created','')}}</td>
+										    <td>{{report.get('file_type','')}}</td>
+                                        {% else %}
+                                            <td><b>{{report.get('date_created','')}}</b></td>
+										    <td><b>{{report.get('file_type','')}}</b></td>
+                                        {% end %}
+										<td><a href="#" class="wf-dash-delete btn-small btn-default" data-delete="{{report.get('delete_url','')}}" title="Delete this report"><span class="glyphicon glyphicon-remove"></span></a></td>
+									</tr>
+								{% end %}
+							{% end %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+	</div>
+</div>
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+    $('body').on('click', '.wf-dash-delete', function(e){
+        var $link = $(this);
+        e.preventDefault();
+        e.stopPropagation();
+        var isSure = window.confirm('Are you sure wish to remove this report from the archive?');
+        if(isSure){
+            $.ajax({
+                url: $(this).data("delete"),
+                type: 'POST',
+                success: function(data, textStatus, xhr) {
+                    window.location.reload();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log('AJAX Error:', jqXHR, textStatus, errorThrown);
+                }
+            });
+        }
+    });
+	/*]]>*/
+</script>
+
+</body>
+</html>

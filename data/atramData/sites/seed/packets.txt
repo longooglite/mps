@@ -1,0 +1,5 @@
+# File format is pipe delimited
+#PACKET - code, description
+#GROUP - packet code, group code, group description, sequence
+#ITEM - group code, item code, sequence, is_artifact, artifact_config_dict
+#ITEM - group code, item code, sequence, is_artifact, artifact_config_dict

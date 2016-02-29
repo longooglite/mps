@@ -1,0 +1,24 @@
+#site_code|application|code|description
+
+|CV|cvView|View CV
+|CV|cvEdit|Edit CV
+|CV|cvCreate|Create CV
+|CV|cvExport|Export CV
+|CV|cvAdmin|CV Admin
+
+|APPT|apptRosterView|View Roster
+|APPT|apptAdmin|Appointment Admin
+|APPT|apptCreatePosition|Create Position
+
+
+|MPSADMIN|siteView|View Sites
+|MPSADMIN|siteEdit|Edit Sites
+|MPSADMIN|siteDelete|Delete Sites
+|MPSADMIN|prefView|View Preferences
+|MPSADMIN|prefEdit|Edit Preferences
+|MPSADMIN|roleView|View Roles
+|MPSADMIN|roleEdit|Edit Roles
+|MPSADMIN|userView|View Users
+|MPSADMIN|userEdit|Edit Users
+|MPSADMIN|userDelete|Delete Users
+|MPSADMIN|sessionView|View Sessions

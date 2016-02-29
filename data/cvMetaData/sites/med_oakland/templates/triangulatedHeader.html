@@ -1,0 +1,62 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<div class="lineitem">
+    {% set leftsubhead = [] %}
+    {% set rightsubhead = [] %}
+    {% set leftsubheadtitle = 'Department Address' %}
+    {% set righsubheadtitle = 'Hospital Address' %}
+
+    {% for subcategory in currcategory.get('subcategories',[]) %}
+        {% for row in subcategory.get('rows',[]) %}
+            {% for field in row.get('fields',[]) %}
+                {% if field.get('field_code','') in ['DemoFormalName','DemoFacultyRank','DemoTitle','DemoSchool','DemoDepartment'] %}
+                    {% set displayValue = field.get('formatted_value','') %}
+                    {% if displayValue %}
+                        {% set label = field.get('label','') + ":" if field.get('displayLabel',False) else ''%}
+                        {% set output = label + ' ' + displayValue %}
+                        {% set output = '''<div class = "singleListItem">%s</div>''' % (output) %}
+                        {% raw output %}
+                    {% end %}
+                {% else %}
+                    {% if field.get('field_code','') in ['DemoWorkPhone','DemoWorkEMail','DemoWorkEMailTwo','DemoOfficeAddress'] %}
+                        {% set leftsubhead.append(field) %}
+                    {% elif field.get('field_code','') in ['DemoHospitalAffil','DemoHospAddress']%}
+                        {% set rightsubhead.append(field) %}
+                    {% end %}
+                {% end %}
+            {% end %}
+        {% end %}
+    {% end %}
+    {% set maxlen = len(leftsubhead) %}
+    {% if len(rightsubhead) > maxlen %}
+        {% set maxlen = len(rightsubhead) %}
+    {% end %}
+</div>
+<br/>
+<br/>
+<center>
+<table width="640px">
+    <tr>
+        <td width="320" class="lineitem3" style="padding-left:5px;"><b>{{leftsubheadtitle}}</b></td>
+        <td class="lineitem3" style="padding-left:5px;"><b>{{righsubheadtitle}}</b></td>
+    </tr>
+    <tbody>
+        {% set leftvalue = u'' %}
+        {% set rightvalue = u'' %}
+        {% set index = 0 %}
+        {% while index < maxlen %}
+            {% if len(leftsubhead) >= index +1 %}
+                {% set leftvalue += leftsubhead[index].get('formatted_value','') + '<br/>' %}
+            {% end %}
+            {% if len(rightsubhead) >= index +1 %}
+                {% set rightvalue += rightsubhead[index].get('formatted_value','') + '<br/>' %}
+            {% end %}
+            {% set index+=1 %}
+        {% end %}
+        <tr>
+            <td class="lineitem3">{% raw leftvalue %}</td>
+            <td class = "lineitem3">{% raw rightvalue %}</td>
+        </tr>
+
+    </tbody>
+</table>
+</center>

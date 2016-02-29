@@ -1,0 +1,67 @@
+#   File of site-specific role/permission assignments.
+#   Use the common 'common_role_permissions.txt' file for non-site-specific data.
+
+#application|site|role|permission
+
+#   Department User
+APPT|dev|apptDeptUser|apptRosterView
+APPT|dev|apptDeptUser|apptDashboardView
+APPT|dev|apptDeptUser|apptCreatePosition
+APPT|dev|apptDeptUser|apptViewAsCandidate
+APPT|dev|apptDeptUser|apptJobActionOverview
+APPT|dev|apptDeptUser|apptCreateJobAction
+APPT|dev|apptDeptUser|apptPositionView
+APPT|dev|apptDeptUser|apptPersonView
+APPT|dev|apptDeptUser|apptCancelJobAction
+APPT|dev|apptDeptUser|apptResendEmail
+
+APPT|dev|apptDeptUser|taskA_edit
+APPT|dev|apptDeptUser|taskB_edit
+APPT|dev|apptDeptUser|taskC_edit
+APPT|dev|apptDeptUser|submitD_edit
+APPT|dev|apptDeptUser|approvalD_view
+APPT|dev|apptDeptUser|packetABC_view
+APPT|dev|apptDeptUser|taskE_edit
+APPT|dev|apptDeptUser|taskF_view
+APPT|dev|apptDeptUser|taskF_edit
+APPT|dev|apptDeptUser|taskG_edit
+APPT|dev|apptDeptUser|dept_task
+APPT|dev|apptDeptUser|approverfp_view
+APPT|dev|apptDeptUser|canViewNPIPassword
+
+
+#   Faculty Affairs User
+APPT|dev|apptFacultyAffairs|apptRosterView
+APPT|dev|apptFacultyAffairs|apptDashboardView
+APPT|dev|apptFacultyAffairs|apptCreatePosition
+APPT|dev|apptFacultyAffairs|apptViewAsCandidate
+APPT|dev|apptFacultyAffairs|apptJobActionOverview
+
+APPT|dev|apptFacultyAffairs|taskA_edit
+APPT|dev|apptFacultyAffairs|taskB_edit
+APPT|dev|apptFacultyAffairs|taskC_edit
+APPT|dev|apptFacultyAffairs|submitD_view
+APPT|dev|apptFacultyAffairs|approvalD_edit
+APPT|dev|apptFacultyAffairs|taskE_edit
+APPT|dev|apptFacultyAffairs|taskF_view
+APPT|dev|apptFacultyAffairs|taskG_edit
+APPT|dev|apptFacultyAffairs|completeZ_edit
+APPT|dev|apptFacultyAffairs|packetABC_view
+APPT|dev|apptFacultyAffairs|ofa_task
+APPT|dev|apptFacultyAffairs|apptCreateJobAction
+APPT|dev|apptFacultyAffairs|apptPositionView
+APPT|dev|apptFacultyAffairs|apptPersonView
+APPT|dev|apptFacultyAffairs|approverfp_edit
+APPT|dev|apptFacultyAffairs|apptCancelJobAction
+APPT|dev|apptFacultyAffairs|apptResendEmail
+
+#   Assistant Dean User
+
+APPT|dev|apptAssitantDean|assist_dean_task
+APPT|dev|apptAssitantDean|apptRosterView
+APPT|dev|apptAssitantDean|apptJobActionOverview
+APPT|dev|apptAssitantDean|apptDashboardView
+
+
+#   Candidate User
+APPT|dev|apptCandidate|taskF_edit

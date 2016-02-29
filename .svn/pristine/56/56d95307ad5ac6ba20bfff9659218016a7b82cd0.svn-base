@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>{{context.get('windowTitle', 'Curriculum Vitae')}}</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+	<link rel="stylesheet" type="text/css" href="/default/css/cv-pubmed-default.css"/>
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/cv-pubmed-skin.css"/>
+</head>
+
+{% set isMsg = True if len(context.get('errormessage','')) > 0 else False %}
+<body class="cv cv-import-page {{ 'cv-show-global-message' if isMsg else '' }}">
+<div class="container-fluid cv-wrap">{% include pageHeader.html %}
+<div class="cv-body-content">
+
+	<div id="pubmed-loading">
+		<span class="pubmed-loading-wrap"><img class="loaderImg" src="/{{skin}}/images/ajax_loader_gray_48.gif"/>Updating...</span>
+	</div>
+
+<form id="cvpubMed" class="form">
+	{% include ajax-hidden-fields.html %}
+	<input type="hidden" name="community" value="{{context.get('cvCommunity','')}}" />
+	<input type="hidden" name="username" value="{{context.get('cvOwner','')}}" />
+
+	{% set lastname = context.get('authorlastname','') %}
+	{% set firstname = context.get('authorfirstname','').lstrip() %}
+	{% set nbravailable = context.get('nbrAvailable','') %}
+	{% set nbrshown = context.get('nbrShown','') %}
+	{% set affiliation = context.get('affiliation','') %}
+
+	<div class="import-header clearfix">
+		<h1>{{ 'PubMed Import' }}</h1>
+		<div class="import-subhead">
+			Find, Review, and Save:
+		</div>
+	</div>
+
+	<div class="cv-menu">
+		<ul class="nav nav-stacked nav-pills">
+			<li class="cv-menuitem cv-pubmed-menuitem active" data-cv-tab-selector="cv-pubmed-search">
+				<a href="#">
+					Search &amp; Review<span class="glyphicon glyphicon-chevron-right"></span>
+				</a>
+			</li>
+			<li class="cv-menuitem cv-pubmed-menuitem" data-cv-tab-selector="cv-pubmed-mine">
+				<a href="#">Reviewed: Mine ({{len(context.get('mine',[]))}})<span class="glyphicon glyphicon-chevron-right"></span></a>
+			</li>
+			<li class="cv-menuitem cv-pubmed-menuitem" data-cv-tab-selector="cv-pubmed-notmine">
+				<a href="#">Reviewed: Not Mine ({{len(context.get('notmine',[]))}})<span class="glyphicon glyphicon-chevron-right"></span></a>
+			</li>
+		</ul>
+		<div class="save-changes">
+			<input type="button" class="btn btn-default" id="save" value="Save Changes" disabled="disabled"/>
+		</div>
+	</div>
+
+	<div class="body-content cv-body">
+
+		<div class="cv-pubmed-tab-content active cv-pubmed-search">
+			<div class="cv-pubmed-search-bar row clearfix form-inline">
+				<div class="form-group">
+				  <label for="authorlastname" class="">Last Name:</label>
+				  <input type="text" class="form-control" id="authorlastname" name="authorlastname" value="{{ lastname }}" maxlength="50" placeholder="Author Last Name"/>
+				</div>
+				<div class="form-group">
+				  <label for="authorfirstname" class="">First Name:</label>
+				  <input type="text" class="form-control" id="authorfirstname" name="authorfirstname" value="{{ firstname }}" maxlength="50" placeholder="Author First Name"/>
+				</div>
+				<div class="form-group">
+				  <label for="affiliation" class="">Affiliation:</label>
+				  <input type="text" class="form-control" id="affiliation" name="affiliation" value="{{ affiliation }}" maxlength="250" placeholder="Affiliation"/>
+				</div>
+				<div class="form-group last-group">
+				  	<label class="">&nbsp;</label>
+					<input type="button" class="btn btn-sm btn-primary" id="submitamundo" value="Search"/>
+				</div>
+				<div class="form-group">
+					{% if nbravailable <> "" %}
+						<label class="nbravailable">{{nbrshown}} results, {{nbravailable}} remaining: <!-- for {{lastname}}, {{firstname}}. --></label>
+					{% end %}
+					{% if nbrshown <> "" %}
+						<input type="button" class="btn btn-sm btn-primary" id="moreamundo" value="Next 25 Results..."/>
+					{% end %}
+				</div>
+			</div>
+
+			<h4>Search Results Not Yet Reviewed:</h4>
+			{% if len(context.get('notreviewed',[])) <> 0 %}
+				<table>
+					<thead>
+						<tr>
+							<td>Authorship</td>
+							<td>Synopsis</td>
+						</tr>
+					</thead>
+					<tbody>
+					{% for book in context.get('notreviewed',[]) %}
+						{% set radidioname = "cv_publicationstatus_" + book.get('uid','') %}
+						{% set categoryListName = "cv_publicationtype_" + book.get('uid','') %}
+
+						<tr>
+							<td class="import-btn-group">
+								<div class="btn-group" role="group" aria-label="Authorship">
+								  <button type="button" class="btn btn-default import-mine">Mine</button>
+								  <button type="button" class="btn btn-default import-notmine">Not Mine</button>
+								</div>
+								<div class="starthidden">
+									<input type="radio" name="{{ radidioname }}" value="notreviewed" checked="checked" />
+									<input type="radio" name="{{ radidioname }}" value="mine"/>
+									<input type="radio" name="{{ radidioname }}" value="notmine"/>
+								</div>
+							</td>
+							<td class="">
+								<select class="starthidden" name="{{categoryListName}}">
+								  {% for puboption in context.get('pubcategories','') %}
+										<option value="{{ puboption.get('code','') }}">{{ puboption.get('descr','') }}</option>
+								  {% end %}
+								</select>
+								<span class="synopsis">
+									{% if book.get('pubauthornames','') != '' %}{{ book.get('pubauthornames','') }}.{% end %}
+									{{ book.get('pubtitle','') }}
+									<em>{{ book.get('pubfulljournalname','') }}</em><br/>
+									{% if book.get('pubdate','') != '' %}{{ book.get('pubdate','') }}; {% end %}
+									{% if book.get('pubvolume','') != '' or book.get('pubissue','') != '' %}{{ book.get('pubvolume','') }}{% if book.get('pubissue','') != '' %}({{ book.get('pubissue','') }}){% end %}:{% end %}
+									{% if book.get('pubpages','') != '' %}{{ book.get('pubpages','') }}.{% end %}
+									{{ book.get('pubid','') }}
+								</span>
+							</td>
+						</tr>
+					{% end %}
+					</tbody>
+				</table>
+			{% else %}
+				Use the Search Form above to find your publications...
+			{% end %}
+
+		</div>
+		<div class="cv-pubmed-tab-content cv-pubmed-mine">
+				<h4>Mine</h4>
+				{% if len(context.get('mine',[])) <> 0 %}
+				<table>
+					<thead>
+						<tr>
+							<td>Authorship</td>
+							<td>Synopsis</td>
+							<td>&nbsp;</td>
+						</tr>
+					</thead>
+					<tbody>
+					{% for book in context.get('mine',[]) %}
+						{% set radidioname = "cv_publicationstatus_" + book.get('uid','') %}
+						{% set categoryListName = "cv_publicationtype_" + book.get('uid','') %}
+
+						<tr>
+							<td class="import-btn-group">
+								<div class="btn-group" role="group" aria-label="Authorship">
+								  <button type="button" class="btn btn-default import-mine active">Mine</button>
+								  <button type="button" class="btn btn-default import-notmine">Not Mine</button>
+								</div>
+								<div class="starthidden">
+									<input type="radio" name="{{ radidioname }}" value="notreviewed" />
+									<input type="radio" name="{{ radidioname }}" value="mine" checked="checked" />
+									<input type="radio" name="{{ radidioname }}" value="notmine"/>
+								</div>
+							</td>
+							<td class="">
+								<select name="{{categoryListName}}">
+								  {% for puboption in context.get('pubcategories','') %}
+										<option value="{{ puboption.get('code','') }}" {% if puboption.get('code','') == book.get('cvpublication_category', '') %} selected="selected"{% end %}>{{ puboption.get('descr','') }}</option>
+								  {% end %}
+								</select>
+								<span class="synopsis">
+									{% if book.get('pubauthornames','') != '' %}{{ book.get('pubauthornames','') }}.{% end %}
+									{{ book.get('pubtitle','') }}
+									<em>{{ book.get('pubfulljournalname','') }}</em><br/>
+									{% if book.get('pubdate','') != '' %}{{ book.get('pubdate','') }}; {% end %}
+									{% if book.get('pubvolume','') != '' or book.get('pubissue','') != '' %}{{ book.get('pubvolume','') }}{% if book.get('pubissue','') != '' %}({{ book.get('pubissue','') }}){% end %}:{% end %}
+									{% if book.get('pubpages','') != '' %}{{ book.get('pubpages','') }}.{% end %}
+									{{ book.get('pubid','') }}
+								</span>
+							</td>
+							<td><a href="#" class="unmark-btn btn btn-default btn-xs" title="Unmark this item: After you Save Changes it will not appear in Mine or Not Mine lists, and will re-appear in Search Results."><span class="glyphicon glyphicon-remove"></span></a></td>
+						</tr>
+					{% end %}
+					</tbody>
+				</table>
+				{% else %}
+					No items currently marked 'Mine' (previously saved publications may have already been moved to your CV Publications lists).
+				{% end %}
+
+		</div>
+		<div class="cv-pubmed-tab-content cv-pubmed-notmine">
+
+				<h4>Not Mine</h4>
+				{% if len(context.get('notmine',[])) <> 0 %}
+				<table>
+					<thead>
+						<tr>
+							<td>Authorship</td>
+							<td>Synopsis</td>
+							<td>&nbsp;</td>
+						</tr>
+					</thead>
+					<tbody>
+					{% for book in context.get('notmine',[]) %}
+						{% set radidioname = "cv_publicationstatus_" + book.get('uid','') %}
+						{% set categoryListName = "cv_publicationtype_" + book.get('uid','') %}
+
+						<tr>
+							<td class="import-btn-group">
+								<div class="btn-group" role="group" aria-label="Authorship">
+								  <button type="button" class="btn btn-default import-mine">Mine</button>
+								  <button type="button" class="btn btn-default import-notmine active">Not Mine</button>
+								</div>
+								<div class="starthidden">
+									<input type="radio" name="{{ radidioname }}" value="notreviewed" />
+									<input type="radio" name="{{ radidioname }}" value="mine"/>
+									<input type="radio" name="{{ radidioname }}" value="notmine" checked="checked" />
+								</div>
+							</td>
+							<td>
+								<select class="starthidden" name="{{categoryListName}}">
+								  {% for puboption in context.get('pubcategories','') %}
+										<option value="{{ puboption.get('code','') }}">{{ puboption.get('descr','') }}</option>
+								  {% end %}
+								</select>
+								<span class="synopsis">
+									{% if book.get('pubauthornames','') != '' %}{{ book.get('pubauthornames','') }}.{% end %}
+									{{ book.get('pubtitle','') }}
+									<em>{{ book.get('pubfulljournalname','') }}</em><br/>
+									{% if book.get('pubdate','') != '' %}{{ book.get('pubdate','') }}; {% end %}
+									{% if book.get('pubvolume','') != '' or book.get('pubissue','') != '' %}{{ book.get('pubvolume','') }}{% if book.get('pubissue','') != '' %}({{ book.get('pubissue','') }}){% end %}:{% end %}
+									{% if book.get('pubpages','') != '' %}{{ book.get('pubpages','') }}.{% end %}
+									{{ book.get('pubid','') }}
+								</span>
+							</td>
+							<td><a href="#" class="unmark-btn btn btn-default btn-xs" title="Unmark this item: After you Save Changes it will not appear in Mine or Not Mine lists, and will re-appear in Search Results."><span class="glyphicon glyphicon-remove"></span></a></td>
+						</tr>
+					{% end %}
+					</tbody>
+				</table>
+				{% else %}
+				No items are marked 'Not Mine' on the current Search Result.
+			{% end %}
+		</div>
+
+    </div>
+
+	</form>
+    </div>
+</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+{% include cv-js.html %}
+<script type="text/javascript" src="/default/js/cvapp.externalData.js"></script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

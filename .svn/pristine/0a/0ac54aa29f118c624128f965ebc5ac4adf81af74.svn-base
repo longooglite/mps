@@ -1,0 +1,5 @@
+[
+{"descr":"Norman's RFP","source_jaId":100,"taskcodes":["rfp"]},
+{"descr":"Norman's taskA, taskB","source_jaId":100,"taskcodes":["taskA","taskB"]},
+{"descr":"Norman's Personal Info","source_jaId":100,"taskcodes":["taskF"]}
+]

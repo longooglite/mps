@@ -1,0 +1,47 @@
+<span class="title category-title">{{ categorydescr }}</span>
+    <div  class="subcategory"><span class="title subcategory-title">{{ subcategorydescr }}</span>
+        {% set rowList = currsubcategory.get('rows',[]) %}
+        <ol class="numberedlist">
+
+            {% for row in rowList %}
+            {% set fieldList = row.get('fields',[]) %}
+            {% set sponsorName = ''%}
+            {% set grantTitle = ''%}
+            {% set startDate = ''%}
+            {% set endDate = ''%}
+            {% set firstAmt = ''%}
+            {% set grantShare = ''%}
+            {% set grantPIName = ''%}
+            {% set grantGSRA = ''%}
+
+            {% for field in fieldList %}
+            {% if field.get('field_code','') in ['PGrantSponsorName','CGrantSponsorName','DGrantSponsorName'] %}
+            {% set sponsorName = field.get('formatted_value','') %}
+            {% elif field.get('field_code','') in ['PGrantTitle','CGrantTitle','DGrantTitle'] %}
+            {% set grantTitle = field.get('formatted_value','') %}
+            {% elif field.get('field_code','') in ['PGrantStart','CGrantStart','DGrantDate'] %}
+            {% set startDate = field.get('formatted_value','') %}
+            {% elif field.get('field_code','') in ['PGrantEnd','CGrantEnd','DGrantEnd'] %}
+            {% set endDate = field.get('formatted_value','') %}
+            {% elif field.get('field_code','') in ['PGrantFirstAmt','CGrantFirstAmt','DGrantFirstAmt'] %}
+            {% set firstAmt = field.get('formatted_value','') %}
+            {% elif field.get('field_code','') in ['PGrantShare','CGrantShare','DGrantShare'] %}
+            {% set grantShare = field.get('formatted_value','') %}
+            {% elif field.get('field_code','') in ['PGrantPIName','CGrantPIName','DGrantPIName'] %}
+            {% set grantPIName = field.get('formatted_value','').replace('<br/>',' ') %}
+            {% elif field.get('field_code','') in ['PGrantGSRANumber','CGrantGSRANumber','DGrantGSRANumber'] %}
+            {% set grantGSRA = field.get('formatted_value','') %}
+            {% end %}
+
+            {% end %}
+
+            {%if subcategory_code == 'PendingGrantsContracts' %}
+            {% set output = '''<i>%s</i>, "%s," %s, Total: %s, %s. Candidate's Share: %s. Supported %s''' % (sponsorName,grantTitle,startDate,firstAmt,grantPIName,grantShare,grantGSRA) %}
+            {% else %}
+            {% set output = '''<i>%s</i>, "%s," %s - %s, Total: %s, %s. Candidate's Share: %s. Supported %s''' % (sponsorName,grantTitle,startDate,endDate,firstAmt,grantPIName,grantShare,grantGSRA) %}
+            {% end %}
+            <li>{% raw output %}</li>
+            {% end %}
+        </ol>
+
+    </div>

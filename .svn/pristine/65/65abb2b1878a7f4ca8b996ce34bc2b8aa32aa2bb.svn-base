@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>{{context.get('windowTitle', '')}}</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+	<style>
+		.wf-radio-padding { padding-top: 7px; padding-right: 5px; }
+	</style>
+</head>
+
+{% set mode = context.get('mode', '') %}
+{% set isAdd = (mode != 'edit') %}
+{% set question = context.get('question', {}) %}
+{% set questionId = question.get('id', 0) %}
+
+{% set isMsg = True if len(context.get('errormessage','')) > 0 else False %}
+<body class="{{ 'cv-show-global-message' if isMsg else '' }} cv-proxy-page mps-admin-page">
+	<div class="container-fluid mps-body">
+		{% include pageHeader.html %}
+		<div class="body-content cv-body cv-body-no-menu">
+			<div class="page-header clearfix">
+				<div class="page-header-controls">
+					<button class="cvHelpButton btn btn-sm btn-default">
+						<span class="glyphicon glyphicon-question-sign"></span>Help...
+					</button>
+					<button class="btn btn-sm btn-primary saveQuestionBtn">
+						<span class="glyphicon glyphicon-floppy-disk"></span> <span>Save Changes...</span>
+					</button>
+				</div>
+				<h1>
+					Form Questions<br/>
+					<small>
+						<a href="/{{context.get('appUriPrefix','')}}/uber/questions" class="cv-head-bread">All Questions</a><span class="cv-head-bread-sep">/</span>
+						<span class="cv-head-bread-leaf">{% if isAdd %}New Question{% else %}{{ question.get('descr','') }}{% end %}</span>
+					</small>
+				</h1>
+			</div>
+
+			<form id="questiondetailform" class="form-horizontal">
+				{% include ajax-hidden-fields.html %}
+				<input type="hidden" name="mode" value="{{mode}}" />
+				{% if not isAdd %}
+					<input type="hidden" name="questionId" value="{{questionId}}" />
+				{% end %}
+
+				<div class="row">
+					<div class="col-md-6 cv-user-form">
+						<h3 class="section-header">
+							<span class="glyphicon glyphicon-edit"></span>
+							Question Settings:
+						</h3>
+
+						<div class="cv-callout cv-callout-info cv-callout-bordered clearfix mps-skin-border">
+							<h4>Identity:</h4><br/>
+							<div class="clearfix form-row">
+								<label for="code" class="col-xs-3 control-label">* Code:</label>
+								<div class="col-xs-8">
+									{% set originalCode = question.get('code', '') %}
+									<input type="hidden" name="original_code" value="{{originalCode}}" />
+									<input type="text" class="form-control" id="code" name="code" value="{{originalCode}}" placeholder="Unique question/option/group code">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="descr" class="col-xs-3 control-label">* Description:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="descr" name="descr" value="{{question.get('descr', '')}}">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="display_text" class="col-xs-3 control-label">Display Text:</label>
+								<div class="col-xs-8">
+									<textarea class="form-control" id="display_text" name="display_text" rows="3">{{question.get('display_text', '')}}</textarea>
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="header_text" class="col-xs-3 control-label">Header Text:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="header_text" name="header_text" value="{{question.get('header_text', '')}}">
+								</div>
+							</div>
+						</div>
+
+						<div class="cv-callout cv-callout-info cv-callout-bordered clearfix mps-skin-border">
+							<h4>Behavior:</h4>
+							<div class="clearfix form-row">
+								<label for="required" class="col-xs-3 control-label">* Required:</label>
+								<div class="col-xs-8">
+									{% set trueChecked = 'checked' if question.get('required', False) else '' %}
+									{% set falseChecked = 'checked' if not question.get('required', False) else '' %}
+									<label class="wf-radio-padding"><input type="radio" name="required" value="true" {{trueChecked}}> Yes</label>
+									<label class="wf-radio-padding"><input type="radio" name="required" value="false" {{falseChecked}}> No</label>
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="wrap" class="col-xs-3 control-label">* Wrap:</label>
+								<div class="col-xs-8">
+									{% set trueChecked = 'checked' if question.get('wrap', False) else '' %}
+									{% set falseChecked = 'checked' if not question.get('wrap', False) else '' %}
+									<label class="wf-radio-padding"><input type="radio" name="wrap" value="true" {{trueChecked}}> Yes</label>
+									<label class="wf-radio-padding"><input type="radio" name="wrap" value="false" {{falseChecked}}> No</label>
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="encrypt" class="col-xs-3 control-label">* Encrypt:</label>
+								<div class="col-xs-8">
+									{% set trueChecked = 'checked' if question.get('encrypt', False) else '' %}
+									{% set falseChecked = 'checked' if not question.get('encrypt', False) else '' %}
+									<label class="wf-radio-padding"><input type="radio" name="encrypt" value="true" {{trueChecked}}> Yes</label>
+									<label class="wf-radio-padding"><input type="radio" name="encrypt" value="false" {{falseChecked}}> No</label>
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="data_type" class="col-xs-3 control-label">* Data Type:</label>
+								<div class="col-xs-4">
+									<select class="form-control" id="data_type" name="data_type">
+										<option value="" disabled selected>Select</option>
+										{% for option in context.get('dataTypes', []) %}
+											{% set optionCode = option.get('code','') %}
+											{% set selected = 'selected' if question.get('data_type', '') == optionCode else '' %}
+											<option value="{{optionCode}}" {{selected}}>{{ option.get('descr','') }}</option>
+										{% end %}
+									</select>
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="data_type_attributes" class="col-xs-3 control-label">Data Type Attributes:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="data_type_attributes" name="data_type_attributes" value="{{question.get('data_type_attributes', '')}}">
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<h3 class="section-header">
+							&nbsp;
+						</h3>
+
+						<div class="cv-callout cv-callout-info cv-callout-bordered clearfix mps-skin-border">
+							<h4>Size and Placement:</h4><br/>
+							<div class="clearfix form-row">
+								<label for="cols_offset" class="col-xs-3 control-label">* Offset Columns:</label>
+								<div class="col-xs-2">
+									<input type="text" class="form-control" id="cols_offset" name="cols_offset" value="{{question.get('cols_offset', '')}}" placeholder="0">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="cols_label" class="col-xs-3 control-label">* Label Columns:</label>
+								<div class="col-xs-2">
+									<input type="text" class="form-control" id="cols_label" name="cols_label" value="{{question.get('cols_label', '')}}" placeholder="2">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="cols_prompt" class="col-xs-3 control-label">* Prompt Columns:</label>
+								<div class="col-xs-2">
+									<input type="text" class="form-control" id="cols_prompt" name="cols_prompt" value="{{question.get('cols_prompt', '')}}" placeholder="8">
+								</div>
+							</div>
+						</div>
+
+						<div class="cv-callout cv-callout-info cv-callout-bordered clearfix mps-skin-border">
+							<h4>Accessibility:</h4>
+							{% set maxJobActionTypes = context.get('maxJobActionTypes', 5) %}
+							{% set jobActionTypeBreakout = question.get('jobActionTypeBreakout', []) %}
+							{% set typeIdx = 0 %}
+							{% for jaType in jobActionTypeBreakout %}
+								{% set typeIdx = typeIdx + 1 %}
+							{% end %}
+
+							{% set jaTypeNameBase = 'job_action_type_' %}
+							<div class="clearfix form-row">
+								{% set controlName = jaTypeNameBase + '1' %}
+								<label for="{{controlName}}" class="col-xs-3 control-label">Job Action Types:</label>
+								<div class="col-xs-8">
+									<select class="form-control" id="{{controlName}}" name="{{controlName}}">
+										<option value="" disabled selected>Select</option>
+										{% for option in context.get('jobActionTypes', []) %}
+											{% set optionCode = option.get('code','') %}
+											{% set selected = 'selected' if jobActionTypeBreakout[0] == optionCode else '' %}
+											<option value="{{optionCode}}" {{selected}}>{{ option.get('descr','') }}</option>
+										{% end %}
+									</select>
+								</div>
+							</div>
+
+							{% for idx in range(2, 1 + maxJobActionTypes) %}
+								{% set controlName = jaTypeNameBase + str(idx) %}
+								<div class="clearfix form-row">
+									<div class="col-xs-offset-3 col-xs-8">
+										<select class="form-control" id="{{controlName}}" name="{{controlName}}">
+											<option value="" disabled selected>Select</option>
+											{% for option in context.get('jobActionTypes', []) %}
+												{% set optionCode = option.get('code','') %}
+												{% set selected = 'selected' if jobActionTypeBreakout[idx-1] == optionCode else '' %}
+												<option value="{{optionCode}}" {{selected}}>{{ option.get('descr','') }}</option>
+											{% end %}
+										</select>
+									</div>
+								</div>
+							{% end %}
+
+							<div class="clearfix form-row">
+								<label for="identifier_code" class="col-xs-3 control-label">Identifier Code:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="identifier_code" name="identifier_code" value="{{question.get('identifier_code', '')}}">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="show_codes" class="col-xs-3 control-label">Show Codes:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="show_codes" name="show_codes" value="{{question.get('show_codes', '')}}">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="hide_codes" class="col-xs-3 control-label">Hide Codes:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="hide_codes" name="hide_codes" value="{{question.get('hide_codes', '')}}">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-12">
+						<h3 class="section-header">
+							<span class="glyphicon glyphicon-edit"></span>
+							Associated Options:
+						</h3>
+
+						<div class="cv-callout cv-callout-info cv-callout-bordered clearfix mps-skin-border">
+							<h4>Options are only applicable for Data Types:</h4>
+							<h5>Radio, Dropdown, and Multi-select Dropdown</h5>
+							<div class="col-xs-12">
+								<table class="table table-striped cv-data-table CVtable-bordered table-condensed ui-sortable ui-sortable-form">
+									<thead>
+										<tr>
+											<th class="cvReorderHead">
+												<a href="#" data-toggle="tooltip" data-placement="right"
+												   data-original-title="The options in this list may be moved Up and Down to set the order they will appear."
+													><span class="glyphicon glyphicon-question-sign"></span>
+												</a>
+											</th>
+											<th>Option</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% set idx = 0 %}
+										{% for optionDict in question.get('optionList',[]) %}
+											{% set idx = idx + 1 %}
+											<tr class="{{ 'item ui-sortable-handle' }}" data-item-id="{{optionDict.get('code','')}}" >
+												<td class="cvReorderRow">
+													<a href="#" class="cvReorder cvReorderUp"><span class="glyphicon glyphicon-sm glyphicon-chevron-up"></span></a><br/>
+													<a href="#" class="cvDragHandle"><span class="glyphicon glyphicon-align-justify"></span></a><br/>
+													<a href="#" class="cvReorder cvReorderDown"><span class="glyphicon glyphicon-sm glyphicon-chevron-down"></span></a>
+												</td>
+												<td>
+													<div class="form-row col-md-12">
+														<input type="hidden" name="option_sequence" value="{{str(idx)}}" />
+														{% if not isAdd %}
+															{% set identifier = 'option_id_' + str(idx) %}
+															<input type="hidden" name="{{identifier}}" value="{{str(optionDict.get('id', '0'))}}" />
+														{% end %}
+														<div class="form-row col-md-6">
+															<div class="clearfix form-row">
+																{% set identifier = 'option_code_' + str(idx) %}
+																<label for="code" class="col-xs-3 control-label">* Code:</label>
+																<div class="col-xs-9">
+																	{% set originalCode = optionDict.get('code', '') %}
+																	{% set originalCodeIdentifier = 'original_option_code_' + str(idx) %}
+																	<input type="hidden" name="{{originalCodeIdentifier}}" value="{{originalCode}}" />
+																	<input type="text" class="form-control" id="{{identifier}}" name="{{identifier}}" value="{{originalCode}}" placeholder="Unique question/option/group code">
+																</div>
+															</div>
+
+															<div class="clearfix form-row">
+																{% set identifier = 'option_descr_' + str(idx) %}
+																<label for="descr" class="col-xs-3 control-label">* Description:</label>
+																<div class="col-xs-9">
+																	<input type="text" class="form-control" id="{{identifier}}" name="{{identifier}}" value="{{optionDict.get('descr', '')}}">
+																</div>
+															</div>
+
+															<div class="clearfix form-row">
+																{% set identifier = 'option_display_text_' + str(idx) %}
+																<label for="descr" class="col-xs-3 control-label">Display Text:</label>
+																<div class="col-xs-9">
+																	<input type="text" class="form-control" id="{{identifier}}" name="{{identifier}}" value="{{optionDict.get('display_text', '')}}">
+																</div>
+															</div>
+														</div>
+														<div class="form-row col-md-6">
+															<div class="clearfix form-row">
+																{% set identifier = 'option_show_codes_' + str(idx) %}
+																<label for="show_codes" class="col-xs-3 control-label">Show Codes:</label>
+																<div class="col-xs-9">
+																	<input type="text" class="form-control" id="{{identifier}}" name="{{identifier}}" value="{{optionDict.get('show_codes', '')}}">
+																</div>
+															</div>
+
+															<div class="clearfix form-row">
+																{% set identifier = 'option_hide_codes_' + str(idx) %}
+																<label for="hide_codes" class="col-xs-3 control-label">Hide Codes:</label>
+																<div class="col-xs-9">
+																	<input type="text" class="form-control" id="{{identifier}}" name="{{identifier}}" value="{{optionDict.get('hide_codes', '')}}">
+																</div>
+															</div>
+														</div>
+													</div>
+												</td>
+											</tr>
+										{% end %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+<script type="text/javascript" src="/{{skin}}/js/wf.core.js"></script>
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	$('.saveQuestionBtn').on('click', function(event){
+		var $body = $('.cv-user-form');
+		var $form = $('#questiondetailform')
+		cvApp.ubiquitousPageRequest({
+			url: '/{{context.get('appUriPrefix','')}}/uber/questions/save',
+			data: JSON.stringify($form.serializeObject()),
+			success: function(data, textStatus, xhr){
+				wfApp._WF_commonErrorHandler($form, data, textStatus, xhr);
+			}
+		});
+	});
+
+	/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

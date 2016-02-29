@@ -1,0 +1,30 @@
+# Site-specific overrides and settings only.
+#sitecode|code|value
+med-oakland|skin|default
+med-oakland|auth|LDAP
+med-oakland|authpassreqd|yes
+med-oakland|dbname|med-oakland
+med-oakland|sessionidletimeoutmilliseconds|60000000
+med-oakland|pubmedmappingfile|/data/cvMetaData/sites/med_oakland/pubmedmapping.txt
+med-oakland|pcncreationmethod|manual
+
+med-oakland|ldapurl|ldaps://ldap.oakland.edu:636/
+med-oakland|ldappattern|uid=%s,dc=oakland,dc=edu
+med-oakland|ldapsearchusername|bindmountainpass
+med-oakland|ldapsearchpassword|L!GK4Y8rEuLwbXeCaPRV6$
+
+# Real Production settings should probably be:
+#med-oakland|auth|LDAP
+#med-oakland|authpassreqd|yes
+#med-oakland|ldapurl|
+#med-oakland|ldappattern|
+#med-oakland|ldapsearchusername|
+#med-oakland|ldapsearchpassword|
+#med-oakland|ldapurl_oakland|ldaps://ldap.oakland.edu:636/
+#med-oakland|ldappattern_oakland|uid=%s,dc=oakland,dc=edu
+#med-oakland|ldapsearchusername_oakland|bindmountainpass
+#med-oakland|ldapsearchpassword_oakland|L!GK4Y8rEuLwbXeCaPRV6$
+#med-oakland|ldapurl_beaumont|ldaps://ldap.something.edu:636/
+#med-oakland|ldappattern_beaumont|uid=%s,dc=something,dc=somethingelse,dc=edu
+#med-oakland|ldapsearchusername_beaumont|tbd
+#med-oakland|ldapsearchpassword_beaumont|tbd

@@ -1,0 +1,12 @@
+#site|community|username|password|first name|last name|email|auth_override|active
+accept-umich|default|mpsadmin|794a456c525ced6cc4c37f9212e5d98da43eff39284a891c31237a8fd0e326a2|MPS|Administrator|greg.poth@mountainpasssolutions.com|MPS|true
+accept-umich|default|mpsguru|f6b264a6fccbf2fc706f27aa39e192a284ef31fa57f05a9a7a8c03fc60ee6d58|MPS|Guru|greg.poth@mountainpasssolutions.com|MPS|true
+accept-umich|default|dept1|794a456c525ced6cc4c37f9212e5d98da43eff39284a891c31237a8fd0e326a2|Department|User 1|chris.king@mountainpasssolutions.com|MPS|true
+accept-umich|default|dept2|794a456c525ced6cc4c37f9212e5d98da43eff39284a891c31237a8fd0e326a2|Department|User 2|chris.king@mountainpasssolutions.com|MPS|true
+accept-umich|default|dept3|794a456c525ced6cc4c37f9212e5d98da43eff39284a891c31237a8fd0e326a2|Department|User 3|chris.king@mountainpasssolutions.com|MPS|true
+accept-umich|default|ofa|794a456c525ced6cc4c37f9212e5d98da43eff39284a891c31237a8fd0e326a2|Faculty Affairs|User|chris.king@mountainpasssolutions.com|MPS|true
+accept-umich|default|ofaadmin|794a456c525ced6cc4c37f9212e5d98da43eff39284a891c31237a8fd0e326a2|Faculty Affairs|Administrator|chris.king@mountainpasssolutions.com|MPS|true
+accept-umich|default|mss|794a456c525ced6cc4c37f9212e5d98da43eff39284a891c31237a8fd0e326a2|MSS|User|mss@mps.edu|MPS|true
+accept-umich|default|enrollment|794a456c525ced6cc4c37f9212e5d98da43eff39284a891c31237a8fd0e326a2|Enrollment|User|enrollment@mps.edu|MPS|true
+
+# passwords for all users (except mpsguru) are 'umich2015'

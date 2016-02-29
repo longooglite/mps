@@ -1,0 +1,239 @@
+sudo easy_install pip
+Install Homebrew (see http://brew.sh)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+python 2.7 on dev machines.
+We run python 2.6 on the Cent OS production environments, so all code must be 2.6-compliant.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+pytz 2014.10
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+tornado 4.0.2
+https://pypi.python.org/pypi/tornado
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+nginx 1.7.9
+http://nginx.org/en/download.html
+see nginXInstall.txt
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+postgres 8.4.x
+http://www.postgresql.org/
+see postgresInstall.txt
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+PyPDF2 1.24
+pip install and easy_install did not work for me for PyPDF2.
+The files downloaded, the code compiled without error and the egg was and installed into site_packages.
+However, once installed, it would not import into python.
+This worked...
+
+download from https://pypi.python.org/pypi/PyPDF2/1.24
+tar -xvf PyPDF2-1.24.tar
+cd PyPDF2-1.24
+python setup.py build
+sudo python setup.py install
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+wkhtmltopdf is licensed under GNU LESSER GENERAL PUBLIC LICENSE. It is used to transform html and css into PDF.
+We're using it as a pre-compiled executable, unmodified, that we call through a subprocess in python.
+In other words, it’s external to to the python code base, is installed as a separate application, and is executed via the command line interface.
+It is our understanding of the LGPL license that this usage is allowed 2/3/2015
+
+binaries located at
+http://wkhtmltopdf.org/downloads.html
+Also, the source can be downloaded and compiled.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+python-ldap
+only required to be installed when you actually attempt to authenticate using LDAP
+
+sudo pip install python-ldap
+
+on eric's machine:
+
+pip install python-ldap \
+   --global-option=build_ext \
+   --global-option="-I$(xcrun --show-sdk-path)/usr/include/sasl"
+
+python-ldap on Ubuntu requires:
+$ sudo apt-get install python-dev libldap2-dev libsasl2-dev libssl-dev
+$ sudo pip install python-ldap
+[via http://stackoverflow.com/questions/4768446/python-cant-install-python-ldap]
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#on a mac, in order to send emails, run:
+sudo launchctl start org.postfix.master
+
+The default postfix configuration only runs the server for 60 seconds.
+A way to fix this (summarized below) can be found at: http://apple.stackexchange.com/questions/32228/whats-the-correctly-way-to-make-postfix-run-permanently-on-lion-not-server
+
+1) Remove the following two elements from /System/Library/LaunchDaemons/org.postfix.master.plist:
+
+<string>-e</string>
+<string>60</string>
+This will stop it exiting after 60 seconds.
+
+2) Add the following element as a child of the <dict>...</dict> element in the same plist file:
+
+<key>KeepAlive</key>
+<true/>
+
+Resulting file on Greg's machine looked like this:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>org.postfix.master</string>
+	<key>Program</key>
+	<string>/usr/libexec/postfix/master</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>master</string>
+	</array>
+	<key>QueueDirectories</key>
+	<array>
+		<string>/var/spool/postfix/maildrop</string>
+	</array>
+	<key>AbandonProcessGroup</key>
+	<true/>
+	<key>KeepAlive</key>
+	<true/>
+</dict>
+</plist>
+
+3) Reload the file:
+
+cd /System/Library/LaunchDaemons
+sudo launchctl unload org.postfix.master.plist
+sudo launchctl load org.postfix.master.plist
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To override the To Address of every email sent from your dev box, add a CAR_EMAILTO environment variable in your
+~/.bash_profile file. For example, the following sends all emails to Greg:
+
+export CAR_EMAILTO=greg.poth@mountainpasssolutions.com
+
+This works in the PyCharm debugger too, but you must be sure to update your ~/.bash_profile *BEFORE* launching
+PyCharm, as PyCharm appears to load the environment variables at program launch.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+PyCrypto - AES encryption v2.6.1
+On Mac:
+https://pypi.python.org/pypi/pycrypto
+python setup.py build
+sudo python setup.py install
+
+On Centos:
+tar -xvf pycrypto-2.6.1.tar.gz
+cd pycrypto-2.6.1
+python setup.py build
+sudo python setup.py install
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ReportLab 3.2.0
+
+sudo easy_install reportlab
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+MonthDelta-1.0b0
+
+on Mac and CentOS
+sudo easy_install monthdelta
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+fdfgen 0.12.0
+
+this worked on Mac
+sudo pip install git+https://github.com/ccnmtl/fdfgen.git
+
+this worked on CentOS
+
+sudo easy_install fdfgen
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+pdftk
+
+installers for MacOS and CentOS at https://www.pdflabs.com/tools/pdftk-server/
+
+for CentOS - download installer, ftp to server
+
+...install this dependency
+sudo yum install libgcj
+
+...then install the rpm you uploaded
+sudo rpm -i pdftk-2.02-1.el6.x86_64.rpm
+
+good luck RIDER!
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To use MPSAdmin's Database Dump/Restore screens on your local machine, you'll need to manually create the
+dump folder specified in MPSAdmin config.json, and change yourself to be the owner:
+
+$ sudo mkdir /usr/local/mpsDatabases
+$ sudo chown gpoth /usr/local/mpsDatabases/
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+python-pip
+CentOS
+sudo rpm -ivh http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
+sudo yum install -y python-pip
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Pillow
+
+#image scaling tested with jpg, gif, png, tiff, bmp
+
+Mac
+
+Install jpeg image library
+    brew install libtiff libjpeg webp littlecms
+    sudo pip uninstall Pillow
+    sudo pip install Pillow
+
+CentOS
+sudo yum install zlib-devel
+sudo yum install libjpeg-devel
+sudo yum install libtiff-devel
+sudo pip uninstall Pillow
+sudo pip install Pillow
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+python-dateutil 2.4.2
+
+https://pypi.python.org/pypi/python-dateutil
+
+Mac & CentOS
+python setup.py build
+sudo python setup.py install
+
+Add the following lines to /etc/hosts
+127.0.0.1	mps-car.com
+127.0.0.1	umms.mps-car.com
+reboot
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pygal 2.0.0
+http://www.pygal.org/
+
+Mac & CentOS
+sudo pip install pygal

@@ -1,0 +1,5 @@
+#code|descr|is_external|is_arms_length|requires_approval
+AL_EXTERNAL|External Arm's Length|True|True|True
+AL_INTERNAL|Local Arm's Length|True|False|True
+NAL_EXTERNAL|Non Arm's Length - External|False|True|False
+NAL_INTERNAL|Non Arm's Length - Internal|False|False|False

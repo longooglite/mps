@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <h3><b><center>NEW APPOINTMENT RECOMMENDATION</center></center></h3>
+    <p>
+        <b><center>Grteg Ptoohie</center></center>
+        <b><center>Perfessor of Nuttin</center></center>
+        <b><center>Internal Patooey</center></center>
+        <b><center>Large Mouthed Bass</center></center>
+    </p>
+    <hr>
+    <center>
+    <table>
+        <tr><td width="420px">Transmittal Letter</td><td width="80px">2</td></tr>
+        <tr><td width="420px">Form B</td><td width="80px">3</td></tr>
+
+    </table>
+       </center>
+</body>
+</html>

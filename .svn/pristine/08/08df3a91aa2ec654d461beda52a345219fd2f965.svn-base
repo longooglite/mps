@@ -1,0 +1,48 @@
+#   common_roles.txt
+#
+#   File of commmon roles.
+#   These are standard roles that we want in every site database.
+#   Use the site-specific 'role.txt' files for site-specific roles.
+
+#   CV
+
+#site|application|code|descr
+|CV|cvAdmin|CV Administrator
+|CV|cvEditor|CV Editor
+|CV|cvReader|CV Reader
+|CV|cvUser|CV User
+|CV|cvExport|CV Export
+
+
+#   MPS Admin
+
+#site|application|code|descr
+|MPSADMIN|siteAdmin|Site Administration
+|MPSADMIN|communityAdmin|Community Administration
+|MPSADMIN|prefAdmin|Preference Administration
+|MPSADMIN|roleAdmin|Role Administration
+|MPSADMIN|userAdmin|User Administration
+|MPSADMIN|sessionAdmin|Session Administration
+|MPSADMIN|dbAdmin|Database Administration
+|MPSADMIN|unrestrictedAdmin|Unrestricted Admin Access
+
+
+#   Appointments
+
+#site|application|code|descr
+|APPT|apptCandidate|Candidate
+|APPT|apptViewAsCandidate|View as Candidate
+|APPT|apptIsAlmighty|I Am the Almighty
+|APPT|apptFieldRevisions|Field Level Revisions
+
+|APPT|cbcView|CBC View
+|APPT|cbcAdmin|CBC Administrator
+|APPT|cbcStatus|CBC Status
+
+#   apptSiteAdmin is intended for the empowered Administrator at a Site
+#   apptMpsAdmin is for MPS personnel only. NEVER, EVER give it to a site user
+#   apptMpsGuru is for MPS gurus only (i.e. developers). NEVER, EVER give it to a site user
+
+|APPT|apptSiteAdmin|Site System Administrator
+|APPT|apptMpsAdmin|MPS System Administrator
+|APPT|apptMpsGuru|MPS System Administrator Guru

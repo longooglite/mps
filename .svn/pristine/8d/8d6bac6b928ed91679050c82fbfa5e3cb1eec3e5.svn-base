@@ -1,0 +1,120 @@
+{% set taskCode = context.get('taskcode','') %}
+<form class="wf-ajax-form" id="{{ taskCode }}_form" action="{{ context.get('url','') }}" onSubmit="return false;">
+	{% set disabled = '' %}
+	{% if context.get('disabled', True) %}
+		{% set disabled = 'disabled="disabled"' %}
+	{% end %}
+
+	{% set approvalDescr = context.get('approval_descr', '') %}
+	{% if approvalDescr %}
+	<div class="form-row">
+		<label class="col-xs-2 text-right">Response:</label>
+		<div class="col-xs-8 wf-form-right wf-form-right-text clearfix">{{approvalDescr}}</div>
+	</div>
+	{% end %}
+
+	{% set prmpts = context.get('prompts',{}) %}
+	{% set pi = context.get('initial_form_values', { 'approval_date': context.get('date', '') }) %}
+
+	{% if context.get('date_enabled', False) %}
+		{% set prompt = 'approval_date' %}
+		{% if prmpts.get(prompt,{}).get('enabled',True) %}{% include 'formChunk_textInput.html' %}{% end %}
+	{% end %}
+
+	{% if context.get('vote_enabled', False) %}
+	<div class="vote_recording">
+		<div class="form-row">
+			<label class="col-xs-2 text-right" for="vote_for">For:</label>
+			<div class="col-xs-8 wf-form-right clearfix">
+				<input type="text" name="vote_for" id="vote_for" value="{{ context.get('for','') }}" class="form-control wf-vote-record" {{ disabled }}>
+			</div>
+		</div>
+		<div class="form-row">
+			<label class="col-xs-2 text-right" for="vote_against">Against:</label>
+			<div class="col-xs-8 wf-form-right clearfix">
+				<input type="text" name="vote_against" id="vote_against" value="{{ context.get('against','') }}" class="form-control wf-vote-record" {{ disabled }}>
+			</div>
+		</div>
+		<div class="form-row">
+			<label class="col-xs-2 text-right" for="vote_abstain">Abstain:</label>
+			<div class="col-xs-8 wf-form-right clearfix">
+				<input type="text" name="vote_abstain" id="vote_abstain" value="{{ context.get('abstain','') }}" class="form-control wf-vote-record" {{ disabled }}><br/>
+			</div>
+		</div>
+	</div>
+	{% end %}
+
+	{% for comment in context.get('comment_prompt_list', []) %}
+	<div class="form-row">
+		<label class="col-xs-2 text-right" for="vote_for" class="wf-submitWidget-label">{{ comment.get('comment_label','') }}:</label>
+		<div class="col-xs-8 wf-form-right clearfix">
+			{% if not prmpts.get('evaluator_sources',{}).get('required', False) %}<span class="wf-qa-optional">Optional</span>{% end %}
+			<textarea class="form-control" {{ disabled }} rows="5" name="{{ comment.get('comment_code','') }}"></textarea>
+		</div>
+	</div>
+	{% end %}
+
+	{% if context.get('config', {}).get('revisionsRequired', False) %}
+		<div class="wf-revisions-required-wrapper form-row">
+			<label class="col-xs-2 text-right" for="vote_for" class="wf-submitWidget-label">Require Revisions:</label>
+			{% set descr = context.get('config', {}).get('revisionsRequiredText', 'Approve') %}
+		{% set url = context.get('revisions_url', '') %}
+			<div class="col-xs-8 wf-form-right clearfix">
+			{% for opshun in context.get('revisions_options', []) %}
+				{% set opshunCode = opshun.get('code','') %}
+				{% set opshunDescr = opshun.get('descr','') %}
+				<div><input type="checkbox" value="true" name="{{opshunCode}}" id="rr_{{opshunCode}}" class=""/><label for="rr_{{opshunCode}}">&nbsp; Revise {{opshunDescr }}</label></div>
+			{% end %}
+			</div>
+		</div>
+	{% end %}
+
+	{% include taskActivityLog.html %}
+
+	<div class="wf-details-form-btn-bar col-xs-12">
+		{% if context.get('config', {}).get('approve', False) %}
+			{% set descr = context.get('config', {}).get('approveText', 'Approve') %}
+			{% set url = context.get('approve_url', '') %}
+			<button class="btn btn-primary approvalBtn" data-confirm-msg="{{context.get('data-confirm-msg','')}}" type="submit" data-wf-formname="#{{taskCode}}_form" data-wf-url="{{ url }}" type="button">{{ descr }}</button>
+		{% end %}
+
+		{% if context.get('config', {}).get('deny', False) %}
+			{% set descr = context.get('config', {}).get('denyText', 'Approve') %}
+			{% set url = context.get('deny_url', '') %}
+			<button class="btn btn-primary approvalBtn" data-confirm-msg="{{context.get('data-confirm-msg','')}}" type="submit" data-wf-formname="#{{taskCode}}_form" data-wf-url="{{ url }}" type="button">{{ descr }}</button>
+		{% end %}
+
+		{% if context.get('config', {}).get('revisionsRequired', False) %}
+			{% set descr = context.get('config', {}).get('revisionsRequiredText', 'Approve') %}
+			{% set url = context.get('revisions_url', '') %}
+			<button class="btn btn-primary approvalBtn revReqdBtn" type="submit" data-wf-formname="#{{taskCode}}_form" data-wf-url="{{ url }}" type="button" disabled="disabled">{{ descr }}</button>
+		{% end %}
+
+		{% include 'formChunk_cancelLink.html' %}
+	</div>
+</form>
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	(function ($) {
+		// Handle Revisions Required checkboxes: Disable other buttons when >=1 checked
+		$('body').on('change', '.wf-revisions-required-wrapper input', function(event){
+			var $wrap = $(event.target).closest('.wf-revisions-required-wrapper'),
+				$btns = $wrap.closest('form').find('.wf-details-form-btn-bar .btn');
+
+			if($wrap.find('input:checked').length == 0){
+				$btns.prop('disabled', false);
+				$btns.filter('.revReqdBtn').prop('disabled', true);
+			}
+			else{
+				$btns.prop('disabled', false);
+				$btns.not('.revReqdBtn').prop('disabled', true);
+			}
+			event.stopPropagation();
+		});
+
+	})(jQuery);
+
+	/*]]>*/
+</script>

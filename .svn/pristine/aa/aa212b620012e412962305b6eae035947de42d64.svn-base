@@ -1,0 +1,13 @@
+{% set canRaw = context.get('canRaw', False) %}
+{% set canCreateWorkflow = context.get('canCreateWorkflow', False) %}
+{% set canCreateComponent = context.get('canCreateComponent', False) %}
+{% set canCreateTitleOverride = context.get('canCreateTitleOverride', False) %}
+{% set canDeleteComponent = context.get('canDeleteComponent', False) %}
+{% set canDeleteTitleOverride = context.get('canDeleteTitleOverride', False) %}
+{% set canEditCode = context.get('canEditCode', False) %}
+{% set canEditComponentType = context.get('canEditComponentType', False) %}
+{% set canEditClassName = context.get('canEditClassName', False) %}
+{% set canEditMetaTrackCode = context.get('canEditMetaTrackCode', False) %}
+{% set canEditJobActionType = context.get('canEditJobActionType', False) %}
+{% set canEditPermissions = context.get('canEditPermissions', False) %}
+{% set canEditBlockers = context.get('canEditBlockers', False) %}

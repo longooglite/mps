@@ -1,0 +1,44 @@
+[Category]
+<h4>Committee & Administrative - Volunteer Service</h4>
+<p>This page displays your volunteer service.
+</p>
+<p>The content of this page can be sorted by clicking on any column title. The number of entries within each region will be displayed in () on the tabs.</p>
+<hr>
+<p>To <strong>add</strong> an additional entry, click the “+ Add …” button in the upper right portion of the page.</p>
+<p>To <strong>edit</strong> an existing entry, click the blue text in the row you would like to edit.</p>
+<p>To <strong>delete</strong> an entry, click the X at the end of the row you would like to delete. Then confirm the deletion.
+</p>
+
+
+[VolunteerServiceOrganizationRegion]
+<p>Please select a Region for this entry.</p>
+<hr>
+<p>This item is required</p>
+
+[VolunteerServiceOrganizationName]
+<p>Please enter the organization name.</p>
+<hr>
+<p>This item is required</p>
+
+[VolunteerServiceOrganizationCity]
+<p>Please enter the city.</p>
+
+[VolunteerServiceOrganizationState]
+<p>Please select the state.</p>
+
+[VolunteerServiceOrganizationCountry]
+<p>Please select the country.</p>
+
+[VolunteerServiceOrganizationPosition]
+<p>Please enter your role.</p>
+
+[VolunteerServiceDatesStart]
+<p>Please enter the start date for this entry.</p>
+<hr>
+<p>This item is required</p>
+<p>Hover over the field to see supported date formats</p>
+
+[VolunteerServiceDatesEnd]
+<p>Please enter the end date for this entry.</p>
+<hr>
+<p>Hover over the field to see supported date formats</p>

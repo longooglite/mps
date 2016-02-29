@@ -1,0 +1,23 @@
+#!/bin/bash
+# description: MPS Platform Start
+# processname: mps
+# chkconfig: - 89 11
+CAR_HOME=/home/mpsadmin/car
+
+case $1 in
+start)
+/bin/su mpsadmin -c 'python /home/mpsadmin/car/commands/skynyrd.py'
+/bin/su mpsadmin -c 'python /home/mpsadmin/car/MPSAuthSvc.py -e prod1 &'
+/bin/su mpsadmin -c 'python /home/mpsadmin/car/MPSAdmin.py -e prod1 &'
+/bin/su mpsadmin -c 'python /home/mpsadmin/car/MPSCV.py -e prod1 &'
+/bin/su mpsadmin -c 'python /home/mpsadmin/car/MPSCV.py -e prod1 --file config/prod1/MPSCV/config1.json &'
+/bin/su mpsadmin -c 'python /home/mpsadmin/car/MPSCV.py -e prod1 --file config/prod1/MPSCV/config2.json &'
+/bin/su mpsadmin -c 'python /home/mpsadmin/car/MPSCV.py -e prod1 --file config/prod1/MPSCV/config3.json &'
+/bin/su mpsadmin -c 'python /home/mpsadmin/car/MPSLogin.py -e prod1 &'
+/bin/su mpsadmin -c 'python /home/mpsadmin/car/MPSAppt.py -e prod1 &'
+/bin/su mpsadmin -c 'python /home/mpsadmin/car/MPSAppt.py -e prod1 --file config/prod1/MPSAppt/config1.json &'
+/bin/su mpsadmin -c 'python /home/mpsadmin/car/MPSAppt.py -e prod1 --file config/prod1/MPSAppt/config2.json &'
+/bin/su mpsadmin -c 'python /home/mpsadmin/car/MPSAppt.py -e prod1 --file config/prod1/MPSAppt/config3.json &'
+;;
+esac
+exit 0

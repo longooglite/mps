@@ -1,0 +1,2 @@
+#siteid|description|start|end
+accept-umich|University of Michigan Medical School Acceptance Testing||

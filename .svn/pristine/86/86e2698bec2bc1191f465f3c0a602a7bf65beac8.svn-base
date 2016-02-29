@@ -1,0 +1,16 @@
+{% if len(context.get('categoryPrintMenu', [])) > 1 %}
+<span class="cv-print-menu">
+	<a href="/cv/print/{{context.get('cvCommunity','')}}/{{context.get('cvOwner','')}}/{{context.get('categoryCode','')}}" target="_blank" class="cvPrintSection btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+		Print this Section <span class="caret"></span>
+	</a>
+	<ul class="dropdown-menu" role="menu">
+	{% for printTemplate in context.get('categoryPrintMenu', []) %}
+		<li><a href="{{ printTemplate.get('url', '#')  }}" target="_blank">{{ printTemplate.get('descr', 'Error...') }}</a></li>
+	{% end %}
+	</ul>
+</span>
+{% else %}
+	<a href="{{ context.get('categoryPrintMenu', [])[0].get('url', '#') }}" target="_blank" class="cvPrintSection btn btn-sm btn-default">
+		<span class="glyphicon glyphicon-print"></span> Print this Section
+	</a>
+{% end %}

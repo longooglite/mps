@@ -1,0 +1,19 @@
+#!/bin/bash
+# description: MPS Platform Start, Alternate Environment 1
+# processname: mps1
+# chkconfig: - 89 11
+CAR_HOME=/home/mpsadmin/alt1/car
+
+case $1 in
+start)
+/bin/su mpsadmin -c 'python /home/mpsadmin/alt1/car/commands/skynyrd.py --dst /usr/local/mps1'
+/bin/su mpsadmin -c 'python /home/mpsadmin/alt1/car/MPSAuthSvc.py -e devserver --file config/devserver/MPSAuthSvc/alt1_config.json &'
+/bin/su mpsadmin -c 'python /home/mpsadmin/alt1/car/MPSAdmin.py -e devserver --file config/devserver/MPSAdmin/alt1_config.json &'
+/bin/su mpsadmin -c 'python /home/mpsadmin/alt1/car/MPSCV.py -e devserver --file config/devserver/MPSCV/alt1_config.json &'
+/bin/su mpsadmin -c 'python /home/mpsadmin/alt1/car/MPSCV.py -e devserver --file config/devserver/MPSCV/alt1_config_a.json &'
+/bin/su mpsadmin -c 'python /home/mpsadmin/alt1/car/MPSAppt.py -e devserver --file config/devserver/MPSAppt/alt1_config.json &'
+/bin/su mpsadmin -c 'python /home/mpsadmin/alt1/car/MPSAppt.py -e devserver --file config/devserver/MPSAppt/alt1_config_a.json &'
+/bin/su mpsadmin -c 'python /home/mpsadmin/alt1/car/MPSLogin.py -e devserver --file config/devserver/MPSLogin/alt1_config.json &'
+;;
+esac
+exit 0

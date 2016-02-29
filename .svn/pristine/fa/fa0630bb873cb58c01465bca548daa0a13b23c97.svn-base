@@ -1,0 +1,7 @@
+/* [Copyright] */
+/* SmartPath v1.0 */
+/* Copyright 2014-2015 Mountain Pass Solutions, Inc. */
+/* This unpublished material is proprietary to Mountain Pass Solutions, Inc. */
+/* [End Copyright] */
+
+table.fixedHeader-floating{position:fixed !important;background-color:white}table.fixedHeader-floating.no-footer{border-bottom-width:0}table.fixedHeader-locked{position:absolute !important;background-color:white}@media print{table.fixedHeader-floating{display:none}}

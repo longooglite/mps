@@ -1,0 +1,31 @@
+<div>
+    {% set rowCounter = 0 %}
+    {% set middleLevel = '' %}
+    {% for currsubcategory in currcategory.get('subcategories',[]) %}
+        {% set categorydescr = currcategory.get('descr','') %}
+        {% set rowCounter = rowCounter + 1 %}
+        {% if rowCounter > 1 %}
+            {% set categorydescr = '' %}
+        {% end %}
+        {% set subcategorydescr = currsubcategory.get('descr','') %}
+        {% set subcategorymidleveldescr = currsubcategory.get('sub_descr','') %}
+        {% if currsubcategory.get('subcategory_code','') in ['TeachCoursesTaughtInter','TeachCoursesTaughtNat','TeachCoursesTaughtState','TeachCoursesTaughtSchool','TeachStudentPhD','TeachStudentGrad','TeachStudentVisit','TeachStudentUndergrad','TeachStudentsOther','TeachContTaughtInter','TeachContTaughtNat','TeachContTaughtState','TeachContTaughtSchool'] %}
+            <div class = "category">{{ categorydescr }}</div>
+            <br/>
+            {% if middleLevel <> subcategorymidleveldescr %}
+                <div class = "middlecategory">{{ subcategorymidleveldescr }}</div>
+                <br/>
+                {% set middleLevel = subcategorymidleveldescr %}
+            {% end %}
+            <div class = "subcategory">{{ subcategorydescr }}</div>
+            <br/>
+            {%if currsubcategory.get('subcategory_code','') in ['TeachCoursesTaughtInter','TeachCoursesTaughtNat','TeachCoursesTaughtState','TeachCoursesTaughtSchool'] %}
+                {% include printTeachingTable.html %}
+            {% else %}
+                {% include printTeachTabledOutput.html %}
+            {% end %}
+        {% else %}
+            {% include printTabledOutput.html %}
+        {% end %}
+    {% end %}
+</div>

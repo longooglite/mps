@@ -1,0 +1,117 @@
+{% set taskCode = context.get('taskcode','') %}
+{% set backgroundCheck = context.get('background_check',{}) %}
+<form class="wf-ajax-form wf-cbgc-page" id="{{ taskCode }}_form" action="{{ context.get('url','') }}" onSubmit="return false;">
+	{% set resubmittable = context.get('resubmit_allowed', False) %}
+	{% if resubmittable %}
+		{% set resubmitText = context.get('resubmit_text', '') %}
+		{% set resubmitURL = context.get('resubmit_url', '') %}
+		<button type="submit" class="wf-widget-form-btn btn btn-primary pull-right wf-cbgc-resubmit" data-wf-url="{{ resubmitURL }}">{{ resubmitText }}</button>
+	{% end %}
+
+
+	{% set submittedStatus = backgroundCheck.get('submitted_status','') %}
+	{% if submittedStatus %}
+		<p><i>{{ submittedStatus }}</i></p>
+	{% end %}
+	<p><i>{{ backgroundCheck.get('current_status','') }}</i></p>
+
+	{% set viewCurrent = context.get('current_report_allowed', False) %}
+	{% if viewCurrent %}
+		{% set viewCurrentText = context.get('current_report_text', '') %}
+		{% set viewCurrentURL = context.get('current_report_url', '') %}
+		<p><a href="{{ viewCurrentURL }}" target="_blank">{{ viewCurrentText }}</a></p>
+	{% end %}
+
+	{% set viewStored = context.get('stored_report_allowed', False) %}
+	{% if viewStored %}
+		{% set viewStoredText = context.get('stored_report_text', '') %}
+		{% set viewStoredURL = context.get('stored_report_url', '') %}
+		<p><a href="{{ viewStoredURL }}" target="_blank">{{ viewStoredText }}</a></p>
+	{% end %}
+
+	<div class="wf-cbgc-summary"><h3>Personal Info</h3></div>
+	{% include 'personalInfoSummary.html' %}
+
+	<div class="wf-cv-form-override wf-cbgc-summary">
+		<h3>Disclosures</h3>
+		{% set offenses = context.get('offenses',[]) %}
+		{% if not offenses %}None<br/>{% end %}
+		{% for offenseAggregate in offenses %}
+			<div class="cv-panel cv-detail-inner clearfix">
+				{% set offenseNbr = offenseAggregate.get('offense_nbr', 999) %}
+				<div class="cv-panel-body cv-panel-body-narrow-labels quest_wrap clearfix">
+				<div class="cv-panel-heading"><span class="mpsbold">OFFENSE #{{offenseNbr}}</span></div>
+				{% set fields = offenseAggregate.get('fields',{}) %}
+				{% for promptDict in context.get('disclosure_prompts',[]) %}
+					{% if promptDict.get('enabled', False) %}
+						{% set thisCode = promptDict.get('code', '') %}
+						{% set thisLabel = promptDict.get('label', '') %}
+						{% set thisField = fields.get(thisCode, {}) %}
+						{% if thisField %}
+							{% set thisValue = thisField.get('offense_value','') %}
+							{% set prompt = {'label':thisLabel} %}
+							{% set promptVal = thisValue %}
+							{% include 'formChunk_summaryLine.html' %}
+							<!-- {{thisLabel}}: {{thisValue}}<br/> -->
+						{% end %}
+					{% end %}
+				{% end %}
+				</div>
+			</div>
+		{% end %}
+
+		<h3>Background Check Orders</h3>
+		{% set orders = context.get('orders',[]) %}
+		<div class="cv-panel cv-detail-inner clearfix">
+				<div class="cv-panel-body cv-panel-body-textblob quest_wrap clearfix">
+		{% if not orders %}
+			None<br/>
+		{% else %}
+			<ul>
+			{% for order in orders %}
+				<li>{{ order.get('orderDescr', '') }}</li>
+			{% end %}
+			</ul>
+		{% end %}
+				</div>
+		</div>
+	</div>
+
+	{% set decisionAllowed = context.get('decision_allowed', False) %}
+	{% if decisionAllowed %}
+		<h3>{{ context.get('decision_text', '') }}</h3>
+		{% for comment in context.get('comment_prompt_list', []) %}
+			<div class="form-row">
+				<label class="col-xs-2 text-right" class="wf-submitWidget-label">{{ comment.get('comment_label','') }}:</label>
+				<div class="col-xs-8 wf-form-right clearfix">
+					<textarea class="form-control" rows="5" name="{{ comment.get('comment_code','') }}"></textarea>
+				</div>
+			</div>
+		{% end %}
+
+		{% set acceptText = context.get('accept_text', '') %}
+		{% set acceptFindingsText = context.get('accept_findings_text', '') %}
+		{% set rejectText = context.get('reject_text', '') %}
+		{% set acceptURL = context.get('accept_url', '') %}
+		{% set acceptFindingsURL = context.get('accept_findings_url', '') %}
+		{% set rejectURL = context.get('reject_url', '') %}
+		<div class="clear" style="padding-left:16.67%; padding-top:3px;">
+			<button type="submit" class="wf-widget-form-btn btn btn-primary" data-wf-url="{{ acceptURL }}">{{ acceptText }}</button>
+			<button type="submit" class="wf-widget-form-btn btn btn-primary" data-wf-url="{{ acceptFindingsURL }}">{{ acceptFindingsText }}</button>
+			<button type="submit" class="wf-widget-form-btn btn btn-primary" data-wf-url="{{ rejectURL }}">{{ rejectText }}</button>
+		</div>
+	{% end %}
+
+	{% set statusingAllowed = context.get('statusing_allowed', False) %}
+	{% if statusingAllowed %}
+		<h3 style="margin-top:30px;">Background Check Statusing</h3>
+		<div>
+			<button type="submit" class="wf-widget-form-btn btn btn-primary wf-cbgc-btn" data-wf-url="{{ context.get('submission_error_url', '') }}">Submission Error</button>
+			<button type="submit" class="wf-widget-form-btn btn btn-primary wf-cbgc-btn" data-wf-url="{{ context.get('inprogress_url', '') }}">In Progress</button>
+			<button type="submit" class="wf-widget-form-btn btn btn-primary wf-cbgc-btn" data-wf-url="{{ context.get('complete_url', '') }}">Complete</button>
+			<button type="submit" class="wf-widget-form-btn btn btn-primary wf-cbgc-btn" data-wf-url="{{ context.get('complete_with_findings_url', '') }}">Complete with Findings</button>
+			<button type="submit" class="wf-widget-form-btn btn btn-primary wf-cbgc-btn" data-wf-url="{{ context.get('waive_url', '') }}">Waive Background Check</button>
+		</div>
+	{% end %}
+	<p>&nbsp;</p>
+</form>

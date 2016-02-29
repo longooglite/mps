@@ -1,0 +1,34 @@
+Anesthesiology
+Biomedical Sciences (B)
+Diagnostic Radiology and Molecular Imaging
+Emergency Medicine
+Family Medicine and Community Health
+Internal Medicine
+Internal Medicine/Allergy-Immunology
+Internal Medicine/Cardiovascular Disease
+Internal Medicine/Dermatology
+Internal Medicine/Endocrinology & Metabolism
+Internal Medicine/Gastroenterology
+Internal Medicine/Geriatric Medicine
+Internal Medicine/Hematology-Oncology
+Internal Medicine/Hospitalist Medicine
+Internal Medicine/Infectious Disease
+Internal Medicine/Medicine & Pediatrics
+Internal Medicine/Nephrology
+Internal Medicine/Nutrition & Preventive Medicine
+Internal Medicine/Palliative Medicine
+Internal Medicine/Pulmonary & Critical Care Medicine
+Internal Medicine/Rheumatology
+Neurology
+Neurosurgery
+Obstetrics & Gynecology
+Ophthalmology
+Orthopaedic Surgery
+Pathology
+Pediatrics
+Physical Medicine & Rehabilitation
+Psychiatry
+Radiation Oncology
+Surgery
+Urology
+Other

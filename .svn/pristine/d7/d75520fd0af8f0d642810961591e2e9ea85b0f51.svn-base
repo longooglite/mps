@@ -1,0 +1,17 @@
+# Site-specific overrides and settings only.
+#sitecode|code|value
+shib|skin|default
+shib|auth|SHIB
+shib|authpassreqd|yes
+shib|dbname|shib
+shib|sessionidletimeoutmilliseconds|60000000
+
+shib|shibusernamekey|Remote_user
+shib|shibsessionkey|Shib-Session-Id
+shib|shibidentityproviderkey|Shib-Identity-Provider
+shib|shibidentityprovider|https://idp.testshib.org/idp/shibboleth
+
+# Real Production settings should probably be:
+#shib|authpassreqd|yes
+#shib|ldapurl|ldaps://ldap.umich.edu:636/
+#shib|ldappattern|uid=%s,ou=People,dc=umich,dc=edu

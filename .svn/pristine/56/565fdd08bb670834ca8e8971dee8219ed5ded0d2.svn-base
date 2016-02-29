@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>SmartPath&trade;</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/wf-main.css"/>
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/jquery-ui.min.css"/>
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/wf.knobs.css"/>
+</head>
+{% set evaluateeFullName = context.get('evaluatee',{}).get('full_name', 'candidate') %}
+<body class="wf-eval-upload clearfix">
+<style>
+.cvApplications,
+.mpsheader-top-right{
+	display:none !important;
+}
+
+.wf-visitor-content{padding:10px 20px;}
+.wf-eval-upload	.page-header{height:55px;}
+.wf-eval-upload	.page-header h1{display:inline-block; float:left; margin-right:20px;}
+</style>
+	<div class="container-fluid clearfix">
+		{% include pageHeader.html %}
+		<div class="page-header clearfix">
+			<h1>{{ context.get('assessment_header','Clinical Assessment') }}</h1>
+		</div>
+		<small class="wf-candidate-info clearfix">
+			Proposed Appointment:<br/>
+			<p class="first">{{ evaluateeFullName }}</p>
+			<p>{{context.get('title_descr','[Appointment Title]')}}</p>
+			<p>{{context.get('department_full_descr','[Department]')}}</p>
+		</small>
+
+		<!-- Initial Form View -->
+		<div class="wf-visitor-content clearfix" id="wf-upload-form">
+			<p>{{ context.get('salutation') }} {{ context.get('last_name','') }},</p>
+			<p class="zheavy">Thank you for your willingness to provide an assessment.<br/>
+            {% if context.get('packetEnabled',False)%}
+			    <a href="{{context.get('packet_url','#')}}" target="_blank">Click here to open the information packet for {{ evaluateeFullName }}</a>.</p>
+            {% end %}
+			<form id="mainform" class="wf-ajax-form wf-qa-form wf-admin-form">
+				<input type="hidden" id="evaluatorId" value="{{context.get('evaluatorId','')}}">
+				<div class="wf-widget-serverside-form form-row col-xs-12">
+					{% set uberInstance = context.get('uber_instance',{}) %}
+					{% set context['uberContainer'] = uberInstance.get('questions',{}) %}
+					{% module Template("uberContainer.html", context=context, skin=context['skin']) %}
+				</div>
+
+				<div class="wf-details-form-btn-bar col-xs-12 wf-template-toggled">
+					{% if context.get('submit_enabled', True) %}
+						<button type="button" class="wf-widget-form-btn btn btn-primary visitorSaveBtn" data-wf-url="{{ context.get('submit_url','') }}">{{ context.get('submit_text','') }}</button>
+					{% end %}
+					{% if context.get('draft_enabled', False) %}
+						<button type="button" class="wf-widget-form-btn btn btn-primary visitorDraftBtn" data-wf-url="{{ context.get('draft_url','') }}">{{ context.get('draft_text','') }}</button>
+					{% end %}
+                    <a class="wf-print-item btn btn-primary wf-irregular-trigger" target="_blank" href="{{ context.get('print_url','') }}"><span class="glyphicon glyphicon-print"></span>Print...</a>
+				</div>
+			</form>
+		</div>
+
+
+
+		<!-- POST Error View -->
+		<div class="wf-visitor-content clearfix starthidden" id="wf-error-form">
+			<div id="wf-upload-error-text" class="mt15 mb15"></div>
+			We're sorry, but something has gone wrong.  Please refresh this page and try again.  If that does not resolve the issue, please contact us at [help/support email or phone #?].
+		</div>
+
+
+
+		<!-- Thank You Page View -->
+		<div class="wf-visitor-content clearfix starthidden" id="wf-thankyou-form">
+			<p class="alert alert-success">Thank you very much, your evaluation for {{ evaluateeFullName }} - <span id="wf-upload-filename"></span> - was successfully received.</p>
+
+			<p>
+				<a href="#" onclick="window.close();">Click here to close this window.</a>
+			</p>
+		</div>
+	</div>
+
+{% include ajax-payload.html %}
+{% include core-js.html %}
+
+<script type="text/javascript" src="/{{skin}}/js/wf.core.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/wf.widget.superItem.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/3rdParty/jquery.knob.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/wf.adminForm.js"></script>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+$(function() {
+	// Non-Ajax'd forms need to initialize a few things like Date Pickers & Repeating Controls & expanding child items
+	// 		The wfAdminForm widget is for pages with forms we want to do those things on that are not in workflows...
+
+	$('form.wf-admin-form').wfAdminForm();
+
+	//var oItemWidget = $('form.wf-admin-form').itemWidget();
+	//oItemWidget.itemWidget('setWidgetToAjaxFormInterfaces');
+
+	var $form = $('form.wf-admin-form');
+	$('.visitorSaveBtn').on('click', function(event){
+		var $this = $(this);
+		var $evaluatorId = $('#evaluatorId').val();
+
+		var sURL = '/appt/visitor/evaluator/form/submit/' + $evaluatorId;
+		cvApp.ubiquitousPageRequest({
+			url: sURL,
+			data: JSON.stringify($('#mainform').serializeObject()),
+			errorMessage: '#modalerrormessage',
+			success: function(data, textStatus, xhr){
+				if(typeof data === 'string'){
+					data = $.parseJSON(data);
+				}
+				if(typeof data.errors === 'object'){
+					wfApp._renderFormErrors(data.errors, $form);
+				}
+				if(data.success === true){
+					cvApp.showHeaderMessage(data.successMsg, cvApp.INFO, false);
+					$('#wf-upload-form').hide();
+					$('#wf-thankyou-form').show();
+					window.setTimeout(cvApp.hideHeaderMessage,6000);
+				}
+				if(typeof data.errors === 'string'){
+					cvApp.showHeaderMessage(data.errors, cvApp.ERROR);
+				}
+			}
+		});
+	});
+
+	$('.visitorDraftBtn').on('click', function(event){
+		var $this = $(this);
+		var $evaluatorId = $('#evaluatorId').val();
+
+		var sURL = '/appt/visitor/evaluator/form/draft/' + $evaluatorId
+		cvApp.ubiquitousPageRequest({
+			url: sURL,
+			data: JSON.stringify($('#mainform').serializeObject()),
+			errorMessage: '#modalerrormessage',
+			success: function(data, textStatus, xhr){
+				if(typeof data.errors == 'object'){
+					wfApp._renderFormErrors(data.errors, $form);
+				}
+				if(typeof data.errors === 'string'){
+					cvApp.showHeaderMessage(data.errors, cvApp.ERROR);
+				}
+				if(data.success === true){
+					cvApp.showHeaderMessage(data.successMsg, cvApp.INFO, false);
+					window.setTimeout(cvApp.hideHeaderMessage,6000);
+				}
+			}
+		});
+	});
+
+	$('.wf-candidate-info').outerHeight($('#wf-upload-form').outerHeight());
+	$('body').css('background-color', '#fff !important');
+
+});
+/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

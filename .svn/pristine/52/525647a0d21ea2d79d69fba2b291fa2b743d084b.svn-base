@@ -1,0 +1,11 @@
+{
+	"environment": "dev",
+	"listenport": 8002,
+	"authserviceurl": "http://localhost:9000",
+	"loggingconfig": "config/dev/MPSCV/logging.conf",
+	"wkhtmltopdfbinpath": "/usr/local/bin/wkhtmltopdf",
+    "pdftkbinpath":"/opt/pdflabs/pdftk/bin/pdftk",
+	"skinfolderpath": "/usr/local/mps",
+	"email": "off",
+	"emailto": ["greg.poth@mountainpasssolutions.com"]
+}

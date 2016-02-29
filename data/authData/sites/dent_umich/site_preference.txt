@@ -1,0 +1,13 @@
+# Site-specific overrides and settings only.
+#sitecode|code|value
+dent-umich|skin|default
+dent-umich|auth|MPS
+dent-umich|authpassreqd|yes
+dent-umich|dbname|dent-umich
+dent-umich|sessionidletimeoutmilliseconds|60000000
+
+# Real Production settings should probably be:
+#dent-umich|auth|LDAP
+#dent-umich|authpassreqd|yes
+#dent-umich|ldapurl|ldaps://ldap.umich.edu:636/
+#dent-umich|ldappattern|uid=%s,ou=People,dc=umich,dc=edu

@@ -1,0 +1,58 @@
+<script type="text/javascript">
+    /*<![CDATA[*/
+	var invalidatePayload = {
+		"site":"{{context.get('site','')}}",
+		"mpsid":"{{context.get('mpsid','')}}",
+		"app":"{{context.get('appCode','')}}"
+	};
+
+    var clearSiteCache = function()  {
+        $.ajax({ url: "/admin/invalidateSiteCache", type: 'POST',
+            data: JSON.stringify($(invalidatePayload).serializeObject()),
+            headers: { 'Content-Type': 'application/json' },
+            success: function(data, textStatus, xhr) {
+            	if ('exception' in data) { $('#adminerrormessage').html(data.exceptionMessage); return; }
+            	if ('errors' in data) { $('#adminerrormessage').html(data.errors); return; }
+            	if ('message' in data) { $('#adminerrormessage').html(data.message); return; }
+            	$('#adminerrormessage').html('No information available');
+            },
+            error: function(jqXHR, textStatus, errorThrown) { $('#adminerrormessage').html(textStatus); }
+        });
+    };
+
+    var clearUserCache = function()  {
+        $.ajax({ url: "/admin/invalidateUserCache", type: 'POST',
+            data: JSON.stringify($(invalidatePayload).serializeObject()),
+            headers: { 'Content-Type': 'application/json' },
+            success: function(data, textStatus, xhr) {
+            	if ('exception' in data) { $('#adminerrormessage').html(data.exceptionMessage); return; }
+            	if ('errors' in data) { $('#adminerrormessage').html(data.errors); return; }
+            	if ('message' in data) { $('#adminerrormessage').html(data.message); return; }
+            	$('#adminerrormessage').html('No information available');
+            },
+            error: function(jqXHR, textStatus, errorThrown) { $('#adminerrormessage').html(textStatus); }
+        });
+    };
+
+    var clearSessionCache = function()  {
+        $.ajax({ url: "/admin/invalidateSessionCache", type: 'POST',
+            data: JSON.stringify($(invalidatePayload).serializeObject()),
+            headers: { 'Content-Type': 'application/json' },
+            success: function(data, textStatus, xhr) {
+            	if ('exception' in data) { $('#adminerrormessage').html(data.exceptionMessage); return; }
+            	if ('errors' in data) { $('#adminerrormessage').html(data.errors); return; }
+            	if ('message' in data) { $('#adminerrormessage').html(data.message); return; }
+            	$('#adminerrormessage').html('No information available');
+            },
+            error: function(jqXHR, textStatus, errorThrown) { $('#adminerrormessage').html(textStatus); }
+        });
+    };
+
+    $(function() {
+		$('#clearSiteCacheMenuItem').on('click', clearSiteCache);
+		$('#clearUserCacheMenuItem').on('click', clearUserCache);
+		$('#clearSessionCacheMenuItem').on('click', clearSessionCache);
+    });
+
+    /*]]>*/
+</script>

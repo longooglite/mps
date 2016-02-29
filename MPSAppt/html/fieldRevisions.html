@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Credentialing</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/wf-main.css"/>
+</head>
+<body class="cv-proxy-page wf-details-page">
+
+<div class="container-fluid mps-body">
+	{% set context['pageHeaderTitle'] = 'Appointments' %}
+	{% include pageHeader.html %}
+	<div class="body-content cv-body cv-body-no-menu">
+        <div class="page-header clearfix">
+			<h1>
+				Notify Department that Revisions are Required
+				<br/>
+			</h1>
+		</div>
+		<form id="mainform" class="form-horizontal" onsubmit="return false;">
+            <input type=hidden name="job_action_id" id="job_action_id" value="{{context.get('job_action_id','')}}">
+            {% if context.get('revisionsList',[]) %}
+                <p>The following items are designated for revision</p>
+            {% end %}
+            <div class="row">
+                <div class="cv-callout cv-callout-info cv-callout-bordered clearfix row">
+                    <div class="col-md-8">
+                        <table class="table table-condensed">
+							{% if not context.get('revisionsList',[]) %}
+								<tr><td>There are no items marked for revision or the department has already been notified.</td></tr>
+							{% else %}
+								<tr>
+									<th>Item</th>
+									<th>Question</th>
+									<th>Comment</th>
+								</tr>
+								{% for revision in context.get('revisionsList',[])%}
+									<tr>
+                                        <td>{{ revision.get('form','') }}</td>
+                                        <td>{{ revision.get('question','') }}</td>
+                                        <td>{{ revision.get('comment','') }}</td>
+									</tr>
+								{% end %}
+							{% end %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+                <div class="wf-details-form-btn-bar col-xs-12">
+                    <a data-section="wf-overview-item" class="overview-breadcrumb wf-details-footer-cancel wf-details-footer-back" href="#">
+                        <span class="glyphicon glyphicon-circle-arrow-left"></span><span>Back</span>
+                    </a>
+                    {% if context.get('revisionsList',[])%}<button class="notifyBtn btn btn-primary" id="send_mail_btn">Notify Department</button>{% end %}
+                </div>
+        </form>
+	</div>
+</div>
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+<script type="text/javascript" src="/{{skin}}/js/wf.core.js"></script>
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	(function ($) {
+
+		$('body').on('click', '.notifyBtn', function(event){
+			var $this = $(this);
+			var $jobactionid = $('#job_action_id').val();
+			var sURL = '/appt/jobaction/revisionsnotification/' + $jobactionid
+			cvApp.ubiquitousPageRequest({
+				url: sURL,
+				data: JSON.stringify($('#mainform').serializeObject()),
+				errorMessage: '#modalerrormessage'
+			});
+		});
+
+	})(jQuery);
+
+	/*]]>*/
+</script>
+
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>{{context.get('windowTitle', '')}}</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+</head>
+
+{% set isMsg = True if len(context.get('errormessage','')) > 0 else False %}
+<body class="{{ 'cv-show-global-message' if isMsg else '' }} cv-user-admin-pg mps-admin-page">
+	<div class="container-fluid mps-body">
+		{% include pageHeader.html %}
+		<div class="body-content cv-body cv-body-no-menu">
+			<div class="page-header clearfix">
+				<div class="page-header-controls">
+					<button class="cvHelpButton btn btn-sm btn-default">
+						<span class="glyphicon glyphicon-question-sign"></span>Help...
+					</button>
+					<button class="btn btn-sm btn-primary addTitleBtn">
+						<span class="glyphicon glyphicon-plus"></span> <span>Add New Title...</span>
+					</button>
+				</div>
+				<h1>
+					Manage Titles<br/>
+					<small>
+						Title List
+					</small>
+				</h1>
+			</div>
+
+			<div class="row">
+				<div class="col-md-12">
+					<div class="cv-callout cv-callout-info cv-callout-bordered clearfix">
+						<h3 class="section-header">
+							<span class="glyphicon glyphicon-shopping-cart"></span>
+							{{context.get('countDisplayString','')}}
+						</h3>
+						<table id="titles" class="table table-striped table-bordered mpstable">
+							<thead>
+								<tr>
+									<th>Code</th>
+									<th>Title</th>
+									<th>Track</th>
+									<th class="cv-narrow">Active</th>
+								</tr>
+							</thead>
+							<tbody>
+							{% for titleDict in context.get('titleList',[]) %}
+								{% set id = titleDict.get('id','') %}
+								{% set code = titleDict.get('code','') %}
+								{% set descr = titleDict.get('descr','') %}
+								{% set trackCode = titleDict.get('track_descr','') %}
+								<tr>
+									<td><a href="/{{context.get('appUriPrefix','')}}/titles/edit/{{id}}">{{ code }}</a></td>
+									<td>{{ descr }}</td>
+									<td>{{ trackCode }}</td>
+									<td class="mpscentertext cv-narrow">
+										{% if titleDict.get('active', False) %}
+											<span class="glyphicon glyphicon-check"></span>
+										{% end %}
+									</td>
+								</tr>
+							{% end %}
+							</tbody>
+						</table>
+						<a class="addTitleBtn addUserFooterBtn">
+							<span class="glyphicon glyphicon-plus"></span>
+							<span class="">Add New Title...</span>
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="cv-category-help starthidden">
+				<div class="cv-category-help-header clearfix">
+					<a class="cv-close-help pull-right" href="#" title="Close Help..."><span class="glyphicon glyphicon-remove"></span>Close</a>
+					Title Mgmt Help
+				</div>
+				<div class="cv-category-help-body">
+					<h4>YO!</h4>
+					<p>We have no help text!</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+
+<script type="text/javascript">
+/*<![CDATA[*/
+
+	$('.addTitleBtn').on('click', function(event) { window.location.href = '/{{context.get('appUriPrefix','')}}/titles/add'; });
+	$('#titles').dataTable( {
+		"paging":   		true,
+		"ordering": 		true,
+		"info":     		false,
+		"lengthMenu": 		[[25, 50, 100, -1], [25, 50, 100, "All"]],
+		"pageLength": 		50
+		} );
+
+/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

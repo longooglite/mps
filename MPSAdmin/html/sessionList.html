@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>MPS Admin</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+</head>
+
+<body class="mps-admin-page">
+	<div class="container-fluid mps-body">
+		{% include pageHeader.html %}
+
+		<div class="body-content">
+			<div class="">
+				<span id="adminerrormessage" class="adminerrormessage">{{context.get('errormessage','')}}</span>
+			</div>
+
+			<div class="">
+				<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Select Site <span class="caret"></span></button>
+				<ul class="dropdown-menu">
+					{% for siteDict in context.get('siteList',[]) %}
+						<li><a class="sitedrop">{{siteDict.get('code','')}}</a></li>
+					{% end %}
+				</ul>
+			</div>
+
+			<div class="">
+				<h3>
+					{% set site = context.get('siteProfileDetail',{}).get('sitePreferences',{}).get('code','') %}
+					{% if site %}
+						<span>Site:
+							<span class="mpsbold">{{site}}</span>
+							<span class="mpsitalic">({{context.get('siteProfileDetail',{}).get('sitePreferences',{}).get('descr','')}})</span>
+						</span>
+					{% else %}
+						<span>All Sites:</span>
+					{% end %}
+				</h3>
+			</div>
+
+			<div class="">
+				<h4>Current Sessions:</h4>
+			</div>
+			<div class="">
+				<table class="table table-striped table-bordered mpstable">
+					<thead>
+						<tr>
+							<th>Site</th>
+							<th>Username</th>
+							<th>Login</th>
+							<th>Last</th>
+							<th>Duration</th>
+							<th>ID</th>
+							<th>Stomp</th>
+						</tr>
+					</thead>
+					{% for sessionDict in context.get('sessionList',[]) %}
+						<tr>
+							<td>{{sessionDict.get('site','')}}</td>
+							<td>{{sessionDict.get('username','')}}</td>
+							<td>{{sessionDict.get('originTimestamp','')}}</td>
+							<td>{{sessionDict.get('lastTimestamp','')}}</td>
+							<td>{{sessionDict.get('duration','')}}</td>
+							<td>{{sessionDict.get('mpsid','')}}</td>
+							<td><a class="kill" id="kill_{{sessionDict.get('mpsid','')}}">terminate</a></td>
+						</tr>
+					{% end %}
+				</table>
+			</div>
+
+			{% if context.get('expiredSessionList',[]) %}
+				<div class="">
+					<h4>
+						<span>Expired Sessions:</span>
+						<span><small>(* = sessions that timed out)</small></span>
+					</h4>
+				</div>
+				<div class="">
+					<table class="table table-striped table-bordered mpstable">
+						<thead>
+							<tr>
+								<th>Site</th>
+								<th>Username</th>
+								<th>Login</th>
+								<th>Last</th>
+								<th>Duration</th>
+								<th>ID</th>
+							</tr>
+						</thead>
+						{% for sessionDict in context.get('expiredSessionList',[]) %}
+							<tr>
+								<td>{{sessionDict.get('site','')}}</td>
+								<td>{{sessionDict.get('username','')}}</td>
+								<td>{{sessionDict.get('originTimestamp','')}}</td>
+								<td>{{sessionDict.get('lastTimestamp','')}}</td>
+								<td>{{sessionDict.get('duration','')}}</td>
+								<td>
+									{{sessionDict.get('mpsid','')}}
+									{% if sessionDict.get('isTimeout', False) %} *{% end %}
+								</td>
+							</tr>
+						{% end %}
+					</table>
+				</div>
+			{% end %}
+		</div>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+{% include cache-js.html %}
+
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+    var changeSelectionFn = function(eventData)  {
+        var targetValue = eventData.currentTarget.text;
+        var payload = $.extend(true,{'target':targetValue},ajaxPayload)
+        $.ajax({ url: '/admin/sessions/changesite', type: 'POST',
+            data: JSON.stringify(payload),
+            headers: { 'Content-Type': 'application/json' },
+            success: function(data, textStatus, xhr) {
+            	if ('exception' in data) { $('#adminerrormessage').html(data.exceptionMessage); return; }
+            	if ('errors' in data) { $('#adminerrormessage').html(data.errors); return; }
+            	if ('message' in data) { $('#adminerrormessage').html(data.message); return; }
+            	if ('msgid' in data) { $.cookie('msgid', data.msgid, { path: '/'}); }
+            	if ('redirect' in data) { window.location.href = data.redirect; }
+            },
+            error: function(jqXHR, textStatus, errorThrown) { $('#adminerrormessage').html(textStatus); }
+        });
+    };
+
+    var killFn = function(eventData) {
+        $('#adminerrormessage').html('');
+		var pk = eventData.currentTarget.id.split('_')[1];
+        var payload = $.extend(true,{'sessionId':pk},ajaxPayload)
+        $.ajax({ url: '/admin/sessions/kill', type: 'POST',
+            data: JSON.stringify(payload),
+            headers: { 'Content-Type': 'application/json' },
+            success: function(data, textStatus, xhr) {
+            	if ('exception' in data) { $('#adminerrormessage').html(data.exceptionMessage); return; }
+            	if ('errors' in data) { $('#adminerrormessage').html(data.errors); return; }
+            	if ('message' in data) { $('#adminerrormessage').html(data.message); return; }
+            	if ('msgid' in data) { $.cookie('msgid', data.msgid, { path: '/'}); }
+            	if ('redirect' in data) { window.location.href = data.redirect; return; }
+            },
+            error: function(jqXHR, textStatus, errorThrown) { $('#adminerrormessage').html(textStatus); }
+        });
+	};
+
+    var changeSiteFn = function(eventData) { changeSelectionFn(eventData); };
+
+    $(function() {
+		$('.sitedrop').on('click', changeSiteFn);
+		$('.kill').on('click', killFn);
+    });
+
+	/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

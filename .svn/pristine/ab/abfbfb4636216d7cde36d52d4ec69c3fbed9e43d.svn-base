@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Appointments</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+</head>
+
+<body class="cv-proxy-page">
+<div class="container-fluid mps-body">
+	{% set context['pageHeaderTitle'] = 'Appointments' %}
+	{% include pageHeader.html %}
+	<div class="body-content cv-body cv-body-no-menu">
+        <div class="page-header clearfix">
+			<h1>
+				New Position<br/>
+				<small>
+					Provide details below to create a new PCN:
+				</small>
+			</h1>
+		</div>
+
+		<style>
+			#created_position_ux .indent{margin-left:19px; padding-bottom:5px;}
+			.wf-create-buttons a{margin-right:10px;}
+		</style>
+
+		<form id="mainform" class="form-horizontal" onsubmit="return false;">
+			<div class="row">
+			<div class="col-md-7 create_position_ux">
+			<h3 class="section-header starthidden">
+				<span class="glyphicon glyphicon-edit"></span>
+				{{context.get('departmentText','Department')}} &amp; Title:
+			</h3>
+			<div class="cv-callout cv-callout-info cv-callout-bordered clearfix">
+				<div id="created_position_ux" class="starthidden">
+					<p style="font-weight:bold;"><span class="glyphicon glyphicon-ok"></span> Position Created Successfully</p>
+					<p class="indent">PCN #<span class="created_position_pcn"></span> created.</p>
+					<p class="wf-create-buttons indent">
+						<a href="#" class="btn btn-primary created_position_link">Start Appointment in PCN #<span class="created_position_pcn"></span>...</a>
+						<a href="/appt/page/roster" class="btn btn-primary wf-return-roster">Return to Roster</a>
+						<a href="#" class="btn btn-primary wf-create-another">Create another New Position...</a>
+					</p>
+				</div>
+
+				<div class="wf-position-form">
+                    <hr class="wf-position-sep starthidden" style="border-color:#ddd;"/>
+
+                    {% if context.get('pcn_creation','') == "manual" %}
+                        <div class="form-row clearfix">
+                            <label class="col-xs-2 control-label" for="manualpcn">PCN Number:</label>
+                            <div class="col-xs-5 wf-form-right">
+                                <input type="text" name="manualpcn" id="manualpcn" value="" class="form-control"/>
+                            </div>
+                        </div>
+                    {% end %}
+
+					<div class="form-row clearfix">
+						<label class="col-xs-2 control-label" for="department_list">{{context.get('departmentText','Department')}}:</label>
+						<div class="col-xs-5">
+							<select id="department_list" name="department_list" class="form-control">
+								{% for department in context.get('department_selection',[]) %}
+									{% if len(department.get('children',[])) > 0 %}
+										<optgroup label="{{ department.get('descr','') }}">
+											{% for child in department.get('children',[]) %}
+												<option value="{{ child.get('id',0) }}">{{ child.get('full_descr','') }}</option>
+											{% end %}
+										</optgroup>
+									{% else %}
+										<option value="{{ department.get('id',0) }}">{{ department.get('full_descr','') }}</option>
+									{% end %}
+								{% end %}
+							</select>
+						</div>
+					</div>
+					<div class="clearfix form-row">
+						<label class="col-xs-2 control-label" for="track_title_list">Title:</label>
+						<div class="col-xs-5">
+							<select id="track_title_list" name="track_title_list" class="form-control">
+								{% for track in context.get('track_title_selection',{})['track'] %}
+									{% set trackdescr = track.keys()[0] %}
+									<optgroup label="{{ trackdescr }}">
+										{% for title in track[trackdescr] %}
+											<option value="{{ title['title_id'] }}">{{ title['title_descr'] }}</option>
+										{% end %}
+									</optgroup>
+								{% end %}
+							</select>
+						</div>
+						<div class="col-xs-2 ta-right">
+							<button class="createposition btn btn-primary">Create Position</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>
+		</div>
+        </form>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	(function ($) {
+
+		$('body').on('click', '.createposition', function(event){
+			$('#created_position_ux').slideUp('fast');
+			var $this = $(this);
+			var $title = $('#track_title_list').val();
+			var $department = $('#department_list').val();
+			var sURL = '/appt/pcncreate/' + $department + '/' + $title;
+			cvApp.ubiquitousPageRequest({
+				url: sURL,
+				data: JSON.stringify($('#mainform').serializeObject()),
+				errorMessage: '#modalerrormessage',
+				success: function(data, textStatus, xhr){
+					if(typeof data.custom_page_response == 'object' && typeof data.custom_page_response.pcn != 'undefined' && typeof data.custom_page_response.positionId != 'undefined'){
+						// Server created a new Position, show a Link to that page & a message to also allow user to Create Another
+						var $ux = $('#created_position_ux');
+						$('.wf-position-form').hide();
+						$('.wf-position-sep').show();
+						$ux.find('.created_position_pcn').text(data.custom_page_response.pcn);
+						$ux.find('.created_position_link').attr('href', '/appt/pcn/'+data.custom_page_response.positionId);
+						$ux.slideDown();
+						return false;
+					}
+					else{
+						if(typeof data.errors != 'undefined'){
+							// Server gave us an error message... show it to user
+							cvApp.showHeaderMessage(data.errors, cvApp.ERROR);
+						}
+						else{
+							// Generic Error Msg:
+							cvApp.showHeaderMessage('Apologies, but something has gone wrong.  Please reload this page and try again...', cvApp.ERROR);
+						}
+					}
+				}
+			});
+		});
+
+		$('body').on('click', '.wf-create-another', function(e){
+			$('#created_position_ux, .wf-position-sep').slideUp();
+			$('.wf-position-form').slideDown();
+		});
+
+	})(jQuery);
+
+	/*]]>*/
+</script>
+</div>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<h3 style="margin-bottom:0px;"><center>Evaluations Metrics</center></h3>
+<h5 style="margin-top:2px;"><center> {{context.get('start','')}}&nbsp;&#45;&nbsp;{{context.get('end','')}} </center></h5>
+<hr>
+{% if not context.get('metrics',[]) %}
+    <h3><center> {{context.get('noDataMessage','0 items meet report criteria')}} </center></h3>
+{% end %}
+
+{% for metric in context.get('metrics') %}
+    <h3 style="margin-bottom:0px;"> {{metric.get('description','')}} </h3>
+    <div style="margin-left:10px;">
+        <table width="650px">
+            <tr>
+                <th align="left" width="450px">Description</th>
+                <th align="right" width="100px">Number</th>
+                <th align="right" width="100px">Percentage</th>
+            </tr>
+            <tr>
+                <td align="left">Total evaluations</td>
+                <td align="right">{{metric.get('nbrEvals','')}}</td>
+                <td align="right">&nbsp;</td>
+            </tr>
+            <tr>
+                <td align="left">Responded</td>
+                <td align="right">{{metric.get('nbrHasResponse','')}}</td>
+                <td align="right">{{metric.get('pctHasResponse','')}}&#37;</td>
+            </tr>
+            <tr>
+                <td align="left">No response</td>
+                <td align="right">{{metric.get('nbrNoResponse','')}}</td>
+                <td align="right">{{metric.get('pctNoResponse','')}}&#37;</td>
+            </tr>
+            <tr>
+                <td align="left">Declined</td>
+                <td align="right">{{metric.get('nbrDeclined','')}}</td>
+                <td align="right">{{metric.get('pctDeclined','')}}&#37;</td>
+            </tr>
+            <tr>
+                <td align="left">Denied</td>
+                <td align="right">{{metric.get('nbrDenied','')}}</td>
+                <td align="right">{{metric.get('pctDenied','')}}&#37;</td>
+            </tr>
+            <tr>
+                <td align="left">Requiring approval</td>
+                <td align="right">{{metric.get('nbrEvalsRequiringApproval','')}}</td>
+                <td align="right">{{metric.get('pctRequiringApproval','')}}&#37;</td>
+            </tr>
+            <tr>
+                <td align="left">Approved</td>
+                <td align="right">{{metric.get('nbrApproved','')}}</td>
+                <td align="right">{{metric.get('pctApproved','')}}&#37;</td>
+            </tr>
+            <tr>
+                <td align="left">Average days from solicitation to evaluator response</td>
+                <td align="right">{{metric.get('avgFromContactToSubmission','')}}</td>
+                <td align="right">&nbsp;</td>
+            </tr>
+            <tr>
+                <td align="left">Average days from solicitation to approval</td>
+                <td align="right">{{metric.get('avgFromSolicitationToApproval','')}}</td>
+                <td align="right">&nbsp;</td>
+            </tr>
+            <tr>
+                <td align="left">Average days from evaluator response to approval</td>
+                <td align="right">{{metric.get('avgFromResponseToApproval','')}}</td>
+                <td align="right">&nbsp;</td>
+            </tr>
+        </table>
+    </div>
+    <br/>
+    {% if metric.get('graph','') %}
+        <center>
+            <div style="width:600px;height:450px;">
+                {% raw metric.get('graph') %}
+            </div>
+        </center>
+    {% end %}
+    <div class="break"></div>
+{% end %}

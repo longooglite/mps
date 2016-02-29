@@ -1,0 +1,29 @@
+#site|application|code,descr
+dev|MPSADMIN|siteAdmin|Site Administration|
+dev|MPSADMIN|prefAdmin|Preference Administration|
+dev|MPSADMIN|roleAdmin|Role Administration|
+dev|MPSADMIN|userAdmin|User Administration|
+dev|MPSADMIN|sessionAdmin|Session Administration|
+
+dev|CV|cvAdmin|CV Administrator|
+dev|CV|cvEditor|CV Editor|
+dev|CV|cvReader|CV Reader|
+dev|CV|cvUser|CV User|
+dev|CV|cvExport|CV Export|
+
+dev|APPT|apptAdmin|Appt Administrator|
+dev|APPT|apptDeptUser|Department|
+dev|APPT|apptFacultyAffairs|Faculty Affairs|
+dev|APPT|apptCandidate|Candidate|
+
+cmich|MPSADMIN|siteAdmin|Site Administration|
+cmich|MPSADMIN|prefAdmin|Preference Administration|
+cmich|MPSADMIN|roleAdmin|Role Administration|
+cmich|MPSADMIN|userAdmin|User Administration|
+cmich|MPSADMIN|sessionAdmin|Session Administration|
+
+cmich|CV|cvAdmin|CV Administrator|
+cmich|CV|cvEditor|CV Editor|
+cmich|CV|cvReader|CV Reader|
+cmich|CV|cvUser|CV User|
+cmich|CV|cvExport|CV Export|

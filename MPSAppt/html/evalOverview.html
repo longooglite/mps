@@ -1,0 +1,235 @@
+{% set taskCode = context.get('taskcode','') %}
+{% set usesFileResponse = context.get('usesFileResponse', True) %}
+{% set usesFormResponse = context.get('usesFormResponse', False) %}
+{% set usesEvaluatorSources = context.get('usesEvaluatorSources', True) %}
+{% set usesEvaluatorTypes = context.get('usesEvaluatorTypes', True) %}
+{% set requiresResponses = context.get('requiresResponses', True) %}
+
+{% set addEvaluatorBtnText = context.get('addEvaluatorBtnText', "Add Evaluator...") %}
+{% set importEvaluatorBtnText = context.get('importEvaluatorBtnText', "Import Evaluator...") %}
+{% set editEvaluatorMenuText = context.get('editEvaluatorMenuText', "Edit Evaluator") %}
+{% set evaluatorMCLabel = context.get('evaluatorTextMC', "Evaluator") %}
+{% set evaluationMCLabel = context.get('evaluationTextMC', "Evaluation") %}
+{% set evaluationLCLabel = context.get('evaluationTextLC', "evaluation") %}
+
+{% set counts = context.get('counts',{}) %}
+{% set min = counts.get('min',0) %}
+{% set max = counts.get('max',0) %}
+{% set entered = counts.get('entered',0) %}
+{% set received = counts.get('received',0) %}
+{% set disabled = '' %}
+{% if context.get('disabled', True) %}
+	{% set disabled = 'disabled="disabled"' %}
+{% end %}
+
+<div class="wf-evals-suggested-by clearfix">
+	{% for source in counts.get('by_source',[]) %}
+		{% set descr = source.get('descr','') %}
+		{% set actual = source.get('actual',0) %}
+		Suggested by {{descr}}: {{actual}}<br/>
+	{% end %}
+</div>
+
+<div class="clearfix" style="margin-bottom:20px;">
+	{% set redGreen = 'red' %}
+	{% if received >= min %}{% set redGreen = 'green' %}{% end %}
+	{{min}} Total {{evaluationMCLabel}}s Required | <span style="color:{{redGreen}}" >{{received}} Received</span><br/>
+    {% if counts.get('showMaxAllowed',True)%}
+	    {{max}} Total {{evaluationMCLabel}}s Allowed | {{entered}} Entered<br/>
+    {% end %}
+	{% for breakout in counts.get('breakouts',[]) %}
+		{% set boMin = breakout.get('min',0) %}
+		{% set boCompleted = breakout.get('completed',0) %}
+		{% set boDescr = breakout.get('descr','') %}
+		{% set redGreen = 'red' %}
+		{% if breakout.get('met', False) %}{% set redGreen = 'green' %}{% end %}
+		{{boMin}} {{boDescr}} Required | <span style="color:{{redGreen}}" >{{boCompleted}} Completed</span><br/>
+	{% end %}
+</div>
+
+<div class="col-xs-12 starthidden">
+	<h5>Current list of {{evaluatorMCLabel}}s:</h5>
+</div>
+
+<form class="wf-ajax-form" id="{{ taskCode }}_form" action="{{ context.get('url','') }}" onSubmit="return false;">
+	<div class="weprobablyneedsomeclassnameshere">
+		<table class="wf-evaluators-table table" style="clear:both;">
+			<thead>
+				<tr>
+					<th>Status</th>
+					<th>{{evaluatorMCLabel}}</th>
+					<th>Email</th>
+					{% if usesEvaluatorTypes %}
+						<th>Type</th>
+					{% end %}
+					{% if usesEvaluatorSources %}
+						<th>Suggested</th>
+					{% end %}
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+			{% for evalDict in context.get('evaluators',[]) %}
+				<tr>
+					<td>
+						{% if evalDict.get('is_complete', False) %}
+							<span class="glyphicon glyphicon-ok"/>
+						{% end %}
+						{{evalDict.get('status','')}}
+					</td>
+					<td>{{evalDict.get('full_name','')}}</td>
+					<td>{{evalDict.get('email','')}}</td>
+					{% if usesEvaluatorTypes %}
+						<td>{{evalDict.get('evaluator_type_descr','')}}</td>
+					{% end %}
+					{% if usesEvaluatorSources %}
+						<td>{{evalDict.get('evaluator_source_descr','')}}</td>
+					{% end %}
+					<td>
+						<div class="btn-group">
+							{% set declineAllowed = evalDict.get('decline_allowed', False) %}
+							{% set sendAllowed = evalDict.get('send_allowed', False) %}
+							{% set viewAllowed = evalDict.get('view_allowed', False) %}
+							{% set uploadAllowed = evalDict.get('upload_allowed', False) %}
+							{% set formAllowed = evalDict.get('form_allowed', False) %}
+							{% set reviewAllowed = evalDict.get('review_allowed', False) %}
+							{% set editAllowed = evalDict.get('edit_allowed', False) %}
+							{% set deleteAllowed = evalDict.get('delete_allowed', False) %}
+
+							{% set contextDisabled = context.get('disabled', True) %}
+							{% set declineDisabled = (contextDisabled) or (not declineAllowed) %}
+							{% set sendDisabled = (contextDisabled) or (not sendAllowed) %}
+							{% set viewDisabled = (contextDisabled) or (not viewAllowed) %}
+							{% set uploadDisabled = (contextDisabled) or (not uploadAllowed) %}
+							{% set formDisabled = (contextDisabled) or (not formAllowed) %}
+							{% set reviewDisabled = (contextDisabled) or (not reviewAllowed) %}
+							{% set editDisabled = (contextDisabled) or (not editAllowed) %}
+							{% set deleteDisabled = (contextDisabled) or (not deleteAllowed) %}
+							{% set sDisabledToolTip = 'title="This action is not available due to the state of the {{evaluationLCLabel}}, required workflow item completion, or your user permissions."' %}
+							<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Action <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu pull-right">
+                                    {% if requiresResponses %}
+                                        {% if declineDisabled %}
+                                            <li class="disabled-evaluator-option" {% raw sDisabledToolTip %}><span class="glyphicon glyphicon-ban-circle"></span> Decline</li>
+                                        {% else %}
+                                            <li><a href="#" data-wf-formname="#{{taskCode}}_form" data-wf-sub-page="{{evalDict.get('decline_url', '')}}" type="button"><span class="glyphicon glyphicon-ban-circle"></span>Decline</a></li>
+                                        {% end %}
+                                    {% end %}
+
+									{% if sendDisabled %}
+										<li class="disabled-evaluator-option" {% raw sDisabledToolTip %}><span class="glyphicon glyphicon-envelope"></span> Send/Resend Email</li>
+									{% else %}
+										<li><a href="#" data-wf-formname="#{{taskCode}}_form" data-wf-sub-page="{{evalDict.get('send_url', '')}}" type="button"><span class="glyphicon glyphicon-envelope"></span>Send/Resend Email</a></li>
+									{% end %}
+
+									{% if usesFileResponse and requiresResponses %}
+										{% if viewDisabled %}
+											<li class="disabled-evaluator-option" {% raw sDisabledToolTip %}><span class="glyphicon glyphicon-envelope"></span> View {{evaluationMCLabel}}</li>
+										{% else %}
+											<li><a href="{{evalDict.get('view_url', '')}}" target="_blank"><span class="glyphicon glyphicon-envelope"></span>View {{evaluationMCLabel}}</a></li>
+										{% end %}
+
+										{% if uploadDisabled %}
+											<li class="disabled-evaluator-option" {% raw sDisabledToolTip %}><span class="glyphicon glyphicon-upload"></span> Upload {{evaluationMCLabel}}</li>
+										{% else %}
+											<li><a href="#" data-wf-formname="#{{taskCode}}_form" data-wf-sub-upload-item="{{evalDict.get('upload_url', '')}}" type="button"><span class="glyphicon glyphicon-upload"></span>Upload Evaluation</a></li>
+										{% end %}
+									{% end %}
+
+									{% if usesFormResponse and requiresResponses %}
+										{% if formDisabled %}
+											<li class="disabled-evaluator-option" {% raw sDisabledToolTip %}><span class="glyphicon glyphicon-upload"></span> View {{evaluationMCLabel}}</li>
+										{% else %}
+											<li><a href="#" data-wf-formname="#{{taskCode}}_form" data-wf-sub-page="{{evalDict.get('form_url', '')}}" type="button"><span class="glyphicon glyphicon-upload"></span>View Evaluation</a></li>
+										{% end %}
+										{% if formDisabled %}
+											<li class="disabled-evaluator-option" {% raw sDisabledToolTip %}><span class="glyphicon glyphicon-print"></span> View {{evaluationMCLabel}}</li>
+										{% else %}
+											<li><a href="{{evalDict.get('print_url', '')}}" target="_blank"><span class="glyphicon glyphicon-print"></span>Print {{evaluationMCLabel}}</a></li>
+										{% end %}
+									{% end %}
+
+									{% if usesEvaluatorTypes and requiresResponses %}
+										{% if reviewDisabled %}
+											<li class="disabled-evaluator-option" {% raw sDisabledToolTip %}><span class="glyphicon glyphicon-repeat"></span> Review {{evaluationMCLabel}}</li>
+										{% else %}
+											<li><a href="#" data-wf-formname="#{{taskCode}}_form" data-wf-sub-page="{{evalDict.get('review_url', '')}}" type="button"><span class="glyphicon glyphicon-repeat"></span>Review {{evaluationMCLabel}}</a></li>
+										{% end %}
+									{% end %}
+
+									{% if editDisabled %}
+										<li class="disabled-evaluator-option" {% raw sDisabledToolTip %}><span class="glyphicon glyphicon-edit"></span>Edit {{evaluatorMCLabel}}</li>
+									{% else %}
+										<li><a href="#" data-wf-formname="#{{taskCode}}_form" data-wf-sub-page="{{evalDict.get('edit_url', '')}}" type="button"><span class="glyphicon glyphicon-edit"></span>Edit {{evaluatorMCLabel}}</a></li>
+									{% end %}
+
+									{% if deleteDisabled %}
+										<li class="disabled-evaluator-option" {% raw sDisabledToolTip %}><span class="glyphicon glyphicon-remove-circle"></span> Delete</li>
+									{% else %}
+										<li><a href="#" data-wf-formname="#{{taskCode}}_form" data-wf-sub-page="{{evalDict.get('delete_url', '')}}" type="button"><span class="glyphicon glyphicon-remove-circle"></span>Delete</a></li>
+									{% end %}
+								</ul>
+						</div>
+					</td>
+				</tr>
+			{% end %}
+			{% set addAllowed = context.get('add_allowed', False) %}
+			{% set importAllowed = context.get('import_allowed', False) %}
+			{% if addAllowed or importAllowed %}
+				<tr>
+					<td colspan="6">
+					{% if addAllowed %}
+						<button class="btn btn-primary btn-md" type="submit" data-wf-formname="#{{taskCode}}_form" data-wf-sub-page="{{context.get('add_url', '')}}" type="button" {% raw disabled %}>Add {{evaluatorMCLabel}}...</button>&nbsp;
+					{% end %}
+					{% if importAllowed %}
+						<button class="btn btn-primary btn-md" type="submit" data-wf-formname="#{{taskCode}}_form" data-wf-sub-page="{{context.get('import_url', '')}}" type="button" {% raw disabled %}>Import {{evaluatorMCLabel}}...</button>&nbsp;
+					{% end %}
+					</td>
+				</tr>
+			{% end %}
+			</tbody>
+		</table>
+	</div>
+
+	<div class="wf-evals-download-links">
+		{% if context.get('packet_enabled', False) %}
+			{% set linkText = context.get('packet_text', 'View/Download Packet') %}
+			<span class="wf-dl-link">
+				{% if context.get('packet_allowed', False) %}
+					<a href="{{context.get('packet_url', '')}}" target="_blank" {% raw disabled %}><span class="glyphicon glyphicon-file"></span>{{linkText}}</a>
+				{% else %}
+					<span class="glyphicon glyphicon-file"></span>{{linkText}}
+				{% end %}
+			</span>
+		{% end %}
+
+		{% if context.get('reviewers_enabled', False) %}
+			{% set linkText = context.get('reviewers_text', 'View/Download Reviewers List') %}
+			<span class="wf-dl-link">
+				{% if context.get('reviewers_allowed', False) %}
+					<a href="{{context.get('reviewers_url', '')}}" target="_blank" {% raw disabled %}><span class="glyphicon glyphicon-file"></span>{{linkText}}</a>
+				{% else %}
+					<span class="glyphicon glyphicon-file"></span>{{linkText}}
+				{% end %}
+			</span>
+		{% end %}
+
+		{% if context.get('letter_enabled', False) %}
+			{% set linkText = context.get('letter_text', 'View/Download Letter') %}
+			<span class="wf-dl-link">
+				{% if context.get('letter_allowed', False) %}
+					<a href="{{context.get('letter_url', '')}}" target="_blank"><span class="glyphicon glyphicon-file"></span>{{linkText}}</a>
+				{% else %}
+					<span class="glyphicon glyphicon-file"></span>{{linkText}}
+				{% end %}
+			</span>
+		{% end %}
+	</div>
+
+	<div class="wf-details-form-btn-bar col-xs-12">
+		{% include 'formChunk_cancelLink.html' %}
+	</div>
+
+</form>

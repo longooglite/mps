@@ -1,0 +1,15 @@
+# Site-specific overrides and settings only.
+#sitecode|code|value
+demo|skin|atram
+demo|auth|LDAP
+demo|authpassreqd|yes
+demo|dbname|demo
+demo|sessionidletimeoutmilliseconds|60000000
+demo|facultyaffairsemail|eric.paul@mountainpasssolutions.com
+demo|reporting|true
+
+# Real Production settings should be:
+#demo|auth|LDAP
+#demo|authpassreqd|yes
+#demo|ldapurl|ldaps://ldap.umich.edu:636/
+#demo|ldappattern|uid=%s,ou=People,dc=umich,dc=edu

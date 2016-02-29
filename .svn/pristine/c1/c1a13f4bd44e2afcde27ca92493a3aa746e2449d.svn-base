@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>MPS Login</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/mps-login.css"/>
+</head>
+
+<body class="cvLoginPage">
+	<div class="container-fluid">
+		<div class="mpsheader">
+			<div class="mpsheader-top-container">
+				<div class="mpsheader-top-inner">
+					<span class="mpsheader-top-left">
+						<img class="mpsheader-top-image" src="/{{skin}}/images/icon_header.png" />
+					</span>
+				</div>
+			</div>
+		</div>
+
+		<form id="logginform" class="form-horizontal" role="form">
+			{% set isError = True if len(context.get('errormessage','')) > 0 else False %}
+			{% if 'guid' in context %}
+				<input type="hidden" name="guid" value="{{ context.get('guid', '') }}">
+			{% end %}
+			{% if 'jobactionid' in context %}
+				<input type="hidden" name="jobactionid" value="{{ context.get('jobactionid', '') }}">
+			{% end %}
+			<div class="panel panel-primary">
+				<div class="panel-heading {{ 'cv-login-error' if isError else ''}}">
+					<span id="login_greeting">Please Login:</span>
+				</div>
+				<div class="panel-body">
+					<div class="row {{ '' if isError else 'hidden'}} cv-login-error-wrapper">
+						<div class="col-xs-offset-0 col-xs-12 cv-error-row">
+							<div id="errormessage" class="errormessage">{{context.get('errormessage','')}}</div>
+						</div>
+					</div>
+					<input type="hidden" name="site" value="{{context['site']}}"/>
+					<div class="form-group">
+						<label for="inputUsername" class="col-xs-2 control-label">Username</label>
+						<div class="col-xs-9">
+							<input type="text" class="form-control" id="inputUsername" name="username" placeholder="username">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inputPassword" class="col-xs-2 control-label">Password</label>
+						<div class="col-xs-9">
+							<input type="password" class="form-control" id="inputPassword" name="password" placeholder="password">
+						</div>
+					</div>
+					{% if context.get('promptCommunity', False) %}
+						<div class="form-group">
+							<label for="community" class="col-xs-2 control-label">Community</label>
+							<div class="col-xs-9">
+								<select class="form-control communitydrop" id="community" name="community">
+									<option value="" selected disabled>Select</option>
+									{% for communityDict in context.get('communityList', []) %}
+										{% set optionCode = communityDict.get('code','') %}
+										<option value="{{optionCode}}">{{communityDict.get('descr','')}}</option>
+									{% end %}
+								</select>
+							</div>
+						</div>
+					{% else %}
+						<input type="hidden" name="community" value="default"/>
+					{% end %}
+					<div class="form-group">
+						<div class="col-xs-offset-2 col-xs-4">
+							<button id="loginbutton" type="button" class="btn btn-primary">Login</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+{% include footer.html %}
+{% include core-js.html %}
+
+<script type="text/javascript">
+    /*<![CDATA[*/
+
+	var isUserSubmit = false; // Used to prevent Shake on page rendering with error programmatically (eg session expire) vs. on-user-submit
+    var showError = function(data){
+    	if(isUserSubmit){ $('#login_greeting').closest('.panel').effect('shake', {times:2, distance:10}); }
+		$('#errormessage').html(data.error);
+		$('.cv-login-error-wrapper').show().removeClass('hidden');
+		$('#inputUsername').focus();
+		return;
+	};
+    var hideError = function(){
+    	$('#errormessage').hide().addClass('hidden');
+		$('#login_greeting').show();
+		$('#login_greeting').closest('.panel').removeClass('panel-danger').addClass('panel-primary');
+    };
+
+    var loggin = function() {
+    	isUserSubmit = true;
+        var $form = $('#logginform');
+        var url = '{{ context.get('loginURL', '/mps/login') }}';
+        $.ajax({ url: url, type: 'POST', headers: { 'Content-Type': 'application/json' },
+            data: JSON.stringify($form.serializeObject()),
+            success: function(data, textStatus, xhr) {
+            	if ('error' in data) {
+            		showError(data);
+				}
+				else{
+					hideError();
+				}
+
+            	if ('redirect' in data) { window.location.href = data.redirect; }
+            }
+        });
+    };
+
+    $(function() {
+        $('#loginbutton').on('click', loggin);
+
+        $('#inputUsername').focus();
+
+        // Fake Form submitting on Enter keys in inputs:
+		$('#inputUsername, #inputPassword').keyup(function(event) {
+			var keycode = (event.keyCode ? event.keyCode : event.which);
+			if(keycode == '13') {
+				loggin();
+			}
+		});
+
+        // Special Session Expiration UX (for after hard redirects in app):
+		if(window.location.hash === "#ESI"){
+			var data = {};
+			data.error = 'Your session expired or was terminated.  Please Login again to continue.';
+			showError(data);
+			window.location.hash = '';
+		}
+    });
+
+    /*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

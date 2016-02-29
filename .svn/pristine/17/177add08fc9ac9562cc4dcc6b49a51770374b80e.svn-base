@@ -1,0 +1,16 @@
+#   File of site-specific permissions.
+#   Use the common 'common_permissions.txt' file for non-site-specific permissions.
+
+#site_code|application|code|description
+med-oakland|APPT|dept_task|View/Edit Department Items
+med-oakland|APPT|ofa_task|View/Edit OFA Items
+med-oakland|APPT|revisions_notify|Notify candidate of revisions required
+
+med-oakland|APPT|approverfp_edit|View/Edit Approve RFP
+med-oakland|APPT|approverfp_view|View Approve RFP
+
+med-oakland|APPT|cred_task|View/Edit Credentialing Items
+med-oakland|APPT|dcapt_task|View/Edit DCAPT Items
+med-oakland|APPT|captchair_task|View/Edit CAPT Chair Items
+med-oakland|APPT|capt_task|View/Edit CAPT Items
+med-oakland|APPT|provost_task|View/Edit Provost Items

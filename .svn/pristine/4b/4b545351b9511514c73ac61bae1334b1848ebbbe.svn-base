@@ -1,0 +1,15 @@
+{
+	"environment": "staging",
+	"listenport": 8214,
+	"authserviceurl": "http://localhost:9200",
+	"loggingconfig": "config/staging/MPSAppt/alt2_logging.conf",
+	"wkhtmltopdfbinpath": "/usr/local/bin/wkhtmltopdf",
+	"pdftkbinpath":"/usr/bin/pdftk",
+	"skinfolderpath": "/usr/local/mps2",
+	"email": "on",
+	"emailto": ["greg.poth@gomountainpass.com"],
+	"jobcompletiontask": "off",
+	"reportingcleanuptask": "off",
+	"backgroundchecktask": "on",
+	"backgroundcheckintervalminutes": "120"
+}

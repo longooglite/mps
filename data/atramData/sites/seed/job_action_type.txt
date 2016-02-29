@@ -1,0 +1,13 @@
+#code|descr|active
+PROMOTION|Promotion|t
+NEWAPPOINT|Appointment|t
+REAPPOINT|Re-appointment|t
+TRACKCHANGE|Track Change|t
+CREDENTIAL|Credentialing|t
+ENROLL|Enrollment|t
+TERMINATE|Termination|t
+SECONDARYAPPTINSIDE|Secondary Appointment (Internal)|t
+SECONDARYAPPTOUTSIDE|Secondary Appointment (External)|t
+SECONDARYAPPTJOINT|Secondary Appointment (Joint)|t
+RECREDENTIAL|Re-credentialing|t
+TERMINATE|Termination|t

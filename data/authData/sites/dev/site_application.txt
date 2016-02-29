@@ -1,0 +1,5 @@
+#sitecode|appcode
+dev|APPT
+dev|IMM
+dev|CV
+dev|MPSADMIN

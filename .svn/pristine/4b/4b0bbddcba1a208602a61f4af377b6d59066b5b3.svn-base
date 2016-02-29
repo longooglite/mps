@@ -1,0 +1,50 @@
+<body>
+<div class="wf-cv-form-override">
+	<div class="wf-summary-values clearfix">
+	    {% set pi = context.get('personal_info',{}) %}
+	    {% set prmpts = context.get('personal_info_prompts',{}) %}
+		{% set panelIdx = 0 %}
+	    {% for chunk in context.get('rowData', {}) %}
+            <div class="cv-panel cv-detail-inner clearfix wf-panel-{{str(panelIdx)}}">
+	            <div class="cv-panel-body quest_wrap clearfix">
+		            <div class="cv-panel-heading"><span class="mpsbold">{{ chunk.get('title', 'No title found') }}</span></div>
+		            {% for item in chunk.get('prompts', []) %}
+						<div class="wf-summary-line clearfix">
+							<div class="wf-summary-label">{% raw item.get('label','') %}</div>
+							<span class="wf-summary-value">{% raw item.get('value','') %}</span>
+						</div>
+		            {% end %}
+	            </div>
+            </div>
+			{% set panelIdx += 1 %}
+		{% end %}
+	</div>
+</div>
+<script language="javascript">
+	$(function() {
+		var $p0 = $('.wf-panel-0 .cv-panel-body'),
+			$p1 = $('.wf-panel-1 .cv-panel-body'),
+			$p2 = $('.wf-panel-2 .cv-panel-body'),
+			$p3 = $('.wf-panel-3 .cv-panel-body'),
+			$p4 = $('.wf-panel-4 .cv-panel-body'),
+			$p5 = $('.wf-panel-5 .cv-panel-body'),
+			$p6 = $('.wf-panel-6 .cv-panel-body'),
+			$p7 = $('.wf-panel-7 .cv-panel-body'),
+			$p8 = $('.wf-panel-8 .cv-panel-body'),
+			$p9 = $('.wf-panel-9 .cv-panel-body'),
+			iWid = $p0.outerWidth();
+
+		if($p0.outerHeight() < $p1.outerHeight()){$p0.outerHeight($p1.outerHeight()-1);}
+		else if($p0.outerHeight() > $p1.outerHeight()){$p1.outerHeight($p0.outerHeight()-1);}
+		if($p2.outerHeight() < $p3.outerHeight()){$p2.outerHeight($p3.outerHeight()-1);}
+		else if($p2.outerHeight() > $p3.outerHeight()){$p3.outerHeight($p2.outerHeight()-1);}
+		if($p4.outerHeight() < $p5.outerHeight()){$p4.outerHeight($p5.outerHeight()-1);}
+		else if($p4.outerHeight() > $p5.outerHeight()){$p5.outerHeight($p4.outerHeight()-1);}
+		if($p6.outerHeight() < $p6.outerHeight()){$p6.outerHeight($p7.outerHeight()-1);}
+		else if($p6.outerHeight() > $p7.outerHeight()){$p7.outerHeight($p6.outerHeight()-1);}
+		if($p8.outerHeight() < $p9.outerHeight()){$p8.outerHeight($p9.outerHeight()-1);}
+		else if($p8.outerHeight() > $p9.outerHeight()){$p9.outerHeight($p8.outerHeight()-1);}
+		$('.wf-summary-value .cv-panel').outerWidth(iWid-1); // BUGBUG: kludgy, use an array?
+	});
+</script>
+</body>

@@ -1,0 +1,8 @@
+#   common_communities.txt
+#
+#   File of commmon communities.
+#   These are standard communities that we want in every site database.
+#   Use the site-specific 'community.txt' files for site-specific communities.
+
+#site_code|code|description
+|default|Default

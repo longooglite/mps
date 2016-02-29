@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="en">
+<head>
+    <style>
+        .category
+            {
+               font-size: 12pt !important;
+               color: #000 !important;
+               font-family: Arial !important;
+               font-weight: bold;
+            }
+        .subcat3level
+            {
+               font-size: 10pt !important;
+               color: #000 !important;
+               font-family: Arial !important;
+               text-decoration: underline;
+               font-weight: bold;
+            }
+        .subcategory
+            {
+               font-size: 10pt !important;
+               color: #000 !important;
+               font-family: Arial !important;
+               text-decoration: underline;
+               font-weight: bold;
+               padding-left:15px;
+            }
+        .lineitem1
+            {
+               font-size: 10pt !important;
+               color: #000 !important;
+               font-family: Arial !important;
+               padding-left:15px;width:125px;
+               vertical-align: text-top;
+            }
+        .lineitem2
+            {
+               font-size: 10pt !important;
+               color: #000 !important;
+               font-family: Arial !important;
+               padding-left:15px; width:72*5px;
+               vertical-align: text-top;
+            }
+        .lineitem3
+            {
+               font-size: 11pt !important;
+               color: #000 !important;
+               font-family: Arial !important;
+               padding-left:15px; width:72*5px;
+               vertical-align: text-top;
+            }
+        .singleListItem
+            {
+               font-size: 12pt !important;
+               color: #000 !important;
+               font-family: Arial !important;
+               padding-left:15px; width:72*5px;
+               text-align: center;
+            }
+        .numberedlist
+            {
+               font-size: 10pt !important;
+               color: #000 !important;
+               font-family: Arial !important;
+               vertical-align: text-top;
+               line-height:175%;
+            }
+
+
+    </style>
+
+</head>
+<body style="margin:0; padding:0;">
+    {% for currcategory in context.get('printDicts',[]) %}
+        {% set subgroupdescr = '' %}
+        {% if currcategory.get('mode_code','') == 'ListSingleEntry' %}
+            {% include triangulatedHeader.html %}
+        {% elif currcategory.get('mode_code','') == 'ListSingleList' %}
+            {% include printLists.html %}
+        {% elif currcategory.get('mode_code','') == 'ListBySubcategoryGroup' %}
+            {% set subgroupdescr = '' %}
+            {% include printLists.html %}
+        {% end %}
+        <br/>
+    {% end %}
+</body>
+</html>

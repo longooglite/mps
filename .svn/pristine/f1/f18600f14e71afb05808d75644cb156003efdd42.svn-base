@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>{{context.get('windowTitle', '')}}</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+	<style>
+		.wf-cascade-indent { margin-top: 5px; margin-left: 25px; }
+		.wf-title-indent { margin-left: 10px; }
+		.wf-edit-link-enabled a { color: #000000; text-decoration: none; }
+		.wf-edit-link-disabled a { color: #BDB76B; text-decoration: none; }
+		.wf-edit-link-missing { color: #FF0000; }
+		.wf-muted { color: #D3D3D3; }
+		.wf-load-errors { color: red; }
+	</style>
+</head>
+
+{% include adminWorkflowPermissions.html %}
+
+{% set isMsg = True if len(context.get('errormessage','')) > 0 else False %}
+<body class="{{ 'cv-show-global-message' if isMsg else '' }} cv-user-admin-pg mps-admin-page">
+	<div class="container-fluid mps-body">
+		{% include pageHeader.html %}
+
+		{% set titleList = context.get('titleList', []) %}
+		{% set currentTitle = context.get('currentTitle', {}) %}
+		{% set workflowList = context.get('workflowList', []) %}
+		{% set currentWorkflow = context.get('currentWorkflow', {}) %}
+		{% set currentWorkflowData = context.get('currentWorkflowData', {}) %}
+		{% set currentWorkflowUX = context.get('currentWorkflowUX', {}) %}
+		{% set viewModeList = context.get('viewModeList', []) %}
+		{% set currentViewMode = context.get('currentViewMode', {}) %}
+		
+		<div class="body-content cv-body cv-body-no-menu">
+			<div class="page-header clearfix">
+				<h1>
+					Workflow Wizard<br/>
+					<small style="margin-top: 5px;">
+						{% if workflowList %}
+							<div class="dropdown">
+								<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" style="width:150px;">Select Workflow <span class="caret"></span></button>
+								<ul class="dropdown-menu">
+									{% for wfDict in workflowList %}
+										<li><a href="{{wfDict.get('url','')}}">{{wfDict.get('descr','')}}</a></li>
+									{% end %}
+								</ul>
+								<span class="wf-title-indent">{{ currentWorkflowData.get('descr', '') }}</span>
+							</div>
+							<div class="dropdown">
+								<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" style="width:150px;">Select Title <span class="caret"></span></button>
+								<ul class="dropdown-menu">
+									{% for track in titleList %}
+										{% set children = track.get('children', []) %}
+										{% if children %}
+											<li><a href="#" disabled="disabled"><span class="mpsbold">{{track.get('descr','')}}</span></a></li>
+											{% for titleDict in children %}
+												<li class="wf-title-indent"><a href="{{titleDict.get('url','')}}">{{titleDict.get('descr','')}}</a></li>
+											{% end %}
+										{% else %}
+											<li><a href="{{track.get('url','')}}">{{track.get('descr','')}}</a></li>
+										{% end %}
+									{% end %}
+								</ul>
+								<span class="wf-title-indent">{{ currentTitle.get('descr', '') }}</span>
+							</div>
+							<div class="dropdown">
+								<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" style="width:150px;">Select Mode <span class="caret"></span></button>
+								<ul class="dropdown-menu">
+									{% for modeDict in viewModeList %}
+										<li><a href="{{modeDict.get('url','')}}">{{modeDict.get('descr','')}}</a></li>
+									{% end %}
+								</ul>
+								<span class="wf-title-indent">{{ currentViewMode.get('descr', '') }}</span>
+							</div>
+						{% end %}
+					</small>
+				</h1>
+			</div>
+
+			{% if currentWorkflow %}
+				{% if context.get('hasMissingContainers', False) %}
+					<h4 class="col-xs-12 wf-load-errors">
+						Workflow has missing containers: {{ " ".join(context.get('missingContainers', [])) }}<br/>
+					</h4>
+				{% end %}
+				<div class="pull-right clearfix">
+					{% if canCreateWorkflow %}
+						<a href="{{context.get('createWorkflowUrl', '')}}">Create a new workflow</a><br/>
+					{% end %}
+					{% if canCreateComponent %}
+						<a href="{{context.get('createComponentUrl', '')}}">Create a new component</a><br/>
+					{% end %}
+				</div>
+				<div class="clearfix">
+					{% if currentViewMode.get('code', 'full') == 'ux' %}
+						{% for container in currentWorkflowUX.get('container', []) %}
+							<div class="col-xs-12 wf-edit-link-enabled">
+								{% set containerCommon = container.get('common', {}) %}
+								{% set containerEditURL = containerCommon.get('url', '') %}
+								<a href="{{containerEditURL}}">{{ containerCommon.get('descr', '') }}</a>
+
+								{% set sectionList = container.get('sections', []) %}
+								{% if sectionList %}
+									<div class="foo">
+									{% for section in sectionList %}
+										{% set sectionCommon = section.get('common', {}) %}
+										{% set sectionEditURL = sectionCommon.get('url', '') %}
+										<div class="col-xs-12 wf-cascade-indent wf-edit-link-enabled">
+											<a href="{{sectionEditURL}}">{{ sectionCommon.get('descr', '') }}</a>
+
+											{% set itemList = section.get('items', []) %}
+											{% if itemList %}
+												<div class="foo">
+												{% for item in itemList %}
+													{% set itemCommon = item.get('common', {}) %}
+													{% set itemEditURL = itemCommon.get('url', '') %}
+													<div class="col-xs-12 wf-cascade-indent wf-edit-link-enabled">
+														<a href="{{itemEditURL}}">{{ itemCommon.get('descr', '') }}</a>
+													</div>
+												{% end %}
+												</div>
+											{% end %}
+										</div>
+									{% end %}
+									</div>
+								{% end %}
+							</div>
+						{% end %}
+					{% else %}
+						{% set context['indent'] = 0 %}
+						{% set context['container'] = currentWorkflow.getMainContainer() %}
+						{% if context['container'] %}
+							{% module Template("adminWorkflowContainer.html", context=context, skin=context['skin']) %}
+						{% end %}
+					{% end %}
+				</div>
+
+			{% end %}
+		</div>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+
+<script type="text/javascript">
+/*<![CDATA[*/
+
+/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

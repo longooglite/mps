@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Appointments</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/wf-main.css"/>
+</head>
+<body class="cv-proxy-page wf-details-page">
+<div class="container-fluid mps-body">
+	{% set context['pageHeaderTitle'] = 'Appointments' %}
+	{% include pageHeader.html %}
+	<div class="body-content cv-body cv-body-no-menu">
+        <div class="page-header clearfix">
+			<h1>
+				<!-- <div style="float:left; height:60px; margin-right:5px;">Position History:</div>-->
+				Proposed Start Date
+				{% set sTitle = context.get('title_descr', '') %}
+				{% set sDept = context.get('department_descr', '') %}
+				{% if sTitle != '' or sDept != '' %}
+				<br/><small>
+					{% if sTitle != '' %}<span>{{sTitle}}</span><br/>{% end %}
+					{% if sDept != '' %}<span>{{sDept}}</span>{% end %}
+				</small>
+				{% end %}
+			</h1>
+		</div>
+		<form id="mainform" class="form-horizontal mps-form-widgets" onsubmit="return false;">
+            <input type=hidden name="job_action_id" id="job_action_id" value="{{context.get('job_action_id','')}}">
+            <div class="row">
+                <h3 class="section-header starthidden">
+                    <span class="glyphicon glyphicon-edit"></span>
+                    {{context.get('departmentText','Department')}} &amp; Title:
+                </h3>
+                <div class="cv-callout cv-callout-info cv-callout-bordered clearfix row">
+                    <a href="#" data-target="wf-new-appt" class="wf-data-toggler{% if not len(context.get('appointments',[])) > 0 %} starthidden{% end %}" style="margin-left:20px;">Start New Appointment...</a>
+                    <div id="wf-new-appt" class="wf-details-form{% if len(context.get('appointments',[])) > 0 %} starthidden{% end %}">
+                        <div class="row">
+                            <label class="col-xs-2 control-label" for="start_date">Start Date:</label>
+                            <div class="col-xs-5">
+                                <input class="form-control mps-date-picker" type="text" placeholder="{{ context.get('date_format','MM/DD/YYYY') }}"  value="{{ context.get('start_date','') }}" name="start_date" id="start_date"/>
+                            </div>
+                        </div>
+
+                        <div class="wf-details-form-btn-bar col-xs-7">
+                            <button class="savestartdate btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </div>
+				<div class="wf-details-form-btn-bar col-xs-12">
+					<a data-section="wf-overview-item" class="overview-breadcrumb wf-details-footer-cancel wf-details-footer-back" href="#">
+						<span class="glyphicon glyphicon-circle-arrow-left"></span><span>Back</span>
+					</a>
+				</div>
+            </div>
+        </form>
+	</div>
+</div>
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	(function ($) {
+
+		$('body').on('click', '.savestartdate', function(event){
+			var $this = $(this);
+			var $job_action_id = $('#job_action_id').val();
+			var sURL = '/appt/jobaction/editstartdate/' + $job_action_id
+			cvApp.ubiquitousPageRequest({
+				url: sURL,
+				data: JSON.stringify($('#mainform').serializeObject()),
+				errorMessage: '#modalerrormessage'
+			});
+		});
+
+		$('.wf-data-toggler').click(function(){
+			var $this = $(this),
+				$target = $('#'+$this.data('target'));
+			$this.toggle();
+			$target.toggle();
+		});
+
+	})(jQuery);
+
+	/*]]>*/
+</script>
+</div>
+</body>
+</html>

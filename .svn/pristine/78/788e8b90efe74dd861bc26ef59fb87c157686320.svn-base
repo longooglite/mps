@@ -1,0 +1,50 @@
+body.cv-import-page .cv-body-content .cv-menu,
+.import-header,
+.cv-pubmed-search-bar
+{
+    width:100%;
+    margin:0 auto !important;
+    max-width: 1200px;
+    min-width: 748px;
+}
+
+body.cv-import-page .cv-menu {
+    top: 76px;
+    left:auto;
+}
+.import-header {
+    top: 128px;
+    /* width:225px; */
+    min-width:auto;
+    height:76px;
+}
+.import-header h1{
+    padding-top:18px;
+}
+.cv-pubmed-search-bar {
+    top: 128px;
+    left: 0;
+    padding:0 0 0 223px;
+    background-color: transparent;
+}
+.cv-pubmed-search-bar .form-group{
+    padding-top: 10px;
+    padding-bottom:12px;
+}
+.cv-pubmed-search-bar .form-group:first-child{
+    border-left: solid 1px #e1e1e1;
+}
+
+body.cv-import-page .body-content{
+    padding-left: 245px;
+    padding-top: 20px;
+}
+
+#pubmed-loading{
+    padding-top:220px;
+}
+#pubmed-loading .pubmed-loading-wrap{
+    margin-left:-15%;
+}
+
+body.cv-import-page .cv-menu .nav .active, .cv-menu .nav .active a{ background-color:#fff !important; }

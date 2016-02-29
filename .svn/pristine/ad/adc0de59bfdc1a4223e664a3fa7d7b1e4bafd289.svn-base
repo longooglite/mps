@@ -1,0 +1,16 @@
+# Site-specific overrides and settings only.
+#sitecode|code|value
+umms|skin|atram
+umms|auth|LDAP
+umms|dbname|umms
+umms|sessionidletimeoutmilliseconds|60000000
+umms|facultyaffairsemail|eric.paul@mountainpasssolutions.com
+umms|autofill|true
+umms|defaultCountdownDaysOffset|60
+umms|defaultCountdownWarningDays|10
+
+# Real Production settings should be:
+#umms|auth|LDAP
+#umms|authpassreqd|yes
+#umms|ldapurl|ldaps://ldap.umich.edu:636/
+#umms|ldappattern|uid=%s,ou=People,dc=umich,dc=edu

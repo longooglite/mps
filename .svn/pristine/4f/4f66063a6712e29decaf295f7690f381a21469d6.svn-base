@@ -1,0 +1,45 @@
+/*  Main THEN Custom... */
+
+/*
+*  HTML, Body, etc
+*/
+
+/* from mps-main ... */
+html, body{min-width:960px !important;}
+
+/* from site-custom... */
+html { overflow-y: scroll; }
+body {
+    margin: 0;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    color: #333;
+    background-color: #f9f9f9;
+    padding-bottom:30px;
+    padding-top:96px;
+}
+
+.body-content .popover, .cv-body .popover, .cv-body-no-menu .popover{z-index:1;}  // So e.g. popovers do not appear above Header/Footer
+
+/* A few Menu styles in header */
+.mps-menu-disabled ul li a{width:200px; white-space:normal !important;color:#999 !important; }
+.mps-menu-disabled ul li a:hover{cursor:default !important; color:#999 !important; background-color: transparent !important;}
+.mps-menu-disabled > a, .mps-menu-disabled .glyphicon{/*color:#888 !important;*/}
+.wf-inbox-number{background-color:#f0ad4e; color:#fff; font-size:12px; line-height:12px; position:relative; top:-1px !important;}
+
+
+
+/*
+*  Default Footer
+*/
+.mpsfooter { margin: 0; border: 0px; }
+.mpsfooter-navbar { min-height: 20px; border-width: 0px;}
+.mpsfooter-top-container { background: #002a5b; }
+.mpsfooter-top-inner { margin-left: 40px; margin-right: 40px; margin-top: 2px; margin-bottom: 2px; font-size: 10px; height: 22px; padding-left: 0; padding-right: 0; border-radius: 0; -webkit-border-radius: 0; }
+.mpsfooter-top-right { float: right; }
+.mpsfooter-top-text { color: #fefefe; }
+.mpsfooter-top-separator { margin-left: 5px; margin-right: 5px; }
+.mpsfooter-bottom-container { background: #fefefe; }
+.mpsfooter-bottom-inner { margin-left: 20px; margin-right: 20px; margin-top: 2px; margin-bottom: 8px; font-size: 10px; height: 14px; padding-left: 0; padding-right: 0; border-radius: 0; -webkit-border-radius: 0; }
+.mpsfooter-copy{float:left; color:#fff;}

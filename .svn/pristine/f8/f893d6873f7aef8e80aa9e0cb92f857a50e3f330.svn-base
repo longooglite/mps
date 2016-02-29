@@ -1,0 +1,19 @@
+1) brew install homebrew/versions/postgresql8
+2) ln -sfv /usr/local/opt/postgresql8/*.plist ~/Library/LaunchAgents
+3) launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql8.plist
+4) Recreate postgres directories hosed by Yosemite install:
+$ mkdir -p /usr/local/var/postgres/{pg_tblspc,pg_twophase,pg_stat_tmp}
+5) reboot
+6) initdb /usr/local/var/postgres
+7) $ psql postgres
+    #create role postgres SUPERUSER LOGIN;
+8) createuser -s -h localhost -U postgres -P -W mps
+    mps
+    mps
+    postgres
+9) createlang plpgsql template1
+10) sudo easy_install pip
+11) Install tornado web server
+    sudo pip install tornado
+12) install psycopg2 python/postgres driver
+    sudo pip install psycopg2

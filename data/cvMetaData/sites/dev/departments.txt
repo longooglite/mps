@@ -1,0 +1,64 @@
+#list of departments - need to get from site
+
+Administration
+Allergy
+Ambulatory Care
+Anesthesiology
+Biological Chemistry
+Biomedical Engineering
+Cardiac Surgery
+Cardiology
+Cell and Developmental Biology
+Child Behavioral Health
+Computational Medicine & Bioinformatics
+Dermatology
+Emergency Medicine
+Endocrinology
+Family Medicine
+Gastroenterology
+General Medicine
+General Surgery
+Genetics
+Geriatrics and Palliative Medicine
+Hematology/Oncology
+Hospitalists
+Human Genetics
+Immunology/Rheumatology
+Infectious Diseases
+Institute of Gerontology
+Intensive Care
+Internal Medicine
+Medical Education
+Medical School
+Metabolism, Endocrinology & Diabetes
+Microbiology & Immunology
+MNIMBS
+Molecular & Behavioral Neuroscience Institute
+Molecular & Integrative Physiology
+Molecular Medicine & Genetics
+Neonatal/Perinatal
+Nephrology
+Neurology
+Neurosurgery
+Obstetrics and Gynecology
+Ophthalmology
+Oral Surgery
+Orthopaedic Surgery
+Otolaryngology
+Pathology
+Pediatric Surgery
+Pediatrics
+Pharmacology
+Physical Medicine & Rehabilitation
+Plastic Surgery
+Psychiatry
+Pulmonary
+Radiation Oncology
+Radiology
+Rheumatology
+Surgery
+Thoracic Surgery
+Transplant Surgery
+Unit for Laboratory Animal Medicine
+Urology
+Vascular Surgery

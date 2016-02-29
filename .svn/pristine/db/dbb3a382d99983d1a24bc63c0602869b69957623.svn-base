@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>SmartPath&trade;</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+	<link rel="stylesheet" type="text/css" href="/{{skin}}/css/wf-main.css"/>
+</head>
+
+<body>
+	<div class="container-fluid mps-body">
+		{% set context['pageHeaderTitle'] = 'SmartPath' %}
+		{% include pageHeader.html %}
+		<div class="wf-workflow-content" id="workflow-content">
+			<div class="body-content">
+				<div>
+					<span id="errormessage" class="errormessage">{{context.get('errormessage','')}}</span>
+				</div>
+			</div>
+		</div>
+        <h2 class="clearfix wf-unathorized">
+            <span class="glyphicon glyphicon-ban-circle" >&nbsp;</span>
+			<div class="wf-unauthroized-msg">You are not currently authorized to complete any actions in this system.</div>
+        </h2>
+	</div>
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+
+</body>
+</html>

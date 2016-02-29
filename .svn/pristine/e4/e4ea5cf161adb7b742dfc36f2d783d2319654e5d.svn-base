@@ -1,0 +1,56 @@
+#   File of site-specific role/permission assignments.
+#   Use the common 'common_role_permissions.txt' file for non-site-specific data.
+
+#application|site|role|permission
+
+#   Department User
+APPT|engin-umich|apptDeptUser|apptRosterView
+APPT|engin-umich|apptDeptUser|apptDashboardView
+APPT|engin-umich|apptDeptUser|apptCreatePosition
+APPT|engin-umich|apptDeptUser|apptViewAsCandidate
+APPT|engin-umich|apptDeptUser|apptJobActionOverview
+APPT|engin-umich|apptDeptUser|apptCreateJobAction
+APPT|engin-umich|apptDeptUser|apptPositionView
+APPT|engin-umich|apptDeptUser|apptPersonView
+APPT|engin-umich|apptDeptUser|apptCancelJobAction
+APPT|engin-umich|apptDeptUser|apptResendEmail
+
+APPT|engin-umich|apptDeptUser|dept_task
+APPT|engin-umich|apptDeptUser|approverfp_view
+APPT|engin-umich|apptDeptUser|canViewNPIPassword
+APPT|engin-umich|apptDeptUser|canrequestfieldrevisions
+APPT|engin-umich|apptDeptUser|revisions_notify
+
+
+#   Faculty Affairs User
+APPT|engin-umich|apptFacultyAffairs|apptRosterView
+APPT|engin-umich|apptFacultyAffairs|apptDashboardView
+APPT|engin-umich|apptFacultyAffairs|apptCreatePosition
+APPT|engin-umich|apptFacultyAffairs|apptViewAsCandidate
+APPT|engin-umich|apptFacultyAffairs|apptJobActionOverview
+APPT|engin-umich|apptFacultyAffairs|apptCancelJobAction
+APPT|engin-umich|apptFacultyAffairs|apptResendEmail
+
+APPT|engin-umich|apptFacultyAffairs|ofa_task
+APPT|engin-umich|apptFacultyAffairs|apptCreateJobAction
+APPT|engin-umich|apptFacultyAffairs|apptPositionView
+APPT|engin-umich|apptFacultyAffairs|apptPersonView
+APPT|engin-umich|apptFacultyAffairs|approverfp_edit
+APPT|engin-umich|apptFacultyAffairs|facultyAffairsUser
+
+
+#	Faculty User
+APPT|engin-umich|facultyUser|apptRosterView
+APPT|engin-umich|facultyUser|apptDashboardView
+APPT|engin-umich|facultyUser|apptJobActionOverview
+APPT|engin-umich|facultyUser|apptPositionView
+APPT|engin-umich|facultyUser|apptPersonView
+APPT|engin-umich|facultyUser|faculty_task
+
+#	RPM User
+APPT|engin-umich|rpmUser|apptRosterView
+APPT|engin-umich|rpmUser|apptDashboardView
+APPT|engin-umich|rpmUser|apptJobActionOverview
+APPT|engin-umich|rpmUser|apptPositionView
+APPT|engin-umich|rpmUser|apptPersonView
+APPT|engin-umich|rpmUser|rpm_task

@@ -1,0 +1,115 @@
+#   common_role_permissions.txt
+#
+#   File of commmon role/permission assignments.
+#   These are standard role/permissions that we want in every site database.
+#   Use the site-specific 'role_permission.txt' files for site-specific data.
+
+#   CV
+
+#application|site|role|permission
+CV||cvAdmin|cvView
+CV||cvAdmin|cvEdit
+CV||cvAdmin|cvCreate
+CV||cvAdmin|cvAdmin
+CV||cvAdmin|cvProxyAll
+CV||cvEditor|cvView
+CV||cvEditor|cvEdit
+CV||cvUser|cvView
+CV||cvUser|cvEdit
+CV||cvUser|cvCreate
+CV||cvReader|cvView
+CV||cvExport|cvExport
+
+
+#   MPS Admin
+
+#application|site|role|permission
+MPSADMIN||siteAdmin|siteView
+MPSADMIN||siteAdmin|siteEdit
+MPSADMIN||siteAdmin|siteDelete
+MPSADMIN||communityAdmin|communityView
+MPSADMIN||communityAdmin|communityEdit
+MPSADMIN||prefAdmin|prefView
+MPSADMIN||prefAdmin|prefEdit
+MPSADMIN||roleAdmin|roleView
+MPSADMIN||roleAdmin|roleEdit
+MPSADMIN||userAdmin|userView
+MPSADMIN||userAdmin|userEdit
+MPSADMIN||userAdmin|userDelete
+MPSADMIN||sessionAdmin|sessionView
+MPSADMIN||dbAdmin|dbDump
+MPSADMIN||dbAdmin|dbRestore
+MPSADMIN||unrestrictedAdmin|unrestrictedAdmin
+
+
+#   Appointments
+#application|site|role|permission
+
+#   Candidate User
+APPT||apptCandidate|apptCandidate
+APPT||apptCandidate|apptJobActionOverview
+
+#   View as Candidate (additive Role)
+APPT||apptViewAsCandidate|apptViewAsCandidate
+
+#   Criminal Background Check (additive Role)
+APPT||cbcView|cbcView
+APPT||cbcAdmin|cbcView
+APPT||cbcAdmin|cbcAdmin
+APPT||cbcStatus|cbcView
+APPT||cbcStatus|cbcAdmin
+APPT||cbcStatus|cbcStatus
+
+#   Field Level Revisions (additive Role)
+APPT||apptFieldRevisions|canrequestfieldrevisions
+
+
+#   Site System Administrator (additive Role)
+#   apptSiteAdmin is intended for the empowered Administrator at a Site
+APPT||apptSiteAdmin|apptUserEdit
+APPT||apptSiteAdmin|apptDeptEdit
+APPT||apptSiteAdmin|apptTrackEdit
+APPT||apptSiteAdmin|apptTitleEdit
+APPT||apptSiteAdmin|apptBuildingEdit
+APPT||apptSiteAdmin|apptInternalEvalEdit
+APPT||apptSiteAdmin|apptLookupEdit
+APPT||apptSiteAdmin|apptRosterEntry
+APPT||apptSiteAdmin|apptWFEdit
+
+#   MPS Administrator (additive Role)
+#   apptMpsAdmin is for MPS personnel only. NEVER, EVER give it to a site user
+APPT||apptMpsAdmin|apptUserEdit
+APPT||apptMpsAdmin|apptDeptEdit
+APPT||apptMpsAdmin|apptTrackEdit
+APPT||apptMpsAdmin|apptTitleEdit
+APPT||apptMpsAdmin|apptBuildingEdit
+APPT||apptMpsAdmin|apptInternalEvalEdit
+APPT||apptMpsAdmin|apptRosterEntry
+APPT||apptMpsAdmin|apptUberEdit
+APPT||apptMpsAdmin|apptLookupEdit
+APPT||apptMpsAdmin|apptWFEdit
+APPT||apptMpsAdmin|apptWFEditCreateWorkflow
+APPT||apptMpsAdmin|apptWFEditCreateComponent
+APPT||apptMpsAdmin|apptWFEditCreateTitleOverride
+APPT||apptMpsAdmin|apptWFEditDeleteComponent
+APPT||apptMpsAdmin|apptWFEditDeleteTitleOverride
+APPT||apptMpsAdmin|apptWFEditClassName
+APPT||apptMpsAdmin|apptWFEditPermissions
+APPT||apptMpsAdmin|apptWFEditBlockers
+APPT||apptMpsAdmin|apptWFEditRaw
+
+#   MPS Guru (additive Role)
+#   apptMpsGuru is for MPS gurus only (i.e. developers). NEVER, EVER give it to a site user
+APPT||apptMpsGuru|apptUserEdit
+APPT||apptMpsGuru|apptDeptEdit
+APPT||apptMpsGuru|apptTrackEdit
+APPT||apptMpsGuru|apptTitleEdit
+APPT||apptMpsGuru|apptBuildingEdit
+APPT||apptMpsGuru|apptInternalEvalEdit
+APPT||apptMpsGuru|apptRosterEntry
+APPT||apptMpsGuru|apptWFEditRaw
+APPT||apptMpsGuru|apptUberEdit
+APPT||apptMpsGuru|apptLookupEdit
+
+#   Is Almighty (additive Role)
+APPT||apptIsAlmighty|isalmighty

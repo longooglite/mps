@@ -1,0 +1,3 @@
+#code|descr|is_external|is_arms_length|requires_approval
+EXTERNAL|External|False|True|False
+INTERNAL|Internal|False|False|False

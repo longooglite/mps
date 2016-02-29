@@ -1,0 +1,7 @@
+[
+  {"descr":"Actions In Progress","permission":["dept_task","ofa_task"],"reportConfig":"actionsInProgressConfig"},
+  {"descr":"Department Listing","permission":["dept_task","ofa_task"],"reportConfig":"departmentListingConfig"},
+  {"descr":"Evaluations Metrics","permission":["dept_task","ofa_task"],"reportConfig":"evaluationsMetricsConfig"},
+  {"descr":"Position History","permission":["dept_task","ofa_task"],"reportConfig":"positionHistoryConfig"},
+  {"descr":"Time To Completion","permission":["dept_task","ofa_task"],"reportConfig":"timeToCompletionConfig"}
+]

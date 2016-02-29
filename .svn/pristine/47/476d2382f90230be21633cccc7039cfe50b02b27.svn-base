@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html class="no-js" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+</head>
+
+<body>
+
+    <div th:object="${packet}">
+
+        <h3>Credentialing Application</h3>
+        <div class="section span5" th:object="${pinfo}">
+            <h4>Personal Information</h4>
+            <p style="font-style: italic" th:text="${#messages.msg('credaction.credapp.pinfo.preamble')}">
+                Here is the information we previously collected about you. We will be using this for the credentialing
+                application. Please make any changes necessary to update your information.</p>
+
+            <div class="subsection">
+                <h5>Name Information</h5>
+                <div><label class="name">Legal Name:</label><label class="value" th:text="${prospect.legalName}">Legal Name</label></div>
+            </div>
+            <div class="subsection">
+                <h5>Contact Information</h5>
+                <div class="multilabel">
+                    <label class="name">Address:</label>
+                    <div class="value">
+                        <div th:if="*{streetAddress != null}"><label th:text="*{streetAddress}">Address Line 1</label></div>
+                        <div th:if="*{addressLine2 != null}"><label th:text="*{addressLine2}">Address Line 2</label></div>
+                        <div th:if="*{addressLine3 != null}"><label th:text="*{addressLine3}">Address Line 3</label></div>
+                        <div th:if="*{addressLine4 != null}"><label th:text="*{addressLine4}">Address Line 4</label></div>
+                        <div><label th:text="*{addressLastLine}">City, State, Country - Zip</label></div>
+                    </div>
+                </div>
+                <div><label class="name">Phone:</label><label class="value" th:text="*{addressPhone}">555-555-1221</label></div>
+                <div><label class="name">Email:</label><label class="value" th:text="${prospect.email}">email@email.com</label></div>
+            </div>
+            <div class="subsection">
+                <h5>Other Information</h5>
+                <div><label class="name" th:utext="#{form.demographics.birthdate}+':'">Date of Birth:</label><label class="value" th:text="*{dob}? *{#dates.format(dob, 'M/d/yyyy')}">5/10/1982</label></div>
+                <div><label class="name" th:utext="#{form.demographics.birthplace}+':'">Place of Birth:</label><label class="value" th:text="*{birthCountry}">United States</label></div>
+                <div><label class="name" th:utext="#{form.demographics.gender}+':'">Gender:</label><label class="value" th:text="*{gender}">Male</label></div>
+                <div><label class="name" th:utext="#{form.demographics.ethnicity}+':'">Ethnicity:</label><label class="value" th:text="*{ethnicity}">White</label></div>
+                <div><label class="name" th:utext="#{form.demographics.ssn}+':'">SSN: </label><label class="value" th:text="*{ssn}">XXX-XX-1234</label></div>
+                <div><label class="name" th:utext="#{form.demographics.usCitizen}+':'" >US Citizen/ Permanent Resident:</label><label class="value" th:text="*{usCitizenString}">Yes</label></div>
+                <div><label class="name" th:utext="#{form.demographics.livingInUS}+':'"></label><label class="value" th:text="*{livingInUsString}">No</label></div>
+                <div><label class="name" th:utext="#{form.demographics.scholarlyFocus}+':'"></label><label class="value" th:text="*{scholarlyFocus}">Focus</label></div>
+                <div><label class="name" th:utext="#{form.npi.number}+':'">NPI:</label><label class="value" th:text="*{npi}">1234567893</label></div>
+                <div><label class="name" th:utext="#{form.demographics.uniqname}+':'">uniqname:</label><label class="value" th:text="${prospect.loginId}">uniqname</label></div>
+            </div>
+
+        <div class="section" th:if="${packet.supplementalQuestions != null}" th:object="${packet.supplementalQuestions}">
+            <h4>Supplemental Questions</h4>
+            <ol>
+                <li th:each="qa, row: *{questionAnswers}">
+                    <div class="qa">
+                        <label class="control-label" th:text="${qa.question}">Question?</label>
+                        <div class="explanation">
+                            <label th:text="${qa.answer == null? '' : (qa.answer? 'Yes' : 'No')}">Yes/No</label>
+                            <label th:if="${qa.answer != null &amp;&amp; qa.answer}" th:text="${qa.explanation}">Explanation</label>
+                        </div>
+                    </div>
+                </li>
+            </ol>
+        </div>
+        <div class="section" th:if="${packet.attestation != null}" th:object="${packet.attestation}">
+            <h4>Attestation</h4>
+            <div th:utext="#{credential.attestation.page.text}" class="subsection">
+                To be replaced with Attestation Text
+            </div>
+            <div th:if="*{complete}" class="subsection">
+                <p>I, <span th:text="*{userAttested}">userid</span>, attested on
+                    <span th:text="*{#dates.format(dateAttested, 'MMM dd yyyy HH:mm')}"></span></p>
+            </div>
+            <div th:if="*{needsReAttestation}" class="subsection">
+                <p th:if="*{needsReAttestation}" style="font-weight: bold;">Needs Re-Attestation</p>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

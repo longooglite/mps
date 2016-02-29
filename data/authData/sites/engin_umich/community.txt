@@ -1,0 +1,4 @@
+#   File of site-specific communities.
+#   Use the common 'common_communities.txt' file for non-site-specific communities.
+
+#site|code|descr

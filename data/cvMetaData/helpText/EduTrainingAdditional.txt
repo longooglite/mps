@@ -1,0 +1,50 @@
+[Category]
+<h4>Education & Training - Additional Training</h4>
+<p>This page displays your additional training background.<p>
+<p>The content of this page can be sorted by clicking on any column title.</p>
+<hr>
+<p>To <strong>add</strong> an additional entry, click the “+ Add …” button in the upper right portion of the page.</p>
+<p>To <strong>edit</strong> an existing entry, click the blue text in the row you would like to edit.</p>
+<p>To <strong>delete</strong> an entry, click the X at the end of the row you would like to delete. Then confirm the deletion.</p>
+<p>To <strong>print</strong> a section of the CV, click the “Print this section” button in the upper right portion of the page or select “Print Section” from the Print menu found in the menu bar.</p>
+
+
+
+[AdditionalProgram]
+<p>Please select the type of educational program.</p>
+
+[AdditionalDegree]
+<p>Please select the degree earned (if applicable).</p>
+
+[AdditionalSpecialty]
+<p>Please enter specialty information (if applicable).</p>
+
+[AdditionalMentor]
+<p>Please enter your mentor (if applicable).</p>
+
+[AdditionalInstitutionName]
+<p>Please enter the name of the institution where you did your Additional training.</p>
+<hr>
+<p>This item is required</p>
+
+[AdditionalInstitutionCity]
+<p>Please enter the city where the institution was located.</p>
+<hr>
+<p>This item is required</p>
+
+[AdditionalInstitutionState]
+<p>Please enter the state where the institution was located.</p>
+
+[AdditionalInstitutionCountry]
+<p>Please enter the country where the institution was located.</p>
+
+[AdditionalStart]
+<p>Please enter the start date for this program.</p>
+<hr>
+<p>This item is required</p>
+<p>Hover over the field to see supported date formats</p>
+
+[AdditionalEnd]
+<p>Please enter the date you completed this program.</p>
+<hr>
+<p>Hover over the field to see supported date formats</p>

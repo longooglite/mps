@@ -1,0 +1,42 @@
+<div class = "category">{{ categorydescr }}</div>
+<br/>
+{% if subgroupdescr <> '' %}
+    <div class = "subcat3level">{{ subgroupdescr }}</div>
+    <br/>
+{% end %}
+<div class = "subcategory">{{ subcategorydescr }}</div>
+
+{% set rowList = currsubcategory.get('rows',[]) %}
+{% if not currcategory.get('isNumberedList', False) %}
+    <table>
+        <tbody>
+        {% for row in rowList %}
+            <tr>
+                {% set i = 0 %}
+                {% set fieldList = row.get('fields',[]) %}
+                {% for field in fieldList %}
+                    {% set output = field.get('formatted_value','') %}
+                    {% set i = i + 1 %}
+                    {% if i % 2 <> 0 and len(fieldList) > 1 %}
+                        <td width="200px" nowrap class = "lineitem1">{% raw output %}</td>
+                    {% else %}
+                        <td class = "lineitem2">{% raw output %}</td>
+                    {% end %}
+                {% end %}
+            </tr>
+        {% end %}
+        </tbody>
+    </table>
+{% else %}
+    <ol class="numberedlist">
+        {% for row in rowList %}
+                {% set i = 0 %}
+                {% set fieldList = row.get('fields',[]) %}
+                {% for field in fieldList %}
+                    {% set output = field.get('formatted_value','') %}
+                    <li>{% raw output %}</li>
+                {% end %}
+        {% end %}
+    </ol>
+{% end %}
+

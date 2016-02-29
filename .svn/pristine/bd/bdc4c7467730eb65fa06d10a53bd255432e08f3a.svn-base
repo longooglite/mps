@@ -1,0 +1,77 @@
+candidate.ari.page.text=\
+<p>By applying for appointment, reappointment and/or clinical privileges at the University of Michigan Health \
+System("UMHS"), <span style="font-style:italic">I accept the following conditions and intend to be legally bound \
+by them, regardless of whether or not my application is granted</span>. These conditions will remain in effect for \
+the duration of any appointment that I may be granted and, as applicable, to third party inquiries received after \
+I leave UMHS:</p>\
+<ol>\
+  <li>I authorize the University of Michigan, including all University Regents, faculty, staff, and authorized \
+  representatives (the "University") to: (i) review any University information and consult with any third \
+  parties who may have information bearing on my professional qualifications, clinical competence, character, \
+  ability to perform safely and competently, ethics, behavior, or any other matter reasonably having a bearing \
+  on my qualifications for appointment or reappointment to the UMHS medical staff or for clinical privileges \
+  (my "Credentials"); and (ii) request and obtain any and all communications, reports, records, statements, \
+  documents, recommendations, evaluations, or disclosures of the University and third parties that may be relevant \
+  to these questions. These third parties may include, but are not limited to, educational institutions, health care \
+  providers, or payors where I have trained or worked, or with whom I otherwise have been affiliated; licensing and \
+  certification boards; professional societies; professional liability insurers, carriers, and administrators; and \
+  government agencies with jurisdiction. <span style="font-weight:bold; text-decoration:underline">I specifically \
+  authorize these third parties to release this information to the University upon request</span>.</li> \
+  <li>I also <span style="font-weight:bold; text-decoration:underline">authorize the University to release such \
+  information to third parties</span> who request it for the purpose of evaluating my Credentials pursuant to a \
+  request for appointment, reappointment, clinical privileges, participating provider status, licensure, \
+  certification, or other credentialing activities.</li>\
+  <li>To the fullest extent permitted by law, <span style="font-weight:bold; text-decoration:underline">I release \
+  from liability the University</span> and appropriate third parties for actions taken in good faith relating to my \
+  UMHS Medical Staff appointment, reappointment, clinical privileges, participating provider status, licensure, \
+  certification, or my Credentials for same. This includes any and all communications, reports, records, statements, \
+  documents, recommendations, evaluations, or disclosures of the University and third parties.</li> \
+  <li>Unless otherwise required by the terms of a collective bargaining agreement, I agree that the Fair Hearing Plan \
+  described in the Medical Staff Bylaws' Rules and Regulations will be my \
+  <span style="font-weight:bold; text-decoration:underline">sole and exclusive remedy</span> for an adverse ruling \
+  made with respect to UMHS Medical Staff membership, Staff status or clinical privileges, regardless of whether I am \
+  an initial applicant or current member. I agree to abide by the UMHS Medical Staff Bylaws and the Fair Hearing Plan. \
+  <a target="_blank" href="http://www.med.umich.edu/mss/pdf/bylaws.pdf">http://www.med.umich.edu/mss/pdf/bylaws.pdf</a></li>\
+  <li>If, notwithstanding my promises above, I institute legal action against the University and do not prevail, \
+  <span style="font-weight:bold; text-decoration:underline">I acknowledge I may be obligated to reimburse the \
+  University</span> (including any <span style="font-weight:bold; text-decoration:underline">individuals who are \
+  named</span> in the action) for University costs incurred in defending that action,including reasonable attorneys' fees.</li>\
+</ol>
+candidate.pinfo.disclaimer.text=<p>The information we ask for on this page may be used for a background check and/or to start the credentialing and enrollment processes, as appropriate to your position. You will see more about these and provide authorizations later in the pre-hire process.</p>
+
+credential.attestation.page.text=<p>\
+I understand that <b>it is my responsibility to complete my application</b> for appointment or reappointment to the University of \
+Michigan Health System's ("UMHS") medical staff and/or for clinical privileges, and to provide the University of Michigan,\
+  including all University Regents, faculty, staff, and authorized representatives (collectively the "University") any information \
+  requested regarding my professional qualifications, clinical competence, character, ability to perform safely and competently, \
+  ethics, behavior, or any other matter reasonably having a bearing on my qualifications for appointment or reappointment to the UMHS \
+  medical staff or for clinical privileges (my "Credentials"). I also acknowledge my obligation and responsibility to provide the University \
+  with any additional information requested after review of the application. <b>MY FAILURE TO COMPLETE MY APPLICATION OR TO PROVIDE ANY REQUESTED \
+  ADDITIONAL INFORMATION WILL CAUSE MY APPLICATION TO BE REJECTED AND NOT PROCESSED.</b></p>\
+<p>\
+    I affirm that the information in my application and all other information I have supplied to the University, whether directly or indirectly, \
+  is <b>accurate, complete, and current</b>. All questions have been answered honestly, and even problems that I was previously told were not on my \
+  "permanent record" (e.g., prior criminal conduct where I was promised my record had been expunged) have been fully disclosed if responsive to \
+  application questions.\
+  </p>\
+  <p>\
+     While my application is pending and, if granted, thereafter while I remain affiliated with UMHS, I will <b>immediately</b> notify the Office of \
+    Clinical Affairs and my Service Chief of the following:<br/>\
+  <ul>\
+    <li>\
+    Any developments that impact the accuracy of my application responses including, but not limited to:<br/>\
+        <ul>\
+            <li><b>Changes in my health</b> that could adversely affect my ability to practice within the current scope of my privileges. (<i>Examples include, but are not limited to, any head injury, stroke, or other neurological injury even if I have been cleared to practice by my personal physician.</i>)</li>\
+            <li>Any temporary or permanent <b>lapse, suspension, restriction, fine, penalty, or other negative development</b> in connection with my professional license in any state, my authority to prescribe narcotics (<i>e.g., DEA license or state controlled substance license</i>) , my board certification, or my appointment or privileges at any other medical school, health care facility or health plan. </li>\
+        </ul>\
+    </li>\
+    <li>An investigation initiated by any regulatory or law enforcement agency (<i>e.g., the Michigan Department of Community Health, Bureau of Health Professions; Michigan Attorney General; Drug Enforcement Agency; Center for Medicare and Medicaid Services; DHHS Office of Inspector General; U.S. Department of Justice</i>).</li>\
+    <li><b>My arrest, conviction, or plea of guilty or nolo contendere</b> (following my appointment at UMHS) for any criminal conduct, whether the conduct occurred at the University or elsewhere.</li>\
+  </ul>\
+  </p>\
+  <p>I have read the Medical Staff Bylaws and associated rules, policies and procedures, and agree to be bound by and uphold them both in connection with my application, and thereafter if I am granted membership and/or clinical privileges. I also will comply with all applicable federal and state laws and regulations, in addition to University, UMHS, and department-level policies. If I have a question or concern about my obligations, I may consult with my Service Chief, the Office of Clinical Affairs, the Compliance Office, or the University Hotline: 1-866-990-0111 or online at <a href= "http://www.med.umich.edu/compliancehotline">http://www.med.umich.edu/compliancehotline</a>.</p>\
+  <p>If I am appointed to the Medical Staff and/or granted clinical privileges, I understand and agree:</p>\
+  <ul>\
+    <li>I will be responsible to: provide medically appropriate care to each patient; promptly complete all medical records; maintain the privacy, confidentiality and security of health information to which I have access; provide or arrange for continuity of care; and at all times behave appropriately with all faculty, staff, trainees, patients and visitors.</li>\
+    <li>I will submit to a physical examination, drug and alcohol screens, and other assessments as provided in the Medical Staff Bylaws or other institutional policies and procedures, or as otherwise required by law.</li>\
+  </ul>

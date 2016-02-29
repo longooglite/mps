@@ -1,0 +1,8 @@
+baseUrl=http://localhost:8080
+personLookupServiceUrl=https://test.umms.med.umich.edu/personservice/PersonService
+ldapUrl=ldaps://ldap.umich.edu:636/
+ldapBase=ou=People,dc=umich,dc=edu
+ldapUserDnPattern=uid={0}
+#ldapUrl=ldaps://ldap.ent.med.umich.edu:636/
+#ldapBase=ou=people,dc=med,dc=umich,dc=edu
+#ldapUserDnPattern=cn={0}

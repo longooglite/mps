@@ -1,0 +1,9 @@
+using autofill
+
+put in a preference of "autofill" with a value of "true"
+
+configure and place an autofill.json config file in car/config/dev/MPSAppt
+
+autofill currently supports RFP, personalinfo, file uploads, submissions, placeholders and approvals
+
+don't check in your personalized config file

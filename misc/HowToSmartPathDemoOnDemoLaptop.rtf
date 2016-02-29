@@ -1,0 +1,213 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1348\cocoasubrtf170
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid1\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid101\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid2}
+{\list\listtemplateid3\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid201\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid3}
+{\list\listtemplateid4\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid301\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid4}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}{\listoverride\listid4\listoverridecount0\ls4}}
+\margl1440\margr1440\vieww20740\viewh18500\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\b\fs72 \cf0 \ul \ulc0 How to run SmartPath Demo on the Demo Laptop
+\b0\fs28 \ulnone \
+\
+
+\b\fs36 \ul Starting the nginx Web Server
+\b0\fs28 \ulnone \
+\
+SmartPath applications require 3rd-party web server software to accept requests from browsers and pass them to application software.\
+We use the 'nginx' web server.\
+\
+To start nginx:\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural
+\ls1\ilvl0\cf0 {\listtext	1	}Launch Terminal\
+{\listtext	2	}At the prompt, type: 'demoWebServerStart.sh'\
+{\listtext	3	}Hit return\
+{\listtext	4	}Enter the password 'demo'\
+{\listtext	5	}nginx should start\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \
+Example:\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f1\fs22 \cf0 MPSs-Macbook-Air:car mpsdemo$ demoWebServerStart.sh\
+Password:\'95
+\f0\fs28 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f1\fs22 \cf0 \CocoaLigature0 nginx: [warn] 1024 worker_connections exceed open file resource limit: 256\
+mpsdemo         26547   0.0  0.0  2432772    664 s000  R+    3:28PM   0:00.00 grep nginx\
+nobody          26545   0.0  0.0  2459904    988   ??  S     3:28PM   0:00.00 nginx: worker process\
+root            26544   0.0  0.0  2448640    436   ??  Ss    3:28PM   0:00.00 nginx: master process /usr/local/nginx/sbin/nginx\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \CocoaLigature1 MPSs-Macbook-Air:car mpsdemo$\CocoaLigature0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs28 \cf0 \CocoaLigature1 \
+\
+
+\b\fs36 \ul Stopping the nginx Web Server
+\b0\fs28 \ulnone \
+\
+To stop nginx:\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural
+\ls2\ilvl0\cf0 {\listtext	1	}Launch Terminal\
+{\listtext	2	}At the prompt, type: 'demoWebServerStop.sh'\
+{\listtext	3	}Hit return\
+{\listtext	4	}Enter the password 'demo'\
+{\listtext	5	}nginx should stop\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \
+Example:\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f1\fs22 \cf0 MPSs-Macbook-Air:car mpsdemo$ demoWebServerStop.sh\
+Password:\'95
+\f0\fs28 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f1\fs22 \cf0 \CocoaLigature0 mpsdemo         26863   0.0  0.0  2432772    664 s000  R+    3:28PM   0:00.00 grep nginx\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \CocoaLigature1 MPSs-Macbook-Air:car mpsdemo$\CocoaLigature0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs28 \cf0 \CocoaLigature1 \
+\
+
+\b\fs36 \ul Building the initial SmartPath Databases
+\b0\fs28 \ulnone \
+\
+SmartPath has a central 'Authorization' database, which holds authentication and authorization data for all sites hosted on a given machine.\
+SmartPath also has a separate database for each site. There are two simple commands to create virgin instances of these two databases.\
+\
+To build the MPS Demo site databases from scratch:\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural
+\ls3\ilvl0\cf0 {\listtext	1	}Launch Terminal\
+{\listtext	2	}At the prompt, type: 'demoCreateAuthDb.sh'\
+{\listtext	3	}Hit return\
+{\listtext	4	}At the prompt, type: 'demoCreateDemoDb.sh'\
+{\listtext	5	}Hit return\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \
+These commands spit out ungodly amounts of useless information as they run.\
+\
+Examples:\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f1\fs22 \cf0 MPSs-Macbook-Air:car mpsdemo$ demoCreateAuthDb.sh\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 \CocoaLigature0 dropdb mpsauth\
+createdb mpsauth\
+psql mpsauth < $CAR_HOME/data/mpsCommonSchema.sql\
+SET\
+SET\
+...\
+2015-09-25 07:29:09,431 - MPSCore.utilities.sqlUtilities - DEBUG - SELECT id FROM ROLE WHERE site_id = 6 and code = E'cbcStatus';\
+2015-09-25 07:29:09,431 - MPSCore.utilities.sqlUtilities - DEBUG - SELECT COUNT(*) AS count FROM mpsuser_role WHERE mpsuser_id = 65 and role_id = 117;\
+2015-09-25 07:29:09,432 - MPSCore.utilities.sqlUtilities - DEBUG - INSERT INTO mpsuser_role (mpsuser_id,role_id) VALUES (65,117)\
+2015-09-25 07:29:09,432 - MPSCore.utilities.sqlUtilities - DEBUG - commit\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \CocoaLigature1 MPSs-Macbook-Air:car mpsdemo$\CocoaLigature0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs28 \cf0 \CocoaLigature1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f1\fs22 \cf0 MPSs-Macbook-Air:car mpsdemo$ demoCreateDemoDb.sh\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 \CocoaLigature0 SET\
+SET\
+SET\
+SET\
+SET\
+SET\
+CREATE TABLE\
+...\
+2015-09-25 07:30:43,284 - MPSCore.utilities.sqlUtilities - DEBUG - commit\
+2015-09-25 07:30:43,284 - MPSCore.utilities.sqlUtilities - DEBUG - SELECT MAX(pcn) FROM wf_position WHERE pcn LIKE E'16-%';\
+2015-09-25 07:30:43,285 - MPSCore.utilities.sqlUtilities - DEBUG - UPDATE wf_pcn SET seq = 10 WHERE code = E'16'\
+2015-09-25 07:30:43,285 - MPSCore.utilities.sqlUtilities - DEBUG - commit\
+roster load successful\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \CocoaLigature1 MPSs-Macbook-Air:car mpsdemo$\CocoaLigature0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs28 \cf0 \CocoaLigature1 \
+\
+
+\b\fs36 \ul Starting the SmartPath Applications
+\b0\fs28 \ulnone \
+\
+SmartPath is a suite of (currently 5) applications which run together and communicate with each other in order to present the\
+SmartPath application in a web browser program. To start the MPS application suite:\
+\
+To start the MPS application suite:\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural
+\ls4\ilvl0\cf0 {\listtext	1	}Launch Terminal\
+{\listtext	2	}At the prompt, type: 'demoSmartPath.sh'\
+{\listtext	3	}Hit return\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \
+This will create multiple tabs in the Terminal window. Each tab will be running one of the applications that make up SmartPath.\
+\
+
+\i\b \ul DO NOT CLOSE
+\i0\b0 \ulnone  this window. SmartPath will not be running if you close the Terminal window.\
+It's OK to hide the Terminal application.\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \
+\
+
+\b\fs36 \ul Stopping the SmartPath Applications
+\b0\fs28 \ulnone \
+\
+Quit the Terminal application. You'll get a warning that the running programs will be terminated.\
+That's what you want, so hit the 'Close' button.\
+\
+\
+
+\b\fs36 \ul Accessing the Application
+\b0\fs28 \ulnone \
+\
+Once the nginx web server and SmartPath application programs are running, you can access the SmartPath demo with this URL:\
+\
+	http://demo.mps-car.com:8000\
+\
+\
+
+\b\fs36 \ul Important nits
+\b0\fs28 \ulnone \
+\
+SmartPath Demo on Demo Laptop has the same data as SmartPath Demo on the Staging server.\
+You must provide the common password 'nocv4u' when you log on.\
+\
+SmartPath Demo on Demo Laptop assumes you have no internet connection to the outside world.\
+So it does not try to communicate with any LDAP, or send any email.\
+\
+When prompted for Username on the 'Enter UM Identity' screen, any value is accepted (since there is no LDAP to validate against).\
+\
+When logging in as a candidate, any non-blank password is considered valid.\
+\
+\
+
+\b\fs36 \ul Refreshing the Databases, Method I
+\b0\fs28 \ulnone \
+\
+Use the procedure outlined above in 'Building the initial SmartPath Databases'.\
+Then 'Stopping the SmartPath Applications'.\
+Then 'Starting the SmartPath Applications'.\
+\
+\
+
+\b\fs36 \ul Refreshing the Databases, Method II
+\b0\fs28 \ulnone \
+\
+Sign on to the running application with a user that has access to the 'MPS Administration' application, such as 'eric' or 'greg'.\
+Use the 'Database->Restore' menu item to restore a saved, virgin copy of to the 'demo' site.\
+\
+The Dump/Restore facility can also be used to archive the database at various states of completion.\
+}

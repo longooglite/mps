@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Context reloadable="false">
+    <Resource name="jdbc/marta_dev" auth="Container" type="javax.sql.DataSource"
+              maxActive="5" maxIdle="2" maxWait="10000"
+              username="marta" password="atram" driverClassName="com.mysql.jdbc.Driver"
+              url="jdbc:mysql://localhost:3306/marta"/>
+    <Resource name="jdbc/marta_test" auth="Container" type="javax.sql.DataSource"
+              maxActive="5" maxIdle="2" maxWait="10000"
+              username="marta" password="hotSummer2013" driverClassName="oracle.jdbc.OracleDriver"
+              url="jdbc:oracle:thin:@ruffini.msis.med.umich.edu:1521:patella"/>
+    <Resource name="jdbc/marta_staging" auth="Container" type="javax.sql.DataSource"
+              maxActive="5" maxIdle="2" maxWait="10000"
+              username="marta" password="welComeMA2014" driverClassName="oracle.jdbc.OracleDriver"
+              url="jdbc:oracle:thin:@calyx.msis.med.umich.edu:1521:amygdala"/>
+    <Resource name="jdbc/marta_prod" auth="Container" type="javax.sql.DataSource"
+              maxActive="20" maxIdle="2" maxWait="10000"
+              username="marta" password="welComeMA2014" driverClassName="oracle.jdbc.OracleDriver"
+              url="jdbc:oracle:thin:@synovia.msis.med.umich.edu:1521:eidetic"/>
+
+
+    <Resource name="jdbc/mrec_dev" auth="Container" type="javax.sql.DataSource"
+              maxActive="5" maxIdle="2" maxWait="10000"
+              username="mrec" password="mrec" driverClassName="com.mysql.jdbc.Driver"
+              url="jdbc:mysql://localhost:3306/mrec"/>
+    <Resource name="jdbc/mrec_test" auth="Container" type="javax.sql.DataSource"
+              maxActive="5" maxIdle="2" maxWait="10000"
+              username="mrec" password="summer2011" driverClassName="oracle.jdbc.OracleDriver"
+              url="jdbc:oracle:thin:@ruffini.msis.med.umich.edu:1521:patella"/>
+    <Resource name="jdbc/mrec_staging" auth="Container" type="javax.sql.DataSource"
+              maxActive="5" maxIdle="2" maxWait="10000"
+              username="mrec" password="s7iG5g2i853" driverClassName="oracle.jdbc.OracleDriver"
+              url="jdbc:oracle:thin:@calyx.msis.med.umich.edu:1521:amygdala"/>
+    <Resource name="jdbc/mrec_prod" auth="Container" type="javax.sql.DataSource"
+              maxActive="20" maxIdle="2" maxWait="10000"
+              username="mrec" password="Nolimitedtochange9" driverClassName="oracle.jdbc.OracleDriver"
+              url="jdbc:oracle:thin:@synovia.msis.med.umich.edu:1521:eidetic"/>
+
+
+    <Resource name="ejb/pdfservice_dev" auth="Container"
+              type="edu.umich.umms.xhtmlpdf.PdfGeneratorBean"
+              factory="org.apache.naming.factory.BeanFactory"/>
+    <Resource name="ejb/pdfservice_test" auth="Container"
+              type="edu.umich.umms.xhtmlpdf.PdfGeneratorBean"
+              factory="org.apache.naming.factory.BeanFactory"/>
+    <Resource name="ejb/pdfservice_staging" auth="Container"
+              type="edu.umich.umms.xhtmlpdf.PdfGeneratorBean"
+              factory="org.apache.naming.factory.BeanFactory"/>
+    <Resource name="ejb/pdfservice_prod" auth="Container"
+              type="edu.umich.umms.xhtmlpdf.PdfGeneratorBean"
+              factory="org.apache.naming.factory.BeanFactory"/>
+</Context>

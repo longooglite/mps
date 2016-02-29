@@ -1,0 +1,19 @@
+# Site-specific overrides and settings only.
+#sitecode|code|value
+engin-umich|skin|default
+engin-umich|auth|MPS
+engin-umich|authpassreqd|yes
+engin-umich|dbname|engin-umich
+engin-umich|sessionidletimeoutmilliseconds|60000000
+engin-umich|anyworkflow|true
+
+engin-umich|shibusernamekey|Remote_user
+engin-umich|shibsessionkey|Shib-Session-Id
+engin-umich|shibidentityproviderkey|Shib-Identity-Provider
+engin-umich|shibidentityprovider|https://idp.testshib.org/idp/shibboleth
+
+# Real Production settings should probably be:
+#engin-umich|auth|LDAP
+#engin-umich|authpassreqd|yes
+#engin-umich|ldapurl|ldaps://ldap.umich.edu:636/
+#engin-umich|ldappattern|uid=%s,ou=People,dc=umich,dc=edu

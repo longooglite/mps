@@ -1,0 +1,41 @@
+/*
+*  Few things change with Gutter Auto margins
+*/
+
+.wf-details-page-content{ position:relative; }
+#workflow-content{ min-height:700px; background-color:#fff; padding-right: 0 !important;}
+
+#wf-details-content{ background-color:#fff !important; }
+.wf-details-page-content{ background-color:#fff !important; padding-right:30px; padding-bottom: 80px !important;}
+
+/* Page Layout Deltas */
+#wf-workflow-status{
+    margin-top:0 !important;
+}
+#wf-details-titlebar, #wf-details-content{
+    border: 0 !important;
+    border-bottom:solid 1px #ccc !important;
+    border-radius: 0 !important;
+    background:transparent !important;
+}
+#wf-details-content{ border-width: 0px; margin-top:0px !important; }
+#wf-details-content-body{ border: 0 !important ;}
+#wf-workflow-status{ border-bottom:solid 1px #ccc !important; padding-left:30px !important; background-color:#fff !important; }
+#wf-details-titlebar, .wf-details-titlebar {
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+    height: 45px;
+    line-height: 1.6em !important;
+    padding: 10px;
+}
+
+.wf-workflow-content .wf-status-global-links a{ margin-right: 10px; }
+.wf-workflow-content .wf-status-global-links a .glyphicon{ display:none; }
+.wf-workflow-content .wf-status-global-links .wf-status-start-date .glyphicon{ display:inline; }
+.wf-status-global-links .wf-status-start-date { margin-top: 0px; }
+
+#wf-workflow-status .wf-start-date-enter{ margin-top:-5px; position:relative; right:-30px; }
+
+.mps-body .wf-workflow-loading{ margin-top:20px; }
+
+.mps-body .wf-ldap-btn { position:relative; left:15px; }

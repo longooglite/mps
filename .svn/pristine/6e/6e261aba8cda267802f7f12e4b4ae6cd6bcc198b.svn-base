@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>{{context.get('windowTitle', 'Curriculum Vitae')}}</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+</head>
+
+{% set canOwnCV = context.get('canOwnCV', False) %}
+{% set allowProxyRequests = context.get('allowProxyRequests', False) %}
+{% set allowProxyAssignments = context.get('allowProxyAssignments', False) %}
+{% set promptCommunity = context.get('promptCommunity', False) %}
+{% set twoColumn = canOwnCV and (allowProxyAssignments or context.get('cvProxyRequests',[]) or context.get('cvAssignedProxies',[])) %}
+
+{% set isMsg = True if len(context.get('errormessage','')) > 0 else False %}
+<body class="cv cv-proxy-page{{ ' cv-show-global-message' if isMsg else '' }}">
+	<div class="container-fluid cv-wrap">
+		{% include pageHeader.html %}
+		<div class="body-content cv-body cv-body-no-menu">
+
+			<div class="page-header clearfix">
+				<h1>
+					{{ context.get('username','') }}<br/>
+					<small> {{ 'Welcome' }}</small>
+					{% set isMsg = len(context.get('errormessage','')) > 0 %}
+					<div id="errormessage" class="errormessage cv-callout cv-callout-info{{ '' if isMsg else ' starthidden'}}">
+						<h4><span class="glyphicon glyphicon-sm glyphicon-ok"></span>{{context.get('errormessage','')}}</h4>
+					</div>
+				</h1>
+			</div>
+
+			<form id="cvHomeForm" class="form-horizontal">
+				{% include ajax-hidden-fields.html %}
+
+				<div class="row">
+					<div class="{{ 'col-md-6' if twoColumn else 'col-md-offset-3 col-md-6' }}">
+						<h3 class="section-header">
+							<span class="glyphicon glyphicon-edit"></span> Work with a CV:
+						</h3>
+
+						{% if not context.get('cvList',[])%}
+							<div class="cv-callout cv-callout-warning cv-callout-bordered clearfix mps-skin-border">
+								<h4>No Current Proxy Access Found</h4>
+								{% if allowProxyRequests %}
+									<p>No one has granted you access to their CV as a proxy.</p>
+									<p>Use the following form to request proxy access to another person's CV.</p>
+									<p>When they have accepted your request, access to their CV will be available.</p>
+								{% end %}
+							</div>
+							<hr/>
+						{% else %}
+							<div class="cv-callout cv-callout-info cv-callout-bordered clearfix mps-skin-border">
+								<table class="table table-striped cv-table" style="width:100%;">
+									<thead>
+										<tr><td><h4>Select a CV:</h4></td></tr>
+									</thead>
+									<tbody>
+										{% for cvItem in context.get('cvList',[]) %}
+											<tr>
+												{% set klass = 'mpsbold' if cvItem.get('isMe', False) else '' %}
+												<td><a class="{{klass}}" href="/cv/view/{{cvItem.get('community','')}}/{{cvItem.get('userid','')}}">{{ cvItem.get('username','')}}</a></td>
+											</tr>
+										{% end %}
+									</tbody>
+								</table>
+							</div>
+						{% end %}
+
+						{% if allowProxyRequests %}
+							<div class="mps-typeahead cv-callout cv-callout-info cv-callout-bordered clearfix mps-skin-border">
+								<h4>Request Proxy Access <small>to another person's CV:</small></h4>
+								<br/>
+								<div id="proxy_errormessage" class="errormessage alert alert-danger hide"></div>
+
+								<div class="form-row clearfix">
+									<label for="proxy_username1" class="control-label col-xs-3">User:</label>
+									<div class="col-xs-5">
+										<input type="text" class="form-control" autocomplete="off" name="search_criteria" id="proxy_username1" placeholder="Enter a name or user id" data-provide="typeahead" />
+									</div>
+								</div>
+
+								{% if promptCommunity %}
+									<div class="clearfix form-row">
+										<label for="proxy_community1" class="control-label col-xs-3">Community:</label>
+										<div class="col-xs-5">
+											<select class="form-control" id="proxy_community1" name="search_community">
+												<option value="" selected disabled>Select</option>
+												{% for communityDict in context.get('communityList', []) %}
+													{% set optionCode = communityDict.get('code','') %}
+													<option value="{{optionCode}}">{{communityDict.get('descr','')}}</option>
+												{% end %}
+											</select>
+										</div>
+									</div>
+								{% else %}
+									<input type="hidden" name="search_community" value="{{context.get('community', 'default')}}" />
+								{% end %}
+
+								<div class="form-row clearfix">
+									<label for="new_role_option_list" class="control-label col-xs-3">Read / Edit:</label>
+									<div class="col-xs-5">
+										<select class="form-control new_role_option_list" id="new_role_option_list">
+										  {% for optText in context.get('roles',[]) %}
+												<option value="{{ optText }}">{{ optText }}</option>
+										  {% end %}
+										  </select>
+									</div>
+									<div class="col-xs-3 ta-right">
+										<button id="request_proxy_access_btn" type="button" class="btn btn-default">Request Access</button>
+									</div>
+								</div>
+							</div>
+						{% end %}
+					</div>
+
+					{% if twoColumn %}
+						<div class="col-md-6">
+							<h3 class="section-header">
+								<span class="glyphicon glyphicon-lock"></span>
+								Manage Access to your CV:
+							</h3>
+							{% if context.get('cvProxyRequests',[]) %}
+								<div class="cv-callout cv-callout-warning cv-callout-bordered clearfix mps-skin-border">
+									<h4>
+										<span class="glyphicon glyphicon-exclamation-sign"></span>
+										Please Approve or Deny these Proxy requests
+									</h4>
+									<p><b>The following people have requested proxy access to your CV:</b></p>
+									 <table class="table table-striped table-bordered cv-proxytable">
+										<thead>
+											<tr>
+												<th>Name</th>
+												<th>Date Requested</th>
+												<th>Role</th>
+												<th></th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for cvProxy in context.get('cvProxyRequests',[]) %}
+												<tr>
+													<td>{{ cvProxy.get('username','') }}</td>
+													<td>{{ cvProxy.get('requesteddate','') }}</td>
+													<td>
+														  <select class="form-control" id="proxy_request_perm_{{ str(cvProxy.get('id','')) }}">
+														  {% for optText in context.get('roles',[]) %}
+																{% if cvProxy.get('selected_role','') == optText %}
+																	<option value="{{ optText }}" selected>{{ optText }}</option>
+																{% else %}
+																	<option value="{{ optText }}">{{ optText }}</option>
+																{% end %}
+														  {% end %}
+														  </select>
+													</td>
+
+													<td><div class="radio approvalradio" id="approve_{{ str(cvProxy.get('id','')) }}"><label><input type="radio" name="savereqradio" value="1" id="proxy_approve_{{ str(cvProxy.get('id','')) }}">Approve</label></div>
+														<div class="radio approvalradio" id="deny_{{ str(cvProxy.get('id','')) }}"><label><input type="radio" name="savereqradio" value="2" id="proxy_deny_{{ str(cvProxy.get('id','')) }}">Deny</label></div>
+													 </td>
+													<td><button id="save_proxy_request_response_{{ str(cvProxy.get('id','')) }}" type="button" disabled class="btn btn-primary save_proxy_request_btn">Save</button></td>
+												</tr>
+											{% end %}
+										</tbody>
+									</table>
+								</div>
+							{% end %}
+
+							{% if allowProxyAssignments %}
+								<div class="mps-typeahead cv-callout cv-callout-info cv-callout-bordered clearfix mps-skin-border">
+									<h4>Add a New Proxy Holder</h4><br/>
+									<div id="proxy_errormessage2" class="errormessage alert alert-danger hide" style=""></div>
+									<div class="form-row clearfix">
+										<label for="proxy_username2" class="control-label col-xs-3">User:</label>
+										<div class="col-xs-6">
+											<input type="text" class="form-control" name="search_criteria" id="proxy_username2" placeholder="Enter a name or user id"/>
+										</div>
+									</div>
+
+									{% if promptCommunity %}
+										<div class="clearfix form-row">
+											<label for="proxy_community2" class="control-label col-xs-3">Community:</label>
+											<div class="col-xs-6">
+												<select class="form-control" id="proxy_community2" name="search_community">
+													<option value="" selected disabled>Select</option>
+													{% for communityDict in context.get('communityList', []) %}
+														{% set optionCode = communityDict.get('code','') %}
+														<option value="{{optionCode}}">{{communityDict.get('descr','')}}</option>
+													{% end %}
+												</select>
+											</div>
+										</div>
+									{% else %}
+										<input type="hidden" name="search_community" value="{{context.get('community', 'default')}}" />
+									{% end %}
+
+									<div class="form-row clearfix">
+										<label for="new_role_option_list" class="control-label col-xs-3">Read / Edit:</label>
+										<div class="col-xs-6">
+											<select class="form-control new_role_option_list" id="new_role_option_list">
+											  {% for optText in context.get('roles',[]) %}
+													<option value="{{ optText }}">{{ optText }}</option>
+											  {% end %}
+											  </select>
+										</div>
+										<div class="col-xs-2">
+											<button id="save_new_proxy_btn" type="button" class="btn btn-default">Add Proxy</button>
+										</div>
+									</div>
+								</div>
+							{% end %}
+
+							{% if context.get('cvAssignedProxies',[]) %}
+								<div class="cv-callout cv-callout-info cv-callout-bordered clearfix mps-skin-border">
+									<h4>Existing Proxies</h4>
+									<p><b>The following people who have access to your CV:</b></p>
+									 <table class="table table-striped table-bordered cv-proxytable">
+										<thead>
+											<tr>
+												<th>Name</th>
+												<th>Date Granted</th>
+												<th>Role</th>
+												<th></th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for cvProxy in context.get('cvAssignedProxies',[]) %}
+												<tr>
+													<td>{{ cvProxy.get('username','') }}</td>
+													<td>{{ cvProxy.get('accepteddate','') }}</td>
+													<td>
+														  <select class="form-control" id="changeRole_{{cvProxy.get('id','')}}">
+														  {% for optText in context.get('roles',[]) %}
+																{% if cvProxy.get('selected_role','') == optText %}
+																	<option value="{{ optText }}" selected>{{ optText }}</option>
+																{% else %}
+																	<option value="{{ optText }}">{{ optText }}</option>
+																{% end %}
+														  {% end %}
+														  </select>
+													</td>
+													<td><button id="mod_proxy_delete_{{cvProxy.get('id','')}}" type="button" class="btn btn-default delete_proxy_btn">Delete</button></td>
+													<td><button id="mod_proxy_save_{{cvProxy.get('id','')}}" type="button" class="btn btn-default modify_proxy_btn">Save</button></td>
+												</tr>
+											{% end %}
+										</tbody>
+									</table>
+								</div>
+							{% end %}
+						</div>
+					{% end %}
+				</div>
+			</form>
+		</div>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+{% include cv-js.html %}
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	$(function() {
+
+		//
+		// Proxy Request/Assign UXs
+		//
+		$('#request_proxy_access_btn, #save_new_proxy_btn').on('click', function(event){
+		var $btn = $(event.target),
+			$wrap = $btn.closest('.mps-typeahead')
+			$error = $wrap.find('.errormessage'),
+			$input = $wrap.find('input[name=search_criteria]'),
+			$parent = $input.parent(),
+			$role = $btn.closest('.cv-callout').find('.new_role_option_list'),
+			$comm = $wrap.find('[name=search_community]');
+
+			var sUrl = ($btn.attr('id') == 'save_new_proxy_btn') ? '/cv/proxy/request' : '/cv/proxy/assign',
+				isRequest = ($btn.attr('id') == 'request_proxy_access_btn') ? true : false;
+
+			cvApp.ubiquitousPageRequest({
+				role: $role.val(),
+				username: $input.val(),
+				search_criteria: $input.val(),
+				search_community: $comm.val(),
+				url: sUrl,
+				success: function(data, textStatus, xhr) {
+					var showError = function(msg){
+						$error.html(msg).removeClass('hide').show();
+						$parent.addClass('has-error');
+						$input.focus();
+						return;
+					}
+
+					// ~Success === Message && Redirect...
+					bDone = false;
+					if(typeof data.message != 'undefined' && typeof data.redirect != 'undefined'){
+						// This is the 'Valid User, New Add/Request, show Msg & Refresh page condition
+
+						// Google Analytics: Try to log event before redirect (use beacon):
+						var eType = isRequest ? 'request_access' : 'grant_access';
+						if (typeof ga != "undefined") {
+							ga('send', 'event', 'cv_proxy', eType, {useBeacon: true});
+						};
+
+						cvApp.showHeaderMessage(data.message, 'info');
+						bDone = true;
+						window.setTimeout(function(){window.location.href = data.redirect; return;}, 1000);
+					}
+
+					if (typeof data.exception != 'undefined') {showError(data.exceptionMessage);}
+					if (typeof data.error != 'undefined') {showError(data.error);}
+					if (typeof data.message != 'undefined' && !bDone) {showError(data.message);}
+					if (typeof data.msgid != 'undefined') {$.cookie('msgid', data.msgid, { path: '/'});}
+					if (typeof data.redirect != 'undefined' && !bDone) {
+						window.location.href = data.redirect; return;
+					}
+				},
+				error: function(jqXHR, textStatus, errorThrown) { $('#proxy_errormessage').html(textStatus).removeClass('hide').show(); }
+			});
+		});
+
+		$('.approvalradio').on('click', function(event){
+			var pk = event.currentTarget.id.split('_')[1];
+			$('#save_proxy_request_response_' + pk).removeAttr('disabled');
+		});
+
+		$('.save_proxy_request_btn').on('click', function(event){
+			var pk = event.currentTarget.id.split('_')[4],
+				eType = ($('#proxy_approve_' + pk)[0].checked) ? 'approve_request' : 'deny_request';
+
+			// Google Analytics: Try to log event before redirect (use beacon):
+			if (typeof ga != "undefined") {
+				ga('send', 'event', 'cv_proxy', eType, {useBeacon: true});
+			};
+
+			cvApp.ubiquitousPageRequest({
+				'pk': pk,
+				role: $('#proxy_request_perm_' + pk).val(),
+				approved: $('#proxy_approve_' + pk)[0].checked,
+				deny: $('#proxy_deny_' + pk)[0].checked,
+				url: "/cv/proxy/decision"
+			});
+		});
+
+		$('.delete_proxy_btn').on('click', function(event){
+			// Google Analytics: Try to log event before redirect (use beacon):
+			if (typeof ga != "undefined") {
+				ga('send', 'event', 'cv_proxy', 'delete_existing_proxy', {useBeacon: true});
+			};
+
+			cvApp.ubiquitousPageRequest({
+				pk: event.currentTarget.id.split('_')[3],
+				url: "/cv/proxy/delete"
+			});
+		});
+
+		$('.modify_proxy_btn').on('click', function(event){
+			// Google Analytics: Try to log event before redirect (use beacon):
+			if (typeof ga != "undefined") {
+				ga('send', 'event', 'cv_proxy', 'modify_existing_proxy', {useBeacon: true});
+			};
+
+			var pk = event.currentTarget.id.split('_')[3];
+			cvApp.ubiquitousPageRequest({
+				'pk': pk,
+				role: $('#changeRole_' + pk).val(),
+				url: "/cv/proxy/save"
+			});
+		});
+
+		// Typeahead with custom payload.  Later: Added Community login set support.
+		$("#proxy_username1, #proxy_username2").typeahead({
+			source: function (query, process) {
+				var payload = ajaxPayload,
+					$el = this.$element;
+
+				// payload to server:
+				payload.search_criteria = query;
+				payload.search_community = $el.closest('.mps-typeahead').find('[name=search_community]').val();
+				var reqData = JSON.stringify(payload);
+				var options = {
+					url: '/cv/proxy/search',
+					type: 'POST',
+					'data': reqData,
+					headers: { 'Content-Type': 'application/json' },
+					success: function(data, textStatus, xhr) {
+						return process(data);
+					},
+					error: function(jqXHR, textStatus, errorThrown) { $('#proxy_errormessage').html(textStatus).removeClass('hide').show(); }
+				};
+
+				// Error handling to UX
+				var $input = $el,
+					$error = $input.closest('.mps-typeahead').find('.errormessage'),
+					$parent = $input.parent();
+				$error.slideUp();
+				$parent.removeClass('has-error');
+
+				return $.ajax(options);
+			},
+			matcher: function(){
+				return true;
+			},
+			sorter: function(items){return items;},
+			highlighter: function(item){
+				return item.value + ' ('+item.firstname+' '+item.lastname+')';
+			},
+			updater: function(item){
+				return item.value;
+			},
+			items: 12
+		});
+
+		// If there's an Error showing and the user changes the Community selection, clear error(s)
+		$('select[name=search_community]').on('change', function(){
+			// Error handling to UX
+			var $el = $(this),
+				$wrap = $el.closest('.mps-typeahead')
+				$error = $wrap.find('.errormessage');
+			$error.slideUp();
+			$wrap.find('.has-error').removeClass('has-error');
+		});
+
+	});
+
+	/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>MPS Admin</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+</head>
+
+<body class="mps-admin-page">
+	<div class="container-fluid mps-body">
+		{% include pageHeader.html %}
+
+		<div class="body-content" id="greg">
+			<div class="col-xs-offset-1 col-xs-11">
+				<span id="adminerrormessage" class="adminerrormessage">{{context.get('errormessage','')}}</span>
+			</div>
+			{% set prefList = [] %}
+			{% if context.get('displayParms',{}).get('mode','site') == 'site' %}
+				{% set prefList = context.get('siteProfileDetail',{}).get('sitePreferencesDetailList',[]) %}
+				<div class="col-xs-offset-1 dropdown">
+					<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Select Site <span class="caret"></span></button>
+					<ul class="dropdown-menu">
+						{% for siteDict in context.get('siteList',[]) %}
+							<li><a class="sitedrop">{{siteDict.get('code','')}}</a></li>
+						{% end %}
+					</ul>
+				</div>
+
+				<div class="col-xs-offset-1 col-xs-5">
+					<br/>
+					<span>Preferences for Site:
+						<span class="mpsbold">{{context.get('siteProfileDetail',{}).get('sitePreferences',{}).get('code','')}}</span>
+						<span class="mpsitalic">({{context.get('siteProfileDetail',{}).get('sitePreferences',{}).get('descr','')}})</span>
+						<span class="mpsright"><a id="switchtoprefixview" href="#">Switch to Prefix View</a></span>
+					</span>
+				</div>
+			{% end%}
+
+			{% if context.get('displayParms',{}).get('mode','site') == 'prefix' %}
+				{% set prefList = context.get('sitePrefixDetail',[]) %}
+				<div class="col-xs-offset-1 dropdown">
+					<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Select Prefix <span class="caret"></span></button>
+					<ul class="dropdown-menu">
+						{% for prefixDict in context.get('prefixList',[]) %}
+							<li><a class="prefixdrop">{{prefixDict.get('site_code','')}}</a></li>
+						{% end %}
+					</ul>
+				</div>
+
+				<div class="col-xs-offset-1 col-xs-5">
+					<br/>
+					<span>Preferences for Prefix:
+						<span class="mpsbold">{{context.get('displayParms',{}).get('prefix','')}}</span>
+						<span class="mpsright"><a id="switchtositeview" href="#">Switch to Site View</a></span>
+					</span>
+				</div>
+
+			{% end%}
+
+			<div class="clear"><br/></div>
+			<div class="col-xs-offset-1 col-xs-7">
+				<table class="table table-striped table-bordered mpstable">
+					<thead>
+						<tr>
+							<th>Prefix</th>
+							<th>Code</th>
+							<th>Value</th>
+							{% if context.get('disabled','disabled') != 'disabled' %}
+								<th>Edit</th>
+								<th>Delete</th>
+							{% end %}
+						</tr>
+						{% for prefDict in prefList %}
+							<tr>
+								<td>{{prefDict.get('site_code','')}}</td>
+								<td>{{prefDict.get('code','')}}</td>
+								<td>{{prefDict.get('value','')}}</td>
+								{% if context.get('disabled','disabled') != 'disabled' %}
+									<td><a class="edit" id="edit_{{prefDict.get('id','0')}}">edit</a></td>
+									<td><a class="delete" id="delete_{{prefDict.get('id','0')}}">delete</a></td>
+								{% end %}
+							</tr>
+						{% end %}
+					</thead>
+				</table>
+			</div>
+			<div class="clear"></div>
+
+			<label for="addPrefBtn" class="col-xs-2 control-label"></label>
+			<div class="col-xs-offset-1">
+				<input type="button" id="addPrefBtn" value="Add Site Preference" {{context.get('disabled','')}}>
+			</div>
+
+			<div id="editModalDialog" class="modal fade">
+				<div id="dynamicContent">
+			</div>
+			</div>
+
+		</div>
+	</div>
+
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+{% include cache-js.html %}
+
+<script type="text/javascript">
+    /*<![CDATA[*/
+    var changeSelectionFn = function(eventData, myurl)  {
+        var targetValue = eventData.currentTarget.text;
+        var payload = $.extend(true,{'target':targetValue},ajaxPayload)
+        $.ajax({ url: myurl, type: 'POST',
+            data: JSON.stringify(payload),
+            headers: { 'Content-Type': 'application/json' },
+            success: function(data, textStatus, xhr) {
+            	if ('exception' in data) { $('#adminerrormessage').html(data.exceptionMessage); return; }
+            	if ('errors' in data) { $('#adminerrormessage').html(data.errors); return; }
+            	if ('message' in data) { $('#adminerrormessage').html(data.message); return; }
+            	if ('msgid' in data) { $.cookie('msgid', data.msgid, { path: '/'}); }
+            	if ('redirect' in data) { window.location.href = data.redirect; }
+            },
+            error: function(jqXHR, textStatus, errorThrown) { $('#adminerrormessage').html(textStatus); }
+        });
+    };
+
+    var changeSiteFn = function(eventData) { changeSelectionFn(eventData, '/admin/prefs/changesite'); };
+    var changePrefixFn = function(eventData) { changeSelectionFn(eventData, '/admin/prefs/changeprefix'); };
+
+    var changeModeFn = function(mode)  {
+        var payload = $.extend(true,{'target':mode},ajaxPayload)
+        $.ajax({ url: '/admin/prefs/changemode', type: 'POST',
+            data: JSON.stringify(payload),
+            headers: { 'Content-Type': 'application/json' },
+            success: function(data, textStatus, xhr) {
+            	if ('exception' in data) { $('#adminerrormessage').html(data.exceptionMessage); return; }
+            	if ('errors' in data) { $('#adminerrormessage').html(data.errors); return; }
+            	if ('message' in data) { $('#adminerrormessage').html(data.message); return; }
+            	if ('msgid' in data) { $.cookie('msgid', data.msgid, { path: '/'}); }
+            	if ('redirect' in data) { window.location.href = data.redirect; }
+            },
+            error: function(jqXHR, textStatus, errorThrown) { $('#adminerrormessage').html(textStatus); }
+        });
+    };
+
+    var switchToSiteViewFn = function() { changeModeFn('site'); };
+    var switchToPrefixViewFn = function() { changeModeFn('prefix'); };
+
+    var editFn = function(eventData) {
+        $('#adminerrormessage').html('');
+		var pk = eventData.currentTarget.id.split('_')[1];
+        var payload = $.extend(true,{'target':pk},ajaxPayload)
+        $.ajax({ url: '/admin/prefs/prefeditdialog', type: 'POST',
+            data: JSON.stringify(payload),
+            headers: { 'Content-Type': 'application/json' },
+            success: function(data, textStatus, xhr) {
+            	if ('exception' in data) { $('#adminerrormessage').html(data.exceptionMessage); return; }
+            	if ('errors' in data) { $('#adminerrormessage').html(data.errors); return; }
+            	if ('message' in data) { $('#adminerrormessage').html(data.message); return; }
+            	if ('msgid' in data) { $.cookie('msgid', data.msgid, { path: '/'}); }
+            	if ('redirect' in data) { window.location.href = data.redirect; return; }
+            	if ('content' in data) {
+                    $('#dynamicContent').replaceWith(data.content);
+					$('#editModalDialog').modal('show');
+					$('#savePrefBtn').on('click', savePrefFn);
+				};
+            },
+            error: function(jqXHR, textStatus, errorThrown) { $('#adminerrormessage').html(textStatus); }
+        });
+	};
+
+    var addFn = function() {
+        $('#adminerrormessage').html('');
+        $.ajax({ url: '/admin/prefs/prefeditdialog', type: 'POST',
+            data: JSON.stringify(ajaxPayload),
+            headers: { 'Content-Type': 'application/json' },
+            success: function(data, textStatus, xhr) {
+            	if ('exception' in data) { $('#adminerrormessage').html(data.exceptionMessage); return; }
+            	if ('errors' in data) { $('#adminerrormessage').html(data.errors); return; }
+            	if ('message' in data) { $('#adminerrormessage').html(data.message); return; }
+            	if ('msgid' in data) { $.cookie('msgid', data.msgid, { path: '/'}); }
+            	if ('redirect' in data) { window.location.href = data.redirect; return; }
+            	if ('content' in data) {
+                    $('#dynamicContent').replaceWith(data.content);
+					$('#editModalDialog').modal('show');
+					$('#savePrefBtn').on('click', savePrefFn);
+				};
+            },
+            error: function(jqXHR, textStatus, errorThrown) { $('#adminerrormessage').html(textStatus); }
+        });
+	};
+
+    var deleteFn = function(eventData) {
+        $('#adminerrormessage').html('');
+		var pk = eventData.currentTarget.id.split('_')[1];
+        var payload = $.extend(true,{'target':pk},ajaxPayload)
+        $.ajax({ url: '/admin/prefs/prefdeletedialog', type: 'POST',
+            data: JSON.stringify(payload),
+            headers: { 'Content-Type': 'application/json' },
+            success: function(data, textStatus, xhr) {
+            	if ('exception' in data) { $('#adminerrormessage').html(data.exceptionMessage); return; }
+            	if ('errors' in data) { $('#adminerrormessage').html(data.errors); return; }
+            	if ('message' in data) { $('#adminerrormessage').html(data.message); return; }
+            	if ('msgid' in data) { $.cookie('msgid', data.msgid, { path: '/'}); }
+            	if ('redirect' in data) { window.location.href = data.redirect; return; }
+            	if ('content' in data) {
+                    $('#dynamicContent').replaceWith(data.content);
+					$('#editModalDialog').modal('show');
+					$('#deletePrefBtn').on('click', deletePrefFn);
+				};
+            },
+            error: function(jqXHR, textStatus, errorThrown) { $('#adminerrormessage').html(textStatus); }
+        });
+	};
+
+    var savePrefFn = function()  {
+        $form = $('#prefdetailform')
+        $.ajax({ url: "/admin/prefs/save", type: 'POST',
+            data: JSON.stringify($form.serializeObject()),
+            headers: { 'Content-Type': 'application/json' },
+            success: function(data, textStatus, xhr) {
+            	if ('exception' in data) { $('#modalmessage').html(data.exceptionMessage); return; }
+            	if ('errors' in data) { $('#modalmessage').html(data.errors); return; }
+            	if ('message' in data) { $('#modalmessage').html(data.message); return; }
+            	if ('msgid' in data) { $.cookie('msgid', data.msgid, { path: '/'}); }
+            	if ('redirect' in data) { window.location.href = data.redirect; }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+				$('#adminerrormessage').html(textStatus);
+				$('#editModalDialog').modal('hide');
+            }
+        });
+    };
+
+    var deletePrefFn = function()  {
+        $form = $('#prefdetailform')
+        $.ajax({ url: "/admin/prefs/delete", type: 'POST',
+            data: JSON.stringify($form.serializeObject()),
+            headers: { 'Content-Type': 'application/json' },
+            success: function(data, textStatus, xhr) {
+            	if ('exception' in data) { $('#modalmessage').html(data.exceptionMessage); return; }
+            	if ('errors' in data) { $('#modalmessage').html(data.errors); return; }
+            	if ('message' in data) { $('#modalmessage').html(data.message); return; }
+            	if ('msgid' in data) { $.cookie('msgid', data.msgid, { path: '/'}); }
+            	if ('redirect' in data) { window.location.href = data.redirect; }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+				$('#adminerrormessage').html(textStatus);
+				$('#editModalDialog').modal('hide');
+            }
+        });
+    };
+
+    $(function() {
+		$('.sitedrop').on('click', changeSiteFn);
+		$('.prefixdrop').on('click', changePrefixFn);
+		$('#switchtositeview').on('click', switchToSiteViewFn);
+		$('#switchtoprefixview').on('click', switchToPrefixViewFn);
+		$('.edit').on('click', editFn);
+		$('.delete').on('click', deleteFn);
+		$('#addPrefBtn').on('click', addFn);
+    });
+
+    /*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

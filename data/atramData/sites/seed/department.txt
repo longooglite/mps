@@ -1,0 +1,5 @@
+#code	descr	parent_code	pcncode	ccacctcd	header_image	email_address	address_lines	address_suffix	city	state	postal
+230000	Medical School		0	0							
+230001	Department 1	230000	1	1227	default_head.png	"chris.king@gomountainpass.com"	Mountain Pass University|Department 1|23000 Championship Drive		Ann Arbor	MI	48109
+230002	Department 2	230000	1	1227	default_head.png	"chris.king@gomountainpass.com"	Mountain Pass University|Department 1|23000 Championship Drive		Ann Arbor	MI	48109
+230003	Department 3	230000	1	1227	default_head.png	"chris.king@gomountainpass.com"	Mountain Pass University|Department 1|23000 Championship Drive		Ann Arbor	MI	48109

@@ -1,0 +1,14 @@
+<div class="lineitem">
+    {% for subcategory in currcategory.get('subcategories',[]) %}
+        {% for row in subcategory.get('rows',[]) %}
+            {% for field in row.get('fields',[]) %}
+                {% set displayValue = field.get('formatted_value','') %}
+                {% if displayValue %}
+                    {% set output = displayValue %}
+                    {% set output = '''<div class = "singleListItem">%s</div>''' % (output) %}
+                    {% raw output %}
+                {% end %}
+            {% end %}
+        {% end %}
+    {% end %}
+</div>

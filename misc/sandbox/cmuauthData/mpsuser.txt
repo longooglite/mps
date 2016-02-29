@@ -1,0 +1,17 @@
+#site|username|password|first name|last name|email|auth_override|active
+dev|chris||Chris|King|cking@mps-car.com||true
+dev|eric||Eric|Paul|epaul@mps-car.com||true
+dev|greg||Greg|Poth|gpoth@mps-car.com||true
+dev|buffy||Buffy|Davis|buffy@mps-car.com||true
+dev|rider||Chris|Rider|rider@mps-car.com||true
+dev|erpaul||Eric|Paul|epaul@mps-car.com||true
+dev|gpoth||Greg|Poth|gpoth@mps-car.com||true
+dev|duke||Duke|University|duke@duke.edu||true
+dev|dave||David|Morin|dave@morin.com||true
+dev|kchung||Kevin|Chung|kchung@mps.edu||true
+dev|mgyetko||Margaret|Gyetko|mgyetko@mps.edu||true
+dev|dkomorow||Debra|Komorowski|dkomorow@mps.edu||true
+dev|kleahy||Kim|Leahy|kleahy@mps.edu||true
+
+cmich|mpsadmin|8405a05b4ae6d1943b9d99f1e153837867a7dc20584505f76ee86e9605375bdc|MPS|Administration||MPS|true
+cmich|mpldap|4/&AB7CzA/T4|CMU|LDAP Test Account||LDAP|true

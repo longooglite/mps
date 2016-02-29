@@ -1,0 +1,46 @@
+[Category]
+<h4>Committee & Administrative - Committee & Boards</h4>
+<p>This page displays your service on Committees & Boards.
+</p>
+<p>The content of this page can be sorted by clicking on any column title. The number of entries within each region will be displayed in () on the tabs.</p>
+<hr>
+<p>To <strong>add</strong> an additional entry, click the “+ Add …” button in the upper right portion of the page.</p>
+<p>To <strong>edit</strong> an existing entry, click the blue text in the row you would like to edit.</p>
+<p>To <strong>delete</strong> an entry, click the X at the end of the row you would like to delete. Then confirm the deletion.
+</p>
+
+
+[CommitteeBoardsOrganization]
+<p>Please select a Region for this entry.</p>
+<hr>
+<p>This item is required</p>
+
+[CommitteeBoardsOrganizationBoardName]
+<p>Please enter the committee or board name.</p>
+<hr>
+<p>This item is required</p>
+
+[CommitteeBoardsOrganizationCity]
+<p>Please enter the city where this committee or board was located.</p>
+
+[CommitteeBoardsOrganizationState]
+<p>Please select the state where the committee or board was located.</p>
+
+[CommitteeBoardsOrganizationCountry]
+<p>Please select the country where the committee or board was located.</p>
+
+[CommitteeBoardsOrganizationRole]
+<p>Please enter your role with this committee or board.</p>
+<hr>
+<p>This item is required</p>
+
+[CommitteeBoardsDatesStart]
+<p>Please enter the start date for this entry.</p>
+<hr>
+<p>This item is required</p>
+<p>Hover over the field to see supported date formats</p>
+
+[CommitteeBoardsDatesEnd]
+<p>Please enter the end date for this entry.</p>
+<hr>
+<p>Hover over the field to see supported date formats</p>

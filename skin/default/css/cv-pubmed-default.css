@@ -1,0 +1,99 @@
+/* [Copyright] */
+/* SmartPath v1.0 */
+/* Copyright 2014-2015 Mountain Pass Solutions, Inc. */
+/* This unpublished material is proprietary to Mountain Pass Solutions, Inc. */
+/* [End Copyright] */
+
+table tr td{vertical-align:top; padding-bottom:15px;}
+.cv-pubmed-tab-content{display:none;}
+.cv-pubmed-tab-content.active{display:block;}
+
+body.cv-import-page .cv-menu{
+    position:fixed;
+    top:168px;
+}
+body.cv-import-page .mpsheader{z-index:7;}
+
+.import-header{
+    position:fixed;
+    background:#f9f9f9;
+    z-index:3;
+    display:block;
+    width:100%;
+    top:88px;
+    height:80px;
+    border-bottom:solid 1px #e1e1e1;
+}
+.import-header h1{
+    padding:23px 25px 0 15px;
+    margin:0;
+    font-size:1.4em;
+    font-weight: normal;
+    color:#777;
+}
+.import-header .import-subhead{
+    padding-left:15px;
+}
+.cv-pubmed-tab-content{
+    padding-top:60px;
+}
+.import-btn-group{
+    width:150px !important;
+}
+.cv-pubmed-search-bar{
+    position:fixed;
+    left: 239px;
+    right:0;
+    background:#f9f9f9;
+    top:94px;
+    z-index:6;
+    padding: 10px 20px 9px 0;
+    border-left:solid 1px #e1e1e1;
+
+}
+.cv-pubmed-search-bar .form-group{
+    padding-left:8px;
+}
+.cv-pubmed-search-bar .form-group input[type=text]{ width:130px; padding: 6px 6px; }
+.cv-highlight{background:yellow; font-weight:bold;}
+.import-results{position:relative; top:5px; margin-left:20px; color:#666;}
+
+/* Hide Select in non-results */
+.cv-pubmed-notmine select{display:none !important;}
+
+.unmark-btn{margin-left:5px;}
+.unmark-btn:hover{color:darkred;}
+.unmark-btn .glyphicon{font-size:.9em;}
+
+/* New layout for labels & top bar with Affiliation added */
+
+.cv-pubmed-tab-content .form-group label,
+.cv-pubmed-tab-content .form-group .label{ display:block; margin-bottom:0px; }
+
+.last-group{ padding-right:10px; border-right:solid 1px #ccc; }
+
+.nbravailable{ font-weight: normal; }
+
+.save-changes{ margin-top: 10px; padding: 15px 15px; border-top:solid 1px #ccc; }
+
+.form-group button .glyphicon{font-weight:200;}
+
+.cv-pubmed-search-bar button, .cv-pubmed-search-bar .btn{ font-weight:bold; }
+
+#pubmed-loading{
+    position:fixed;
+    height:100%;
+    width:100%;
+    top: 0px;
+    display:none;
+    background-color:#000;
+    text-align:center;
+    vertical-align:middle;
+    z-index:9999;
+    color:#fff;
+    font-weight:bold;
+    font-size:3em;
+    padding-top:180px;
+    opacity: 0.5;
+}
+#pubmed-loading .loaderImg{ height:36px; width:36px; margin-right: 12px; margin-top:-4px;}

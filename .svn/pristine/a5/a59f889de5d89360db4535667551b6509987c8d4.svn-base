@@ -1,0 +1,31 @@
+[Category]
+<h4>Teaching Activities - Teaching</h4>
+<p>The Teaching Activities section includes a list of intramural lectures, didactic courses, curriculum development, and other relevant teaching activities.<p>
+<p>The content of this page can be sorted by clicking on any column title.</p>
+<hr>
+<p>To <strong>add</strong> an additional entry, click the “+ Add …” button in the upper right portion of the page.</p>
+<p>To <strong>edit</strong> an existing entry, click the blue text in the row you would like to edit.</p>
+<p>To <strong>delete</strong> an entry, click the X at the end of the row you would like to delete. Then confirm the deletion.</p>
+<p>To <strong>print</strong> this section of the CV, click the “Print this section” button in the upper right portion of the page or select “Print Section” from the Print menu found in the menu bar.</p>
+
+[TeachingTeachingActivityScope]
+<p>Please select the teaching scope for this entry.</p>
+<hr>
+<p>This item is required</p>
+
+[TeachingTeachingActivityDescription]
+<p>Please enter a description of this teaching activity.</p>
+<hr>
+<p>This item is required</p>
+
+[TeachingTeachingDatesStart]
+<p>Please enter the start date for this teaching activity.</p>
+<hr>
+<p>This item is required</p>
+<p>Hover over the field to see supported date formats</p>
+
+[TeachingTeachingDatesEnd]
+<p>Please enter the end date of this teaching activity.</p>
+<hr>
+<p>Hover over the field to see supported date formats</p>
+

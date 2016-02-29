@@ -1,0 +1,57 @@
+{% for menuDict in context.get('menuChunkList',[]) %}
+	{% set glyph = menuDict.get('glyph','') %}
+	{% set hasCount = True if menuDict.get('nbrUnread',0) > 0 else False %}
+	{% set countHover = '%s Reports are ready' % str(menuDict.get('nbrUnread',0)) if (menuDict.get('descr', '#').replace(' ','') == 'Reporting') else '%s items need your attention' % str(menuDict.get('nbrUnread',0)) %}
+
+	{% if 'divider' in menuDict %}
+		<li class="divider"></li>
+	{% elif 'url' in menuDict %}
+		<li class="cv{{menuDict.get('url', '').replace('/','')}}">
+			<a href="{{menuDict.get('url', '#')}}">{% if hasCount %}<span class="wf-inbox-number badge" title="{{countHover}}">{{menuDict.get('nbrUnread',0)}}</span> {% else %}<span class="glyphicon {{glyph}}" aria-hidden="true"></span>{% end %}{{menuDict.get('descr', '#')}} </a>
+		</li>
+	{% elif 'id' in menuDict %}
+		<li class="cv{{menuDict.get('id', '')}}">
+			<a href='#' id="{{menuDict.get('id', '')}}">{% if hasCount %}<span class="wf-inbox-number badge" title="{{countHover}}">{{menuDict.get('nbrUnread',0)}}</span> {% else %}<span class="glyphicon {{glyph}}" aria-hidden="true"></span>{% end %}{{menuDict.get('descr', '#')}} </a>
+		</li>
+	{% else %}
+		{% set isDisabled = menuDict.get('enabled', 'false') == 'false' %}
+		<li class="dropdown cv{{menuDict.get('descr', '#').replace(' ','')}} {{ 'mps-menu-disabled' if isDisabled else '' }}">
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+				{% if hasCount %}<span class="wf-inbox-number badge" title="{{countHover}}">{{menuDict.get('nbrUnread',0)}}</span> {% else %}<span class="glyphicon {{glyph}}" aria-hidden="true"></span>{% end %}{{menuDict.get('descr', '#')}} <span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu {{ 'mps-menu-disabled' if isDisabled else '' }}" role="menu">
+				{% set itemListHasGlyphs = menuDict.get('itemListHasGlyphs', False) %}
+				{% set anchorClass = '' %}
+				{% if itemListHasGlyphs %}
+					{% set anchorClass = 'itemglyph' %}
+				{% end %}
+				{% for itemDict in menuDict.get('itemList',[]) %}
+					{% if 'divider' in itemDict %}
+						<li class="divider"></li>
+					{% else %}
+						{% set itemGlyph = itemDict.get('glyph','') %}
+						{% if 'id' in itemDict %}
+							<li>
+								<a id="{{itemDict.get('id', '')}}" href="#" class="{{anchorClass}}">
+									{% if itemListHasGlyphs %}<span class="glyphicon {{itemGlyph}}" aria-hidden="true"></span>{% end %}
+									{% raw itemDict.get('descr', '?')%}
+								</a>
+							</li>
+						{% else %}
+							{% set targ = '' %}
+							{% if 'target' in itemDict %}
+								{% set targ = 'target="' + itemDict['target'] + '"' %}
+							{% end %}
+							<li>
+								<a href="{{itemDict.get('url', '#')}}" {{targ}} class="{{anchorClass}}">
+									{% if itemListHasGlyphs %}<span class="glyphicon {{itemGlyph}}" aria-hidden="true"></span>{% end %}
+									{% raw itemDict.get('descr', '?')%}
+								</a>
+							</li>
+						{% end %}
+					{% end %}
+				{% end %}
+			</ul>
+		</li>
+	{% end %}
+{% end %}

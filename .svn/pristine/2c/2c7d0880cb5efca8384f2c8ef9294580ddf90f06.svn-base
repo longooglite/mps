@@ -1,0 +1,71 @@
+<div class="subcategory"><span class="title subcategory-title">{{ subcategorydescr }}</span>
+{% set rowList = currsubcategory.get('rows',[]) %}
+<table>
+    <thead>
+        <tr>
+            <th class="lineitem1">Course #</th>
+            <th class="lineitem1">Course Title</th>
+            <th class="lineitem1">Teaching Role</th>
+            <th class="lineitem1">Term</th>
+            <th class="lineitem1">Enrollment / Response</th>
+            <th class="lineitem1">Q1</th>
+            <th class="lineitem1">Q2</th>
+            <th class="lineitem1">Q3</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% set i = 0 %}
+    {% for row in rowList %}
+        {% set i += 1 %}
+        {% set fieldList = row.get('fields',[]) %}
+        {% set courseNum = '' %}
+        {% set courseTitle = '' %}
+        {% set teachingRole = '' %}
+        {% set term = '' %}
+        {% set year = '' %}
+        {% set response = '' %}
+        {% set q1 = '' %}
+        {% set q2 = '' %}
+        {% set q4 = '' %}
+        {% for field in fieldList %}
+            {% if field.get('field_code','') == 'UofMCourseNumber'%}
+                {% set courseNum = field.get('formatted_value','') %}
+            {% elif field.get('field_code','') == 'UofMCourseTitle'%}
+                {% set courseTitle = field.get('formatted_value','') %}
+            {% elif field.get('field_code','') == 'UofMCourseTerm'%}
+                {% set term = field.get('formatted_value','') %}
+            {% elif field.get('field_code','') == 'UofMCourseRole'%}
+                {% set teachingRole = field.get('formatted_value','') %}
+            {% elif field.get('field_code','') == 'UofMCourseYear'%}
+                {% set year = field.get('formatted_value','') %}
+            {% elif field.get('field_code','') == 'UofMCourseEnrollment'%}
+                {% set response = field.get('formatted_value','') %}
+            {% elif field.get('field_code','') == 'UofMQ1'%}
+                {% set q1 = field.get('formatted_value','') %}
+            {% elif field.get('field_code','') == 'UofMQ2'%}
+                {% set q2 = field.get('formatted_value','') %}
+            {% elif field.get('field_code','') == 'UofMQ4'%}
+                {% set q4 = field.get('formatted_value','') %}
+            {% end %}
+        {% end %}
+        {% set compoundTerm = '%s %s' % (term,year) %}
+        <tr>
+            <td class="lineitem1"> {% raw courseNum %}</td>
+            <td class="lineitem1">{% raw courseTitle %}</td>
+            <td class="lineitem1">{% raw teachingRole %}</td>
+            <td class="lineitem1">{% raw compoundTerm %}</td>
+            <td class="lineitem1">{% raw response %}</td>
+            <td class="lineitem1" >{% raw q1 %}</td>
+            <td class="lineitem1" >{% raw q2 %}</td>
+            <td class="lineitem1" >{% raw q4 %}</td>
+        </tr>
+    {% end %}
+    </tbody>
+</table>
+<ul class="evaluation-questions">
+    <li>Q1: Overall, this was an excellent course; </li>
+    <li>Q2: Overall, the instructor was an excellent teacher; </li>
+    <li>Q4: I had a strong desire to take this course.</li>
+</ul>
+Evaluations are on a 5 point scale where 5 is Strongly Agree and 1 is Strongly Disagree.
+</div>

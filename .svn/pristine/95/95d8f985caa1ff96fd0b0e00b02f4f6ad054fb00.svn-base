@@ -1,0 +1,96 @@
+#   common_permimssions.txt
+#
+#   File of commmon permissions.
+#   These are standard permissions that we want in every site database.
+#   Use the site-specific 'permissions.txt' files for site-specific permissions.
+
+#   CV
+
+#site_code|application|code|description
+|CV|cvView|View CV
+|CV|cvEdit|Edit CV
+|CV|cvCreate|Create CV
+|CV|cvExport|Export CV
+|CV|cvAdmin|CV Admin
+|CV|cvProxyAll|Proxy Access To All Users
+
+
+#   MPS Admin
+
+#site_code|application|code|description
+|MPSADMIN|siteView|View Sites
+|MPSADMIN|siteEdit|Edit Sites
+|MPSADMIN|siteDelete|Delete Sites
+|MPSADMIN|communityView|View Communities
+|MPSADMIN|communityEdit|Edit Communities
+|MPSADMIN|prefView|View Preferences
+|MPSADMIN|prefEdit|Edit Preferences
+|MPSADMIN|roleView|View Roles
+|MPSADMIN|roleEdit|Edit Roles
+|MPSADMIN|userView|View Users
+|MPSADMIN|userEdit|Edit Users
+|MPSADMIN|userDelete|Delete Users
+|MPSADMIN|sessionView|View Sessions
+|MPSADMIN|dbDump|Database Dump
+|MPSADMIN|dbRestore|Database Restore
+|MPSADMIN|unrestrictedAdmin|Unrestricted Admin Access
+
+
+#   Appointments
+
+|APPT|apptRosterView|View Roster
+|APPT|apptRosterEntry|Roster Manual Entry
+|APPT|apptDashboardView|Dashboard Roster
+|APPT|apptCreatePosition|Create Position
+|APPT|apptCreateJobAction|Create Job Action
+|APPT|apptJobActionOverview|View Job Action Overview
+|APPT|apptCandidate|Candidate mode
+|APPT|apptViewAsCandidate|Enable View As Candidate mode
+|APPT|apptPositionView|View Position
+|APPT|apptPersonView|View Person
+|APPT|apptCancelJobAction|Cancel Job Action
+|APPT|apptResendEmail|Resend Email
+|APPT|facultyAffairsUser|Faculty Affairs User
+|APPT|canViewNPIPassword|Can view NPI password
+|APPT|canViewSocialSecurity|Can view Social Security Number
+|APPT|canrequestfieldrevisions|Can Request Field Level Revisions
+
+#   Appointment CBC
+
+|APPT|cbcView|CBC View
+|APPT|cbcAdmin|CBC Administrator
+|APPT|cbcStatus|CBC Status
+
+#   Appointment Administrative
+
+|APPT|apptUserEdit|Edit Users
+|APPT|apptDeptEdit|Edit Departments
+|APPT|apptTrackEdit|Edit Tracks
+|APPT|apptTitleEdit|Edit Titles
+|APPT|apptBuildingEdit|Edit Buildings
+|APPT|apptInternalEvalEdit|Edit Internal Evaluators
+|APPT|apptLookupEdit|Edit Static Lookup Tables
+|APPT|apptUberEdit|Edit Uber Form Content
+
+#   Appointment Workflow Editing
+#   Must have either apptWFEdit or apptWFEditRaw to gain access to the Workflow Wizard
+#   Other permissions afford protection for selected volatile fields, settings, and processes
+
+|APPT|apptWFEdit|Edit Workflows
+|APPT|apptWFEditRaw|Edit Workflow items in raw mode
+|APPT|apptWFEditCreateWorkflow|Edit Workflow Create New Workflow
+|APPT|apptWFEditCreateComponent|Edit Workflow Create New Component
+|APPT|apptWFEditCreateTitleOverride|Edit Workflow Create Title Override
+|APPT|apptWFEditDeleteComponent|Edit Workflow Delete Existing Component
+|APPT|apptWFEditDeleteTitleOverride|Edit Workflow Delete Existing Title Override
+|APPT|apptWFEditCode|Edit Workflow Component Code
+|APPT|apptWFEditComponentType|Edit Workflow Component Type
+|APPT|apptWFEditClassName|Edit Workflow Class Name
+|APPT|apptWFEditMetaTrackCode|Edit Workflow MetaTrack Codes
+|APPT|apptWFEditJobActionType|Edit Workflow Job Action Type
+|APPT|apptWFEditPermissions|Edit Workflow Permissions (Access and View Permissions)
+|APPT|apptWFEditBlockers|Edit Workflow Blockers
+
+#   Appointment miscellaneous
+
+|APPT|isalmighty|Is Almighty

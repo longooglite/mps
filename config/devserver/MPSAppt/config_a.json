@@ -1,0 +1,15 @@
+{
+	"environment": "devserver",
+	"listenport": 8014,
+	"authserviceurl": "http://localhost:9000",
+	"loggingconfig": "config/devserver/MPSAppt/logging.conf",
+	"wkhtmltopdfbinpath": "/usr/local/bin/wkhtmltopdf",
+	"pdftkbinpath":"/usr/bin/pdftk",
+	"skinfolderpath": "/usr/local/mps",
+	"email": "on",
+	"emailto": ["greg.poth@mountainpasssolutions.com"],
+	"jobcompletiontask": "off",
+	"reportingcleanuptask": "off",
+	"backgroundchecktask": "on",
+	"backgroundcheckintervalminutes": "120"
+}

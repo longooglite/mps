@@ -1,0 +1,31 @@
+{% set taskCode = context.get('taskcode','') %}
+
+<form class="wf-ajax-form wf-pi-form" id="{{ taskCode }}_form" action="{{ context.get('url','') }}" onSubmit="return false;">
+	{% set prmpts = context.get('prompts',{}) %}
+	{% set pi = context.get('jobposting',{}) %}
+
+    {% set prompt = 'posting_number' %}
+	{% if prmpts.get(prompt,{}).get('enabled',True) %}{% include 'formChunk_textInput.html' %}{% end %}
+
+	{% set prompt = 'date_posted' %}
+	{% if prmpts.get(prompt,{}).get('enabled',True) %}{% include 'formChunk_textInput.html' %}{% end %}
+
+	<div class="col-xs-9 col-xs-offset-1">
+		<br/>
+		{% set postingdays = context.get('remainingPostingDays',0)%}
+		{% if postingdays > 0 %}
+			{% if postingdays == 1 %}
+				{{ "1 posting day remains" }}
+			{% else %}
+				{{ "There are %i remaining posting days" % (postingdays) }}
+			{% end %}
+		{% end %}
+	</div>
+
+	<div class="wf-details-form-btn-bar col-xs-12">
+		<button type="submit" class="wf-widget-form-btn btn btn-primary">Save</button>
+		{% include 'formChunk_cancelLink.html' %}
+	</div>
+
+</form>
+

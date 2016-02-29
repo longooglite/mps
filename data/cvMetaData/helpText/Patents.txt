@@ -1,0 +1,44 @@
+[Category]
+<h4>Patents</h4>
+<p>This page displays your Patent activities.  The number of entries within each issued and pending patent will be displayed in () on the tabs.<p>
+<p>The content of this page can be sorted by clicking on any column title.</p>
+<hr>
+<p>To <strong>add</strong> an additional entry, click the “+ Add …” button in the upper right portion of the page.</p>
+<p>To <strong>edit</strong> an existing entry, click the blue text in the row you would like to edit.</p>
+<p>To <strong>delete</strong> an entry, click the X at the end of the row you would like to delete. Then confirm the deletion.</p>
+<p>To <strong>print</strong> this section of the CV, click the “Print this section” button in the upper right portion of the page or select “Print Section” from the Print menu found in the menu bar.</p>
+
+[PatentsType]
+<p>Please select the patent status.</p>
+<hr>
+<p>This item is required</p>
+
+[PatentsTitle]
+<p>Please enter the patent title.</p>
+<hr>
+<p>This item is required</p>
+
+[PatentsNumber]
+<p>Please enter the patent number.</p>
+
+[PatentsCountry]
+<p>Please select the issuing country.</p>
+
+[PatentsRole]
+<p>Please select your role in the patent.</p>
+
+[PatentInventorName]
+<p>Please enter the Inventors name(s).</p>
+
+[PatentsDescription]
+<p>Please enter a description for this patent.</p>
+
+[PatentsApplicationDate]
+<p>Please enter the patent application date.</p>
+<hr>
+<p>Hover over the field to see supported date formats</p>
+
+[PatentsDateGranted]
+<p>Please enter the date this patent was granted.</p>
+<hr>
+<p>Hover over the field to see supported date formats</p>

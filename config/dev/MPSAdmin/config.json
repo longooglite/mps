@@ -1,0 +1,16 @@
+{
+	"environment": "dev",
+	"listenport": 8003,
+	"authserviceurl": "http://localhost:9000",
+	"loggingconfig": "config/dev/MPSAdmin/logging.conf",
+	"wkhtmltopdfbinpath": "/usr/local/bin/wkhtmltopdf",
+	"pdftkbinpath":"/opt/pdflabs/pdftk/bin/pdftk",
+	"dropdbbinpath": "/usr/local/bin/dropdb",
+	"createdbbinpath": "/usr/local/bin/createdb",
+	"pgdumpbinpath": "/usr/local/bin/pg_dump",
+	"psqlbinpath": "/usr/local/bin/psql",
+	"dumpfolderpath": "/usr/local/mpsDatabases",
+	"skinfolderpath": "/usr/local/mps",
+	"email": "off",
+	"emailto": ["greg.poth@mountainpasssolutions.com"]
+}

@@ -1,0 +1,13 @@
+# File format is pipe delimited
+
+#Grouping that defines workflows by track
+#code - unique identifier - required
+#descr - description of meta track grouping - required
+#supplemental - 1 = meta track is supplemental, 0 = not - required
+#active - 1 = meta track is active, 0 = inactive - required
+#tags - space-delimited site-specific tags
+
+#code|descr|supplemental|active|tags
+Faculty|Faculty|0|1|
+Lecturer|Lecturer|0|1|
+Supplemental|Supplemental|1|1|SUPPLEMENTAL

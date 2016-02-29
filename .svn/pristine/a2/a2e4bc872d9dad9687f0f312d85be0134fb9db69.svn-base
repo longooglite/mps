@@ -1,0 +1,12 @@
+<script type="text/javascript">
+	/*<![CDATA[*/
+	var ajaxPayload = {
+		"site":"{{context.get('site','')}}",
+		"mpsid":"{{context.get('mpsid','')}}",
+		"app":"{{context.get('appCode','')}}",
+		"_xsrf":"{{context.get('_xsrf','')}}"
+	};
+	var cvApp = cvApp || {};
+	cvApp.skin = '{{skin}}';
+	/*]]>*/
+</script>

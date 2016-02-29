@@ -1,0 +1,28 @@
+[Category]
+<h4>Editorial Positions - Editorial Boards</h4>
+<p>This page displays information and dates about your service on editorial boards.<p>
+<p>The content of this page can be sorted by clicking on any column title.</p>
+<hr>
+<p>To <strong>add</strong> an additional entry, click the “+ Add …” button in the upper right portion of the page.</p>
+<p>To <strong>edit</strong> an existing entry, click the blue text in the row you would like to edit.</p>
+<p>To <strong>delete</strong> an entry, click the X at the end of the row you would like to delete. Then confirm the deletion.</p>
+<p>To <strong>print</strong> this section of the CV, click the “Print this section” button in the upper right portion of the page or select “Print Section” from the Print menu found in the menu bar.</p>
+
+[EditorialBoardsDescription]
+<p>Please enter a description for this editorial board.</p>
+<hr>
+<p>This item is required</p>
+
+[EditorialBoardsPosition]
+<p>Please select your role on this editorial board.</p>
+
+[EditorialBoardsStart]
+<p>Please enter the date when you started working with this editorial board.</p>
+<hr>
+<p>This item is required</p>
+<p>Hover over the field to see supported date formats</p>
+
+[EditorialBoardsEnd]
+<p>Please enter the date when you completed working with this editorial board.</p>
+<hr>
+<p>Hover over the field to see supported date formats</p>

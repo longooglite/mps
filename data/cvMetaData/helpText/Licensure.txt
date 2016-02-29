@@ -1,0 +1,38 @@
+[Category]
+<h4>Certification & Licensure - Licensure</h4>
+<p>This page displays your licenses.<p>
+<p>The content of this page can be sorted by clicking on any column title.</p>
+<hr>
+<p>To <strong>add</strong> an additional entry, click the “+ Add …” button in the upper right portion of the page.</p>
+<p>To <strong>edit</strong> an existing entry, click the blue text in the row you would like to edit.</p>
+<p>To <strong>delete</strong> an entry, click the X at the end of the row you would like to delete. Then confirm the deletion.</p>
+<p>To <strong>print</strong> this section of the CV, click the “Print this section” button in the upper right portion of the page or select “Print Section” from the Print menu found in the menu bar.</p>
+
+
+[LicenseLicense]
+<p>Please select a license type.</p>
+<hr>
+<p>This item is required</p>
+
+[LicenseNumber]
+<p>Please enter the license number if applicable.</p>
+
+[LicenseState]
+<p>Please enter the state where the license was issued.</p>
+
+[LicenseCountry]
+<p>Please enter the country where the license was issued.</p>
+
+[LicenseAppInProcess]
+<p>If you are in the process of applying for this license please check this box.</p>
+
+[LicenseStart]
+<p>Please enter the start date for this entry.</p>
+<hr>
+<p>This item is required</p>
+<p>Hover over the field to see supported date formats</p>
+
+[LicenseEnd]
+<p>Please enter the end date for this entry.</p>
+<hr>
+<p>Hover over the field to see supported date formats</p>

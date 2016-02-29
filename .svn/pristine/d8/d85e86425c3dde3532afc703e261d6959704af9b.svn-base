@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>MPS ATRAM</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+</head>
+
+<body>
+	<div class="container-fluid mps-body">
+		{% set context['pageHeaderTitle'] = 'MPS ATRAM' %}
+		{% include pageHeader.html %}
+
+		<div class="body-content">
+			<div>
+				<span id="errormessage" class="errormessage">{{context.get('errormessage','')}}</span>
+			</div>
+			<p>Welcome to MPS Appointments & Promotions</p><br/>
+		</div>
+
+        <div>
+            Status: {{ context.get('status','') }}
+        </div>
+
+        <form id="mainform">
+            {% for task in context.get('workflow',{}).get('taskList',[]) %}
+                {% set htmlInclude = task.getHTML() %}
+                {% module Template(htmlInclude, currentTask = task) %}
+                <br/>
+            {% end %}
+        </form>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+
+<script type="text/javascript">
+    /*<![CDATA[*/
+
+    var submitA = function()  {
+        $form = $('#mainform')
+        $.ajax({ url: "/appt/a_task", type: 'POST',
+            data: JSON.stringify($form.serializeObject()),
+            headers: { 'Content-Type': 'application/json' },
+            success: function(data, textStatus, xhr) {
+            	if ('exception' in data) { $('#modalmessage').html(data.exceptionMessage); return; }
+            	if ('errors' in data) { $('#modalmessage').html(data.errors); return; }
+            	if ('message' in data) { $('#modalmessage').html(data.message); return; }
+            	if ('msgid' in data) { $.cookie('msgid', data.msgid, { path: '/'}); }
+            	if ('redirect' in data) { window.location.href = data.redirect; }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+				$('#errormessage').html(textStatus);
+				$('#editModalDialog').modal('hide');
+            }
+        });
+    };
+
+    var submitB = function()  {
+        $form = $('#mainform')
+        $.ajax({ url: "/appt/b_task", type: 'POST',
+            data: JSON.stringify($form.serializeObject()),
+            headers: { 'Content-Type': 'application/json' },
+            success: function(data, textStatus, xhr) {
+            	if ('exception' in data) { $('#modalmessage').html(data.exceptionMessage); return; }
+            	if ('errors' in data) { $('#modalmessage').html(data.errors); return; }
+            	if ('message' in data) { $('#modalmessage').html(data.message); return; }
+            	if ('msgid' in data) { $.cookie('msgid', data.msgid, { path: '/'}); }
+            	if ('redirect' in data) { window.location.href = data.redirect; }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+				$('#errormessage').html(textStatus);
+				$('#editModalDialog').modal('hide');
+            }
+        });
+    };
+
+    var submitC = function()  {
+        $form = $('#mainform')
+        $.ajax({ url: "/appt/c_task", type: 'POST',
+            data: JSON.stringify($form.serializeObject()),
+            headers: { 'Content-Type': 'application/json' },
+            success: function(data, textStatus, xhr) {
+            	if ('exception' in data) { $('#modalmessage').html(data.exceptionMessage); return; }
+            	if ('errors' in data) { $('#modalmessage').html(data.errors); return; }
+            	if ('message' in data) { $('#modalmessage').html(data.message); return; }
+            	if ('msgid' in data) { $.cookie('msgid', data.msgid, { path: '/'}); }
+            	if ('redirect' in data) { window.location.href = data.redirect; }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+				$('#errormessage').html(textStatus);
+				$('#editModalDialog').modal('hide');
+            }
+        });
+    };
+
+    $(function() {
+		$('#submitAbtn').on('click', submitA);
+		$('#submitBbtn').on('click', submitB);
+		$('#submitCbtn').on('click', submitC);
+
+    });
+
+    /*]]>*/
+</script>
+
+</body>
+</html>

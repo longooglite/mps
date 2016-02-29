@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Appointments</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+</head>
+
+<body class="cv-proxy-page">
+<div class="container-fluid mps-body">
+	{% set context['pageHeaderTitle'] = 'Appointments' %}
+	{% include pageHeader.html %}
+	<div class="body-content cv-body cv-body-no-menu">
+        <div class="page-header clearfix">
+			<h1>
+				Secondary Appointment<br/>
+				<small>
+					Provide details below to create a new PCN:
+				</small>
+			</h1>
+		</div>
+		<form id="mainform" class="form-horizontal" onsubmit="return false;">
+        <input type=hidden name="primary_appt_dept_id" id="primary_appt_dept_id" value="{{context.get('primary_appt_dept_id','')}}">
+        <input type=hidden name="person_id" id="person_id" value="{{context.get('person_id','')}}">
+		<div class="row">
+			<div class="col-md-7">
+			<h3 class="section-header starthidden">
+				<span class="glyphicon glyphicon-edit"></span>
+				{{context.get('departmentText','Department')}} &amp; Title:
+			</h3>
+			<div class="cv-callout cv-callout-info cv-callout-bordered clearfix">
+            <div class="form-row clearfix">
+				<label class="col-xs-2 control-label" for="department_list">* {{context.get('departmentText','Department')}}:</label>
+				<div class="col-xs-5">
+					<select id="department_list" name="department_list" class="form-control">
+						{% for department in context.get('department_selection',[]) %}
+							{% if len(department.get('children',[])) > 0 %}
+								<optgroup label="{{ department.get('descr','') }}">
+									{% for child in department.get('children',[]) %}
+										<option value="{{ child.get('id',0) }}">{{ child.get('descr','') }}</option>
+									{% end %}
+								</optgroup>
+							{% else %}
+								<option value="{{ department.get('id',0) }}">{{ department.get('descr','') }}</option>
+							{% end %}
+						{% end %}
+					</select>
+				</div>
+			</div>
+			<div class="clearfix form-row">
+				<label class="col-xs-2 control-label" for="track_title_list">* Title:</label>
+				<div class="col-xs-5">
+					<select id="track_title_list" name="track_title_list" class="form-control">
+						{% for track in context.get('track_title_selection',{})['track'] %}
+							{% set trackdescr = track.keys()[0] %}
+							<optgroup label="{{ trackdescr }}">
+								{% for title in track[trackdescr] %}
+									<option value="{{ title['title_id'] }}">{{ title['title_descr'] }}</option>
+								{% end %}
+							</optgroup>
+						{% end %}
+					</select>
+				</div>
+                {% set starthidden = 'starthidden' if len(context.get('workflowlist',[])) == 1 else '' %}
+                <div class="clearfix form-row {{starthidden}}">
+                    <label class="col-xs-2 control-label" for="workflow_list">* Workflow:</label>
+                    <div class="col-xs-5">
+                        <select id="workflow_list" name="workflow_list" class="form-control">
+                            {% for wf in context.get('workflowlist',[]) %}
+                                <option value="{{ wf.get('id',0) }}" {{ 'selected="selected"' if len(context.get('workflowlist',[])) == 1 else ''}}>{{ wf.get('descr','') }}</option>
+                            {% end %}-->
+                        </select>
+                    </div>
+                </div>
+				<div class="col-xs-2 ta-right">
+					<button class="createsecondary btn btn-primary">Create Secondary Appointment</button>
+				</div>
+			</div>
+			</div>
+			</div>
+		</div>
+        </form>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	(function ($) {
+
+		$('body').on('click', '.createsecondary', function(event){
+			var $this = $(this);
+			var $title = $('#track_title_list').val();
+			var $department = $('#department_list').val();
+			var $primarydepartment = $('#primary_appt_dept_id').val();
+			var $person = $('#person_id').val();
+			var $workflow = $('#workflow_list').val();
+			var sURL = '/appt/jobaction/create/secondary/' + $department + '/' + $workflow + '/' + $title + '/' + $primarydepartment + '/' + $person
+			cvApp.ubiquitousPageRequest({
+				url: sURL,
+				data: JSON.stringify($('#mainform').serializeObject()),
+				errorMessage: '#modalerrormessage'
+			});
+		});
+
+	})(jQuery);
+
+	/*]]>*/
+</script>
+</div>
+</body>
+</html>

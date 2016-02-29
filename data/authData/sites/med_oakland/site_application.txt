@@ -1,0 +1,4 @@
+#sitecode|appcode
+med-oakland|CV
+med-oakland|MPSADMIN
+med-oakland|APPT

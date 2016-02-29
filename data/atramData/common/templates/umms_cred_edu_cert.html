@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;}
+        hr {border-top: 3px solid #002e62;}
+        p {font-size: 14px;}
+        td {font-size:14px;}
+        .linewrapper {font-size:15px; line-height:60px;}
+        .fillstroke {position:relative; top:16px; display:inline-block; border-top:solid 2px  #002e62; line-height:14px; text-align:center; font-size:12px;}
+        .shortstroke {width:100px;}
+        .mediumstroke {width:190px;}
+        .longstroke {width:250px;}
+        .superlongstroke {width:300px;}
+    </style>
+
+</head>
+<body>
+    <table width="700px">
+     <tr>
+         <td>Candidate Name: {{ context.get('lastNameFirst','')}}</td>
+         <td align="right">Proposed Department: {{ context.get('department','')}}</td>
+     </tr>
+    </table>
+    <hr/>
+    <table width="700px">
+        <tr>
+            <td valign="top"><img src="{{ context.get('imagePath','') }}" alt="UM Logo" height="31" width="375"></td>
+            <td valign="top" align="right"><span><center>University of Michigan Health System<br/>Medical Staff Services<br/>Phone: (734)-647-6865</center></span></td>
+        </tr>
+    </table>
+    <center><h6><u>{{ context.get('certificationHeader','') }}</u></h6></center>
+    <table>
+        <tr><td width="275px">Applicant's Name</td><td>{{ context.get('lastNameFirst') }}</td></tr>
+        <tr><td>Other Names</td><td>{{ context.get('aliases') }}</td></tr>
+        <tr><td>Social Security Number</td><td>{{ context.get('ssn') }}</td></tr>
+        <tr><td>Date of Birth</td><td>{{ context.get('birth_date') }}</td></tr>
+        <tr><td>Date of Admission</td><td>{{ context.get('admissionDate') }}</td></tr>
+    </table>
+    <br/>
+    <p>On {{context.get('releaseDate','')}},&nbsp;{{ context.get('firstNameLast','')}}&nbsp;released from liability all individuals and organizations that provide information concerning {{ context.get('genderPossessive','') }} qualifications for staff appointments and clinical priveleges.</p>
+    <center><h6><u>{{ context.get('deanRegistrarHeader','') }}</u></h6></center>
+    <table width="700px">
+        <tr>
+            <td width="350px"> {{context.get('address1','')}} </td>
+            <td> FAX TO MEDICAL STAFF SERVICES </td>
+        </tr>
+        <tr>
+            <td> {{context.get('address2','')}} </td>
+            <td> WITH AN INSTITUTIONAL COVERSHEET </td>
+        </tr>
+        <tr>
+            <td> {{context.get('address3','')}} </td>
+            <td> TO 734-936-9757 </td>
+        </tr>
+        {% if context.get('address4','') %}
+            <tr>
+                <td> {{context.get('address4','')}} </td>
+                <td>&nbsp;</td>
+            </tr>
+        {% end %}
+        {% if context.get('address5','') %}
+            <tr>
+                <td> {{context.get('address5','')}} </td>
+                <td>&nbsp;</td>
+            </tr>
+        {% end %}
+        {% if context.get('address6','') %}
+            <tr>
+                <td> {{context.get('address6','')}} </td>
+                <td>&nbsp;</td>
+            </tr>
+        {% end %}
+        {% if context.get('address7','') %}
+            <tr>
+                <td> {{context.get('address7','')}} </td>
+                <td>&nbsp;</td>
+            </tr>
+        {% end %}
+    </table>
+    <br/>
+    <div class="linewrapper">
+        I certify that {{ context.get('lastNameFirst','') }} attended the {{ context.get('schoolType','')}} named above from <div class="fillstroke shortstroke">(MM/DD/YY)</div> to
+        <div class="fillstroke shortstroke">(MM/DD/YY)</div> and was granted the degree of <div class="fillstroke longstroke">&nbsp;</div> on <div class="fillstroke shortstroke">(MM/DD/YY)</div>.
+        <table width="670px">
+            <tr>
+                <td  nowrap="nowrap" align="left"><div class="fillstroke superlongstroke">Signature of Dean or Registrar</div></td>
+                <td  nowrap="nowrap" align="right"><div class="fillstroke superlongstroke">Date of Signature</div></td>
+            </tr>
+        </table>
+        <table width="670px">
+            <tr>
+                <td  nowrap="nowrap" align="left">Print Name:&nbsp;<div class="fillstroke superlongstroke">Printed Name of Dean or Registrar</div></td>
+                <td  nowrap="nowrap" align="right">Email Address:&nbsp;<div class="fillstroke mediumstroke">&nbsp;</div></td>
+            </tr>
+        </table>
+
+        Phone Number:&nbsp;<div class="fillstroke longstroke">&nbsp;</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>MPS Admin</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+</head>
+
+<body class="mps-admin-page">
+	<div class="container-fluid mps-body">
+		{% include pageHeader.html %}
+
+		<div class="body-content">
+			<div class="col-xs-offset-1 col-xs-11">
+				<span id="adminerrormessage" class="adminerrormessage">{{context.get('errormessage','')}}</span>
+			</div>
+			<div class="col-xs-offset-1 col-xs-10">
+				<table id="sites" class="table table-striped table-bordered mpstable">
+					<thead>
+						<tr>
+							<th>Code</th>
+							<th>Description</th>
+							<th>Start Date</th>
+							<th>End Date</th>
+						</tr>
+					</thead>
+					{% for siteDict in context.get('siteList',[]) %}
+						<tr>
+							<td><a href="/admin/site/detail/{{siteDict.get('code','')}}">{{siteDict.get('code','')}}</a></td>
+							<td>{{siteDict.get('descr','')}}</td>
+							<td>{{siteDict.get('active_start','')}}</td>
+							<td>{{siteDict.get('active_end','')}}</td>
+						</tr>
+					{% end %}
+				</table>
+			</div>
+			<div class="clear"></div>
+
+			<label for="addSiteBtn" class="col-xs-2 control-label"></label>
+			<div class="col-xs-offset-1">
+				<input type="button" id="addSiteBtn" value="Add Site" {{context.get('disabled','')}}>
+			</div>
+		</div>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+{% include cache-js.html %}
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	var addSiteFn = function() { window.location.href = '/admin/site/add'; };
+
+	$(function() {
+		$('#addSiteBtn').on('click', addSiteFn);
+	});
+
+	/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

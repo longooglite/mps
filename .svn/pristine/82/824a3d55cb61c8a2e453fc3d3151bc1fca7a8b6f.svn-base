@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>{{context.get('windowTitle', '')}}</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+</head>
+
+{% set mode = context.get('mode', '') %}
+{% set isAdd = (mode != 'edit') %}
+{% set title = context.get('title', {}) %}
+{% set titleId = title.get('id', 0) %}
+
+{% set isMsg = True if len(context.get('errormessage','')) > 0 else False %}
+<body class="{{ 'cv-show-global-message' if isMsg else '' }} cv-proxy-page mps-admin-page">
+	<div class="container-fluid mps-body">
+		{% include pageHeader.html %}
+		<div class="body-content cv-body cv-body-no-menu">
+			<div class="page-header clearfix">
+				<div class="page-header-controls">
+					<button class="cvHelpButton btn btn-sm btn-default">
+						<span class="glyphicon glyphicon-question-sign"></span>Help...
+					</button>
+					<button class="btn btn-sm btn-primary saveTitleBtn">
+						<span class="glyphicon glyphicon-floppy-disk"></span> <span>Save Changes...</span>
+					</button>
+				</div>
+				<h1>
+					Manage Titles<br/>
+					<small>
+						<a href="/{{context.get('appUriPrefix','')}}/titles" class="cv-head-bread">All Titles</a><span class="cv-head-bread-sep">/</span>
+						<span class="cv-head-bread-leaf">{{ 'New Title' if isAdd else title.get('descr','') }}</span>
+					</small>
+				</h1>
+			</div>
+
+			<form id="titledetailform" class="form-horizontal">
+				{% include ajax-hidden-fields.html %}
+				<input type="hidden" name="mode" value="{{mode}}" />
+				{% if not isAdd %}
+					<input type="hidden" name="titleId" value="{{titleId}}" />
+				{% end %}
+
+				<div class="row">
+					<div class="col-md-6 cv-user-form">
+						<h3 class="section-header">
+							<span class="glyphicon glyphicon-edit"></span>
+							Title Settings:
+						</h3>
+
+						<div class="cv-callout cv-callout-info cv-callout-bordered clearfix mps-skin-border">
+							<h4>Title:</h4><br/>
+							<div class="clearfix form-row">
+								<label for="code" class="col-xs-3 control-label">* Code:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="code" name="code" value="{{title.get('code', '')}}" placeholder="Unique title code">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="descr" class="col-xs-3 control-label">* Description:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="descr" name="descr" value="{{title.get('descr', '')}}">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="active" class="col-xs-3 control-label">Active:</label>
+								<div class="col-xs-8">
+									{% set checked = '' %}
+									{% if title.get('active',False) %}
+										{% set checked = 'checked' %}
+									{% end %}
+									<input type="checkbox" id="active" name="active" value="true" {{checked}}>
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="isactionable" class="col-xs-3 control-label">Actionable:</label>
+								<div class="col-xs-8">
+									{% set checked = '' %}
+									{% if title.get('isactionable',False) %}
+										{% set checked = 'checked' %}
+									{% end %}
+									<input type="checkbox" id="isactionable" name="isactionable" value="true" {{checked}}>
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="job_code" class="col-xs-3 control-label">* Job Code:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="job_code" name="job_code" value="{{title.get('job_code', '')}}">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="track_id" class="col-xs-3 control-label">Track:</label>
+								<div class="col-xs-8">
+									<select class="form-control" id="track_id" name="track_id">
+										<option value="" selected>None</option>
+										{% set selectedTrackId = title.get('track_id','') %}
+										{% for option in context.get('tracks', []) %}
+											{% set optionId = option.get('id','') %}
+											{% set selected = 'selected' if optionId == selectedTrackId else '' %}
+											<option value="{{optionId}}" {{selected}}>{{ option.get('descr','') }}</option>
+										{% end %}
+									</select>
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="position_criteria" class="col-xs-3 control-label">Position Criteria:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="position_criteria" name="position_criteria" value="{{title.get('position_criteria', '')}}">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="rank_order" class="col-xs-3 control-label">Rank Order:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="rank_order" name="rank_order" value="{{title.get('rank_order', '')}}">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="tags" class="col-xs-3 control-label">Tags:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="tags" name="tags" value="{{title.get('tags','')}}">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	$('.saveTitleBtn').on('click', function(event){
+
+		//
+		// BUGBUG: clean this up a bit: sometimes it is errors{}, sometimes just {"errors": "User not found"}
+		//
+
+		var $body = $('.cv-user-form');
+		cvApp.ubiquitousPageRequest({
+			url: '/{{context.get('appUriPrefix','')}}/titles/save',
+			data: JSON.stringify($('#titledetailform').serializeObject()),
+			success: function(data, textStatus, xhr){
+				cvApp._commonErrorHandler($body, data, textStatus, xhr);
+			}
+		});
+	});
+
+	/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

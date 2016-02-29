@@ -1,0 +1,21 @@
+/*
+*  Dashboard & Roster do not need a rounded outline in REDUX skin
+*/
+.wf-gridWidget{ border:0 !important; }
+
+/* No more rounded borders... */
+#wf-filter-summary, #wf-rooster-filters{
+    border-radius:0 !important; border-color:#ccc !important; padding-top:6px !important;
+}
+
+/* New BG colors & positions */
+#wf-rooster-filters{
+    background-color:#f3f3f3 !important;
+}
+#wf-rooster-filters .wf-filter-content{
+    background-color:#fff !important;
+}
+
+.rowGroupLink{
+    font-weight:bold;
+}

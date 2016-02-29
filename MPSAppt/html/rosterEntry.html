@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>{{context.get('windowTitle', '')}}</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+</head>
+
+{% set promptCommunity = context.get('promptCommunity', False) %}
+{% set isMsg = True if len(context.get('errormessage','')) > 0 else False %}
+<body class="{{ 'cv-show-global-message' if isMsg else '' }} cv-proxy-page">
+	<div class="container-fluid mps-body">
+		{% include pageHeader.html %}
+		<div class="body-content cv-body cv-body-no-menu">
+			<div class="page-header clearfix">
+				<div class="page-header-controls">
+					<button class="btn btn-sm btn-primary saveRosterBtn">
+						<span class="glyphicon glyphicon-floppy-disk"></span> <span>Add Roster Item</span>
+					</button>
+				</div>
+				<h1>
+					Manual Roster Entry<br/>&nbsp;
+				</h1>
+			</div>
+
+			<form id="rosterentryform" class="form-horizontal">
+				{% include ajax-hidden-fields.html %}
+
+				<div class="row">
+					<div class="col-md-6 cv-user-form">
+						<h3 class="section-header">
+							<span class="glyphicon glyphicon-edit"></span>
+							Person:
+						</h3>
+
+						<div class="cv-callout cv-callout-info cv-callout-bordered clearfix">
+							<h4>Personal Info:</h4><br/>
+							{% if promptCommunity %}
+								<div class="clearfix form-row">
+									<label for="community" class="col-xs-3 control-label">* Community:</label>
+									<div class="col-xs-8">
+										<select class="form-control" id="community" name="community">
+											<option value="" selected disabled>Select</option>
+											{% for communityDict in context.get('communityList', []) %}
+												{% set optionCode = communityDict.get('code','') %}
+												<option value="{{optionCode}}">{{communityDict.get('descr','')}}</option>
+											{% end %}
+										</select>
+									</div>
+								</div>
+							{% else %}
+								<input type="hidden" name="community" value="{{context.get('community', 'default')}}" />
+							{% end %}
+
+							<div class="clearfix form-row">
+								<label for="username" class="col-xs-3 control-label">* Username:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="username" name="username" value="" placeholder="Unique person identifier">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="first_name" class="col-xs-3 control-label">* First Name:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="first_name" name="first_name" value="">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="middle_name" class="col-xs-3 control-label">Middle Name:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="middle_name" name="middle_name" value="">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="last_name" class="col-xs-3 control-label">* Last Name:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="last_name" name="last_name" value="">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="suffix" class="col-xs-3 control-label">Suffix:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="suffix" name="suffix" value="">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="email" class="col-xs-3 control-label">Email:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="email" name="email" value="">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="employee_nbr" class="col-xs-3 control-label">Employee Number:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="employee_nbr" name="employee_nbr" value="">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="demo_update" class="col-xs-3 control-label">Update Person Demographics:</label>
+								<div class="col-xs-8">
+									<input type="checkbox" id="demo_update" name="demo_update" value="true" checked/>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<h3 class="section-header">
+							<span class="glyphicon glyphicon-edit"></span>
+							Appointment:
+						</h3>
+
+						<div class="cv-callout cv-callout-info cv-callout-bordered clearfix">
+							<h4>Position:</h4><br/>
+							<div class="clearfix form-row">
+								<label for="department_id" class="col-xs-3 control-label">* {{context.get('departmentText','Department')}}:</label>
+								<div class="col-xs-8">
+									<select class="form-control" id="department_id" name="department_id">
+										<option value="" selected disabled>Select</option>
+										{% for department in context.get('departments', []) %}
+					                        {% if len(department.get('children',[])) > 0 %}
+					                            <optgroup label="{{ department.get('descr','') }}">
+					                                {% for child in department.get('children',[]) %}
+					                                    <option value="{{ child.get('id',0) }}">{{ child.get('full_descr','') }}</option>
+					                                {% end %}
+					                            </optgroup>
+					                        {% else %}
+					                            <option value="{{ department.get('id',0) }}">{{ department.get('full_descr','') }}</option>
+					                        {% end %}
+					                    {% end %}
+									</select>
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="title_id" class="col-xs-3 control-label">* Title:</label>
+								<div class="col-xs-8">
+									<select class="form-control" id="title_id" name="title_id">
+										<option value="" selected disabled>Select</option>
+										{% for track in context.get('trackTitles',{}).get('track',[]) %}
+											{% set trackdescr = track.keys()[0] %}
+											<optgroup label="{{ trackdescr }}">
+												{% for title in track[trackdescr] %}
+													{% set titledescr = title['title_descr'] %}
+													{% set titleId = title['title_id'] %}
+													{% if title['isactionable'] == True %}<option value="{{ titleId }}">{{ titledescr }}</option>{% end %}
+												{% end %}
+											</optgroup>
+										{% end %}
+									</select>
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="is_primary" class="col-xs-3 control-label">Primary:</label>
+								<div class="col-xs-8">
+									{% set checked = 'checked' %}
+									<input type="checkbox" id="is_primary" name="is_primary" value="true" {{checked}}>
+								</div>
+							</div>
+						</div>
+
+						<div class="cv-callout cv-callout-info cv-callout-bordered clearfix">
+							<h4>Appointment:</h4><br/>
+							<div class="clearfix form-row">
+								<label for="start_date" class="col-xs-3 control-label">* Start Date:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control mps-date-picker" id="start_date" name="start_date" value=""  placeholder="{{ context.get('date_format','') }}" />
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="end_date" class="col-xs-3 control-label">End Date:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control mps-date-picker" id="end_date" name="end_date" value=""  placeholder="{{ context.get('date_format','') }}" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+<script type="text/javascript" src="/{{skin}}/js/wf.core.js"></script>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+    var $this = this;
+    $this.$form = $('#rosterentryform');
+    mpsApp.mpsDatePickerizeDom($this.$form);
+
+	$('.saveRosterBtn').on('click', function(event){
+
+		//
+		// BUGBUG: clean this up a bit: sometimes it is errors{}, sometimes just {"errors": "User not found"}
+		//
+
+		var $body = $('.cv-user-form');
+		cvApp.ubiquitousPageRequest({
+			url: '/{{context.get('appUriPrefix','')}}/rosterEntry',
+			data: JSON.stringify($('#rosterentryform').serializeObject()),
+			success: function(data, textStatus, xhr){
+				cvApp._commonErrorHandler($body, data, textStatus, xhr);
+			}
+		});
+	});
+
+/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

@@ -1,0 +1,48 @@
+<form class="wf-ajax-form" action="{{ context.get('url','') }}" onSubmit="return false;">
+	{% set disabled = '' %}
+	{% if context.get('disabled', True) %}
+		{% set disabled = 'disabled="disabled"' %}
+	{% end %}
+
+    {% if context.get('include_termination',False) %}
+        <div class="form-row">
+        <label class="col-xs-2 text-right" for="termination_type">{{context.get('terminationText','Reason')}}:</label>
+        <div class="col-xs-8">
+            <select id="termination_type" name="termination_type" class="form-control">
+                {% for termination_type in context.get('termination_types',[]) %}
+                    {% set selected = "selected" if context.get('termination_type_id',-1) == termination_type.get('id',-1) else '' %}
+                    <option value="{{ termination_type.get('id',0) }}" {{selected}}>{{ termination_type.get('descr','') }}</option>
+                {% end %}
+            </select>
+        </div>
+    {% end %}
+
+	<div class="form-row">
+		<label class="col-xs-2 text-right" >Effective Date:</label>
+		<div class="col-xs-8">
+			<input class="form-control mps-date-picker" type="text"  placeholder="now" data-now-date-format="{{ context.get('date_format','') }}" value="{{ context.get('effective','') }}" name="effective_date" id="effective_date"/>
+		</div>
+	</div>
+	<div class="form-row">
+		<label class="col-xs-2 text-right" >Scheduled Date:</label>
+		<div class="col-xs-8">
+			<input class="form-control mps-date-picker" type="text"  placeholder="now" data-now-date-format="{{ context.get('date_format','') }}" value="{{ context.get('scheduled','') }}" name="scheduled_date" id="scheduled_date" />
+		</div>
+	</div>
+
+
+	{% for comment in context.get('comment_prompt_list', []) %}
+		<div class="form-row">
+			<label class="col-xs-2 text-right" >{{ comment.get('comment_label','') }}</label>
+			<div class="col-xs-8">
+				<textarea class="form-control" {{ disabled }} rows="5" name="{{ comment.get('comment_code','') }}"></textarea>
+			</div>
+		</div>
+	{% end %}
+
+	<div class="wf-details-form-btn-bar col-xs-12">
+		<button type="submit" class="wf-widget-form-btn btn btn-primary" data-confirm-msg="{{context.get('data-confirm-msg','')}}">Submit</button>
+		{% include 'formChunk_cancelLink.html' %}
+	</div>
+
+</form>

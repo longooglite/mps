@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>{{context.get('windowTitle', '')}}</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+</head>
+
+{% set mode = context.get('mode', '') %}
+{% set isAdd = (mode != 'edit') %}
+{% set key = context.get('key', '') %}
+{% set entityName = context.get('entityName', '') %}
+{% set entityNameSingular = context.get('entityNameSingular', '') %}
+{% set itemDetailDict = context.get('itemDetailDict', {}) %}
+{% set itemId = itemDetailDict.get('id', 0) %}
+
+{% set isMsg = True if len(context.get('errormessage','')) > 0 else False %}
+<body class="{{ 'cv-show-global-message' if isMsg else '' }} cv-proxy-page mps-admin-page">
+	<div class="container-fluid mps-body">
+		{% include pageHeader.html %}
+		<div class="body-content cv-body cv-body-no-menu">
+			<div class="page-header clearfix">
+				<div class="page-header-controls">
+					<button class="cvHelpButton btn btn-sm btn-default">
+						<span class="glyphicon glyphicon-question-sign"></span>Help...
+					</button>
+					<button class="btn btn-sm btn-primary saveItemBtn">
+						<span class="glyphicon glyphicon-floppy-disk"></span> <span>Save Changes...</span>
+					</button>
+				</div>
+				<h1>
+					Manage {{entityName}}<br/>
+					<small>
+						<a href="/{{context.get('appUriPrefix','')}}/lookups/{{key}}" class="cv-head-bread">All {{entityName}}</a><span class="cv-head-bread-sep">/</span>
+						<span class="cv-head-bread-leaf">
+							{% if isAdd %}
+								New {{entityNameSingular}}
+							{% else %}
+								{{ itemDetailDict.get('descr','') }}
+							{% end %}
+						</span>
+					</small>
+				</h1>
+			</div>
+
+			<form id="itemdetailform" class="form-horizontal">
+				{% include ajax-hidden-fields.html %}
+				<input type="hidden" name="mode" value="{{mode}}" />
+				{% if not isAdd %}
+					<input type="hidden" name="itemId" value="{{itemId}}" />
+					<input type="hidden" name="code" value="{{itemDetailDict.get('code', '')}}" />
+				{% end %}
+
+				<div class="row">
+					<div class="col-md-9 cv-user-form">
+						<h3 class="section-header">
+							<span class="glyphicon glyphicon-edit"></span>
+							{{entityNameSingular}} Settings:
+						</h3>
+
+						<div class="cv-callout cv-callout-info cv-callout-bordered clearfix mps-skin-border">
+							<div class="clearfix form-row">
+								<label for="code" class="col-xs-2 control-label">* Code:</label>
+								<div class="col-xs-8">
+									{% set disabled = '' if isAdd else 'disabled' %}
+									<input type="text" class="form-control" id="code" name="code" value="{{itemDetailDict.get('code', '')}}" {{disabled}} placeholder="Unique {{entityNameSingular}} code">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="descr" class="col-xs-2 control-label">* Description:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="descr" name="descr" value="{{itemDetailDict.get('descr', '')}}">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="alt_descr" class="col-xs-2 control-label">Alt Description:</label>
+								<div class="col-xs-8">
+									<input type="text" class="form-control" id="alt_descr" name="alt_descr" value="{{itemDetailDict.get('alt_descr', '')}}">
+								</div>
+							</div>
+
+							<div class="clearfix form-row">
+								<label for="seq" class="col-xs-2 control-label">* Sequence:</label>
+								<div class="col-xs-2">
+									<input type="text" class="form-control" id="seq" name="seq" value="{{itemDetailDict.get('seq', '')}}">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+<script type="text/javascript" src="/{{skin}}/js/wf.core.js"></script>
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+
+	$('.saveItemBtn').on('click', function(event){
+		var $body = $('.cv-user-form');
+		var $form = $('#itemdetailform')
+		cvApp.ubiquitousPageRequest({
+			url: '/{{context.get('appUriPrefix','')}}/lookups/{{key}}/save',
+			data: JSON.stringify($form.serializeObject()),
+			success: function(data, textStatus, xhr){
+				wfApp._WF_commonErrorHandler($form, data, textStatus, xhr);
+			}
+		});
+	});
+
+	/*]]>*/
+</script>
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>

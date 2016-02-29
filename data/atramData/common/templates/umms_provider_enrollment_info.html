@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        h3 {font-family: 'Arial', Times, serif;font-size: 18px;}
+        h4 {font-family: 'Arial', Times, serif;font-size: 14px;}
+        p {font-family: 'Arial', Times, serif;font-size: 12px;}
+        td {font-family: 'Arial', Times, serif;font-size: 12px;}
+        hr {border-top: 3px solid #8c8b8b;}
+    </style>
+
+</head>
+<body>
+
+<table width="650px">
+    <tr>
+        <td valign="bottom"><img src="{{ context.get('imagePath','') }}" alt="UM Logo" height="70" width="110"></td>
+        <td align="right" valign="bottom"><h3>Provider Enrollment Information</h3></td>
+    </tr>
+    <tr><td colspan="2"><hr/></td></tr>
+</table>
+
+<table width="650px">
+    <tr>
+        <td><h3>Candidate Name: {{context.get('candidate_name','')}}</h3></td>
+        <td align="right"><h4><i>Date Retrieved: {{context.get('today','')}}</i></h4></td>
+    </tr>
+</table>
+
+<table width="650px">
+    <tr>
+        <td><h3><u>Position Details</u></h3></td>
+    </tr>
+    <tr>
+        <td>Type: {{ context.get('position_type','')}}</td>
+    </tr>
+    <tr>
+        <td>Department: {{ context.get('department','')}}</td>
+    </tr>
+    <tr>
+        <td>Position: {{context.get('position','')}}</td>
+    </tr>
+    <tr>
+        <td>Department Contact: {{context.get('department_contact','')}}</td>
+    </tr>
+    <tr>
+        <td>Department Email: {{context.get('contact_email','')}}</td>
+    </tr>
+</table>
+
+<table width="650px">
+    <tr>
+        <td><h3><u>Candidate Details</u></h3></td>
+    </tr>
+    <tr>
+        <td>Legal Name: {{context.get('legal_name','')}}</td>
+    </tr>
+    <tr>
+        <td>Date of Birth: {{context.get('birth_date','')}}</td>
+    </tr>
+    <tr>
+        <td>Uniqname: {{context.get('uniqname','')}}</td>
+    </tr>
+    <tr>
+        <td>Proposed Start Date: {{context.get('proposed_start_date','')}}</td>
+    </tr>
+    <tr>
+        <td>Email Address: {{context.get('email_address','')}}</td>
+    </tr>
+    <tr>
+        <td>Phone: {{context.get('phone_number','')}}</td>
+    </tr>
+    <tr>
+        <td>Is the name you entered above identical to the name listed on your Social Security Card and Michigan Medical License? {{context.get('correct_name','')}}</td>
+    </tr>
+</table>
+
+<table width="650px">
+    <tr>
+        <td><h3><u>Credentialing Details</u></h3></td>
+    </tr>
+    <tr>
+        <td>Currently Credentialed: {{context.get('currently_credentialed','')}}</td>
+    </tr>
+    <tr>
+        <td>Need Credentialing: {{context.get('need_credentialing','')}}</td>
+    </tr>
+</table>
+
+<table width="650px">
+    <tr>
+        <td><h3><u>Enrollment Details</u></h3></td>
+    </tr>
+    <tr>
+        <td>On Billing Track? {{context.get('on_billing_track','')}}</td>
+    </tr>
+    <tr>
+        <td>NPI Number: {{context.get('npi_number','')}}</td>
+    </tr>
+    <tr>
+        <td>NPI Username: {{context.get('npi_user_name','')}}</td>
+    </tr>
+    <tr>
+        <td>NPI Password: {{context.get('npi_password','')}}</td>
+    </tr>
+    <tr>
+        <td>Date NPI Form Sent: {{ context.get('npi_form_sent_date','')}}</td>
+    </tr>
+    <tr>
+        <td>FPSC Designation: {{ context.get('fpsc_code','')}}</td>
+    </tr>
+    <tr>
+        <td>Social Security Number: {{ context.get('ssn','')}}</td>
+    </tr>
+</table>
+</body>
+</html>

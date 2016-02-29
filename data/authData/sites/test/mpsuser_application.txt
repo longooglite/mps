@@ -1,0 +1,10 @@
+#site|community|user|application|sequencenbr
+test|default|chris|CV|1
+test|default|eric|MPSADMIN|2
+test|default|eric|CV|1
+test|default|greg|MPSADMIN|2
+test|default|greg|CV|1
+test|default|josh|MPSADMIN|2
+test|default|josh|CV|1
+test|default|mpsadmin|MPSADMIN|1
+test|default|mpsadmin|CV|2

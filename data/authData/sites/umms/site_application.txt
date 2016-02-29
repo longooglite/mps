@@ -1,0 +1,5 @@
+#sitecode|appcode
+umms|APPT
+umms|IMM
+umms|CV
+umms|MPSADMIN

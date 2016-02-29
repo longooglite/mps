@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{context.get('reportingcss','')}}">
+</head>
+<body style='height:50px;overflow:hidden;margin:0;padding:0;'>

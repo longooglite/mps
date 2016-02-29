@@ -1,0 +1,32 @@
+<script type="text/javascript">
+var imgPath = '/{{skin}}/images/';
+var sDeptLabel = '{{context.get('departmentText','Department')}}';
+var sOFALabel = '{{context.get('ofaText','Faculty Affairs')}}';
+</script>
+<script type="text/javascript" src="/{{skin}}/js/3rdParty/jquery.min.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/3rdParty/mustache.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/3rdParty/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/3rdParty/jquery.cookie.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/3rdParty/bootstrap.min.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/3rdParty/bootstrap-typeahead.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/3rdParty/moment.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/3rdParty/bootstrap-datetimepicker-arrows.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/3rdParty/inflection.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/3rdParty/jquery.tablesorter.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/3rdParty/parseUri.1.2.2.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/3rdParty/jq.dataTables.min.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/3rdParty/jq.dataTables.bootstrap3.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/mps.main.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/cvapp.ajax.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/cvapp.core.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/cvapp.help.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/cvapp.tables.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/cvapp.onload.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/widget.mpsForm.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/widget.mpsDatePicker.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/widget.mpsClientSideEmailAddy.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/widget.mpsShowHideByCodes.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/widget.mpsRepeatingInput.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/widget.mpsRepeatingForm.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/widget.mpsFormFillingSelect.js"></script>
+<script type="text/javascript" src="/{{skin}}/js/wf.smartPrintBtn.js"></script>

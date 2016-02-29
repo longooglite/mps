@@ -1,0 +1,273 @@
+{% if context.get('pageLoadType', 'fullpage') == 'fullpage' %}
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title>{{context.get('windowTitle', 'Curriculum Vitae')}}</title>
+	{% include header-prologue.html %}
+	{% include core-css.html %}
+</head>
+
+<body class="cv">
+	<div class="container-fluid cv-wrap">
+		{% include pageHeader.html %}
+		<div class="cv-body-content">
+			{% include cvMenu.html %}
+			<div class="cv-body col-md-9">
+
+<div class="page-header clearfix">
+	<h1>
+		<div class="page-header-controls">
+			{% include 'partial_printMenu.html' %}
+			<button class="cvmodaleditdetaillink btn btn-sm btn-default" id="{{'asdf'}}" data-cv-url="{{context.get('addURL','')}}" title="Edit {{context.get('categoryDict',{}).get('category_descr','')}}">
+				<span class="glyphicon glyphicon-edit"></span> <span class="cvSingularize">Edit {{  context.get('categoryDict',{}).get('category_descr','') }}...</span>
+			</button>
+		</div>
+		{{context.get('subjectProfile',{}).get('userPreferences',{}).get('full_name','') }}
+		<small>{{ context.get('categoryDict',{}).get('descr','') }}</small>
+		{% set isMsg = True if len(context.get('errormessage','')) > 0 else False %}
+		<div id="errormessage" class="errormessage cv-callout cv-callout-info{{ '' if isMsg else ' starthidden'}}">
+			<h4><span class="glyphicon glyphicon-sm glyphicon-ok"></span>{{context.get('errormessage','')}}</h4>
+		</div>
+	</h1>
+</div>
+
+{% end %}
+
+<form id="editdetailform" class="form-horizontal clearfix">
+
+	<div class="cv-modal-form-controls col-xs-offset-2 clearfix">
+		<a class="cvModalHelpButton pull-right">
+			<span class="glyphicon glyphicon-question-sign"></span><span class="cv-button-title">Show Help</span>
+		</a>
+		{% if context.get('categoryDict',{}).get('exclude_from_cv_display',False) %}
+			{% set checked = 'checked' if context.get('rowDict',{}).get('exclude_from_cv_val','') == 'true' else '' %}
+			<span class="cv-exclude-item">
+				<input type="checkbox" name="exclude_from_cv_val" id="exclude_from_cv_val" value="true" {{checked}}/>
+				<label for="exclude_from_cv_val">Exclude from CV</label>
+			</span>
+		{% end %}
+	</div>
+
+	{% include ajax-hidden-fields.html %}
+	<input type="hidden" name="mode" value="{{context.get('mode','')}}" />
+	<input type="hidden" name="community" value="{{context.get('cvCommunity','')}}" />
+	<input type="hidden" name="username" value="{{context.get('cvOwner','')}}" />
+	<input type="hidden" name="categoryCode" value="{{context.get('categoryCode','')}}" />
+	<input type="hidden" name="rowId" value="{{context.get('rowId','')}}" />
+	<input type="hidden" name="path" value="{{context.get('path','')}}" />
+
+	<div id="modalerrormessage" class="alert alert-danger starthidden" role="alert">{{context.get('errormessage','')}}</div>
+
+	{% set tabindex = 0 %}
+	{% for groupDict in context.get('groupList',[]) %}
+		<div class="cv-panel cv-detail-inner clearfix">
+			<div class="cv-panel-heading">
+				<span class="mpsbold">{{groupDict.get('group_descr','')}}</span>
+			</div>
+
+
+			<div class="cv-panel-body clearfix cv-callout-info">
+
+				{% if context.get('testJsonEnumWidget', False) %}
+				<div class="clearfix form-row cvRowText">
+					<label class="col-xs-3 control-label">{{context.get}}</label>
+					<div class="col-xs-8 Text">
+						<input type="text"
+							name="tester"
+							data-widget-enums="{{co}}"
+							value="[{name:'John Smith', type: 'primary'}, {name:'Johhny Somethingelse', type:'contributing'}, {name:'Anne Something', type:'secondary'}]"
+							class="mps-json-enums-widget form-control"
+						/>
+					</div>
+					<div class="col-xs-1 cvHelpModeCell">
+						<a href="#" class="starthidden cvFieldHelpBtn" data-toggle="popover" data-trigger="focus" role="button" tabindex="0">
+							<span class="glyphicon glyphicon-question-sign"></span>
+						</a>
+						<div class="starthidden cvFieldHelpContent">
+							Stub Help Content for the jsonEnumsWidget
+						</div>
+					</div>
+				</div>
+				{% end %}
+
+			{% set disabled = context.get('disabled','disabled') %}
+			{% for fieldDict in groupDict.get('fieldList',[]) %}
+				{% set fieldCode = fieldDict.get('field_code','') %}
+				{% set fieldType = fieldDict.get('affordance_code','') %}
+				{% set fieldValue = fieldDict.get('formatted_value','') %}
+				{% set fieldDescr = fieldDict.get('field_descr','') %}
+				{% set required = '*' if fieldDict.get('field_required',False) else '' %}
+				{% set colon = ':' if fieldDescr else '' %}
+				{% set placeholder = fieldDict.get('placeholder','') %}
+				{% set tooltip = fieldDict.get('tooltip','') %}
+				{% set isRepeatingField = True if fieldType != 'Repeating_Text' else False %}
+				{% set hasHelp = False if (fieldType == 'Repeating_Text' or fieldType == 'Radio') else True %}
+
+				<div class="clearfix form-row cvRow{{fieldType}}">
+					<label for="{{fieldCode}}" class="col-xs-3 control-label">{{required}}{{fieldDescr}}{{colon}}</label>
+					<div class="{{ 'col-xs-8' if isRepeatingField else 'col-xs-8' }} {{fieldType}}">
+
+					{% if fieldType == 'Text'  %}
+						<input type="text" class="form-control" id="{{fieldCode}}" name="{{fieldCode}}" value="{{fieldValue}}" maxlength="{{fieldDict.get('field_text_length',50)}}" placeholder="{{placeholder}}" {{disabled}}/>
+
+
+					{% if fieldType == 'Repeating_Text_Select' %}
+						<div class="mps-json-enums-widget">
+
+						</div>
+
+					{% elif fieldType == 'TextArea' %}
+						<textarea class="form-control" id="{{fieldCode}}" name="{{fieldCode}}" maxlength="{{fieldDict.get('field_text_length',50)}}" rows="{{fieldDict.get('field_text_height',5)}}" {{disabled}}>{{fieldValue}}</textarea>
+
+
+					{% elif fieldType == 'Checkbox' %}
+						{% set checked = 'checked' if fieldDict.get('attribute_value','') == 'true' else '' %}
+						<input type="checkbox" name="{{fieldCode}}" value="true" {{checked}} {{disabled}}/>
+
+					{% elif fieldType == 'Static_Dropdown' %}
+						{% set attributeValue = fieldDict.get('attribute_value','') %}
+						{% set optionList = context.get('staticLookupTables',{}).get(fieldDict.get('field_static_lookup_code',''),[]) %}
+						<select class="form-control" id="{{fieldCode}}" name="{{fieldCode}}" {{disabled}}>
+							<option value=""></option>
+							{% for optionDict in optionList %}
+								{% set optionCode = optionDict.get('code','') %}
+								{% set selected = 'selected' if optionCode == attributeValue else '' %}
+								<option value="{{optionCode}}" {{selected}} {{disabled}}>{{optionDict.get('descr','')}}</option>
+							{% end %}
+						</select>
+
+					{% elif fieldType == 'Category' %}
+						{% set attributeValue = fieldDict.get('attribute_value','') %}
+						{% set optionList = context.get('subcategoryList',{}) %}
+						<select class="form-control" id="{{fieldCode}}" name="{{fieldCode}}" {{disabled}}>
+							<option value=""></option>
+							{% for optionDict in optionList %}
+								{% set optionCode = optionDict.get('code','') %}
+								{% set selected = 'selected' if optionCode == attributeValue else '' %}
+								<option value="{{optionCode}}" {{selected}} {{disabled}}>{{optionDict.get('descr','')}}</option>
+							{% end %}
+						</select>
+
+					{% elif fieldType == 'Date' %}
+						<input type="text" class="form-control cv-date-picker" id="{{fieldCode}}" name="{{fieldCode}}" value="{{fieldValue}}" maxlength="10" data-toggle="tooltip" data-placement="top" title="{{tooltip}}" placeholder="{{placeholder}}" {{disabled}}/>
+
+					{% elif fieldType == 'Radio' %}
+						{% set firstRadio = True %}
+						{% set attributeValue = fieldDict.get('attribute_value','') %}
+						{% set optionList = context.get('staticLookupTables',{}).get(fieldDict.get('field_static_lookup_code',''),[]) %}
+							{% set iCount = 0 %}
+							{% for optionDict in optionList %}
+								{% set optionCode = optionDict.get('code','') %}
+								{% set iCount = (iCount + 1) %}
+								{% set checked = 'checked' if optionCode == attributeValue else '' %}
+								{% if firstRadio %}
+									{% set firstRadio = False %}
+						<input type="radio" name="{{fieldCode}}" id="{{fieldCode}}_{{iCount}}" value="{{optionCode}}" {{checked}} {{disabled}}/>&nbsp;<label for="{{fieldCode}}_{{iCount}}">{{optionDict.get('descr','')}}</label>&nbsp;
+					</div>
+					<div class="col-xs-1 cvHelpModeCell">
+						<a href="#" class="starthidden cvFieldHelpBtn" data-toggle="popover" data-trigger="focus" role="button" tabindex="{{tabindex}}">
+							<span class="glyphicon glyphicon-question-sign"></span>
+						</a>
+						<div class="starthidden cvFieldHelpContent">
+							{% set isFieldHelp = True if len(fieldDict.get('field_help_text','').replace(' ','')) > 0 else False %}
+							{% if isFieldHelp %}
+								{% raw fieldDict.get('field_help_text','') %}
+							{% else %}
+								<em>Coming Soon...</em>
+							{% end %}
+						</div>
+								{% else %}
+					</div>
+					<div class="col-xs-offset-3 col-xs-8">
+						<input type="radio" name="{{fieldCode}}" id="{{fieldCode}}_{{iCount}}" value="{{optionCode}}" {{checked}} {{disabled}}/>&nbsp;<label for="{{fieldCode}}_{{iCount}}">{{optionDict.get('descr','')}}</label>&nbsp;
+								{% end %}
+							{% end %}
+
+					{% elif fieldType == 'Repeating_Text' %}
+						{% import json %}
+						{% set firstText = True %}
+						{% set attributeValue = fieldDict.get('attribute_value','') %}
+						{% set textList = [''] %}
+						{% if attributeValue %}
+							{% set textList = json.loads(attributeValue) %}
+						{% end %}
+						{% for aText in textList %}
+							{% if firstText %}
+								{% set firstText = False %}
+						<input type="text" class="form-control" name="{{fieldCode}}" value="{{aText}}" maxlength="{{fieldDict.get('field_text_length',50)}}" placeholder="{{placeholder}}" {{disabled}}/>
+								{% if not disabled %}
+							<div class="cv-repeating-controls pull-right"> </div>
+								{% end %}
+					</div>
+					<div class="col-xs-1 cvHelpModeCell">
+						<a href="#" class="starthidden cvFieldHelpBtn" data-toggle="popover" data-trigger="focus" role="button" tabindex="{{tabindex}}">
+							<span class="glyphicon glyphicon-question-sign"></span>
+						</a>
+						<div class="starthidden cvFieldHelpContent">
+							{% set isFieldHelp = True if len(fieldDict.get('field_help_text','').replace(' ','')) > 0 else False %}
+							{% if isFieldHelp %}
+								{% raw fieldDict.get('field_help_text','') %}
+							{% else %}
+								<em>Coming Soon...</em>
+							{% end %}
+						</div>
+
+							{% else %}
+					</div>
+					<div class="col-xs-offset-3 clearfix {{ 'col-xs-8' if isRepeatingField else 'col-xs-8' }} {{fieldType}}">
+						<input type="text" class="form-control" name="{{fieldCode}}" value="{{aText}}" maxlength="{{fieldDict.get('field_text_length',50)}}" placeholder="{{placeholder}}" {{disabled}}/>
+								{% if not disabled %}
+						<div class="cv-repeating-controls pull-right"> </div>
+								{% end %}
+							{% end %} <!-- End isFirst If Else End -->
+						{% end %} <!-- End For Loop of aTexts -->
+					{% end %} <!-- End Elif of Field Types -->
+
+					</div> <!-- End Div of the col-8 wrapper -->
+
+					{% if hasHelp %}
+					<div class="col-xs-1 cvHelpModeCell">
+						<a href="#" class="starthidden cvFieldHelpBtn" data-toggle="popover" data-trigger="focus" role="button" tabindex="{{tabindex}}">
+							<span class="glyphicon glyphicon-question-sign"></span>
+						</a>
+						<div class="starthidden cvFieldHelpContent">
+							{% set isFieldHelp = True if len(fieldDict.get('field_help_text','').replace(' ','')) > 0 else False %}
+							{% if isFieldHelp %}
+								{% raw fieldDict.get('field_help_text','') %}
+							{% else %}
+								<em>Coming Soon...</em>
+							{% end %}
+						</div>
+					</div>
+					{% end %}
+
+				</div> <!-- End div of the Row Wrapper -->
+			{% end %}
+			</div>
+		</div>
+	{% end %} <!-- END FOR LOOP of Fields -->
+
+	<div class="col-xs-12">
+		<input type="button" id="saveRowBtn" value="Save" {{context.get('disabled','')}}>
+	</div>
+</form>
+<div class="cv-modal-help starthidden">
+	{{ context.get('categoryDict',{}).get('help_text','asdf') }}
+</div>
+
+{%  if context.get('pageLoadType', 'fullpage') == 'fullpage'  %}
+		</div>
+	</div>
+</div>
+
+{% include footer.html %}
+{% include ajax-payload.html %}
+{% include core-js.html %}
+{% include cv-js.html %}
+{% if context.get('envCode', 'dev') != 'dev' %}
+	{% include google_analytics.html %}
+{% end %}
+</body>
+</html>
+{% end %}

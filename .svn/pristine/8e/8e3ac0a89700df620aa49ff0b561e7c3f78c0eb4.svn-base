@@ -1,0 +1,53 @@
+#identifier|code|prompt|sequenceNbr|required|active|identifier_code|nbrRows|task_code
+QUESTION|Q00|Are you requesting a job posting waiver?|0|true|true|JOB_POSTING_WAIVER|5|rfp|
+QUESTION|Q01|Please provide rationale for requesting to fill a faculty position.|1|true|true||5|rfp|
+QUESTION|Q02|What percent effort is this appointment?|2|true|true||1|rfp|
+QUESTION|Q03|Has the recruitment and filling of this position been discussed with the Dean?|3|true|true||5|rfp|
+QUESTION|Q04|Does your department have the financial ability to sustain this position for at least 3 to 5 years?|4|true|true||5|rfp|
+QUESTION|Q05|Was this position included in your budget for this year?|5|true|true||5|rfp|
+QUESTION|Q06|Do you have office space?|6|true|true||5|rfp|
+QUESTION|Q07|Do you have research space?|7|true|true||5|rfp|
+QUESTION|Q08|Will this faculty member have clinical privileges?|8|true|true||5|rfp|
+QUESTION|Q09|Are all the privileges listed above on your department's delineation of privileges document?|9|true|true||5|rfp|
+QUESTION|Q10|Identified primary clinical site.|10|false|false||1|rfp|
+QUESTION|Q11|Will incremental operating room time be required for this position?|11|true|true||5|rfp|
+QUESTION|Q12|Will incremental clinical space be required for this position?|12|true|true||5|rfp|
+QUESTION|Q13|Do you certify for the Chair/Director that the resources necessary to support this faculty member in performing the requested privilege are currently available or will be available when the faculty member's appointment begins?|13|true|true||0|rfp|
+QUESTION|Q14|Date discussed with chair|14|true|true||1|rfp|
+QUESTION|Q15|Comments|15|false|true||5|rfp|
+
+#identifier|rfpQuestion|code|optionText|hasText|textTitle|sequenceNbr|textRequired|active|nbrRows
+OPTION|Q00|Q00_1|Yes|true|Reason for job posting waiver|1|true|true|5
+OPTION|Q00|Q00_2|No|false||2|false|true|5
+OPTION|Q03|Q03_1|Yes|true|Notes (optional)|1|false|true|5
+OPTION|Q03|Q03_2|No|true|Notes (optional)|2|false|true|5
+OPTION|Q04|Q04_1|Yes|true|Notes (optional)|1|false|true|5
+OPTION|Q04|Q04_2|No|true|Notes (optional)|2|false|true|5
+OPTION|Q05|Q05_1|Yes|true|Notes (optional)|1|false|true|5
+OPTION|Q05|Q05_2|No|true|Notes (optional)|2|false|true|5
+OPTION|Q06|Q06_1|Yes|true|Office Space Location and Room Number:|1|true|true|1
+OPTION|Q06|Q06_2|No|true|Plan for obtaining office space:|2|true|true|5
+OPTION|Q07|Q07_1|Not Required|false||1|false|true|5
+OPTION|Q07|Q07_2|Yes|true|Research Space Location and Room Number:|2|true|true|1
+OPTION|Q07|Q07_3|No|true|Plan for obtaining research space:|3|true|true|5
+OPTION|Q08|Q08_1|Yes|true|What privileges will be requested for this faculty member, and what is the primary clinical site?|1|true|true|5
+OPTION|Q08|Q08_2|No|false||2|false|true|5
+OPTION|Q09|Q09_1|Not Applicable|false||1|false|true|5
+OPTION|Q09|Q09_2|Yes|false||2|false|true|5
+OPTION|Q09|Q09_3|No|true|What is not delineated and have you discussed this with the department that currently provides these services and what was the outcome of these discussions?|3|true|true|5
+OPTION|Q11|Q11_1|Yes|true|Where?|1|true|true|5
+OPTION|Q11|Q11_2|No|false||2|false|true|5
+OPTION|Q12|Q12_1|Yes|true|Where?|1|true|true|5
+OPTION|Q12|Q12_2|No|false||2|false|true|5
+OPTION|Q13|Q13_1|Yes|true|Name of Chair/Director|1|true|true|1
+OPTION|Q13|Q13_2|No|false||2|false|true|1
+
+
+QUESTION|QSec1_00|Are you requesting a job posting waiver?|0|true|true|JOB_POSTING_WAIVER|5|sec_rfp1|
+OPTION|QSec1_00|QSec1_00_01|Yes|true|Reason for job posting waiver|1|true|true|5
+
+QUESTION|QSec2_00|Are you requesting a job posting waiver?|0|true|true|JOB_POSTING_WAIVER|5|sec_rfp2|
+OPTION|QSec2_00|QSec2_00_01|Yes|true|Reason for job posting waiver|1|true|true|5
+
+QUESTION|QSec3_00|Are you requesting a job posting waiver?|0|true|true|JOB_POSTING_WAIVER|5|sec_rfp3|
+OPTION|QSec3_00|QSec3_00_01|Yes|true|Reason for job posting waiver|1|true|true|5

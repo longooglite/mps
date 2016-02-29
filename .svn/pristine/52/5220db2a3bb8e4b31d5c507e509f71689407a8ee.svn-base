@@ -1,0 +1,14 @@
+#   File of site-specific permissions.
+#   Use the common 'common_permissions.txt' file for non-site-specific permissions.
+
+#site_code|application|code|description
+
+#   Primary role permissions
+demo|APPT|dept_task|View/Edit Department Items
+demo|APPT|ofa_task|View/Edit OFA Items
+demo|APPT|assist_dean_task|View/Edit Assistant Dean Items
+demo|APPT|mss_task|View/Edit MSS Items
+demo|APPT|enroll_task|View/Edit Provider Enrollment Items
+
+demo|APPT|approverfp_edit|View/Edit Approve RFP
+demo|APPT|approverfp_view|View Approve RFP

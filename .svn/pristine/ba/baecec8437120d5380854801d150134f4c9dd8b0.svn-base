@@ -1,0 +1,580 @@
+# [Copyright]
+# SmartPath v1.0
+# Copyright 2014-2015 Mountain Pass Solutions, Inc.
+# This unpublished material is proprietary to Mountain Pass Solutions, Inc.
+# [End Copyright]
+
+import datetime
+
+from MPSAppt.services.abstractTaskService import AbstractTaskService
+import MPSAppt.core.sql.jobActionSQL as jaSQL
+import MPSCore.utilities.stringUtilities as stringUtils
+import MPSAppt.services.lookupTableService as lookupSvc
+import MPSAppt.services.titleService as titleSvc
+import MPSAppt.core.constants as constants
+import MPSCore.utilities.dateUtilities as dateUtils
+import MPSCore.utilities.mpsMath as mpsMath
+
+class JobActionService(AbstractTaskService):
+	def __init__(self, _connection):
+		AbstractTaskService.__init__(self, _connection)
+
+	#   Job Actions.
+
+	def initializeJobAction(self, _workflow, _personDict, _initItemCodes, _profile, _now, _username, doCommit=True):
+		actionInfo = {}
+		if _workflow.mainContainer.getConfigDict().get('grantCandidateAccess',False):
+			actionInfo['grantCandidateAccess'] = True
+		jobAction = _workflow.getJobActionDict()
+		for itemCode in _initItemCodes:
+			item = _workflow.getContainer(itemCode)
+			if item:
+				thisActionInfo = item.initializeOnNewJobAction(jobAction, _personDict, _profile, _now, _username, doCommit=doCommit)
+				if thisActionInfo:
+					actionInfo.update(thisActionInfo)
+		return actionInfo
+
+	def createJobAction(self, _jobActionDict, doCommit=True):
+		return jaSQL.createJobAction(self.connection, _jobActionDict, doCommit)
+
+	def getJobAction(self, jobactionid, ignoreAliasing = False):
+		jobAction = jaSQL.getJobAction(self.connection, jobactionid)
+		if jobAction and jobAction.get('primary_job_action_id',None):
+			if ignoreAliasing:
+				return jobAction
+			else:
+				return self.getJobAction(jobAction['primary_job_action_id'])
+		else:
+			return jobAction
+
+	def getJobActionForPersonIdAndJobActionTypeId(self,_personid,_jobActionTypeId):
+		return jaSQL.getJobActionForPersonIdAndJobActionTypeId(self.connection,_personid,_jobActionTypeId)
+
+	def updateJobActionProposedStartDate(self, _jobActionId, _startDate):
+		jaSQL.updateJobActionProposedStartDate(self.connection, _jobActionId, _startDate)
+
+	def getJobActionForApptId(self, _apptId):
+		return jaSQL.getJobActionForApptId(self.connection, _apptId)
+
+	def getJobActionType(self,jobActionDict):
+		return jaSQL.getJobActionType(self.connection, jobActionDict)
+
+	def createWorkflow(self, params, doCommit=True):
+		try:
+			appointmentDict = self._getAppointmentDict(params)
+			appointmentId = self.createAppointment(appointmentDict, doCommit=False)
+
+			jobActionDict = self._getJobActionDict(appointmentId, params)
+			jobActionId = self.createJobAction(jobActionDict, doCommit=False)
+			if doCommit:
+				self.connection.performCommit()
+			return jobActionId
+
+		except Exception, e:
+			try: self.connection.performRollback()
+			except Exception, e1: pass
+			raise e
+
+	def _getAppointmentDict(self, params):
+		person_id = params.get('personDict',{}).get('id',None)
+		positionDict = params.get('positionDict',{})
+		position_id = positionDict.get('id',None)
+		title_id = params.get('titleDict',{}).get('id',None)
+		if not title_id:
+			title_id = positionDict.get('title_id',None)
+
+		appointmentDict = {}
+		appointmentDict['person_id'] = person_id
+		appointmentDict['title_id'] = title_id
+		appointmentDict['position_id'] = position_id
+		appointmentDict['start_date'] = params.get('start_date','')
+		appointmentDict['end_date'] = params.get('end_date','')
+		appointmentDict['appointment_status_id'] = params.get('appointment_status',{}).get('id',None)
+		appointmentDict['created'] = params.get('now','')
+		appointmentDict['updated'] = params.get('now','')
+		appointmentDict['lastuser'] = params.get('username','')
+		return appointmentDict
+
+	def _getJobActionDict(self, appointmentId, params):
+		person_id = params.get('personDict',{}).get('id',None)
+		position_id = params.get('positionDict',{}).get('id',None)
+		workflow_id = params.get('workflowDict',{}).get('id',None)
+		workflow_status = params.get('workflowDict',{}).get('statusMsg',"Started")
+		jobActionTypeId = params.get('workflowDict',{}).get('job_action_type_id',None)
+
+		jobActionDict = {}
+		jobActionDict['person_id'] = person_id
+		jobActionDict['position_id'] = position_id
+		jobActionDict['appointment_id'] = appointmentId
+		jobActionDict['job_action_type_id'] = jobActionTypeId
+		jobActionDict['current_status'] = workflow_status
+		jobActionDict['workflow_id'] = workflow_id
+		jobActionDict['workflow_json'] = ''
+		jobActionDict['proposed_start_date'] = params.get('proposed_start_date','')
+		jobActionDict['complete'] = False
+		jobActionDict['frozen'] = False
+		jobActionDict['revisions_required'] = False
+		jobActionDict['created'] = params.get('now','')
+		jobActionDict['updated'] = params.get('now','')
+		jobActionDict['completed'] = params.get('completed','')
+		jobActionDict['lastuser'] = params.get('username','')
+		return jobActionDict
+
+	def updateJobActionRosterStatus(self, _jobActionId, _currentStatus, _updated, _username, doCommit=True):
+		jaSQL.updateJobActionRosterStatus(self.connection, _jobActionId, _currentStatus, _updated, _username, doCommit)
+
+	def associatePersonWithJobAction(self, _jobActionId, _personId, _updated, _username, doCommit=True):
+		jaSQL.updateJobActionPerson(self.connection, _jobActionId, _personId, _updated, _username, doCommit)
+		jaSQL.updateAppointmentPersonForJobAction(self.connection, _jobActionId, _personId, _updated, _username, doCommit)
+
+	def getCurrentJobActionsForUser(self, _community, _username):
+		return jaSQL.getCurrentJobActionsForUser(self.connection, _community, _username)
+
+	def getCurrentJobActionsForPersonId(self, _personId):
+		return jaSQL.getCurrentJobActionsForPersonId(self.connection, _personId)
+
+	def addCancelationComment(self,_jobActionId,_cancelationComment,doCommit=False):
+		jaSQL.addCancelationComment(self.connection,_jobActionId,_cancelationComment,doCommit)
+
+	def calculateCountDownDays(self,start_date,_countdownPrefs,_profile):
+		#   returns None if there is no date and therefore has nothing to calculate
+		countdownPrefs = _countdownPrefs
+		if not _countdownPrefs:
+			countdownPrefs = {"offset_days":mpsMath.getIntFromString(_profile.get('siteProfile',{}).get('sitePreferences',{}).get('defaultcountdowndaysoffset','60'))}
+		if start_date:
+			try:
+				#   turn string entered date into date
+				parsedStartDate = dateUtils.parseUTCDateOnly(start_date)
+				#   get now in UTC, localize it, and set the time to midnight
+				localizedNowDateMidnight = datetime.datetime.combine(dateUtils.parseUTCDate(dateUtils.localizeUTCDate(datetime.datetime.utcnow().strftime(dateUtils.kUTCDateFormat))), datetime.time(0))
+				#   subtract now from then and return days
+				delta = parsedStartDate - localizedNowDateMidnight
+				return delta.days - countdownPrefs.get('offset_days',60)
+			except:
+				pass
+
+
+	#	Related job actions
+
+	def getRelatedJobActions(self, _jobActionId):
+		#    this assumes that a "master" job action is in column 1 and the children are in column 2
+		#   e.g., if master is 1 and related actions are 2,3 & 4 then data looks like this 1:2,1:3,1:4
+		#   This method will need to be refactored if we ever need to relate job actions to multiple sets of job actions
+		qry = jaSQL.getRelatedJobActions(self.connection,_jobActionId)
+		relatedIds = []
+		if qry:
+			if qry[0].get('job_action2_id',-1) == _jobActionId:
+				qry = jaSQL.getRelatedJobActions(self.connection,qry[0].get('job_action1_id',-1))
+			for row in qry:
+				masterId = row.get('job_action1_id',-1)
+				childId = row.get('job_action2_id',-1)
+				if masterId == _jobActionId:
+					relatedIds.append(childId)
+				elif childId == _jobActionId:
+					relatedIds.append(masterId)
+				else:
+					relatedIds.append(childId)
+		return relatedIds
+
+	def getRelatedJobActionDicts(self, _jobActionId):
+		relatedJobActions = []
+		relatedIds = self.getRelatedJobActions(_jobActionId)
+		for id in relatedIds:
+			jaDict = self.getJobAction(id)
+			if jaDict:
+				relatedJobActions.append(jaDict)
+		return relatedJobActions
+
+	def createRelatedJobAction(self, masterJAId, childJAId, doCommit=True):
+		jaSQL.createRelatedJobAction(self.connection, masterJAId, childJAId, doCommit=doCommit)
+
+	def removeRelatedJobActionsforJobAction(self,_jobActionId,doCommit=False):
+		jaSQL.removeRelatedJobActionsforJobAction(self.connection,_jobActionId)
+		
+	def getParentRelatedJobAction(self,jobActionId):
+		qry = jaSQL.getRelatedJobActions(self.connection,jobActionId)
+		return None if not qry else qry[0].get('job_action1_id',-1)
+
+	def isRubberBandedToJobActionOfType(self,_jobActionId,_jaTypeCode):
+		relatedJobActions = self.getRelatedJobActionDicts(_jobActionId)
+		if not relatedJobActions:
+			return False
+		for ja in relatedJobActions:
+			jaType = self.getJobActionType(ja)
+			if jaType:
+				if jaType.get('code','') == _jaTypeCode:
+					return True
+		return False
+
+	#   Appointments.
+
+	def createAppointment(self, _appointmentDict, doCommit=True):
+		return jaSQL.createAppointment(self.connection, _appointmentDict, doCommit)
+
+	def getAppointment(self, _appointmentId):
+		return jaSQL.getAppointment(self.connection, _appointmentId)
+
+	def appointmentIsComplete(self,_appointmentDict):
+		return self._getAppointmentState(_appointmentDict,(constants.kAppointStatusFilled,constants.kAppointStatusHistorical))
+
+	def appointmentIsInProgress(self,_appointmentDict):
+		return self._getAppointmentState(_appointmentDict,(constants.kAppointStatusInProgress))
+
+	def _getAppointmentState(self,_appointmentDict,statuscodes):
+		appointmentStatus =jaSQL.getAppointmentStatus(self.connection,_appointmentDict)
+		if appointmentStatus:
+			if appointmentStatus.get('code','') in statuscodes:
+				return True
+		return False
+
+	def getAppointmentsForPerson(self, _personId):
+		return jaSQL.getAppointmentsForPerson(self.connection, _personId)
+
+	def getResolvedAppointmentsForPerson(self, _person,_sitePreferences):
+		resolvedAppointments = []
+		import MPSAppt.services.jobActionResolverService as jResolverSVC
+		resolver = jResolverSVC.JobActionResolverService(self.connection, _sitePreferences)
+		rawAppointments = jaSQL.getAppointmentsForPerson(self.connection, _person.get('id',-1))
+		for appointment in rawAppointments:
+			resolvedAppt = resolver.appointmentResolveByPerson(appointment,_person)
+			resolvedAppointments.append(resolvedAppt)
+		self.populateAllowableJobActions(resolvedAppointments,[constants.kJobActionTypeNewAppoint,
+															   constants.kJobActionTypeSecondaryApptInside,
+															   constants.kJobActionTypeSecondaryApptOutside,])
+		return resolvedAppointments
+
+	def getResolvedSecondaryAppointmentsForPerson(self,_person,_sitePreferences):
+		secondaries = []
+		allAppointments = self.getResolvedAppointmentsForPerson(_person,_sitePreferences)
+		for appt in allAppointments:
+			appointment = appt.get('appointment',{})
+			position = appt.get('position',{})
+			if position and appointment:
+				if not position.get('is_primary',False) and appointment.get('apptstatus_code','') == constants.kAppointStatusFilled:
+					secondaries.append(appt)
+		return secondaries
+
+	def getPrimaryAppt(self,allResolvedAppointments):
+		for appt in allResolvedAppointments:
+			if appt.get('appointment',{}).get('apptstatus_code','') == constants.kAppointStatusFilled:
+				position = appt.get("position",{})
+				if position.get('is_primary',False):
+					return appt
+		return {}
+
+	def getResolvedAppointmentsForPosition(self,_position,_sitePreferences):
+		resolvedAppointments = []
+		import MPSAppt.services.jobActionResolverService as jResolverSVC
+		resolver = jResolverSVC.JobActionResolverService(self.connection, _sitePreferences)
+		rawAppointments = jaSQL.getAppointmentsForPosition(self.connection, _position.get('id',-1))
+		for appointment in rawAppointments:
+			resolvedAppt = resolver.appointmentResolveByPosition(appointment,_position)
+			resolvedAppointments.append(resolvedAppt)
+		return resolvedAppointments
+
+	def populateAllowableJobActions(self,appointments,exclusions):
+		jobActionTypes = jaSQL.getJobActionTypes(self.connection)
+		titleService = titleSvc.TitleService(self.connection)
+		for appt in appointments:
+			appt.get('appointment',{})['allowableJobActions'] = []
+			allowableJobActions = appt.get('appointment',{})['allowableJobActions']
+			if not appt.get('appointment',{}).get('apptstatus_code','') in [constants.kAppointStatusAbandoned,constants.kAppointStatusHistorical]:
+				if appt.get('appointment',{}).get('apptstatus_code','') == constants.kAppointStatusInProgress:
+					allowableJobActions.append({"descr":"Cancel","url":"/appt/jobaction/cancel/%i" % (appt.get('jobAction',{}).get('id',-1))})
+				else:
+					for jaType in jobActionTypes:
+						jaTypeCode = jaType.get('code','')
+						if jaTypeCode not in exclusions:
+							if jaTypeCode == constants.kJobActionTypePromotion:
+								if not self.promotionIsInProgress(appt,appointments):
+									if self.isTitlePromotable(appt):
+										allowableJobActions.append({"descr":jaType.get('descr'),"url":"/appt/appointment/promote/%i/%i" % (appt.get('appointment',{}).get('id',-1),appt.get('person',{}).get('id',-1))})
+							elif jaTypeCode == constants.kJobActionTypeNewAppoint:
+								allowableJobActions.append({"descr":jaType.get('descr'),"url":"/appt"})
+							elif jaTypeCode == constants.kJobActionTypeTrackChange:
+								if not self._hasJobActionInProgress(appointments,[constants.kJobActionTypePromotion,
+																				  constants.kJobActionTypeReAppoint,
+																				  constants.kJobActionTypeNewAppoint,]):
+									if titleService.appointmentIsEligibleForTrackChange(appt.get('appointment',None)):
+										allowableJobActions.append({"descr":jaType.get('descr'),"url":"/appt/appointment/trackchange/%i/%i" % (appt.get('appointment',{}).get('id',-1),appt.get('person',{}).get('id',-1))})
+							elif jaTypeCode == constants.kJobActionTypeTerminate:
+								if not self._hasAnyActiveJobAction(appointments):
+									allowableJobActions.append({"descr":jaType.get('descr'),"url":"/appt/appointment/terminate/%i/%i" % (appt.get('appointment',{}).get('id',-1),appt.get('person',{}).get('id',-1))})
+							elif jaTypeCode == constants.kJobActionTypeCredential:
+								if not self._hasJobActionInProgress(appointments,[constants.kJobActionTypeCredential,]):
+									allowableJobActions.append({"descr":jaType.get('descr'),"url":"/appt/appointment/credential/%i/%i" % (appt.get('appointment',{}).get('id',-1),appt.get('person',{}).get('id',-1))})
+							elif jaTypeCode == constants.kJobActionTypeEnroll:
+								if not self._hasJobActionInProgress(appointments,[constants.kJobActionTypeEnroll,]):
+									allowableJobActions.append({"descr":jaType.get('descr'),"url":"/appt/appointment/enroll/%i/%i" % (appt.get('appointment',{}).get('id',-1),appt.get('person',{}).get('id',-1))})
+							elif jaTypeCode == constants.kJobActionTypeRecredential:
+								if not self._hasJobActionInProgress(appointments,[constants.kJobActionTypeCredential,]):
+									if not self._hasJobActionInProgress(appointments,[constants.kJobActionTypeRecredential,]):
+										if not self._hasJobActionInProgress(appointments,[constants.kJobActionTypeNewAppoint,]):
+											allowableJobActions.append({"descr":jaType.get('descr'),"url":"/appt/appointment/recredential/%i/%i" % (appt.get('appointment',{}).get('id',-1),appt.get('person',{}).get('id',-1))})
+
+	def _hasCompletedJobAction(self,apptHist,jobActionTypeCodes):
+		for appt in apptHist:
+			if appt.get('appointment',{}).get('apptstatus_code','') == constants.kAppointStatusFilled:
+				if (not appt.get('jobAction',{})) or (appt.get('jobAction',{}) and appt.get('jobAction',{}).get('jobActionType',{}).get('code','') in jobActionTypeCodes):
+					return True
+		return False
+
+	def promotionIsInProgress(self,thisAppt,appointments):
+		positionId = thisAppt.get('appointment',{}).get('position_id')
+		for otherAppt in appointments:
+			if otherAppt.get('appointment',{}).get('position_id') == positionId:
+				jobAction = otherAppt.get('jobAction',{})
+				if (jobAction) and (jobAction.get('jobActionType',{}).get('code','') == constants.kJobActionTypePromotion):
+					if otherAppt.get('appointment',{}).get('apptstatus_code','') == constants.kAppointStatusInProgress:
+						return True
+		return False
+
+	def isTitlePromotable(self,thisAppt):
+		if titleSvc.TitleService(self.connection).getTitlesForTrackAboveRankOrder(thisAppt.get('track',{}),thisAppt.get('title',{})):
+			return True
+		return False
+
+	def _hasJobActionInProgress(self,apptHist,jobActionTypeCodes):
+		for appt in apptHist:
+			if appt.get('jobAction',{}) and appt.get('jobAction',{}).get('jobActionType',{}).get('code','') in jobActionTypeCodes:
+				if appt.get('appointment',{}).get('apptstatus_code','') == constants.kAppointStatusInProgress:
+					return True
+		return False
+
+	def _hasAnyActiveJobAction(self,apptHist):
+		for appt in apptHist:
+			if appt.get('appointment',{}).get('apptstatus_code','') == constants.kAppointStatusInProgress:
+				return True
+		return False
+
+	def getFilledAppointmentForPosition(self, _positionId):
+		return jaSQL.getFilledAppointmentForPosition(self.connection, _positionId)
+
+	def updateAppointmentStatus(self, _appointmentId, _appointmentStatusCode, _startDate, _endDate, _updated, _username, doCommit=True):
+		jaSQL.updateAppointmentStatus(self.connection,  _appointmentId, _appointmentStatusCode, _startDate, _endDate, _updated, _username, doCommit)
+
+	def updateAppointmentTitle(self,_appointment_Id, title_id,_updated, _username, doCommit=True):
+		jaSQL.updateAppointmentTitle(self.connection,_appointment_Id,title_id,_updated, _username, doCommit)
+
+
+	#   Job Tasks.
+
+	def getJobTaskCache(self, _jobActionId):
+		cache = {}
+		rowz = jaSQL.getJobTasksForJobAction(self.connection, _jobActionId)
+		for row in rowz:
+			cache[row.get('task_code','')] = row
+		return cache
+
+	def getJobTask(self, _jobActionDict, _container):
+		return jaSQL.getJobTask(self.connection, _jobActionDict, _container)
+
+	def getJobTaskById(self, _jobTaskId):
+		return jaSQL.getJobTaskById(self.connection, _jobTaskId)
+
+	def createJobTask(self, _jobTaskDict, doCommit=True):
+		jaSQL.createJobTask(self.connection, _jobTaskDict, doCommit)
+
+	def getOrCreateJobTask(self, _jobActionDict, _container, _date, _username, doCommit=True):
+
+		#   Obtains or creates the current Job Task record, if any.
+		#   This method does not resolve to a different Job Task if a primary_job_task_id is present in the retrieved Job Task.
+		#   Use the getOrCreatePrimaryJobTask() method (below) for that purpose.
+
+		task = self.getJobTask(_jobActionDict, _container)
+		if task:
+			return task
+
+		jobTaskDict = {}
+		jobTaskDict['job_action_id'] = _jobActionDict.get('id',None)
+		jobTaskDict['task_code'] = _container.getCode()
+		jobTaskDict['primary_job_task_id'] = None
+		jobTaskDict['frozen'] = False
+		jobTaskDict['created'] = _date
+		jobTaskDict['updated'] = _date
+		jobTaskDict['lastuser'] = _username
+		self.createJobTask(jobTaskDict, doCommit=doCommit)
+
+		return self.getJobTask(_jobActionDict, _container)
+
+	def getOrCreatePrimaryJobTask(self, _jobActionDict, _container, _date, _username, doCommit=True):
+
+		#   Obtains or creates the Job Task record, if any.
+		#   If the obtained/created record has a primary_job_task_id, that is foreign key is resolved,
+		#   and the referenced Job Task is returned..
+		#   If you don't want the foreign key to be resolved, use the getOrCreateJobTask() method (above).
+
+		task = self.getOrCreateJobTask(_jobActionDict, _container, _date, _username, doCommit)
+		if task:
+			primaryJobTaskId = task.get('primary_job_task_id', 0)
+			if not primaryJobTaskId:
+				return task
+
+			primaryTask = self.getJobTaskById(primaryJobTaskId)
+			if primaryTask:
+				return primaryTask
+
+		return task
+
+	def updateJobTaskPrimaryJobTaskId(self, _jobTaskDict, doCommit=True):
+		jaSQL.updateJobTaskPrimaryJobTaskId(self.connection, _jobTaskDict, doCommit)
+
+	def freezeJobTask(self, _jobActionId, _jobTaskCode, _logDict, doCommit=True):
+		jaSQL.updateJobTaskFrozen(self.connection, _jobActionId, _jobTaskCode, True, '', _logDict.get('created',''), _logDict.get('lastuser',''), doCommit)
+		if _logDict.get('logEnabled', False):
+			self.createJobActionLog(_logDict, doCommit)
+
+	def unfreezeJobTask(self, _jobActionId, _jobTaskCode,revisionsRequiredApprovalTask, _logDict, doCommit=True):
+		jaSQL.updateJobTaskFrozen(self.connection, _jobActionId, _jobTaskCode, False, revisionsRequiredApprovalTask, _logDict.get('created',''), _logDict.get('lastuser',''), doCommit)
+		if _logDict.get('logEnabled', False):
+			self.createJobActionLog(_logDict, doCommit)
+
+	# method used item injector when items are being deleted to prepare injected items for reuse
+	def unfreezeJobTaskById(self,_jobTaskId):
+		jaSQL.unfreezeJobTaskById(self.connection,_jobTaskId)
+
+
+	#   Title.
+
+	def getTitle(self, _jobActionDict, _appointmentDictIfYouHaveIt=None, _positionDictIfYouHaveIt=None):
+		titleId = None
+		titleDict = {}
+
+		if _appointmentDictIfYouHaveIt is not None:
+			appointmentDict = _appointmentDictIfYouHaveIt
+		else:
+			appointmentId = _jobActionDict.get('appointment_id', 0)
+			appointmentDict = lookupSvc.getEntityByKey(self.connection, 'wf_appointment', appointmentId, _key='id')
+		if appointmentDict:
+			titleId = appointmentDict.get('title_id', None)
+
+		if not titleId:
+			if _positionDictIfYouHaveIt is not None:
+				positionDict = _positionDictIfYouHaveIt
+			else:
+				positionId = _jobActionDict.get('position_id', 0)
+				positionDict = lookupSvc.getEntityByKey(self.connection, 'wf_position', positionId, _key='id')
+			if positionDict:
+				titleId = positionDict.get('title_id', None)
+
+		if titleId:
+			titleDict = lookupSvc.getEntityByKey(self.connection, 'wf_title', titleId, _key='id')
+		return titleDict
+
+
+	#   Candidate.
+
+	def getCandidateDict(self, jobAction):
+		candidateDict = {}
+		if jobAction.get('person_id', None):
+			candidateList = jaSQL.getCandidate(self.connection, jobAction.get('person_id', None))
+			if candidateList:
+				candidateDict = candidateList[0]
+				fullName = stringUtils.constructFullName(candidateDict['first_name'],candidateDict['last_name'],candidateDict['middle_name'],candidateDict['suffix'])
+				candidateDict['full_name'] = fullName
+		return candidateDict
+
+	def resetPersonPointers(self,jobAction,toPerson,now,username,doCommit=True):
+		jaSQL.updateJobActionPerson(self.connection,jobAction.get('id',-1),toPerson.get('id',-1),now,username,doCommit)
+		jaSQL.updateAppointmentPersonForJobAction(self.connection,jobAction.get('id',-1),toPerson.get('id',-1),now,username,doCommit)
+
+
+	#   Job Action Log.
+
+	def createJobActionLog(self, _jobActionLogDict, doCommit=True):
+		jaSQL.createJobActionLog(self.connection, _jobActionLogDict, doCommit)
+
+
+	#   Job Action Completion.
+
+	def completeJobAction(self, _jobActionId, _json, _cancelationComment, _cancelationUser, _cancelationDate, _logDict, doCommit=True):
+		jaSQL.updateJobActionComplete(self.connection, _jobActionId, True, _json, _cancelationComment,_cancelationUser,_cancelationDate, _logDict.get('created',''), _logDict.get('lastuser',''), doCommit)
+		if _logDict.get('logEnabled', False):
+			self.createJobActionLog(_logDict, doCommit)
+
+	def uncompleteJobAction(self, _jobActionId, _logDict, doCommit=True):
+		jaSQL.updateJobActionComplete(self.connection, _jobActionId, False, '','','','', _logDict.get('created',''), _logDict.get('lastuser',''), doCommit)
+		if _logDict.get('logEnabled', False):
+			self.createJobActionLog(_logDict, doCommit)
+
+	def getCompletableJobActionsAsOf(self, _now):
+		return jaSQL.getCompletableJobActionsAsOf(self.connection, _now)
+
+
+	#   Job Action Ice Age.
+
+	def freezeJobAction(self, _jobActionId, _logDict, doCommit=True):
+		jaSQL.updateJobActionFrozen(self.connection, _jobActionId, True, _logDict.get('created',''), _logDict.get('lastuser',''), doCommit)
+		if _logDict.get('logEnabled', False):
+			self.createJobActionLog(_logDict, doCommit)
+
+	def unfreezeJobAction(self, _jobActionId, _logDict, doCommit=True):
+		jaSQL.updateJobActionFrozen(self.connection,_jobActionId, False, _logDict.get('created',''), _logDict.get('lastuser',''), doCommit)
+		if _logDict.get('logEnabled', False):
+			self.createJobActionLog(_logDict, doCommit)
+
+	def setJobActionRevisionsRequired(self, _jobActionId, _logDict, doCommit=True):
+		jaSQL.updateJobActionRevisionsRequired(self.connection, _jobActionId, True, _logDict.get('created',''), _logDict.get('lastuser',''), doCommit)
+		if _logDict.get('logEnabled', False):
+			self.createJobActionLog(_logDict, doCommit)
+
+	def clearJobActionRevisionsRequired(self, _jobActionId, _logDict, doCommit=True):
+		jaSQL.updateJobActionRevisionsRequired(self.connection,_jobActionId, False, _logDict.get('created',''), _logDict.get('lastuser',''), doCommit)
+		if _logDict.get('logEnabled', False):
+			self.createJobActionLog(_logDict, doCommit)
+
+
+	#   Departmental Override Access
+
+	def overrideJobActionDepartmentalAccess(self,_jobActionId,_jobTaskCode,_departmentId,__access_allowed,doCommit=True):
+		existingOverride = self.getJobActionDepartmentalAccessOverride(_jobActionId,_jobTaskCode,_departmentId)
+		if not existingOverride:
+			jaSQL.createJobActionDepartmentalOverride(self.connection,_jobActionId,_jobTaskCode,_departmentId,__access_allowed,doCommit)
+
+	def getJobActionDepartmentalAccessOverrides(self,_jobActionId):
+		return jaSQL.getJobActionDepartmentalOverrides(self.connection,_jobActionId)
+
+	def getJobActionDepartmentalAccessOverride(self,_jobActionId,_jobTaskCode,_departmentId):
+		return jaSQL.getJobActionDepartmentalOverride(self.connection,_jobActionId,_jobTaskCode,_departmentId)
+
+	def departmentHasOverrideAccessToJobAction(self,_jobActionId,_departmentsList,defaultReturnValue=False):
+		overrides = self.getJobActionDepartmentalAccessOverrides(_jobActionId)
+		if overrides:
+			for override in overrides:
+				for dept in _departmentsList:
+					if dept.get('id',-1) == override.get('department_id',-1):
+						return override.get('access_allowed',False)
+		return defaultReturnValue
+
+	def getAllOverridesForDepartmentList(self,_userdepartmentDictList):
+		userdepartmentList = []
+		for deptDict in _userdepartmentDictList:
+			userdepartmentList.append(deptDict.get('id',-1))
+		return jaSQL.getAllOverridesForDepartmentList(self.connection,userdepartmentList)
+
+	def removeJobActionOverride(self,_jobactionId,_departmentId,containerCodes):
+		jaSQL.removeJobActionOverride(self.connection,_jobactionId,_departmentId,containerCodes)
+
+	def removeJobActionOverrideForTaskCode(self,_jobactionId,_taskCode):
+		jaSQL.removeJobActionOverrideForTaskCode(self.connection,_jobactionId,_taskCode)
+
+	def getPermissionOverrideCache(self,_jobactionId,_whiteblack,_deptList):
+		cache = {}
+		rowz = jaSQL.getPermissionOverridesForJobAction(self.connection,_jobactionId,_whiteblack,_deptList)
+		for row in rowz:
+			cache[row.get('job_task_code','')] = row
+		return cache
+
+	def removeAllJobActionOverride(self,jobActionId):
+		jaSQL.removeJobActionOverrides(self.connection,jobActionId)
+
+
+	#   Misc.
+
+	def touchJobTaskImpl(self, _jobTaskDict, _updated, _username, doCommit=True):
+		jaSQL.touchJobTask(self.connection, _jobTaskDict, _updated, _username, doCommit)
+
+	def positionIsInUse(self,_pcnID):
+		jaQuery = jaSQL.positionIsInUseOnJobAction(self.connection,_pcnID)
+		apptQuery = jaSQL.positionIsInUseOnAppointment(self.connection,_pcnID)
+		return jaQuery['count'] + apptQuery['count']

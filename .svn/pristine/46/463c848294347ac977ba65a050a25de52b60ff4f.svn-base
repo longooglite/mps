@@ -1,0 +1,65 @@
+#   File of site-specific role/permission assignments.
+#   Use the common 'common_role_permissions.txt' file for non-site-specific data.
+
+#application|site|role|permission
+
+#   Department User
+APPT|umms|apptDeptUser|apptRosterView
+APPT|umms|apptDeptUser|apptDashboardView
+APPT|umms|apptDeptUser|apptCreatePosition
+APPT|umms|apptDeptUser|apptViewAsCandidate
+APPT|umms|apptDeptUser|apptJobActionOverview
+APPT|umms|apptDeptUser|apptCreateJobAction
+APPT|umms|apptDeptUser|apptPositionView
+APPT|umms|apptDeptUser|apptPersonView
+APPT|umms|apptDeptUser|apptCancelJobAction
+APPT|umms|apptDeptUser|apptResendEmail
+
+APPT|umms|apptDeptUser|dept_task
+APPT|umms|apptDeptUser|approverfp_view
+APPT|umms|apptDeptUser|canViewNPIPassword
+APPT|umms|apptDeptUser|canrequestfieldrevisions
+APPT|umms|apptDeptUser|revisions_notify
+
+
+#   Faculty Affairs User
+APPT|umms|apptFacultyAffairs|apptRosterView
+APPT|umms|apptFacultyAffairs|apptDashboardView
+APPT|umms|apptFacultyAffairs|apptCreatePosition
+APPT|umms|apptFacultyAffairs|apptViewAsCandidate
+APPT|umms|apptFacultyAffairs|apptJobActionOverview
+APPT|umms|apptFacultyAffairs|apptCancelJobAction
+APPT|umms|apptFacultyAffairs|apptResendEmail
+
+APPT|umms|apptFacultyAffairs|ofa_task
+APPT|umms|apptFacultyAffairs|apptCreateJobAction
+APPT|umms|apptFacultyAffairs|apptPositionView
+APPT|umms|apptFacultyAffairs|apptPersonView
+APPT|umms|apptFacultyAffairs|approverfp_edit
+APPT|umms|apptFacultyAffairs|facultyAffairsUser
+
+#   Medical Staff Services User
+APPT|umms|apptMedicalStaffServices|mss_task
+APPT|umms|apptMedicalStaffServices|apptRosterView
+APPT|umms|apptMedicalStaffServices|apptJobActionOverview
+APPT|umms|apptMedicalStaffServices|apptDashboardView
+APPT|umms|apptMedicalStaffServices|canViewNPIPassword
+APPT|umms|apptMedicalStaffServices|revisions_notify
+APPT|umms|apptMedicalStaffServices|canrequestfieldrevisions
+APPT|umms|apptMedicalStaffServices|canViewSocialSecurity
+
+
+#   Provider Enrollment User
+APPT|umms|apptProviderEnrollment|enroll_task
+APPT|umms|apptProviderEnrollment|apptRosterView
+APPT|umms|apptProviderEnrollment|apptJobActionOverview
+APPT|umms|apptProviderEnrollment|apptDashboardView
+APPT|umms|apptProviderEnrollment|canViewNPIPassword
+APPT|umms|apptProviderEnrollment|canViewSocialSecurity
+
+#   Assistant Dean User
+
+APPT|umms|apptAssitantDean|assist_dean_task
+APPT|umms|apptAssitantDean|apptRosterView
+APPT|umms|apptAssitantDean|apptJobActionOverview
+APPT|umms|apptAssitantDean|apptDashboardView

@@ -1,0 +1,267 @@
+worker_processes  1;
+error_log  logs/error.log  debug;
+
+events {
+	worker_connections  1024;
+}
+
+http {
+	include       mime.types;
+	default_type  application/octet-stream;
+	client_max_body_size 10m;
+	ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # omit SSLv3 because of POODLE (CVE-2014-3566)
+
+	access_log          logs/access.log;
+	sendfile            on;
+	keepalive_timeout   65;
+
+
+	############################################################################
+	#   SINGLE ENVIRONMENT.
+	#   Sites:  dent-umich
+	#           engin-umich
+	#           med-oakland
+	#
+	#   engin-umich runs in a separate server {} block since it uses shitboleth.
+	############################################################################
+
+	upstream cvapp {
+		server localhost:8002;
+		server localhost:8012;
+		server localhost:8022;
+		server localhost:8032;
+	}
+
+	upstream adminapp {
+		server localhost:8003;
+	}
+
+	upstream apptapp {
+		server localhost:8004;
+		server localhost:8014;
+		server localhost:8024;
+		server localhost:8034;
+	}
+
+	upstream authservice {
+		server localhost:9001;
+	}
+
+
+	############################################################################
+	#   NON-SHIBBOLETH SITES.
+	############################################################################
+
+	server {
+		listen       443 ssl;
+		server_name  ~^(?<site>[a-zA-Z0-9-]*)\.mntnpass\.com$;
+		ssl_certificate      /etc/nginx/mntnpass.crt;
+		ssl_certificate_key  /etc/nginx/mntnpass.key;
+		ssl_dhparam          /etc/nginx/dhparams.pem;
+		ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA';
+		ssl_prefer_server_ciphers on;
+
+		location /favicon.ico { root /usr/local/mps; }
+		location ~^\/([a-zA-Z0-9-]*)\/js\/.*$ { root /usr/local/mps; }
+		location ~^\/([a-zA-Z0-9-]*)\/css\/.*$ { root /usr/local/mps; }
+		location ~^\/([a-zA-Z0-9-]*)\/images\/.*$ { root /usr/local/mps; }
+		location ~^\/([a-zA-Z0-9-]*)\/fonts\/.*$ { root /usr/local/mps; }
+		location ~^\/pdf\/.*$ { root /tmp/; }
+
+		location /mps/login {
+			proxy_pass http://localhost:8001;
+			proxy_set_header Site $site;
+		}
+
+		location /mps/mpslogin {
+			proxy_pass http://localhost:8001;
+			proxy_set_header Site $site;
+		}
+
+		# No toast page in non-shibboleth environments.
+		#location /mps/toast {
+		#	proxy_pass http://localhost:8001;
+		#	proxy_set_header Site $site;
+		#}
+
+		location /admin {
+			proxy_set_header Site $site;
+			if ($http_cookie ~ "mpsid=[a-f0-9]{32,32}") {
+				proxy_pass http://adminapp;
+				break;
+			}
+			return 302 /mps/login;
+		}
+
+		location /cv {
+			proxy_set_header Site $site;
+			if ($http_cookie ~ "mpsid=[a-f0-9]{32,32}") {
+				proxy_pass http://cvapp;
+				break;
+			}
+			return 302 /mps/login;
+		}
+
+		location /appt {
+			proxy_set_header Site $site;
+			if ($http_cookie ~ "mpsid=[a-f0-9]{32,32}") {
+				proxy_pass http://apptapp;
+				break;
+			}
+			return 302 /mps/login;
+		}
+
+		location /appt/visitor {
+			proxy_set_header Site $site;
+			proxy_pass http://apptapp;
+		}
+
+		location / {
+			proxy_set_header Site $site;
+			if ($http_cookie ~ "mpsid=[a-f0-9]{32,32}") {
+				proxy_pass http://cvapp;
+				break;
+			}
+			return 302 /mps/login;
+		}
+
+		#error_page  404              /404.html;
+		error_page   500 502 503 504  /50x.html;
+		location = /50x.html { root   html; }
+	}
+
+
+	############################################################################
+	#   SHIBBOLETH SITE: engin-umich
+	############################################################################
+
+	server {
+		listen       443 ssl;
+		server_name  engin-umich.mntnpass.com;
+		set $site "engin-umich";
+		ssl_certificate      /etc/nginx/mntnpass.crt;
+		ssl_certificate_key  /etc/nginx/mntnpass.key;
+		ssl_dhparam          /etc/nginx/dhparams.pem;
+		ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA';
+		ssl_prefer_server_ciphers on;
+
+		# Shitboleth shit
+		location = /shibauthorizer {
+			internal;
+			include fastcgi_params;
+			fastcgi_pass unix:/tmp/shibauthorizer.sock;
+		}
+
+		# FastCGI responder for SSO
+		location /Shibboleth.sso {
+			include fastcgi_params;
+			fastcgi_pass unix:/tmp/shibresponder.sock;
+		}
+
+		# A secured location.
+		location /secure {
+			more_clear_input_headers 'Variable-*' 'Shib-*' 'Remote-User' 'REMOTE_USER' 'Auth-Type' 'AUTH_TYPE';
+			shib_request /shibauthorizer;
+			proxy_pass http://localhost:8001/mps/shiblogin;
+			proxy_set_header Site $site;
+		}
+
+		location /favicon.ico { root /usr/local/mps; }
+		location ~^\/([a-zA-Z0-9-]*)\/js\/.*$ { root /usr/local/mps; }
+		location ~^\/([a-zA-Z0-9-]*)\/css\/.*$ { root /usr/local/mps; }
+		location ~^\/([a-zA-Z0-9-]*)\/images\/.*$ { root /usr/local/mps; }
+		location ~^\/([a-zA-Z0-9-]*)\/fonts\/.*$ { root /usr/local/mps; }
+		location ~^\/pdf\/.*$ { root /tmp/; }
+
+		# Enable these location blocks to turn Shitboleth ON
+		#location /mps/login {
+		#	return 302 /mps/shiblogin;
+		#}
+
+		#location /mps/shiblogin {
+		#	proxy_pass http://localhost:8001;
+		#	proxy_set_header Site $site;
+		#	shib_request /shibauthorizer;
+		#}
+
+		# Disable this location block to turn Shitboleth ON
+		location /mps/login {
+			proxy_pass http://localhost:8001;
+			proxy_set_header Site $site;
+		}
+
+		location /mps/mpslogin {
+			proxy_pass http://localhost:8001;
+			proxy_set_header Site $site;
+		}
+
+		location /mps/toast {
+			proxy_pass http://localhost:8001;
+			proxy_set_header Site $site;
+		}
+
+		location /admin {
+			proxy_set_header Site $site;
+			if ($http_cookie ~ "mpsid=[_a-f0-9]{32,33}") {
+				proxy_pass http://adminapp;
+				break;
+			}
+			return 302 /mps/login;
+		}
+
+		location /cv {
+			proxy_set_header Site $site;
+			if ($http_cookie ~ "mpsid=[_a-f0-9]{32,33}") {
+				proxy_pass http://cvapp;
+				break;
+			}
+			return 302 /mps/login;
+		}
+
+		location /appt {
+			proxy_set_header Site $site;
+			if ($http_cookie ~ "mpsid=[_a-f0-9]{32,33}") {
+				proxy_pass http://apptapp;
+				break;
+			}
+			return 302 /mps/login;
+		}
+
+		location /appt/visitor {
+			proxy_set_header Site $site;
+			proxy_pass http://apptapp;
+		}
+
+		location / {
+			proxy_set_header Site $site;
+			if ($http_cookie ~ "mpsid=[_a-f0-9]{32,33}") {
+				proxy_pass http://cvapp;
+				break;
+			}
+			return 302 /mps/login;
+		}
+
+		#error_page  404              /404.html;
+		error_page   500 502 503 504  /50x.html;
+		location = /50x.html { root   html; }
+	}
+
+
+	############################################################################
+	#   COMMON AUTHORIZATION SERVICE.
+	############################################################################
+
+	server {
+		listen       9000;
+		server_name  localhost;
+
+		location / {
+			proxy_pass http://authservice;
+		}
+
+		error_page   500 502 503 504  /50x.html;
+		location = /50x.html {
+			root   html;
+		}
+	}
+}

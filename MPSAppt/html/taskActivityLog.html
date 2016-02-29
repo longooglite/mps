@@ -1,0 +1,35 @@
+{% set activityLog = context.get('activity_log', []) %}
+{% if activityLog %}
+<div class="wf-detail-activity-log clearfix form-row">
+	<label class="col-xs-2 text-right">
+		Last Action:
+	</label>
+	<div class="col-md-8 wf-form-right wf-toggle-parent wf-form-right-text">
+		<div class="ignorewf-toggle-target">
+			{% set sFirst = activityLog[0] %}
+			{% set zComms = sFirst.get('comments', []) %}
+			{{sFirst.get('display_text','')}}{% if zComms != [] %}:{% else %}<br/>{% end %}
+			{% for commentDict in zComms %}
+				<div class="wf-detail-log-comment"><pre>{{commentDict.get('comment','')}}</pre></div>
+			{% end %}
+		</div>
+	{% set iRemaining = len(activityLog) - 1 %}
+	{% if iRemaining > 0 %}
+		<div class="ignorewf-toggle-parent">
+			<a href="#" class="wf-toggle-trigger wf-detail-log-link" data-toggle-text="Hide older actions"><span class="wf-rr-text">Show {{iRemaining}} older actions</span><span class="glyphicon glyphicon-chevron-down" data-toggle-classes="glyphicon-chevron-up glyphicon-chevron-down"></span></a>
+			<div class="wf-toggle-target">
+			{% for i,logDict in enumerate(activityLog) %}
+				{% if i != 0 %}
+					{% set zComms = logDict.get('comments', []) %}
+					{{logDict.get('display_text','')}}{% if zComms != [] %}:{% else %}<br/>{% end %}
+					{% for commentDict in zComms %}
+						<div class="wf-detail-log-comment"><pre>{{ commentDict.get('comment','') }}</pre></div>
+					{% end %}
+				{% end %}
+			{% end %}
+			</div>
+		</div>
+	{% end %}
+	</div>
+</div>
+{% end %}

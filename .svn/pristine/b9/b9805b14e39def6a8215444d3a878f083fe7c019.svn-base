@@ -1,0 +1,53 @@
+[Category]
+<h4>Grants & Contracts</h4>
+<p>This page displays your present, submitted and past grants and contracts.<p>
+<p>The rows of this CV section may be moved up and down to set the print order in the CV. Click the Up and Down arrows, or mouse drag the entire row vertically.</p>
+<p>The number of entries within each group will be displayed in () on the tabs.</p>
+<hr>
+<p>To <strong>add</strong> an additional entry, click the “+ Add …” button in the upper right portion of the page.</p>
+<p>To <strong>edit</strong> an existing entry, click the blue text in the row you would like to edit.</p>
+<p>To <strong>delete</strong> an entry, click the X at the end of the row you would like to delete. Then confirm the deletion.</p>
+<p>To <strong>print</strong> a section of the CV, click the “Print this section” button in the upper right portion of the page or select “Print Section” from the Print menu found in the menu bar.</p>
+
+[GrantType]
+<p>Please select the grant or contract type.</p>
+<hr>
+<p>This item is required</p>
+
+[GrantTitle]
+<p>Please enter the grant or contract title.</p>
+<hr>
+<p>This item is required</p>
+
+[GrantNumber]
+<p>Please enter the grant or contract number.</p>
+
+[GrantSponsor]
+<p>Please enter the grant or contract sponsor.</p>
+
+[GrantPINames]
+<p>Please enter the grant or contract Principal Investigator names.</p>
+
+[GrantFirstAmount]
+<p>Please enter the first year dollar value of the grant or contract.</p>
+
+[GrantTotalAmount]
+<p>Please enter the total dollar value of the grant or contract.</p>
+
+[GrantRole]
+<p>Please select your role in the grant or contract.</p>
+
+[GrantStatus]
+<p>Please select the current status of the grant or contract.</p>
+
+[GrantStart]
+<p>Please enter the start date for this grant or contract.</p>
+<hr>
+<p>This item is required</p>
+<p>Hover over the field to see supported date formats</p>
+
+[GrantEnd]
+<p>Please enter the end date for this grant or contract.</p>
+<hr>
+<p>This item is required</p>
+<p>Hover over the field to see supported date formats</p>
